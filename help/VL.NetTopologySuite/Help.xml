@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Pack>
+	<Topic title="Start here">
+		<VLDocument link="01 Create a Point.vl" tags="coordinate,point,geometry,create,srid,nts,netTopologySuite" />
+		<VLDocument link="03 Create a Polygon.vl" tags="polygon,linearring,ring,shell,holes,closed,valid,area,geometry" />
+	</Topic>
+	<Topic title="Text in, geometry out">
+		<VLDocument link="04 Read WKT.vl" tags="wkt,wellknowntext,read,write,parse,text,srid,io" />
+	</Topic>
+	<Topic title="Operations">
+		<VLDocument link="06 Buffer Geometry.vl" tags="buffer,grow,shrink,offset,intersection,operation,units,segments" />
+	</Topic>
+</Pack>

@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document xmlns:p="property" xmlns:r="reflection" Id="UMHpgvzoADZKkIwhkXxjp0" LanguageVersion="2025.7.4" Version="0.128">
+  <NugetDependency Id="BS8HpI7oGO9gLAX6DyOIkL" Location="VL.CoreLib" Version="2025.7.4" />
+  <Patch Id="PGurcx85c4fDtB31QgL0df">
+    <Canvas Id="VwLpa5pwuNiOgNdOs0MVys" DefaultCategory="Main" BordersChecked="false" CanvasType="FullCategory" />
+    <!--
+
+    ************************ Application ************************
+
+-->
+    <Node Name="Application" Bounds="100,100" Id="CFwLbqh4b2plNDdDpzuOxO">
+      <p:NodeReference>
+        <Choice Kind="ContainerDefinition" Name="Process" />
+        <CategoryReference Kind="Category" Name="Primitive" />
+      </p:NodeReference>
+      <Patch Id="EbvYEG2emY7qKe7Q6vkEI8">
+        <Canvas Id="SfYlXxjJPDuU35PcNCjNya" CanvasType="Group">
+          <!--
+            One idea: WKT is the shortest way to get a geometry into a patch.
+
+            Well-Known Text is plain text, so it pastes in from anywhere and pastes out to
+            anywhere. Edit the string and watch the type and area follow.
+
+            Try these:
+              POINT (139.7671 35.6812)
+              LINESTRING (0 0, 1 1, 2 0)
+              POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))
+              POLYGON ((0 0, 1 0, 1 1, 0 1))            <- unclosed, and accepted anyway
+              SRID=4326;POINT (139.7671 35.6812)        <- the SRID travels with the text
+
+            Then try breaking it. Success goes false and the geometry goes empty; the node
+            does not throw, because half-typed text is the normal state of a box being
+            edited and an exception sixty times a second is not a diagnostic.
+          -->
+          <Pad Id="BiByAR6M68GvKeR4iQmMA4" Comment="WKT - edit me" Bounds="60,60,420,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="60,120,90,19" Id="Q3cQTNd5k5nyIJlTUapBBj">
+            <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Read WKT" />
+            </p:NodeReference>
+            <Pin Id="UMCYvLS2G6tKxnTC0cRaNm" Name="WKT" Kind="InputPin" />
+            <Pin Id="AyZSR95EPDK0UBlNaEZyMC" Name="Factory" Kind="InputPin" />
+            <Pin Id="KBjRcOSgQSVpWbqKAG3kRc" Name="Result" Kind="OutputPin" />
+            <Pin Id="UNa4MdFIQPaGooQ5d7ZzG3" Name="Success" Kind="OutputPin" />
+          </Node>
+          <Pad Id="MCDerq7C6nDLItGKpNpUo9" Comment="parsed?" Bounds="200,120,70,15" ShowValueBox="true" isIOBox="true" />
+          <!--
+            The output is a native NetTopologySuite Geometry, not a wrapper. That is what lets
+            it go straight into any other package that speaks NTS.
+          -->
+          <Node Bounds="60,200,110,19" Id="QQAFjc1KHppr4JZvqGjFMD">
+            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="GeometryType" />
+            </p:NodeReference>
+            <Pin Id="GLH390kCjaLWZSIOUbpLwA" Name="Geometry" Kind="InputPin" />
+            <Pin Id="IC8ChbXA8lNdNpMTp1yW73" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="Cs5jVWXUGsaSACZ16XQFcU" Comment="type" Bounds="60,260,140,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="240,200,50,19" Id="JnlsMTw6rlCisWIRPQItZg">
+            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Area" />
+            </p:NodeReference>
+            <Pin Id="Ha2nMin6JPBeSleaazvf5j" Name="Geometry" Kind="InputPin" />
+            <Pin Id="FMeQ62l3WGI9FZHMPajxgp" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="Eh5zj0YBf70mEaKdAuDeE9" Comment="area" Bounds="240,260,140,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="420,200,50,19" Id="L0qu4DUn6nixa13O2B1PDb">
+            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="SRID" />
+            </p:NodeReference>
+            <Pin Id="ITLfZyZtvfzGdovrBQF4B0" Name="Geometry" Kind="InputPin" />
+            <Pin Id="V1YgrIyDuthvipUeqDwYOn" Name="Result" Kind="OutputPin" />
+          </Node>
+          <!--
+            0 means "unset", and it agrees with what the creation nodes produce. NTS's own
+            reader would say -1 here; this package corrects that, so a patch never sees two
+            different numbers both meaning "nobody said".
+          -->
+          <Pad Id="ADsq0bU1krNtf70wXZnmTV" Comment="SRID" Bounds="420,260,140,15" ShowValueBox="true" isIOBox="true" />
+          <!--
+            Write WKT closes the loop. Note it does NOT carry the SRID back out - plain WKT
+            has nowhere to put one, and this package does not pretend otherwise.
+          -->
+          <Node Bounds="60,330,90,19" Id="Bp7ZRjVNkX6VU55n6C9xeD">
+            <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Write WKT" />
+            </p:NodeReference>
+            <Pin Id="NpyKX4X0OgulUzQaYoI0B4" Name="Geometry" Kind="InputPin" />
+            <Pin Id="QnqRsA2ngFOSh2b5QRyvwd" Name="Include Z" Kind="InputPin" />
+            <Pin Id="TumGuTi7hXXZwPF4Xu34of" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="P7iBQVzOU3fS083DauArTo" Comment="written back out" Bounds="60,390,420,15" ShowValueBox="true" isIOBox="true" />
+        </Canvas>
+        <Patch Id="LP8NiHGvEUX7y9XD4G3WfS" Name="Create" />
+        <Patch Id="HtHWALNzzCsuz7R8YfaFUX" Name="Update" />
+        <ProcessDefinition Id="L9MRhXoWRSuAF46Bn38SNj">
+          <Fragment Id="TS7REOhpT971487SXvJmoZ" Patch="LP8NiHGvEUX7y9XD4G3WfS" Enabled="true" />
+          <Fragment Id="ASuDYP9DMrUdEnjkswAEHo" Patch="HtHWALNzzCsuz7R8YfaFUX" Enabled="true" />
+        </ProcessDefinition>
+        <Link Id="U9HSod0NzHyVA32OVi72ag" Ids="BiByAR6M68GvKeR4iQmMA4,UMCYvLS2G6tKxnTC0cRaNm" />
+        <Link Id="VCF6oA6fJxZM9CW42EjuFn" Ids="UNa4MdFIQPaGooQ5d7ZzG3,MCDerq7C6nDLItGKpNpUo9" />
+        <Link Id="Lez0iEJK7vSuN9NdXBgL3Y" Ids="KBjRcOSgQSVpWbqKAG3kRc,GLH390kCjaLWZSIOUbpLwA" />
+        <Link Id="V7ecmJmySFNdXOKJRaoyQa" Ids="IC8ChbXA8lNdNpMTp1yW73,Cs5jVWXUGsaSACZ16XQFcU" />
+        <Link Id="O34YbCFgMT2VpF7r4yfU6w" Ids="KBjRcOSgQSVpWbqKAG3kRc,Ha2nMin6JPBeSleaazvf5j" />
+        <Link Id="CWdG8E8p8tRPJg40lcN3xd" Ids="FMeQ62l3WGI9FZHMPajxgp,Eh5zj0YBf70mEaKdAuDeE9" />
+        <Link Id="VKb7MvXvpZCveU50Y666LB" Ids="KBjRcOSgQSVpWbqKAG3kRc,ITLfZyZtvfzGdovrBQF4B0" />
+        <Link Id="CvA4h8rFw0ihaI31jRV1Gz" Ids="V1YgrIyDuthvipUeqDwYOn,ADsq0bU1krNtf70wXZnmTV" />
+        <Link Id="N8jhONovKVzevQhgAkahCo" Ids="KBjRcOSgQSVpWbqKAG3kRc,NpyKX4X0OgulUzQaYoI0B4" />
+        <Link Id="AhlKhzp2p9kVtvn4tBz5MC" Ids="TumGuTi7hXXZwPF4Xu34of,P7iBQVzOU3fS083DauArTo" />
+      </Patch>
+    </Node>
+  </Patch>
+  <NugetDependency Id="IBC9DGFEG2cUGGk2AtuLv0" Location="VL.NetTopologySuite" Version="0.0.0" />
+</Document>

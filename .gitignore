@@ -1,0 +1,44 @@
+# Build outputs
+bin/
+obj/
+lib/
+*.user
+*.suo
+.vs/
+
+# Staged package repository produced by build.ps1 (dist\VL.GIS is the package,
+# dist\ itself is what you pass to vvvv --package-repositories)
+dist/
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/packages/
+packages/
+
+# vvvv runtime files
+*.cache
+cache/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.idea/
+*.swp
+*~
+
+# Upstream packages installed by build.ps1 so VL can resolve their types.
+deps/
+
+# Tile caches written next to whatever document vvvv had open. 38 of these were swept into a
+# commit by "git add -A" before anyone looked, and build.ps1 had already staged them into dist\,
+# which is one pack.ps1 away from shipping them inside the package. The bug that writes them is
+# still open; this stops it contaminating the repository meanwhile.
+**/[0-9]*/[0-9]*/[0-9]*.png
+
+# Per-machine Claude Code permissions, not shared. The non-local .claude\settings.json
+# (if one is ever added) is shared and deliberately NOT ignored.
+.claude/settings.local.json

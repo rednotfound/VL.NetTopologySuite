@@ -1,0 +1,405 @@
+# Why VL.NetTopologySuite is shaped this way
+
+[docs/RULES.md](RULES.md) covers mechanics — what silently breaks when packaging, and what breaks
+outside the package at runtime. [docs/AUDIT.md](AUDIT.md) is the audit this package was designed
+from, and holds every measurement quoted below. This document is the reasoning: what the package is
+for, what it will never contain, and how to decide whether a new node belongs.
+
+It exists because these questions were settled once, deliberately, and re-deriving them costs more
+than reading them.
+
+---
+
+## Contents
+
+- [One job](#one-job)
+- [Native types, and the one thing we add](#native-types-and-the-one-thing-we-add)
+- [The factory, and why SRID is 0](#the-factory-and-why-srid-is-0)
+- [Node categories](#node-categories)
+- [Decisions, per node](#decisions-per-node)
+- [What stays raw](#what-stays-raw)
+- [The package boundary](#the-package-boundary)
+- [Relationship with the sibling repositories](#relationship-with-the-sibling-repositories)
+- [What this will never contain](#what-this-will-never-contain)
+
+---
+
+## One job
+
+**How does a VL patch create, inspect, and perform basic spatial operations on NetTopologySuite
+geometry?**
+
+That is the whole question. Not how to draw it, not how to reproject it, not how to read a
+shapefile. The test for any proposed addition is in
+[The package boundary](#the-package-boundary).
+
+**Almost all the value is upstream, and saying so plainly is useful.** NetTopologySuite is two
+decades of production use. What this repository solves is *how it shows up as nodes in a patch* —
+which turned out to be genuinely hard, and which the sibling repositories learned by shipping nine
+releases that installed cleanly and contributed nothing.
+
+The consequence worth stating: **when a node is our own arithmetic rather than NTS's, that is
+information the user wants**, because our code lacks NTS's mileage. Every node's doc comment names
+where its answer comes from, and vvvv shows it as the tooltip. Almost every node here says "Uses
+NetTopologySuite", which is the honest answer — and the defensive copying described below is the
+one place where it is not the whole answer.
+
+---
+
+## Native types, and the one thing we add
+
+**No `VLGeometry`, no `VLPoint`, no `VLFeature`.** Nodes take and return
+`NetTopologySuite.Geometries.*` directly. Three payoffs, and the third is the real one:
+
+1. Operations chain with no conversion — `Geometry → Buffer → Intersection → Geometry`.
+2. Advanced users can reach the rest of NTS through VL's raw .NET nodes and plug the result back in.
+3. **A geometry made here crosses into another package with no adapter at all.** VL.Mapsui consumes
+   `NetTopologySuite.Geometries.Geometry`; nothing has to know about this package for that to work.
+
+So the public surface stays compatible with ordinary .NET NTS code, and this package improves
+usability without hiding the library.
+
+### The exception: defensive copying
+
+There is exactly one behaviour here that is not raw NTS, and it is the reason these are hand-written
+nodes rather than reflection nodes over `GeometryFactory`.
+
+**NTS geometries are not deeply immutable.** Measured against 2.6.0:
+
+| | |
+|---|---|
+| `Coordinate.X` has a public setter | yes |
+| `factory.CreatePoint(c)` then `c.X = 777` | the point moves — the factory kept the caller's object |
+| `geometry.Coordinates[0].X = 555` | the geometry moves — that property hands out live references |
+| `point.Coordinate` | live, same reason |
+
+The default `CoordinateArraySequenceFactory` **wraps** the caller's array rather than copying it.
+
+This contradicts what both sibling repositories assert in prose — `vvvv-gis/docs/DESIGN.md` says
+"Immutability, because NetTopologySuite is immutable". The half that is true is that *operations*
+return new geometries. The half that is false is the storage.
+
+**Why it matters more in VL than in C#.** A value flowing into two branches of a patch is *the same
+reference*, and there is no `readonly` to stop the second branch writing through it. A patch that
+holds a `Coordinate`, builds a `Point` from it, hands that Point to VL.Mapsui, and later edits the
+`Coordinate` would silently move geometry that is already on screen — with nothing anywhere to say
+why.
+
+So: **every creation node copies its coordinates on the way in; every reader node copies on the way
+out.** `Defaults.CopyOf` is the whole implementation. `MutationTests` is the regression suite, and it
+is negative-tested — removing the copying turns exactly four tests red, which is what makes them
+checks rather than decoration.
+
+The cost is one array allocation per geometry built. That is the right trade: the alternative is a
+class of bug that is invisible, intermittent, and appears in someone else's package.
+
+---
+
+## The factory, and why SRID is 0
+
+Two things had to be true at once: the common case must not be
+`GeometryFactory → CreatePoint`, and SRID and precision must not be hidden, because they affect
+correctness.
+
+The answer is an **optional trailing `Factory` pin** on every creation node, plus a
+`GeometryFactory` node that produces one from an SRID.
+
+- Unconnected → a shared default: **SRID 0, floating precision**.
+- Connected → whatever the patch says, including a factory built through VL's raw .NET nodes for
+  fixed precision or a custom coordinate sequence.
+
+**Unconnected is the only thing that can mean "the default".** That is rule 8 of
+[RULES.md](RULES.md), learned in the sibling repository at the cost of 444 files written next to two
+repositories while every guard reported success. A `GeometryFactory` pin has no "empty" state to
+confuse with `null`, so here it is unambiguous — but the principle is why there is no `SRID` pin on
+every creation node as an alternative.
+
+### Why 0 and not 4326
+
+`GeometryFactory.Default.SRID` is 0 (measured). 0 means **unset**, and for a package named after
+the library that is the truthful default: NTS geometry is planar, not inherently geographic.
+
+Stamping 4326 on coordinates the package has never seen would be a claim it cannot check. And the
+claim would be dangerous rather than merely wrong, because **mixing SRIDs never throws**: a 4326
+geometry intersected with an SRID 0 one returns 4326 without complaint. A wrong CRS therefore
+produces a confident wrong answer that looks exactly like a right one.
+
+**An SRID is a label, not a transformation.** No node here implies that setting it reprojects
+anything, because it does not. That work belongs in a focused package — `VL.ProjNet` — and is out
+of scope here.
+
+One wart this package does correct: NTS's `WKTReader` stamps **-1** rather than 0 for "unknown",
+regardless of the factory it was built from, which would give a patch two different numbers both
+meaning "nobody said". `Read WKT` routes the factory's SRID through `NtsGeometryServices` so typed
+and built geometry agree. The obvious fixes — the `WKTReader(GeometryFactory)` constructor and the
+`DefaultSRID` property — are both `[Obsolete]` in 2.6, and NTS warns that setting `DefaultSRID` may
+stop working; the services route is the one it asks for.
+
+### Caching, because a node runs every frame
+
+A `public static` method is evaluated **sixty times a second from the moment the document opens**.
+So `new GeometryFactory(new PrecisionModel(), srid)` inside the `GeometryFactory` node would
+allocate forever. It is cached per SRID, which also makes the output **reference-stable** — and that
+is what keeps the WKT reader cache (keyed on the factory, weakly) from rebuilding a parser and an
+`NtsGeometryServices` every frame.
+
+Neither cache needs `[ProcessNode]`: a factory and a reader hold no connection, handle or thread.
+This is the cheap end of that rule, not an exception to it.
+
+---
+
+## Node categories
+
+```text
+category = (.NET namespace minus the "VL" prefix) + type name
+```
+
+The prefix comes from `[assembly: ImportAsIs(Namespace = "VL")]`.
+
+| Category | Source | How |
+|---|---|---|
+| `NTS.Geometry` | `GeometryNodes.Creation.cs` + `.Inspection.cs` | namespace `VL.NTS` + `[Name("Geometry")]` |
+| `NTS.Operation` | `OperationNodes.cs` | `[Name("Operation")]` |
+| `NTS.IO` | `IONodes.cs` | `[Name("IO")]` |
+
+Three, deliberately — `NTS.Validation` was considered and dropped, because one validity node does
+not earn a category level and §26 of the brief warns against deep nesting.
+
+**Assembly `VL.NetTopologySuite`, root namespace `VL.NTS`.** The package is named after the library
+it wraps, which is the rule for a single-library package; only the *category* is abbreviated,
+because a patch author has to read it in a node browser and `NetTopologySuite.Geometry.Point` is
+unreadable. Both sibling repositories decouple these two names the same way.
+
+`GeometryNodes` is one `partial` class across two files rather than two classes, so both halves land
+in one category without depending on two types being allowed to share one.
+
+Two things that were established rather than guessed, by reading `VL.Core`'s metadata:
+
+- **`NameAttribute`'s `AttributeUsage` is `All`**, so `[Name("Read WKT")]` is legal on a *method*,
+  not only a type. That is how the node is called `Read WKT` rather than whatever VL makes of
+  `ReadWKT`. **Whether VL's importer honours it on a member has not been shown** — only the GUI can.
+- **`PinAttribute` targets parameters and return values**, with a `Name` property. That is how the
+  `wkt` parameter becomes a pin labelled `WKT`.
+
+Neither sibling repository uses either on a member, so both are new ground here and both are listed
+as unverified in the README.
+
+---
+
+## Decisions, per node
+
+The eleven one-line wrappers all have the same answers: no state, no mutation, native output, and
+they exist because a constructor or an instance method is not reachable as a node. The ones with a
+real decision behind them:
+
+### `Coordinate` / `CoordinateZ` — two nodes, not one with an optional Z
+
+`Coordinate` and `CoordinateZ` are two distinct NTS types, so this is not the duplicate-convenience
+family the brief's §39 forbids — it is the type distinction, surfaced. An optional `Z` pin would
+have to be a nullable float, which reads worse and would still have to pick a type internally.
+
+`CoordinateM` and `CoordinateZM` are left out of v1 as a scope decision, not a limitation: M
+ordinates were measured surviving the default factory intact, so support is a node away when
+something needs it.
+
+### `Split (Coordinate)` — because an opaque value is undebuggable
+
+A `Coordinate` on a pin is a name with no way to see inside. **Every opaque value needs a reader
+node** — the rule the sibling repository arrived at across four instances. `Split` is the name the
+Gray Book gives this, and the one a user types: it appears 194 times in shipped help patches.
+
+### `Polygon` takes rings, not coordinates
+
+The brief's §35 sketches `Coordinates → Polygon`. This package makes it
+`Coordinates → LinearRing → Polygon`, one node longer, and that is deliberate:
+
+- **Composition over giant nodes.** `LinearRing` is a real NTS type and a real concept; hiding it
+  inside `Polygon` would mean the patch author learns about rings only when a hole goes wrong.
+- **`Shell` and `Holes` are the same type**, so the pins explain each other.
+- The alternative was a second `Polygon` overload taking coordinates, which is exactly the
+  duplicate-convenience family §39 rules out.
+
+The convenience is not lost, it is *named*: `LinearRing` carries the auto-closing.
+
+### `LinearRing` closes the ring, and says so
+
+NTS throws `points must form a closed linestring` on an open ring (measured). Four corners of a
+rectangle — not five — is what a person patches. So the ring closes itself, with a **copy** of the
+first coordinate rather than a second reference to it, and the doc comment leads with the fact.
+
+Deliberately *not* silent about the limit of that convenience: **closure is checked at construction,
+validity is not.** A ring that crosses itself closes perfectly and builds an invalid polygon.
+`IsValid` is what catches it, and the doc comment on `LinearRing` points there.
+
+`Read WKT` closes rings too, via `FixStructure`, so the two routes into a polygon behave the same.
+
+### `IsValid` has three outputs
+
+`IsValidOp` hands over the reason and the coordinate for free — `Self-intersection` at `(1, 1)`,
+measured — and a bare `false` is the least useful thing a validity node could say. Extra *outputs*
+cost a patch nothing; the three-input guideline is about inputs.
+
+`Geometry.IsValid` computes the same thing and throws the reason away, which is why this uses
+`IsValidOp` directly.
+
+### `Bounds` returns four floats, not an `Envelope`
+
+**Return primitives when a type has no representation in a patch.** NTS's `Envelope` cannot be
+opened by any node, so returning one would leave the caller with neither the numbers nor a way to
+get them. NTS's `Geometry.Envelope` is a third thing again — a rectangular *Polygon* — and is
+reachable raw if that is what someone wants.
+
+### `Read WKT` reports failure on a pin
+
+Half-typed text is the **normal** state of an IOBox someone is editing, and a node that throws sixty
+times a second is not a diagnostic. `Success` goes false and the geometry goes empty.
+
+It catches broadly on purpose: NTS throws `ParseException` for malformed text and `ArgumentException`
+for text that parses and then describes something illegal (measured). From the patch author's side
+those are one problem.
+
+### `Write WKT` has an `Include Z` pin and no SRID pin
+
+NTS's writer **drops Z silently** at its default dimension of 2 — a Point built from a
+`CoordinateZ` writes as `POINT (1 2)`, elevation gone (measured). That is a real way to lose data on
+the way out of a patch, so it is a pin rather than a default nobody looks at.
+
+There is no SRID pin because `WKTWriter` in 2.6 has no way to emit one — checked against the type's
+own members. Plain WKT has nowhere to put an SRID, and the node does not pretend otherwise.
+
+### `Buffer` defaults to 8 segments
+
+8 is NetTopologySuite's own default. Raising it to 16 would give prettier circles and would be a
+silent divergence from the library this package is named after; the pin is visible and the doc
+comment says which way to move it. Same reasoning as the SRID: match NTS unless there is a
+correctness reason not to.
+
+### `Disjoint` does not exist
+
+It is `Intersects` with a `Not` after it. **A node a patch can already build from two nodes is a
+help patch, not a node.** `Within` *does* exist despite being `Contains` with the inputs swapped,
+because swapping two links to change the question is easy to misread later, and both names are what
+people search for.
+
+---
+
+## What stays raw
+
+Reachable through VL's raw .NET nodes, deliberately not wrapped. The test — *is this a common
+geospatial concept that benefits from a VL-native node?* — answers no for all of it:
+
+- **Infrastructure**: `PrecisionModel`, `CoordinateSequence`, `CoordinateSequenceFactory`,
+  `NtsGeometryServices`. Not hidden, not wrapped, not silently altered.
+- **Configuration objects**: `BufferParameters`, `EndCapStyle`, `IsValidOp`. Behind pins where they
+  matter. A 4-input `Buffer` node to expose an end-cap enum on a rare path is two decisions wearing
+  one node.
+- **The long tail of `Geometry`**: `IsSimple`, `Normalized`, `Reverse`, `Boundary`, `InteriorPoint`,
+  `PointOnSurface`, `Relate`, `EqualsTopologically`, and roughly fifty more. All present, none
+  wrapped until asked for.
+- **Whole subsystems**: prepared geometry, `STRtree`/`Quadtree`, `LinearReferencing`, `Triangulate`,
+  `Precision.*`, most of `Operation.*` and `Algorithm.*`.
+- **WKB and GeoJSON.** See [ROADMAP.md](ROADMAP.md).
+
+NetTopologySuite is large. Wrapping all of it would turn the node browser into an API dump, which is
+the failure mode the brief's §28 names and which no user benefits from.
+
+---
+
+## The package boundary
+
+Apply this whenever considering an addition:
+
+| If it answers | It belongs in |
+|---|---|
+| How do I create or manipulate geometry? | **here** |
+| How do I display this geometry on a map? | `VL.Mapsui` |
+| How do I transform between coordinate reference systems? | a focused package — `VL.ProjNet` |
+| How do I read this specific geospatial dataset format? | a focused package |
+| Nothing yet — we imagine needing it | **nowhere. Do not build it.** |
+
+**One package per wrapped library.** This package wraps NetTopologySuite and nothing else. Its only
+NuGet dependency is `NetTopologySuite 2.6.0`, and that is the shape to keep: the moment a second
+library appears in the csproj, either it belongs in its own package or this one has stopped being
+what its name says.
+
+**Declare the upstream nuget, forward only your own assembly.** Every community package that wraps a
+third-party library does this. Forwarding NTS's own assembly would make this repository responsible
+for how NTS's entire API looks as nodes.
+
+---
+
+## Relationship with the sibling repositories
+
+Two other repositories sit beside this one under `D:\2026_Projects\`.
+
+### `vl-mapsui` (`VL.Mapsui`) — composes through NTS, not through us
+
+```text
+Coordinates → LinearRing → Polygon → Buffer → NTS Geometry
+                                                  │
+                                    ── package boundary ──
+                                                  │
+                                        VL.Mapsui Feature → VectorStyle → FeatureLayer → Map
+```
+
+**Neither package references the other, and neither should.** They share the native NTS types.
+VL.Mapsui already consumes `NetTopologySuite.Geometries.Geometry` and uses
+`NetTopologySuite.Features.Feature` as its neutral feature model, so the hand-off needs no adapter.
+
+Consequently **no cross-package example patch lives in this repository.** A patch needing two
+packages cannot ship inside one whose dependencies do not guarantee the other; there is already a
+precedent for where it goes — `vvvv-gis\examples\Example Map with data on it.vl`, which sits outside
+both packages it needs.
+
+Both repositories pin **NetTopologySuite 2.6.0**, and the whole 2.x line carries assembly version
+`2.0.0.0`, so a vvvv loading both sees one identity. That is worth keeping deliberately: the reason
+VL.Mapsui and VL.GIS could not coexist for months was a shared library resolved to two
+incompatible versions in vvvv's flat, machine-wide `%LOCALAPPDATA%\vvvv\gamma\nugets\`.
+
+### `vvvv-gis` (`VL.GIS`) — a reference, not a constraint
+
+VL.GIS `0.2.0-alpha` is on nuget.org and already ships roughly 40 nodes over NetTopologySuite under
+`GIS.Geometry` and `GIS.Serialization`. The overlap with this package is large and it is
+**deliberately not reconciled yet**.
+
+This package is a clean slate. It does not depend on VL.GIS, does not preserve its node names, and
+carries no compatibility aliases or migration infrastructure. VL.GIS's structure predates a clear
+package-boundary strategy, and inheriting its decisions would defeat the point of starting again.
+The question asked of each of its nodes was not "how do we migrate this?" but **"would we
+independently design this node this way today?"** — reuse the idea where yes, ignore it where no.
+
+Four things that answer came back "no" on, recorded because they are the substance of the redesign:
+
+1. **`Coordinate` never appears.** VL.GIS uses `(double longitude, double latitude)` tuples
+   throughout, so NTS's own `Coordinate` type is invisible, `Z` is reachable only through a separate
+   `CreatePoint3D`, and `M` is unreachable. Here `Coordinate` is a first-class value with a reader.
+2. **SRID 4326 is hardcoded** into a private factory with no way to reach it — friction removed and
+   the semantics taken along with it. Here the default is 0 with the factory exposed.
+3. **Naming**: `CreatePoint`, `ParseWkt`, `ToWkt`, `GetCoordinates`. The category already provides
+   the context, so the verb does not need to.
+4. **Nothing defends against the coordinate mutability** described above.
+
+What VL.GIS gets right and is reused: the `[Name]` category trick, the per-node attribution of which
+library the answer comes from, the units caveat on every node that has one, and — most of all — the
+packaging rules in [RULES.md](RULES.md), which cost nine releases to learn.
+
+Whether VL.GIS is later refactored onto this package, deprecated, turned into an umbrella, or left
+as a legacy experiment is **a separate decision for after this package is stable and proven**. It is
+not being pre-solved here.
+
+---
+
+## What this will never contain
+
+Recorded as *never* rather than *later*, so it stops coming up:
+
+- **Rendering, styling, layers, maps.** A different question, and `VL.Mapsui` answers it.
+- **CRS transformation.** ProjNet's job. Nothing here will imply that setting an SRID reprojects.
+- **A universal `Feature` model.** This package is about geometry. Mapsui has its own feature model,
+  GeoJSON has another, and `NetTopologySuite.Features.Feature` already exists as a neutral one if a
+  cross-package need appears. Inventing `VLFeature` here would make this package the definition of
+  the whole domain.
+- **Generalised GIS abstractions** — `IGISGeometry`, `SpatialEntity`, `GISContext`, `GISDocument`.
+  No current problem requires them.
+- **A generic geospatial file-format package.** WKT is in scope because it is NTS's own IO. Letting
+  every format follow is how a focused package stops being one.

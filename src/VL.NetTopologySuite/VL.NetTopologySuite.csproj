@@ -1,0 +1,62 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>12.0</LangVersion>
+    <AssemblyName>VL.NetTopologySuite</AssemblyName>
+    <!--
+      Deliberately not VL.NetTopologySuite. The VL node category is derived from the NAMESPACE
+      minus the "VL" prefix (see AssemblyInfo.cs), so this yields categories under "NTS" -
+      NTS.Geometry, NTS.Operation, NTS.IO - rather than the unreadable
+      NetTopologySuite.Geometry.Point that the assembly name would produce.
+
+      The package is still named after the library it wraps, which is the rule for a
+      single-library package. Only the category is abbreviated, and only because a patch author
+      has to read it in a node browser. Both sibling repositories decouple these two names the
+      same way and document it as deliberate.
+    -->
+    <RootNamespace>VL.NTS</RootNamespace>
+    <Version>0.0.1</Version>
+    <Authors>VL.NetTopologySuite Contributors</Authors>
+    <Description>NetTopologySuite geometry as vvvv gamma nodes</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+    <!--
+      Put every NuGet dependency next to the built assembly. A class library does not do this by
+      default: it emits VL.NetTopologySuite.dll alone and leaves the host to resolve
+      NetTopologySuite from deps.json plus the NuGet cache.
+
+      vvvv does not resolve it that way through a ProjectDependency, and the failure is quiet.
+      It is also total for this package rather than partial: EVERY node here mentions an NTS type
+      in its signature, so an unresolvable NetTopologySuite means every node is greyed out - not
+      red, not logged, no exception - and vvvvc still exits 0.
+    -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--
+      VL.Core supplies [ImportAsIs], [Name] and [SkipCategory] (see AssemblyInfo.cs).
+
+      2025.7.2 is the floor, not a preference: [Name] and [SkipCategory] arrived in gamma 7.2,
+      and this package needs [Name] to put a class called GeometryNodes into the category
+      "Geometry" - a C# class literally named Geometry would shadow NetTopologySuite's own
+      Geometry in every signature in this assembly.
+
+      ExcludeAssets="runtime" because VL.Core ships inside vvvv; shipping our copy is what every
+      note in both sibling repositories warns against. Deliberately absent from the nuspec for
+      the same reason.
+    -->
+    <PackageReference Include="VL.Core" Version="2025.7.2" ExcludeAssets="runtime" />
+
+    <!--
+      2.6.0 is the current latest stable on nuget.org, verified 2026-08-14 with
+      `dotnet package search NetTopologySuite` - there is no 2.7 or 3.x. It is also what both
+      sibling repositories already use, so a machine loading more than one of them sees a single
+      assembly identity: the whole 2.x line carries assembly version 2.0.0.0.
+    -->
+    <PackageReference Include="NetTopologySuite" Version="2.6.0" />
+  </ItemGroup>
+
+</Project>

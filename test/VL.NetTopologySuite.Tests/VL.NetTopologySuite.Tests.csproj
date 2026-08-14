@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>12.0</LangVersion>
+    <IsPackable>false</IsPackable>
+    <AssemblyName>VL.NetTopologySuite.Tests</AssemblyName>
+    <RootNamespace>VL.NTS.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
+      Note the absence of ExcludeAssets="runtime", unlike src\VL.NetTopologySuite. The package
+      excludes VL.Core because vvvv supplies its own copy; a test host supplies nothing, and
+      without it every test fails on a missing assembly before reaching an assertion.
+    -->
+    <PackageReference Include="VL.Core" Version="2025.7.2" />
+    <ProjectReference Include="..\..\src\VL.NetTopologySuite\VL.NetTopologySuite.csproj" />
+  </ItemGroup>
+
+</Project>

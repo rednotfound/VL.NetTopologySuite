@@ -1,0 +1,19 @@
+# Sane defaults for everything else.
+* text=auto
+
+# A .vl is a vvvv gamma document, and a corrupted one fails SILENTLY - vvvv simply does not load
+# it, with no error anywhere. So its bytes are pinned rather than left to whatever core.autocrlf a
+# contributor happens to have.
+#
+# Verified rather than assumed: git stores and returns the UTF-8 BOM verbatim (the sibling
+# repository's committed VL.Mapsui.vl blob begins EF BB BF), and this machine has
+# core.autocrlf=false. Neither of those is true of every clone, which is the point of this line.
+#
+# "text eol=crlf" rather than "-text": it keeps .vl diffable, which matters because the rule in
+# this repository is that the checked-in .vl is the source of truth and is edited in place, with
+# every edit validated. A readable diff is part of that validation.
+*.vl text eol=crlf
+
+# Same reasoning, same silent failure: Help.xml orders the help patches and carries their search
+# tags, and vvvv ignores a malformed one without complaint.
+Help.xml text eol=crlf

@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document xmlns:p="property" xmlns:r="reflection" Id="BP9zJEJA7SStnfoD7OBAgG" LanguageVersion="2025.7.4" Version="0.128">
+  <NugetDependency Id="KnRLaTfZgF5BZrLadUO9GP" Location="VL.CoreLib" Version="2025.7.4" />
+  <Patch Id="SPNFSU3t2s7e4gPLxQvO39">
+    <Canvas Id="C39OJRC7JrLzkTr9stl83x" DefaultCategory="Main" BordersChecked="false" CanvasType="FullCategory" />
+    <!--
+
+    ************************ Application ************************
+
+-->
+    <Node Name="Application" Bounds="100,100" Id="CIX1zmSsJgcca9Ipe8NABB">
+      <p:NodeReference>
+        <Choice Kind="ContainerDefinition" Name="Process" />
+        <CategoryReference Kind="Category" Name="Primitive" />
+      </p:NodeReference>
+      <Patch Id="GcelEpbc1MzIkveEjitHbR">
+        <Canvas Id="JyNpRPWxBPjagpvoCEU6vQ" CanvasType="Group">
+          <!--
+            One idea: a geometry starts as a Coordinate.
+
+            X first, then Y. For geographic data that means longitude then latitude, which is the
+            opposite of how they are usually spoken and is the most common mistake in this domain.
+          -->
+          <Pad Id="VJNkffdenn8SAm82HE2wjT" Comment="X (longitude)" Bounds="60,60,90,15" ShowValueBox="true" isIOBox="true" Value="139.7671">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Float64" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="UptreV2MVsgaSRSCez537l" Comment="Y (latitude)" Bounds="200,60,90,15" ShowValueBox="true" isIOBox="true" Value="35.6812">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Float64" />
+            </p:TypeAnnotation>
+          </Pad>
+
+          <Node Bounds="60,120,80,19" Id="PMUwCGiVJU90bqIPHKilMV">
+            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Coordinate" />
+            </p:NodeReference>
+            <Pin Id="NiF5boi4dQkjODd90lDyJM" Name="X" Kind="InputPin" />
+            <Pin Id="PMKIC73LmCCsO26C3Nu5Wq" Name="Y" Kind="InputPin" />
+            <Pin Id="QpQvhnczSjJwgJbLKHDzFs" Name="Result" Kind="OutputPin" />
+          </Node>
+
+          <!--
+            Leave Factory unconnected and the Point gets SRID 0, meaning "unset". That is
+            NetTopologySuite's own default and it is honest: the package has not seen the numbers
+            and cannot know what reference system they are in. Connect a GeometryFactory node to
+            say 4326.
+          -->
+          <Node Bounds="60,180,60,19" Id="KO9RqfyeWHAdBIozSek2vi">
+            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Point" />
+            </p:NodeReference>
+            <Pin Id="JvrkGdDFu18xB5MoDPvZQc" Name="Coordinate" Kind="InputPin" />
+            <Pin Id="LEb9OI3eBTLzbkCzs87eJq" Name="Factory" Kind="InputPin" />
+            <Pin Id="Bu7aBJnlnXTPt5y0PQIwIi" Name="Result" Kind="OutputPin" />
+          </Node>
+
+          <!--
+            Write WKT is the quickest way to see what you built. It is a real node, not a debug
+            aid - the same text pastes into any other GIS tool.
+          -->
+          <Node Bounds="60,240,80,19" Id="Fk4pQaEAfGRWqPljRwQToK">
+            <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Write WKT" />
+            </p:NodeReference>
+            <Pin Id="LDtHV3peMkau9DD5L6X84n" Name="Geometry" Kind="InputPin" />
+            <Pin Id="VsEG9mCLh6BsW7iLBnuhry" Name="Include Z" Kind="InputPin" />
+            <Pin Id="RyNnAVA55jopi8ihRRrgqD" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="ApaUp0XFqHOrhedkq4tuqz" Comment="" Bounds="60,300,260,15" ShowValueBox="true" isIOBox="true" Value="POINT (139.7671 35.6812)">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+        </Canvas>
+        <Patch Id="IWX4DoeY0ouDI5JRdvg66g" Name="Create" />
+        <Patch Id="BtHbfni1wWVlCUMATe2fYb" Name="Update" />
+        <ProcessDefinition Id="MehksIVia0hl4ZhdVnsPk8">
+          <Fragment Id="Ns3XVnuk0qKaNtHyRZOYPk" Patch="IWX4DoeY0ouDI5JRdvg66g" Enabled="true" />
+          <Fragment Id="Dy3AzUmCrahJK2rPCjKaMr" Patch="BtHbfni1wWVlCUMATe2fYb" Enabled="true" />
+        </ProcessDefinition>
+        <Link Id="ORkEDpirfp21YOiv4BsAtD" Ids="VJNkffdenn8SAm82HE2wjT,NiF5boi4dQkjODd90lDyJM" />
+        <Link Id="SY22ylMKio86p6iA4KLmej" Ids="UptreV2MVsgaSRSCez537l,PMKIC73LmCCsO26C3Nu5Wq" />
+        <Link Id="TTHMVZUNtgqADcDoRKKD42" Ids="QpQvhnczSjJwgJbLKHDzFs,JvrkGdDFu18xB5MoDPvZQc" />
+        <Link Id="USCTDjTJkYq7cbPws0B5aB" Ids="Bu7aBJnlnXTPt5y0PQIwIi,LDtHV3peMkau9DD5L6X84n" />
+        <Link Id="HnM2zmVg35gM5qtE3i3cl6" Ids="RyNnAVA55jopi8ihRRrgqD,ApaUp0XFqHOrhedkq4tuqz" />
+      </Patch>
+    </Node>
+  </Patch>
+  <NugetDependency Id="UfTMSN7hrvKVyAalUidUEU" Location="VL.NetTopologySuite" Version="0.0.0" />
+</Document>

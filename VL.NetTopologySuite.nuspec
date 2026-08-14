@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>VL.NetTopologySuite</id>
+    <version>0.0.1-alpha</version>
+    <title>VL.NetTopologySuite — NetTopologySuite geometry nodes for vvvv gamma</title>
+    <authors>VL.NetTopologySuite Contributors</authors>
+    <owners>VL.NetTopologySuite Contributors</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/rednotfound/VL.NetTopologySuite</projectUrl>
+    <description>
+      EARLY - not ready for real work yet.
+
+      NetTopologySuite made natural inside vvvv gamma. Build geometry from coordinates, measure
+      and validate it, run spatial operations on it, and read and write WKT.
+
+      The nodes hand back native NetTopologySuite types - Point, LineString, Polygon, Geometry -
+      not wrappers, so a geometry made here goes straight into anything else that speaks NTS,
+      including VL.Mapsui, and advanced users can reach the whole library through VL's raw .NET
+      nodes.
+
+      Requires vvvv gamma 7.2 or newer (.NET 8).
+    </description>
+    <summary>NetTopologySuite geometry as composable nodes for vvvv gamma.</summary>
+    <releaseNotes>
+      0.0.1-alpha - First package. Not published.
+    </releaseNotes>
+    <copyright>Copyright 2026 VL.NetTopologySuite Contributors</copyright>
+    <!-- The "VL" tag is what makes the pack discoverable at https://vvvv.org/packs -->
+    <tags>VL vvvv gamma geometry gis nts nettopologysuite wkt spatial</tags>
+    <repository type="git" url="https://github.com/rednotfound/VL.NetTopologySuite" />
+
+    <!--
+      Must match the NugetDependency lines in VL.NetTopologySuite.vl. The .vl is what teaches VL
+      the types; the nuspec is what makes the package resolvable for a consumer. Both are needed
+      and neither is sufficient alone.
+
+      This matters more here than in most packages: EVERY node in this assembly mentions an NTS
+      type in its signature, so if NetTopologySuite is not resolvable the package contributes
+      nothing at all rather than losing a few nodes - and vvvvc still exits 0 with nothing red.
+
+      VL.Core and VL.CoreLib are deliberately absent: they ship inside vvvv, which substitutes
+      its own copies for anything declared here.
+    -->
+    <dependencies>
+      <group targetFramework="net8.0">
+        <dependency id="NetTopologySuite" version="2.6.0" />
+      </group>
+    </dependencies>
+  </metadata>
+
+  <files>
+    <!-- Entry point. Must sit at the package root, no subfolder. -->
+    <file src="VL.NetTopologySuite.vl" target="" />
+
+    <file src="src\VL.NetTopologySuite\bin\Release\net8.0\VL.NetTopologySuite.dll" target="lib\net8.0\" />
+    <file src="src\VL.NetTopologySuite\bin\Release\net8.0\VL.NetTopologySuite.xml" target="lib\net8.0\" />
+
+    <!-- This package's own help patches. target stays help\ because that is where vvvv looks. -->
+    <file src="help\VL.NetTopologySuite\**\*.vl" target="help\" />
+
+    <!--
+      Help.xml orders the help patches in the browser and carries their search tags. It needs its
+      own line: the glob above takes .vl and nothing else, so leaving this out would ship the
+      patches unordered and untagged with no warning anywhere.
+    -->
+    <file src="help\VL.NetTopologySuite\Help.xml" target="help\" />
+
+    <file src="README.md" target="docs\" />
+    <file src="docs\ARCHITECTURE.md" target="docs\" />
+    <file src="docs\ROADMAP.md" target="docs\" />
+  </files>
+</package>
