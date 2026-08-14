@@ -32,7 +32,7 @@
             does not throw, because half-typed text is the normal state of a box being
             edited and an exception sixty times a second is not a diagnostic.
           -->
-          <Pad Id="BiByAR6M68GvKeR4iQmMA4" Comment="WKT - edit me" Bounds="60,60,420,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))">
+          <Pad Id="BiByAR6M68GvKeR4iQmMA4" Comment="WKT - edit me" Bounds="60,60,460,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -47,12 +47,12 @@
             <Pin Id="KBjRcOSgQSVpWbqKAG3kRc" Name="Result" Kind="OutputPin" />
             <Pin Id="UNa4MdFIQPaGooQ5d7ZzG3" Name="Success" Kind="OutputPin" />
           </Node>
-          <Pad Id="MCDerq7C6nDLItGKpNpUo9" Comment="parsed?" Bounds="200,120,70,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="MCDerq7C6nDLItGKpNpUo9" Comment="parsed?" Bounds="200,120,60,15" ShowValueBox="true" isIOBox="true" />
           <!--
             The output is a native NetTopologySuite Geometry, not a wrapper. That is what lets
             it go straight into any other package that speaks NTS.
           -->
-          <Node Bounds="60,200,110,19" Id="QQAFjc1KHppr4JZvqGjFMD">
+          <Node Bounds="60,230,110,19" Id="QQAFjc1KHppr4JZvqGjFMD">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="GeometryType" />
@@ -60,8 +60,8 @@
             <Pin Id="GLH390kCjaLWZSIOUbpLwA" Name="Geometry" Kind="InputPin" />
             <Pin Id="IC8ChbXA8lNdNpMTp1yW73" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="Cs5jVWXUGsaSACZ16XQFcU" Comment="type" Bounds="60,260,140,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="240,200,50,19" Id="JnlsMTw6rlCisWIRPQItZg">
+          <Pad Id="Cs5jVWXUGsaSACZ16XQFcU" Comment="type" Bounds="60,275,160,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="360,230,50,19" Id="JnlsMTw6rlCisWIRPQItZg">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Area" />
@@ -69,8 +69,8 @@
             <Pin Id="Ha2nMin6JPBeSleaazvf5j" Name="Geometry" Kind="InputPin" />
             <Pin Id="FMeQ62l3WGI9FZHMPajxgp" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="Eh5zj0YBf70mEaKdAuDeE9" Comment="area" Bounds="240,260,140,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="420,200,50,19" Id="L0qu4DUn6nixa13O2B1PDb">
+          <Pad Id="Eh5zj0YBf70mEaKdAuDeE9" Comment="area" Bounds="360,275,160,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="660,230,50,19" Id="L0qu4DUn6nixa13O2B1PDb">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="SRID" />
@@ -83,12 +83,12 @@
             reader would say -1 here; this package corrects that, so a patch never sees two
             different numbers both meaning "nobody said".
           -->
-          <Pad Id="ADsq0bU1krNtf70wXZnmTV" Comment="SRID" Bounds="420,260,140,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="ADsq0bU1krNtf70wXZnmTV" Comment="SRID" Bounds="660,275,160,15" ShowValueBox="true" isIOBox="true" />
           <!--
             Write WKT closes the loop. Note it does NOT carry the SRID back out - plain WKT
             has nowhere to put one, and this package does not pretend otherwise.
           -->
-          <Node Bounds="60,330,90,19" Id="Bp7ZRjVNkX6VU55n6C9xeD">
+          <Node Bounds="60,340,90,19" Id="Bp7ZRjVNkX6VU55n6C9xeD">
             <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Write WKT" />
@@ -97,7 +97,7 @@
             <Pin Id="QnqRsA2ngFOSh2b5QRyvwd" Name="Include Z" Kind="InputPin" />
             <Pin Id="TumGuTi7hXXZwPF4Xu34of" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="P7iBQVzOU3fS083DauArTo" Comment="written back out" Bounds="60,390,420,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="P7iBQVzOU3fS083DauArTo" Comment="written back out" Bounds="60,385,460,15" ShowValueBox="true" isIOBox="true" />
         </Canvas>
         <Patch Id="LP8NiHGvEUX7y9XD4G3WfS" Name="Create" />
         <Patch Id="HtHWALNzzCsuz7R8YfaFUX" Name="Update" />

@@ -94,6 +94,24 @@ Two more, learned while verifying:
 |---|---|
 | Fluent output pin | **confirmed**: `var Output_6 = OperationNodes.Buffer(...)` vs `var Result_7 = GeometryNodes.Area(...)`. Return type equals first parameter type → `Output`; otherwise `Result` |
 | An `int` pin needs an `Integer32` IOBox | a `Float64` one fails the compile with `Float64 is no Integer32!`. Cost one round on `06 Buffer Geometry.vl`'s `Segments` pin |
+| **A Pad's `Comment` renders as a label to the RIGHT of the box** | so an IOBox occupies far more width than its `Bounds` says, and every label collision in the first help patches came from ignoring it. Give each Pad its own row, or ~200px of clear space to its right |
+
+### Laying out a patch
+
+`Bounds="x,y,w,h"` **is** the layout, so edit it directly rather than dragging nodes — exact and
+repeatable, where dragging is neither. Three things learned doing it:
+
+- **Anchor each edit on a match asserted to occur exactly once, and write nothing if any anchor
+  misses.** Re-running a layout script after it had already applied caught 45 stale anchors and
+  correctly refused to write, instead of silently moving the wrong nodes.
+- **Check overlaps arithmetically, counting the label strip.** Two of the fixes introduced a *new*
+  collision that the checker caught and the eye did not.
+- **A box directly below a node with several outputs gets crossed by the fan-out.** Put it on the
+  node's own row instead — the links leave below the bottom edge, so that row is clear.
+
+Then look at it in the GUI. Capture the window with **`PrintWindow`** on its handle, not a screen
+grab: `SetForegroundWindow` loses the race whenever another app holds focus, and the result is a
+screenshot of whatever was in front — useless, and not the user's business.
 
 ## Verification — be precise about which one you have
 

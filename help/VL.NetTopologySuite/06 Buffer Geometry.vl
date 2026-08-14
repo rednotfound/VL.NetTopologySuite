@@ -32,7 +32,7 @@
             Geometry in, geometry out - so Buffer chains into any other operation with no
             conversion in between. That composability is the point of the package.
           -->
-          <Pad Id="RgZCMTgtS5l2qKTl29yPjx" Comment="the shape to buffer" Bounds="60,60,420,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))">
+          <Pad Id="RgZCMTgtS5l2qKTl29yPjx" Comment="the shape to buffer" Bounds="60,60,460,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -47,12 +47,12 @@
             <Pin Id="GUkQKsHsUw1RQs0prZukCV" Name="Result" Kind="OutputPin" />
             <Pin Id="T7FKrbLIVjJtRJOZJpsVNL" Name="Success" Kind="OutputPin" />
           </Node>
-          <Pad Id="KKHfS1L8aHry5vGGYcs1nX" Comment="distance (try a negative)" Bounds="200,190,140,15" ShowValueBox="true" isIOBox="true" Value="0.25">
+          <Pad Id="KKHfS1L8aHry5vGGYcs1nX" Comment="distance (try a negative)" Bounds="240,170,100,15" ShowValueBox="true" isIOBox="true" Value="0.25">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Float64" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="MY1C0XiXNz4NgNGSCo3jx9" Comment="segments per quarter turn" Bounds="360,190,150,15" ShowValueBox="true" isIOBox="true" Value="8">
+          <Pad Id="MY1C0XiXNz4NgNGSCo3jx9" Comment="segments per quarter turn" Bounds="240,215,100,15" ShowValueBox="true" isIOBox="true" Value="8">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Integer32" />
             </p:TypeAnnotation>
@@ -63,7 +63,7 @@
             and is visibly faceted close up. Raise it for smoother curves and more
             coordinates; the Area output shows the approximation converging.
           -->
-          <Node Bounds="60,250,70,19" Id="KZTHEMNohVaKB2dusRAn92">
+          <Node Bounds="60,275,70,19" Id="KZTHEMNohVaKB2dusRAn92">
             <p:NodeReference LastCategoryFullName="NTS.Operation" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Buffer" />
@@ -73,7 +73,7 @@
             <Pin Id="SmYlL0XJaPHcyM4jj3pvcR" Name="Segments" Kind="InputPin" />
             <Pin Id="He1YnLAtGOa531Cg7YnRuI" Name="Output" Kind="OutputPin" />
           </Node>
-          <Node Bounds="520,120,50,19" Id="QiQbD07RlSeKVHoZmmZr3p">
+          <Node Bounds="600,120,50,19" Id="QiQbD07RlSeKVHoZmmZr3p">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Area" />
@@ -81,8 +81,8 @@
             <Pin Id="LcpJ6F9378pYdZkHYBKtmO" Name="Geometry" Kind="InputPin" />
             <Pin Id="N2STIIs6vknbTLNnIuLupG" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="AzxyvgjuWYOhRErx4GARCO" Comment="area before" Bounds="520,170,150,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="520,250,50,19" Id="Bk3NqqohGHnsYW7cdVqHyf">
+          <Pad Id="AzxyvgjuWYOhRErx4GARCO" Comment="area before" Bounds="600,165,130,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="600,275,50,19" Id="Bk3NqqohGHnsYW7cdVqHyf">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Area" />
@@ -90,13 +90,13 @@
             <Pin Id="FvqPi8s5Oc8gkrXHrn3GoQ" Name="Geometry" Kind="InputPin" />
             <Pin Id="AjkEgcJAahGiB1VKG6ncQb" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="PzSKsg83LVWoWHupreuyMY" Comment="area after" Bounds="520,300,150,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="PzSKsg83LVWoWHupreuyMY" Comment="area after" Bounds="600,320,130,15" ShowValueBox="true" isIOBox="true" />
           <!--
             Chain a second operation straight onto the first. Intersection of the buffered
             shape with the original gives the original back - which is a way of seeing that
             nothing was converted or lost along the way.
           -->
-          <Node Bounds="60,330,100,19" Id="J8ix1OdHGXKnQGm7Pd1RWa">
+          <Node Bounds="60,345,100,19" Id="J8ix1OdHGXKnQGm7Pd1RWa">
             <p:NodeReference LastCategoryFullName="NTS.Operation" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Intersection" />
@@ -105,7 +105,7 @@
             <Pin Id="H54U8hNB8vksXHvwbsXP7C" Name="B" Kind="InputPin" />
             <Pin Id="OMnxaOeyiLhvD2GkrzlolP" Name="Output" Kind="OutputPin" />
           </Node>
-          <Node Bounds="60,400,90,19" Id="SEwBoHsgICdz0zraWoSPfk">
+          <Node Bounds="60,420,90,19" Id="SEwBoHsgICdz0zraWoSPfk">
             <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Write WKT" />
@@ -114,9 +114,9 @@
             <Pin Id="RK4FtoiiLc2ylSXZmXXffp" Name="Include Z" Kind="InputPin" />
             <Pin Id="QQ3jjQetWFwPJVBWF4248I" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="VEZxi6ygdoYIfw8X9ljuGG" Comment="the buffered shape as WKT" Bounds="60,460,620,54" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="Aygio9914isvyn4YUqX5US" Comment="intersection area (back to the original)" Bounds="200,330,240,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="460,330,50,19" Id="DZg2hhZgex8gnz8U5eSZB3">
+          <Pad Id="VEZxi6ygdoYIfw8X9ljuGG" Comment="the buffered shape as WKT" Bounds="60,465,620,54" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="Aygio9914isvyn4YUqX5US" Comment="intersection area (back to the original)" Bounds="240,390,130,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="240,345,50,19" Id="DZg2hhZgex8gnz8U5eSZB3">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Area" />

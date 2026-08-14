@@ -27,17 +27,17 @@
             than being a separate concept.
           -->
 
-          <Pad Id="AF5uFGBxulOpKtrJDiFovc" Comment="corner 1 X" Bounds="60,60,80,15" ShowValueBox="true" isIOBox="true" Value="0">
+          <Pad Id="AF5uFGBxulOpKtrJDiFovc" Comment="corner 1 X" Bounds="60,60,100,15" ShowValueBox="true" isIOBox="true" Value="0">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Float64" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="JmKfr8R9Vi6M89uCfGYJGz" Comment="corner 1 Y" Bounds="150,60,80,15" ShowValueBox="true" isIOBox="true" Value="0">
+          <Pad Id="JmKfr8R9Vi6M89uCfGYJGz" Comment="corner 1 Y" Bounds="60,100,100,15" ShowValueBox="true" isIOBox="true" Value="0">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Float64" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="60,120,80,19" Id="FkqiyoyOoUiMmUDF24jYUa">
+          <Node Bounds="60,145,80,19" Id="FkqiyoyOoUiMmUDF24jYUa">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Coordinate" />
@@ -47,17 +47,17 @@
             <Pin Id="Id7i2HI6qV4f62Iwan6ZtF" Name="Result" Kind="OutputPin" />
           </Node>
 
-          <Pad Id="AJvzfI5qQdgRROlTOtC0FL" Comment="corner 2 X" Bounds="260,60,80,15" ShowValueBox="true" isIOBox="true" Value="1">
+          <Pad Id="AJvzfI5qQdgRROlTOtC0FL" Comment="corner 2 X" Bounds="330,60,100,15" ShowValueBox="true" isIOBox="true" Value="1">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Float64" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="SIXD5Yl9VjfMnJNc4PnZNq" Comment="corner 2 Y" Bounds="350,60,80,15" ShowValueBox="true" isIOBox="true" Value="0">
+          <Pad Id="SIXD5Yl9VjfMnJNc4PnZNq" Comment="corner 2 Y" Bounds="330,100,100,15" ShowValueBox="true" isIOBox="true" Value="0">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Float64" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="260,120,80,19" Id="H0KAWduyTGDMBiYJ4zhUH9">
+          <Node Bounds="330,145,80,19" Id="H0KAWduyTGDMBiYJ4zhUH9">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Coordinate" />
@@ -67,17 +67,17 @@
             <Pin Id="RjMYfHaeUEH3SgkIxFb9Ue" Name="Result" Kind="OutputPin" />
           </Node>
 
-          <Pad Id="KNXdO0uBXIkB4dIheKcIDQ" Comment="corner 3 X" Bounds="460,60,80,15" ShowValueBox="true" isIOBox="true" Value="1">
+          <Pad Id="KNXdO0uBXIkB4dIheKcIDQ" Comment="corner 3 X" Bounds="600,60,100,15" ShowValueBox="true" isIOBox="true" Value="1">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Float64" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="RDyGaUe17iCrRdEbtNdSa0" Comment="corner 3 Y" Bounds="550,60,80,15" ShowValueBox="true" isIOBox="true" Value="1">
+          <Pad Id="RDyGaUe17iCrRdEbtNdSa0" Comment="corner 3 Y" Bounds="600,100,100,15" ShowValueBox="true" isIOBox="true" Value="1">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Float64" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="460,120,80,19" Id="TgKcSK9fGJcS7LcyqYjSgm">
+          <Node Bounds="600,145,80,19" Id="TgKcSK9fGJcS7LcyqYjSgm">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Coordinate" />
@@ -87,17 +87,17 @@
             <Pin Id="AJKFQfg7v1BzWteNEio06O" Name="Result" Kind="OutputPin" />
           </Node>
 
-          <Pad Id="O8PK6j8kswTG8owZJw6ilM" Comment="corner 4 X" Bounds="660,60,80,15" ShowValueBox="true" isIOBox="true" Value="0">
+          <Pad Id="O8PK6j8kswTG8owZJw6ilM" Comment="corner 4 X" Bounds="870,60,100,15" ShowValueBox="true" isIOBox="true" Value="0">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Float64" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="JkwQ4hGLW6rzpLVAJ3wxXr" Comment="corner 4 Y" Bounds="750,60,80,15" ShowValueBox="true" isIOBox="true" Value="1">
+          <Pad Id="JkwQ4hGLW6rzpLVAJ3wxXr" Comment="corner 4 Y" Bounds="870,100,100,15" ShowValueBox="true" isIOBox="true" Value="1">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Float64" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="660,120,80,19" Id="HvLj0Vt0BXeAgp9IwrSjLs">
+          <Node Bounds="870,145,80,19" Id="HvLj0Vt0BXeAgp9IwrSjLs">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Coordinate" />
@@ -112,7 +112,7 @@
             LinearRing's Coordinates pin with no conversion node in between - VL's Spread is an
             IEnumerable, so the .NET side needs nothing special.
           -->
-          <Node Bounds="60,190,39,19" Id="NkKYhkDZs2S9P3RTyXWrGE">
+          <Node Bounds="60,215,39,19" Id="NkKYhkDZs2S9P3RTyXWrGE">
             <p:NodeReference LastCategoryFullName="Collections.Spread" LastDependency="VL.CoreLib.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Cons" />
@@ -125,7 +125,7 @@
             <Pin Id="UtjDpiPMRzdfiSGtdquJVH" Name="Result" Kind="OutputPin" />
           </Node>
 
-          <Node Bounds="60,250,90,19" Id="KQ2N3kX88wHsagpsVXz16X">
+          <Node Bounds="60,275,90,19" Id="KQ2N3kX88wHsagpsVXz16X">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="LinearRing" />
@@ -144,7 +144,7 @@
             NetTopologySuite's own default and the honest one, since nothing here has seen the
             numbers. Connect a GeometryFactory node to say 4326.
           -->
-          <Node Bounds="60,310,70,19" Id="AJgYLcir0rOLTM6A7EE9h7">
+          <Node Bounds="60,335,70,19" Id="AJgYLcir0rOLTM6A7EE9h7">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Polygon" />
@@ -155,7 +155,7 @@
             <Pin Id="McQn869f7eZne0hI2DOWy0" Name="Result" Kind="OutputPin" />
           </Node>
 
-          <Node Bounds="60,380,50,19" Id="UX3XftO6KPkR05013yxu2N">
+          <Node Bounds="60,405,50,19" Id="UX3XftO6KPkR05013yxu2N">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Area" />
@@ -168,14 +168,14 @@
             square it is 1. On longitude and latitude it would be square degrees, which is not a
             unit of area anybody wants.
           -->
-          <Pad Id="T3XUBaK24eIN5S6HkGuNZ1" Comment="area (coordinate units squared)" Bounds="60,440,220,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="T3XUBaK24eIN5S6HkGuNZ1" Comment="area (coordinate units squared)" Bounds="60,445,110,15" ShowValueBox="true" isIOBox="true" />
 
           <!--
             Closure is checked when the ring is built; validity is not. Wind a shell so it crosses
             itself - swap two corners - and the Polygon still builds, while this reports
             "Self-intersection" and the coordinate where it happens.
           -->
-          <Node Bounds="340,380,70,19" Id="J8T2TdnKIBKlSmyBMObCAA">
+          <Node Bounds="60,495,70,19" Id="J8T2TdnKIBKlSmyBMObCAA">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="IsValid" />
@@ -185,8 +185,8 @@
             <Pin Id="Li59i8c0d6tnvQ2PMpdukj" Name="Reason" Kind="OutputPin" />
             <Pin Id="Ia1KSEPLEoNHa13FkJ9GGa" Name="Location" Kind="OutputPin" />
           </Node>
-          <Pad Id="ShPfObC3z31nLZjXEuAmYG" Comment="valid" Bounds="340,440,60,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="TBxj674OrHUtTCYy3UaVBW" Comment="reason" Bounds="420,440,220,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="ShPfObC3z31nLZjXEuAmYG" Comment="valid" Bounds="60,535,60,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="TBxj674OrHUtTCYy3UaVBW" Comment="reason" Bounds="60,575,300,15" ShowValueBox="true" isIOBox="true" />
         </Canvas>
         <Patch Id="TLtQtCfzcGocwRWC0YfbYY" Name="Create" />
         <Patch Id="Gv2ap1Ion0SYdjsPuTgsQ1" Name="Update" />

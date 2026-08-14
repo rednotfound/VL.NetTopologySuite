@@ -46,9 +46,17 @@ One bug it caught: `Segments` had a `Float64` IOBox against an `int` pin, which 
 
 In order, and each small.
 
+**Done 2026-08-14: the help-patch layouts.** All four were re-laid-out and each checked in the GUI.
+The rule that fixed them: **a Pad's `Comment` renders as a label to the right of the box, so an
+IOBox occupies far more width than its `Bounds` says** — every label collision came from ignoring
+that. Every Pad now has its own row or ~200px of clear space to its right.
+
+From here **the checked-in `.vl` is the source of truth and must not be regenerated**, because that
+would discard the layout. Edit `Bounds` in place, anchored on a match asserted to occur exactly
+once, and re-run the overlap check.
+
 | | |
 |---|---|
-| **Tidy the help-patch layouts** | They are machine-generated and cramped — nodes stacked at the top-left with overlapping IOBox labels. Arranging them by hand in the GUI is now the job, and from here the checked-in `.vl` is the source of truth: **do not regenerate**, because that discards the layout. |
 | **`Explanation Overview of available nodes.vl`** | One per library, the front door — 57 of vvvv's own packs have one. Help is the teaching surface: VL.Skia ships 4 C# nodes and 98 help patches, and in libraries people learn from help runs 16–24% of node count. Four patches against 32 nodes is 12%, so this is under-served rather than done. |
 | **The remaining help patches** | `02 Create a LineString`, `05 Inspect Geometry`, `07 Intersection`, `08 Geometry Predicates` — the sequence the brief sketches. |
 | **The cross-package example** | `Coordinates → Polygon → Buffer → Geometry → VL.Mapsui Feature → Map`, living **outside** both repositories. A patch needing two packages cannot ship inside one whose dependencies do not guarantee the other. Precedent: `vvvv-gis\examples\Example Map with data on it.vl`. |
