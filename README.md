@@ -2,8 +2,9 @@
 
 **NetTopologySuite made natural inside [vvvv gamma](https://vvvv.org).** Not another GIS framework.
 
-> **Status: early. Nothing is published, and no node has been seen in the vvvv GUI yet.**
-> The table below says exactly what has and has not been shown. Read it before building on this.
+> **Status: early, but it runs.** Verified in vvvv gamma 7.4 on 2026-08-14: the nodes appear under
+> `NTS.Geometry` / `NTS.IO` / `NTS.Operation`, all four help patches open and compute correct
+> values. Nothing is published to nuget.org. The table below says exactly what has been shown.
 
 ---
 
@@ -45,20 +46,35 @@ is how a package oversells itself:
 | `dotnet test` | the arithmetic is right | ✅ **81 tests**, ~70 ms, no network |
 | `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed | ✅ 5 documents pass |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
-| **the vvvv GUI** | **a node actually appears, under the right category, with the right label** | ❌ **not yet run** |
+| `vvvvc` headless compile | every node in a patch **resolved** — an unresolved one has its links dropped and vanishes from the generated C# | ✅ all 4 help patches |
+| **the vvvv GUI** | **a node appears under the right category, with the right label, computing the right value** | ✅ **run 2026-08-14, vvvv 7.4** |
 
-**Only the GUI proves a node exists.** Nothing above it does. Concretely, these are unverified:
+What the GUI actually showed:
 
-- That any node appears under `NTS.Geometry`, `NTS.Operation` or `NTS.IO`.
-- That `[Name("Read WKT")]` on a *method* is honoured — it compiles, and `NameAttribute`'s
-  `AttributeUsage` is `All`, but whether VL's importer reads it on a member rather than a type has
-  not been shown. If it is ignored, the node is called something else and the help patches
-  referencing `Read WKT` will grey out.
-- That the output pin of a fluent operation is named `Output` rather than `Result`. The rule is
-  documented in `docs/RULES.md`; which one `Buffer` actually gets has not been seen.
-- That the four help patches open without a grey node in them.
+- **The `NTS` category exists**, and opening it gives exactly three sub-categories: **Geometry**,
+  **IO**, **Operation**.
+- **`[Name]` on a *method* is honoured.** The nodes render as `Coordinate`, `Point`, `Write WKT`,
+  `LinearRing`, `IsValid` — so `[Name("Read WKT")]` works on a member, not just on a type. Neither
+  sibling package uses it that way, so this was new ground.
+- **Correct values, not just resolved nodes.** `01` outputs `POINT (139.7671 35.6812)`; `03` gives a
+  unit square with `Area` 1.00 and an empty validity `reason`; `06` reads a unit square (area 1.00),
+  buffers it by 0.25 into area 2.20 — which matches 1 + 4×0.25 + ≈π×0.25² — and intersecting the
+  buffer back with the original returns 1.00.
+- **Fluent operations do get an `Output` pin**, non-fluent get `Result`, exactly as
+  [docs/RULES.md](docs/RULES.md) says. Confirmed in the generated C#:
+  `var Output_6 = OperationNodes.Buffer(...)` beside `var Result_7 = GeometryNodes.Area(...)`.
 
-Everything in the first three rows is real and repeatable. The last row is the next task.
+Two things this run caught that nothing else would have:
+
+- **`Segments` needed an `Integer32` IOBox, not `Float64`.** `vvvvc` refused with
+  `Float64 is no Integer32!`. Fixed in `06 Buffer Geometry.vl`.
+- **`LastCategoryFullName` in a `.vl` is a hint, not the truth.** Setting it to `NTS.Wrong` and
+  recompiling — every node still resolved. So a successful compile proves a node *exists*, and
+  proves nothing about which category it is in. Only the NodeBrowser does. This is why the row above
+  is split in two.
+
+Still not done: nothing is published to nuget.org, and the help-patch layouts are
+machine-generated and cramped rather than arranged by hand.
 
 ---
 

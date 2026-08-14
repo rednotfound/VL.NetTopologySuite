@@ -8,9 +8,10 @@ Guidance for Claude Code (claude.ai/code) working in this repository.
 as nodes for [vvvv gamma](https://vvvv.org). One package, one library — geometry creation,
 inspection, spatial operations and WKT. Nothing about maps, rendering or reprojection.
 
-**Current state (2026-08-14): 32 nodes, 81 tests, 4 help patches, all static checks green — and
-not one node has been seen in the vvvv GUI.** That gap is the single most important thing to know;
-see [Verification](#verification-be-precise-about-which-one-you-have) below.
+**Current state (2026-08-14): 32 nodes, 81 tests, 4 help patches, all checks green including the
+GUI.** Verified in vvvv gamma 7.4: the nodes appear under `NTS.Geometry` / `NTS.IO` /
+`NTS.Operation`, and all four help patches open and compute correct values. Nothing is published to
+nuget.org. See [Verification](#verification-be-precise-about-which-one-you-have).
 
 Two sibling repositories sit beside this one and are **references, not dependencies**:
 
@@ -82,8 +83,17 @@ All against **NetTopologySuite 2.6.0** — the current latest stable, verified w
 | `NameAttribute` `AttributeUsage` | **`All`** — so `[Name("Read WKT")]` is legal on a *method*. Read out of VL.Core's metadata |
 | `PinAttribute` targets | Property, Parameter, ReturnValue — with a `Name` property |
 
-The last two are new ground: neither sibling uses either attribute on a member, only on a type.
-**Whether VL's importer honours them on a member is unverified** and can only be shown in the GUI.
+The last two are new ground — neither sibling uses either attribute on a member, only on a type —
+and **both are confirmed honoured**: the GUI renders the node as `Write WKT`, and the generated C#
+shows the pin named `WKT` feeding the `wkt` parameter. Worth knowing, because it means node labels
+and pin labels can be set exactly rather than left to how VL splits a PascalCase identifier.
+
+Two more, learned while verifying:
+
+| | |
+|---|---|
+| Fluent output pin | **confirmed**: `var Output_6 = OperationNodes.Buffer(...)` vs `var Result_7 = GeometryNodes.Area(...)`. Return type equals first parameter type → `Output`; otherwise `Result` |
+| An `int` pin needs an `Integer32` IOBox | a `Float64` one fails the compile with `Float64 is no Integer32!`. Cost one round on `06 Buffer Geometry.vl`'s `Segments` pin |
 
 ## Verification — be precise about which one you have
 
@@ -92,12 +102,43 @@ The last two are new ground: neither sibling uses either attribute on a member, 
 | `dotnet test` | the arithmetic is right | ✅ 81 tests, ~70 ms, no network |
 | `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed | ✅ 5 documents |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
-| **the vvvv GUI** | **a node appears, under the right category, with the right label** | ❌ **never run** |
+| `vvvvc` headless compile | every node in a patch **resolved** | ✅ all 4 help patches |
+| the vvvv **NodeBrowser** | **which category a node is in** | ✅ `NTS` → Geometry, IO, Operation |
+| the vvvv **GUI, running** | the patch computes the right value | ✅ 2026-08-14, vvvv 7.4 |
 
-**Only the GUI proves a node exists.** Nothing above it does. Do not write "the nodes work" until
-that row is green. Specifically unproven: the three categories, whether `[Name]` on a method is
-honoured, and whether the four fluent operations (`Buffer`, `Intersection`, `Union`, `Difference`)
-get an output pin named `Output` rather than `Result` — the help patches assume `Output`.
+**The last three rows are three different claims, and this is where a false proof lives.** Learned
+here, at the cost of nearly writing down a wrong conclusion:
+
+- **`LastCategoryFullName` in a `.vl` is a hint, not the truth.** Negative-tested: set it to
+  `NTS.Wrong`, recompile, and every node still resolves. So a green `vvvvc` compile proves a node
+  *exists* and proves **nothing** about its category. Only the NodeBrowser does.
+- **A green compile is still worth having, because it is byte-level evidence.** An unresolved node
+  has its links dropped, `vvvvc` exits 0, and nothing is red — so **read the generated
+  `*.vl.1.cs`**, not the exit code. The `Update` body contains the actual call chain; if a node
+  vanished from it, it did not resolve.
+
+### How to re-run the GUI check
+
+```powershell
+# vvvv must be closed. Launch, read the value, CLOSE IT - never leave it running.
+.\build.ps1
+& "C:\Program Files\vvvv\vvvv_gamma_7.4-win-x64\vvvv.exe" `
+    ".\help\VL.NetTopologySuite\06 Buffer Geometry.vl" --package-repositories ".\dist;.\deps"
+```
+
+Headless first, because it is faster and its evidence is stronger about resolution:
+
+```powershell
+& "C:\Program Files\vvvv\vvvv_gamma_7.4-win-x64\vvvvc.exe" `
+    ".\help\VL.NetTopologySuite\06 Buffer Geometry.vl" `
+    --package-repositories ".\dist;.\deps" --output-directory <abs-dir>
+# then READ <abs-dir>\src\*\*.vl.1.cs - the Update body must contain the whole chain.
+```
+
+The export's final NuGet restore fails with `NU1101: VL.NetTopologySuite not found` unless the
+package is on a feed — that is the **export** stage, after codegen, and is expected. The generated
+C# is already written by then. Run `.\pack.ps1` and pass `--export-package-sources .\dist\feed` if a
+fully green export is actually wanted.
 
 ## Commands
 

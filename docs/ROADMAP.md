@@ -21,23 +21,24 @@ WKT → Read WKT → Geometry                                  ✅ tested
 
 Both produce a native `NetTopologySuite.Geometries.Geometry`, asserted as such.
 
-### The one blocking gap
+### Verified in the GUI — 2026-08-14, vvvv gamma 7.4
 
-**No node has been seen in the vvvv GUI.** Everything below the GUI line in the README's
-verification table passes; the GUI itself has not been run, because a vvvv session was open and
-`build.ps1` correctly refuses to stage while one is.
+The blocking gap is closed. `NTS` appears in the NodeBrowser with exactly three sub-categories
+(**Geometry**, **IO**, **Operation**), all four help patches open with no unresolved node, and they
+compute correct values — `POINT (139.7671 35.6812)`, a unit square of area 1.00 with an empty
+validity reason, and a 0.25 buffer taking area 1.00 → 2.20 and intersecting back to 1.00.
 
-Until that happens, three specific things are unproven:
+Also settled, each of which had been listed as unknown:
 
-1. That the nodes appear at all, and under `NTS.Geometry` / `NTS.Operation` / `NTS.IO`.
-2. That `[Name("Read WKT")]` on a **method** is honoured by VL's importer. It compiles, and
-   `NameAttribute`'s `AttributeUsage` is `All`, but neither sibling repository uses it on a member —
-   only on a type. If it is ignored, node labels differ and the help patches grey out.
-3. That the four fluent operations — `Buffer`, `Intersection`, `Union`, `Difference` — get an output
-   pin named `Output` rather than `Result`. The rule is in [RULES.md](RULES.md); the help patches
-   assume `Output`.
+- `[Name(...)]` on a **method** *is* honoured, and `[Pin(Name = ...)]` on a **parameter** is too.
+- Fluent operations *do* get an `Output` pin; non-fluent get `Result`.
+- **`LastCategoryFullName` in a `.vl` is only a hint** — negative-tested by setting it to
+  `NTS.Wrong`, after which every node still resolved. A compile therefore proves a node exists and
+  says nothing about its category. That distinction is now recorded in
+  [CLAUDE.md](../CLAUDE.md#verification--be-precise-about-which-one-you-have).
 
-All three are cheap to fix and cheap to check. None can be checked any other way.
+One bug it caught: `Segments` had a `Float64` IOBox against an `int` pin, which `vvvvc` rejects with
+`Float64 is no Integer32!`. Fixed.
 
 ---
 
@@ -47,7 +48,7 @@ In order, and each small.
 
 | | |
 |---|---|
-| **GUI verification** | The item above. Nothing else should start first: if node labels turn out different, the help patches need editing and there is no point writing more of them meanwhile. |
+| **Tidy the help-patch layouts** | They are machine-generated and cramped — nodes stacked at the top-left with overlapping IOBox labels. Arranging them by hand in the GUI is now the job, and from here the checked-in `.vl` is the source of truth: **do not regenerate**, because that discards the layout. |
 | **`Explanation Overview of available nodes.vl`** | One per library, the front door — 57 of vvvv's own packs have one. Help is the teaching surface: VL.Skia ships 4 C# nodes and 98 help patches, and in libraries people learn from help runs 16–24% of node count. Four patches against 32 nodes is 12%, so this is under-served rather than done. |
 | **The remaining help patches** | `02 Create a LineString`, `05 Inspect Geometry`, `07 Intersection`, `08 Geometry Predicates` — the sequence the brief sketches. |
 | **The cross-package example** | `Coordinates → Polygon → Buffer → Geometry → VL.Mapsui Feature → Map`, living **outside** both repositories. A patch needing two packages cannot ship inside one whose dependencies do not guarantee the other. Precedent: `vvvv-gis\examples\Example Map with data on it.vl`. |

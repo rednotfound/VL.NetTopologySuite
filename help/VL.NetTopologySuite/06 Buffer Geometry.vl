@@ -54,7 +54,7 @@
           </Pad>
           <Pad Id="MY1C0XiXNz4NgNGSCo3jx9" Comment="segments per quarter turn" Bounds="360,190,150,15" ShowValueBox="true" isIOBox="true" Value="8">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
-              <Choice Kind="TypeFlag" Name="Float64" />
+              <Choice Kind="TypeFlag" Name="Integer32" />
             </p:TypeAnnotation>
           </Pad>
           <!--

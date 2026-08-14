@@ -266,11 +266,13 @@ throws on an unclosed ring, and "unclosed" is the natural thing for a patch auth
 four corners of a rectangle, not five. Auto-closing is a genuine convenience with a measured
 justification, and §18 is right that it must be documented rather than silent.
 
-**5. Acronym casing in node names is unverified.** VL splits PascalCase method names into pin and
-node labels, so `ParseWkt` renders as **"Parse Wkt"** in VL.GIS today. Whether `ReadWKT` gives
-"Read WKT" or "Read W K T" is **not established** — §25 asks for `Read WKT` and I have not
-confirmed which C# spelling produces it. This needs the GUI, which is the only thing that proves a
-node's label. Recorded as an open Phase 1 verification item, not guessed at.
+**5. Acronym casing in node names.** VL splits PascalCase method names into labels, so `ParseWkt`
+renders as **"Parse Wkt"** in VL.GIS today. §25 asks for `Read WKT`.
+
+**Resolved 2026-08-14:** `NameAttribute`'s `AttributeUsage` is `All` (read out of `VL.Core`'s
+metadata), so `[Name("Read WKT")]` is legal on a *method* — and the GUI confirms it is honoured,
+rendering the node as `Write WKT`. `[Pin(Name = "WKT")]` on a parameter works the same way. Node and
+pin labels can therefore be set exactly instead of left to VL's splitting.
 
 **6. `Envelope` is two different things.** NTS has an `Envelope` *value type* (a bounding box, not
 a `Geometry`) and `Geometry.Envelope`, a **property returning a Polygon**. `VL.GIS`'s `Envelope`

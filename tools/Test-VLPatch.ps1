@@ -34,11 +34,15 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
-$targets = if ($Path) {
-    @(Get-Item (Join-Path $RepoRoot $Path) -ErrorAction Stop)
+# [array] on the assignment, not just @() inside the branches: PowerShell unwraps a
+# single-element array back to a scalar on its way out of an `if` expression, and under
+# Set-StrictMode the next line then fails with "The property 'Count' cannot be found".
+# Caught by running this with -Path on one file, which is the case @() alone does not cover.
+[array]$targets = if ($Path) {
+    Get-Item (Join-Path $RepoRoot $Path) -ErrorAction Stop
 } else {
-    @(Get-ChildItem $RepoRoot -Filter '*.vl' -File -Recurse |
-        Where-Object { $_.FullName -notmatch '\\dist\\' } | Sort-Object FullName)
+    Get-ChildItem $RepoRoot -Filter '*.vl' -File -Recurse |
+        Where-Object { $_.FullName -notmatch '\\dist\\' } | Sort-Object FullName
 }
 if ($targets.Count -eq 0) { throw "No .vl documents found under $RepoRoot" }
 
@@ -108,4 +112,11 @@ if ($totalProblems -gt 0) {
     exit 1
 }
 Write-Host "PASS - $($targets.Count) document(s) structurally valid." -ForegroundColor Green
-Write-Host "Note: this proves the documents are well formed. Only the GUI proves a node resolves." -ForegroundColor Yellow
+Write-Host @"
+Note: this proves the documents are well formed, and nothing more. Three separate claims follow it:
+  a node RESOLVED       -> vvvvc, then READ the generated *.vl.1.cs (exit code 0 proves nothing;
+                           an unresolved node has its links dropped silently)
+  its CATEGORY is right -> only the NodeBrowser. LastCategoryFullName in a .vl is a hint, and a
+                           patch compiles fine with it set to nonsense
+  it COMPUTES the right value -> only running it
+"@ -ForegroundColor Yellow
