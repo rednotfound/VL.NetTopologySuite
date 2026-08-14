@@ -93,7 +93,7 @@ Two more, learned while verifying:
 | | |
 |---|---|
 | Fluent output pin | **confirmed**: `var Output_6 = OperationNodes.Buffer(...)` vs `var Result_7 = GeometryNodes.Area(...)`. Return type equals first parameter type → `Output`; otherwise `Result` |
-| An `int` pin needs an `Integer32` IOBox | a `Float64` one fails the compile with `Float64 is no Integer32!`. Cost one round on `06 Buffer Geometry.vl`'s `Segments` pin |
+| An `int` pin needs an `Integer32` IOBox | a `Float64` one fails the compile with `Float64 is no Integer32!`. Cost one round on `HowTo Buffer a geometry.vl`'s `Segments` pin |
 | **A Pad's `Comment` renders as a label to the RIGHT of the box** | so an IOBox occupies far more width than its `Bounds` says, and every label collision in the first help patches came from ignoring it. Give each Pad its own row, or ~200px of clear space to its right |
 
 ### Laying out a patch
@@ -112,6 +112,23 @@ repeatable, where dragging is neither. Three things learned doing it:
 Then look at it in the GUI. Capture the window with **`PrintWindow`** on its handle, not a screen
 grab: `SetForegroundWindow` loses the race whenever another app holds focus, and the result is a
 screenshot of whatever was in front — useless, and not the user's business.
+
+### Naming a help patch
+
+**Prefix, never a number.** The five prefixes are `Explanation` (one per library, the front door),
+`HowTo`, `Reference`, `Example`, `Tutorial`, and **`Help.xml` does the ordering** — that is the
+convention across the 45 packs shipped with vvvv 7.4 and both sibling repositories, and it is
+already written down in [`docs/RULES.md`](docs/RULES.md).
+
+These four started out as `01 Create a Point`, `03 Create a Polygon`, `04 Read WKT`,
+`06 Buffer Geometry`, numbered after an eight-topic plan of which only four were written. The result
+in the help browser was `01 03 04 06`, and **every gap reads as a broken install** — which is how
+the mistake was noticed. Numbering also means adding a topic in the middle renumbers files that
+other documents already link to.
+
+So: a new patch gets a `HowTo ...` name and is appended to the right `Topic` in `Help.xml`.
+`tools\Test-VLPatch.ps1` enforces the pairing in both directions — every patch on disk must be
+listed, and every link must name a file that exists, because both failures are silent.
 
 ## Verification — be precise about which one you have
 
@@ -141,14 +158,14 @@ here, at the cost of nearly writing down a wrong conclusion:
 # vvvv must be closed. Launch, read the value, CLOSE IT - never leave it running.
 .\build.ps1
 & "C:\Program Files\vvvv\vvvv_gamma_7.4-win-x64\vvvv.exe" `
-    ".\help\VL.NetTopologySuite\06 Buffer Geometry.vl" --package-repositories ".\dist;.\deps"
+    ".\help\VL.NetTopologySuite\HowTo Buffer a geometry.vl" --package-repositories ".\dist;.\deps"
 ```
 
 Headless first, because it is faster and its evidence is stronger about resolution:
 
 ```powershell
 & "C:\Program Files\vvvv\vvvv_gamma_7.4-win-x64\vvvvc.exe" `
-    ".\help\VL.NetTopologySuite\06 Buffer Geometry.vl" `
+    ".\help\VL.NetTopologySuite\HowTo Buffer a geometry.vl" `
     --package-repositories ".\dist;.\deps" --output-directory <abs-dir>
 # then READ <abs-dir>\src\*\*.vl.1.cs - the Update body must contain the whole chain.
 ```
@@ -170,7 +187,7 @@ dotnet test test\VL.NetTopologySuite.Tests\VL.NetTopologySuite.Tests.csproj
 
 # The only thing that proves a node exists:
 & "C:\Program Files\vvvv\vvvv_gamma_7.4-win-x64\vvvv.exe" `
-    ".\help\VL.NetTopologySuite\01 Create a Point.vl" --package-repositories .\dist
+    ".\help\VL.NetTopologySuite\HowTo Create a point.vl" --package-repositories .\dist
 ```
 
 **Never leave vvvv running unattended, and never start it in the background.** Launch, read the

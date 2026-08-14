@@ -468,8 +468,8 @@ lives in **neither** repository, per §30 and the precedent already set by
 `vvvv-gis\examples\Example Map with data on it.vl`. A patch needing two packages cannot ship inside
 one whose dependencies do not guarantee the other.
 
-**Then:** four help patches (`01 Create a Point`, `03 Create a Polygon`, `04 Read WKT`,
-`06 Buffer Geometry`), `README.md`, `docs/ARCHITECTURE.md`, `docs/ROADMAP.md`, and `docs/RULES.md`
+**Then:** four help patches (`HowTo Create a point`, `HowTo Create a polygon`, `HowTo Read and write WKT`,
+`HowTo Buffer a geometry`), `README.md`, `docs/ARCHITECTURE.md`, `docs/ROADMAP.md`, and `docs/RULES.md`
 copied across.
 
 Not in Phase 1: Multi* and `GeometryCollection`, the remaining predicates, `Envelope`, `SRID`,

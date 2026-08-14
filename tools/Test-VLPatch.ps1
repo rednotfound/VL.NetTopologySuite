@@ -106,6 +106,55 @@ foreach ($file in $targets) {
     }
 }
 
+# ── Help.xml must account for every patch, and name only patches that exist ──
+# Both directions fail silently: a patch missing from Help.xml still ships, but unordered and
+# untagged, and a link naming a file that is not there just lists nothing. Numbering the files
+# instead of ordering them here is what produced "01 03 04 06", where every gap read as a broken
+# install - so this is now the only place ordering lives, and it has to be checked.
+if (-not $Path) {
+    foreach ($helpXml in Get-ChildItem $RepoRoot -Filter 'Help.xml' -File -Recurse -ErrorAction SilentlyContinue |
+                Where-Object { $_.FullName -notmatch '\\dist\\' }) {
+        $dir = Split-Path $helpXml.FullName -Parent
+        Write-Host "`nvalidating $($helpXml.FullName.Replace("$RepoRoot\", ''))" -ForegroundColor Cyan
+        $problems = [System.Collections.Generic.List[string]]::new()
+
+        try { [xml]$hx = Get-Content $helpXml.FullName -Raw } catch { $hx = $null; $problems.Add("does not parse: $($_.Exception.Message)") }
+
+        # XPath rather than property access: $hx.Pack.Topic.VLDocument throws under Set-StrictMode
+        # as soon as any Topic has no children, which is exactly the shape a half-edited Help.xml
+        # has. Found by negative-testing this check with one entry deleted.
+        [array]$entries = if ($hx) { @($hx.SelectNodes('//VLDocument')) } else { @() }
+        if ($hx) {
+            [array]$listed = $entries | ForEach-Object { $_.link }
+            foreach ($link in $listed) {
+                if (-not (Test-Path (Join-Path $dir $link))) { $problems.Add("lists `"$link`", which does not exist") }
+            }
+            foreach ($vl in Get-ChildItem $dir -Filter '*.vl' -File) {
+                if ($listed -notcontains $vl.Name) { $problems.Add("`"$($vl.Name)`" is not listed - it would ship unordered and untagged") }
+            }
+            # Measured across every shipped .vl: 251 multi-term tag lists use commas and none use
+            # spaces, which contradicts the written guidelines. Follow the shipped code.
+            foreach ($e in $entries) {
+                if ($e.tags -match ' ') { $problems.Add("tag list contains a space: `"$($e.tags)`"") }
+                if (-not $e.tags) { $problems.Add("`"$($e.link)`" has no tags - it will not be findable by search") }
+            }
+            # An empty Topic renders as a heading with nothing under it.
+            foreach ($t in @($hx.SelectNodes('//Topic'))) {
+                if (@($t.SelectNodes('VLDocument')).Count -eq 0) { $problems.Add("Topic `"$($t.title)`" is empty") }
+            }
+        }
+
+        if ($problems.Count -gt 0) {
+            $problems | ForEach-Object { Write-Host "  FAIL  $_" -ForegroundColor Red }
+            $totalProblems += $problems.Count
+        } else {
+            Write-Host "  ok    $($entries.Count) patch(es) listed, all present, none missing" -ForegroundColor DarkGray
+            Write-Host "  ok    every entry tagged, no spaces in any tag list" -ForegroundColor DarkGray
+            Write-Host "  ok    no empty Topic" -ForegroundColor DarkGray
+        }
+    }
+}
+
 Write-Host ''
 if ($totalProblems -gt 0) {
     Write-Host "FAIL - $totalProblems problem(s) across $($targets.Count) document(s)." -ForegroundColor Red

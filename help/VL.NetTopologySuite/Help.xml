@@ -1,13 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!--
+	Ordering lives here, and nowhere else. The patch filenames deliberately carry no numbers:
+	the shipped convention across vvvv's own packs is the five prefixes - Explanation, HowTo,
+	Reference, Example, Tutorial - with Help.xml doing the sequencing. Numbering the files as
+	well means every gap looks like a broken install, which is exactly what "01 03 04 06" did.
+
+	So a new patch is appended to the right Topic here. It does not renumber anything.
+	tools\Test-VLPatch.ps1 checks this file against the patches on disk in both directions.
+-->
 <Pack>
-	<Topic title="Start here">
-		<VLDocument link="01 Create a Point.vl" tags="coordinate,point,geometry,create,srid,nts,netTopologySuite" />
-		<VLDocument link="03 Create a Polygon.vl" tags="polygon,linearring,ring,shell,holes,closed,valid,area,geometry" />
+	<Topic title="Making geometry">
+		<VLDocument link="HowTo Create a point.vl" tags="coordinate,point,geometry,create,srid,factory,nts,netTopologySuite" />
+		<VLDocument link="HowTo Create a polygon.vl" tags="polygon,linearring,ring,shell,holes,closed,valid,area,geometry" />
 	</Topic>
 	<Topic title="Text in, geometry out">
-		<VLDocument link="04 Read WKT.vl" tags="wkt,wellknowntext,read,write,parse,text,srid,io" />
+		<VLDocument link="HowTo Read and write WKT.vl" tags="wkt,wellknowntext,read,write,parse,text,srid,io,roundtrip" />
 	</Topic>
-	<Topic title="Operations">
-		<VLDocument link="06 Buffer Geometry.vl" tags="buffer,grow,shrink,offset,intersection,operation,units,segments" />
+	<Topic title="Spatial operations">
+		<VLDocument link="HowTo Buffer a geometry.vl" tags="buffer,grow,shrink,offset,intersection,operation,units,segments" />
 	</Topic>
 </Pack>
