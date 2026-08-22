@@ -15,10 +15,12 @@ namespace VL.NTS;
 /// patch can fan one geometry into several operations without them interfering. That is true of the
 /// operations even though NTS coordinate <i>storage</i> is writable — see <see cref="Defaults"/>
 /// for where that distinction bites and what this package does about it.</para>
-/// <para>Eight nodes, not the twenty NTS could support. What is missing is missing on purpose:
+/// <para>Nine nodes, not the twenty NTS could support. What is missing is missing on purpose:
 /// <c>SymmetricDifference</c>, <c>Touches</c>, <c>Crosses</c>, <c>Overlaps</c>, <c>Covers</c>,
 /// <c>ConvexHull</c> and <c>Simplify</c> are all one method each and are listed in
 /// <c>docs/ROADMAP.md</c> — they arrive when something needs them rather than because they exist.
+/// <c>Nearest Points</c> arrived exactly that way on 2026-08-22: the course's distance chapter
+/// needed to draw the shortest line, not merely number it.
 /// <c>Disjoint</c> is deliberately absent: it is <c>Intersects</c> with a <c>Not</c> after it, and a
 /// node a patch can already build from two nodes is a help patch, not a node.</para>
 /// </remarks>
@@ -95,6 +97,38 @@ public static class OperationNodes
     /// </remarks>
     public static double Distance(Geometry? a, Geometry? b)
         => a is null || b is null ? 0 : a.Distance(b);
+
+    /// <summary>
+    /// Where the shortest distance is: the point on A and the point on B that are closest to each
+    /// other. Uses NetTopologySuite.
+    /// </summary>
+    /// <remarks>
+    /// <para>The pair that <see cref="Distance"/> measures between — drawing a line between the two
+    /// outputs draws the distance itself, which is what a picture of "how far" actually is. Same
+    /// units caveat as <c>Distance</c>: the coordinates come back in the geometries' own space.</para>
+    /// <para>When the geometries touch or overlap the two points coincide — some shared point, not
+    /// a meaningful "nearest" one, because at distance 0 the question has no unique answer. When
+    /// either input is missing or empty both outputs are missing rather than an error, matching how
+    /// <c>Read WKT</c> treats a question that cannot be answered yet.</para>
+    /// <para>The coordinates are copies. NTS can hand back live references into a geometry's own
+    /// storage, and writing through one would silently move the geometry — the mutation hazard
+    /// <c>docs/ARCHITECTURE.md</c> documents, defended the same way the creation nodes defend it.</para>
+    /// </remarks>
+    [Name("Nearest Points")]
+    public static void NearestPoints(Geometry? a, Geometry? b,
+        out Coordinate? onA, out Coordinate? onB)
+    {
+        if (a is null || b is null || a.IsEmpty || b.IsEmpty)
+        {
+            onA = null;
+            onB = null;
+            return;
+        }
+
+        var points = NetTopologySuite.Operation.Distance.DistanceOp.NearestPoints(a, b);
+        onA = points[0].Copy();
+        onB = points[1].Copy();
+    }
 
     // ── Predicates ────────────────────────────────────────────────────────────
 

@@ -10,8 +10,13 @@ comment; the work is deciding whether they earn a node, not writing them.
 
 ## Now — 0.0.1-alpha, unpublished
 
-34 nodes across `NTS.Geometry`, `NTS.Feature`, `NTS.Operation` and `NTS.IO`. 85 tests. Four help
+35 nodes across `NTS.Geometry`, `NTS.Feature`, `NTS.Operation` and `NTS.IO`. 89 tests. Four help
 patches.
+
+**2026-08-22: `Nearest Points` arrived**, by exactly the rule at the top of this file: the course's
+distance chapter needed to *draw* the shortest line between two geometries, not merely number it.
+`DistanceOp.NearestPoints`, coordinates copied on the way out, empty-or-missing in → nothing out.
+Like `NTS.Feature` below, it has not yet been seen in the GUI.
 
 **2026-08-22: `NTS.Feature` arrived** — `Feature` and `Split`, moved from VL.Mapsui with their
 tests, plus the `NetTopologySuite.Features 2.1.0` dependency. The reasoning and the field-wide

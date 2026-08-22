@@ -106,6 +106,63 @@ public class OperationTests
         Assert.Equal(1, OperationNodes.Distance(a, Square(2, 0, 1)), 12);
     }
 
+    [Fact]
+    public void Nearest_points_span_the_gap_and_agree_with_Distance()
+    {
+        var a = MutationTests.UnitSquare();     // [0..1] x [0..1]
+        var b = Square(3, 0, 1);                // [3..4] x [0..1]
+
+        OperationNodes.NearestPoints(a, b, out var onA, out var onB);
+
+        // The gap runs from x=1 to x=3 at some shared y; the pair must sit on the facing edges,
+        // and the line between them must be exactly what Distance measures.
+        Assert.Equal(1, onA!.X, 12);
+        Assert.Equal(3, onB!.X, 12);
+        Assert.Equal(onA.Y, onB.Y, 12);
+        Assert.Equal(OperationNodes.Distance(a, b), onA.Distance(onB), 12);
+    }
+
+    [Fact]
+    public void Nearest_points_coincide_when_geometries_overlap()
+    {
+        var a = MutationTests.UnitSquare();
+
+        OperationNodes.NearestPoints(a, Square(0.5, 0.5, 1), out var onA, out var onB);
+
+        Assert.Equal(0, onA!.Distance(onB!), 12);
+    }
+
+    [Fact]
+    public void Nearest_points_of_nothing_are_nothing_rather_than_an_error()
+    {
+        var square = MutationTests.UnitSquare();
+
+        OperationNodes.NearestPoints(square, null, out var onA, out var onB);
+        Assert.Null(onA);
+        Assert.Null(onB);
+
+        // An empty geometry has no nearest point either - documented on the node.
+        var empty = OperationNodes.Intersection(square, Square(10, 10, 1))!;
+        OperationNodes.NearestPoints(square, empty, out onA, out onB);
+        Assert.Null(onA);
+        Assert.Null(onB);
+    }
+
+    [Fact]
+    public void Nearest_points_are_copies_not_live_references()
+    {
+        // Writing through the answer must not move the geometry - the mutation hazard the
+        // creation nodes defend against, defended here on the way out.
+        var a = MutationTests.UnitSquare();
+        var b = Square(3, 0, 1);
+
+        OperationNodes.NearestPoints(a, b, out var onA, out _);
+        onA!.X = 999;
+
+        OperationNodes.NearestPoints(a, b, out var again, out _);
+        Assert.Equal(1, again!.X, 12);
+    }
+
     // ── Predicates ────────────────────────────────────────────────────────────
 
     [Fact]

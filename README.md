@@ -45,7 +45,7 @@ is how a package oversells itself:
 
 | | proves | run |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ **85 tests**, ~100 ms, no network |
+| `dotnet test` | the arithmetic is right | ✅ **89 tests**, ~100 ms, no network |
 | `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed | ✅ 5 documents pass |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `vvvvc` headless compile | every node in a patch **resolved** — an unresolved one has its links dropped and vanishes from the generated C# | ✅ all 4 help patches |
@@ -84,7 +84,7 @@ eight help topics are still unwritten (see [docs/ROADMAP.md](docs/ROADMAP.md)).
 
 ## The nodes
 
-**Thirty-four**, in four categories. No node takes more than three inputs.
+**Thirty-five**, in four categories. No node takes more than three inputs.
 
 ### `NTS.Geometry` — making geometry
 
@@ -133,7 +133,7 @@ patch can make one by hand. The reasoning and the field-wide evidence are in
 
 ### `NTS.Operation`
 
-`Buffer` · `Intersection` · `Union` · `Difference` · `Distance` · `Intersects` · `Contains` · `Within`
+`Buffer` · `Intersection` · `Union` · `Difference` · `Distance` · `Nearest Points` · `Intersects` · `Contains` · `Within`
 
 ### `NTS.IO`
 
