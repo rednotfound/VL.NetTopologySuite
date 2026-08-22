@@ -46,6 +46,11 @@
     <dependencies>
       <group targetFramework="net8.0">
         <dependency id="NetTopologySuite" version="2.6.0" />
+        <!--
+          The NTS team's own companion: Feature = geometry + attributes. Same version as the
+          sibling repositories declare, so a machine loading all three sees one identity.
+        -->
+        <dependency id="NetTopologySuite.Features" version="2.1.0" />
       </group>
     </dependencies>
   </metadata>

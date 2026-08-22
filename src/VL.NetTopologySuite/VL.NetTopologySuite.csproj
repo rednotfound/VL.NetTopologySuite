@@ -57,6 +57,18 @@
       assembly identity: the whole 2.x line carries assembly version 2.0.0.0.
     -->
     <PackageReference Include="NetTopologySuite" Version="2.6.0" />
+
+    <!--
+      The NTS team's own companion package: Feature = geometry + attributes, one level above the
+      geometry core and below every reader and renderer. 2.1.0 is what VL.Mapsui and VL.GeoJSON
+      already declare, so all three repositories name the same version.
+
+      This is the one deliberate exception to "wraps NetTopologySuite and nothing else" - same
+      team, same repository family, and the alternative was measured to be worse: until 2026-08-22
+      the Feature constructor node lived in VL.Mapsui, meaning a feature could not exist without a
+      map engine installed. docs/ARCHITECTURE.md, "Where a feature lives", carries the evidence.
+    -->
+    <PackageReference Include="NetTopologySuite.Features" Version="2.1.0" />
   </ItemGroup>
 
 </Project>

@@ -17,6 +17,7 @@ than reading them.
 - [The factory, and why SRID is 0](#the-factory-and-why-srid-is-0)
 - [Node categories](#node-categories)
 - [Decisions, per node](#decisions-per-node)
+- [Where a feature lives](#where-a-feature-lives)
 - [What stays raw](#what-stays-raw)
 - [The package boundary](#the-package-boundary)
 - [Relationship with the sibling repositories](#relationship-with-the-sibling-repositories)
@@ -30,8 +31,10 @@ than reading them.
 geometry?**
 
 That is the whole question. Not how to draw it, not how to reproject it, not how to read a
-shapefile. The test for any proposed addition is in
-[The package boundary](#the-package-boundary).
+shapefile. Since 2026-08-22 "geometry" includes the **feature** — geometry plus attributes —
+because a feature is made *of* geometry and has to be constructible wherever geometry is; the full
+argument is in [Where a feature lives](#where-a-feature-lives). The test for any other proposed
+addition is in [The package boundary](#the-package-boundary).
 
 **Almost all the value is upstream, and saying so plainly is useful.** NetTopologySuite is two
 decades of production use. What this repository solves is *how it shows up as nodes in a patch* —
@@ -159,11 +162,14 @@ The prefix comes from `[assembly: ImportAsIs(Namespace = "VL")]`.
 | Category | Source | How |
 |---|---|---|
 | `NTS.Geometry` | `GeometryNodes.Creation.cs` + `.Inspection.cs` | namespace `VL.NTS` + `[Name("Geometry")]` |
+| `NTS.Feature` | `FeatureNodes.cs` | `[Name("Feature")]` |
 | `NTS.Operation` | `OperationNodes.cs` | `[Name("Operation")]` |
 | `NTS.IO` | `IONodes.cs` | `[Name("IO")]` |
 
-Three, deliberately — `NTS.Validation` was considered and dropped, because one validity node does
-not earn a category level and §26 of the brief warns against deep nesting.
+Four, deliberately — `NTS.Validation` was considered and dropped, because one validity node does
+not earn a category level and §26 of the brief warns against deep nesting. `NTS.Feature` earns one
+because it wraps a distinct upstream package and a distinct layer of the data model, not merely a
+pair of methods.
 
 **Assembly `VL.NetTopologySuite`, root namespace `VL.NTS`.** The package is named after the library
 it wraps, which is the rule for a single-library package; only the *category* is abbreviated,
@@ -283,6 +289,59 @@ people search for.
 
 ---
 
+## Where a feature lives
+
+**Decided 2026-08-22, after researching the question rather than arguing it**: the `Feature` and
+`Split` nodes moved here from VL.Mapsui, into a new `NTS.Feature` category, and this package gained
+its second — and only other — upstream dependency, `NetTopologySuite.Features 2.1.0`.
+
+### The question
+
+A feature — geometry plus attributes — is produced by hand-construction, by GeoJSON parsing, and by
+map picking, and consumed by GeoJSON writing, map drawing and attribute lookup. Multiple producers,
+multiple consumers: which package owns the constructor? Until this date it was VL.Mapsui, which
+meant **a feature could not exist without a map engine installed** — absurd for a data object, and
+it blocked any lesson that builds a dataset without drawing a map.
+
+### The evidence
+
+Every standard defines the feature as a data-model object, never a rendering one — ISO 19109 calls
+it an abstraction of a real-world phenomenon whose geometry is one attribute among others; RFC 7946
+spells it geometry + properties (+ id) in an interchange format. And every geometry core in the
+field deliberately excludes it, placing it one layer up:
+
+| ecosystem | geometry core (no feature type) | the feature type lives in |
+|---|---|---|
+| Java | JTS — "pure shapes with no meaning" (GeoTools FAQ) | GeoTools `org.geotools.feature` |
+| Python | Shapely/GEOS | `fiona.model.Feature` (IO), GeoPandas rows |
+| .NET | NetTopologySuite | **`NetTopologySuite.Features`** — the NTS team's own companion, depending only on the core; every NTS IO package depends on it |
+| C/C++ | — | `OGRFeature`, in OGR's data-access layer |
+| QGIS | (GEOS inside) | `QgsFeature` in `qgis_core`, consumed by separate renderers |
+
+The renderer side is just as uniform, and Mapsui itself is the proof: `Mapsui.dll` has **zero
+geometry dependencies** and defines its own scene-level feature (`Mapsui.IFeature`,
+`PointFeature`); NTS enters through the bridge package `Mapsui.Nts`, whose `GeometryFeature` is
+what `NetTopologySuite.Features.Feature` gets **converted into** at the provider boundary — which
+is exactly what VL.Mapsui's `FeatureLayer` does with the features these nodes make. A renderer
+converts into its own feature; it never owns the data model users author against.
+
+The genuine counterexamples — OGR and Fiona define the feature inside the reader — work only where
+the reader is effectively the sole producer. Here, hand-construction is itself a producer.
+
+### What the decision costs, and what it deliberately leaves alone
+
+- The second upstream package. Accepted because it is the **same team's companion to the same
+  library**, pinned at the version both sibling repositories already declare — see the boundary
+  section below for the revised wording.
+- VL.Mapsui keeps a private six-line helper to build features internally; internal plumbing is not
+  a node surface.
+- VL.GeoJSON's read-side `Split` and `GetProperty` **stay where they are for now** — consolidating
+  them here would give VL.GeoJSON a dependency on this package, which changes the family's
+  "compose through NTS types, reference nobody" architecture and is a separate decision, not a
+  rider on this one.
+
+---
+
 ## What stays raw
 
 Reachable through VL's raw .NET nodes, deliberately not wrapped. The test — *is this a common
@@ -312,15 +371,18 @@ Apply this whenever considering an addition:
 | If it answers | It belongs in |
 |---|---|
 | How do I create or manipulate geometry? | **here** |
+| How do I attach data to a geometry, or read it back? | **here** — `NTS.Feature`, see [Where a feature lives](#where-a-feature-lives) |
 | How do I display this geometry on a map? | `VL.Mapsui` |
 | How do I transform between coordinate reference systems? | a focused package — `VL.ProjNet` |
 | How do I read this specific geospatial dataset format? | a focused package |
 | Nothing yet — we imagine needing it | **nowhere. Do not build it.** |
 
-**One package per wrapped library.** This package wraps NetTopologySuite and nothing else. Its only
-NuGet dependency is `NetTopologySuite 2.6.0`, and that is the shape to keep: the moment a second
-library appears in the csproj, either it belongs in its own package or this one has stopped being
-what its name says.
+**One package per wrapped library.** This package wraps NetTopologySuite and nothing else. Its
+NuGet dependencies are `NetTopologySuite 2.6.0` and — since 2026-08-22 — the NTS team's own
+companion `NetTopologySuite.Features 2.1.0`, and that is the shape to keep: "the library" means the
+NTS project, whose feature model ships as a separate package by *their* packaging choice, not a
+different library by ours. The moment a genuinely foreign library appears in the csproj, either it
+belongs in its own package or this one has stopped being what its name says.
 
 **Declare the upstream nuget, forward only your own assembly.** Every community package that wraps a
 third-party library does this. Forwarding NTS's own assembly would make this repository responsible
@@ -335,16 +397,18 @@ Two other repositories sit beside this one under `D:\2026_Projects\`.
 ### `vl-mapsui` (`VL.Mapsui`) — composes through NTS, not through us
 
 ```text
-Coordinates → LinearRing → Polygon → Buffer → NTS Geometry
-                                                  │
-                                    ── package boundary ──
-                                                  │
-                                        VL.Mapsui Feature → VectorStyle → FeatureLayer → Map
+Coordinates → LinearRing → Polygon → Buffer → NTS Geometry → Feature [NTS.Feature]
+                                                                  │
+                                                    ── package boundary ──
+                                                                  │
+                                              VectorStyle → FeatureLayer → Map
 ```
 
 **Neither package references the other, and neither should.** They share the native NTS types.
-VL.Mapsui already consumes `NetTopologySuite.Geometries.Geometry` and uses
-`NetTopologySuite.Features.Feature` as its neutral feature model, so the hand-off needs no adapter.
+VL.Mapsui consumes `NetTopologySuite.Geometries.Geometry` and `NetTopologySuite.Features.Feature` —
+both made here, both crossing the boundary with no adapter; the conversion into Mapsui's own
+scene-level feature happens inside VL.Mapsui's `FeatureLayer`, which is the adapter pointing the
+right way.
 
 Consequently **no cross-package example patch lives in this repository.** A patch needing two
 packages cannot ship inside one whose dependencies do not guarantee the other; there is already a
@@ -395,10 +459,10 @@ Recorded as *never* rather than *later*, so it stops coming up:
 
 - **Rendering, styling, layers, maps.** A different question, and `VL.Mapsui` answers it.
 - **CRS transformation.** ProjNet's job. Nothing here will imply that setting an SRID reprojects.
-- **A universal `Feature` model.** This package is about geometry. Mapsui has its own feature model,
-  GeoJSON has another, and `NetTopologySuite.Features.Feature` already exists as a neutral one if a
-  cross-package need appears. Inventing `VLFeature` here would make this package the definition of
-  the whole domain.
+- **A `Feature` model of our own.** No `VLFeature`, ever. The neutral model this package now wraps
+  in `NTS.Feature` is `NetTopologySuite.Features.Feature` — the NTS team's, not ours — and wrapping
+  it is precisely what keeps this package from becoming the definition of the whole domain.
+  Inventing a type here would do the opposite.
 - **Generalised GIS abstractions** — `IGISGeometry`, `SpatialEntity`, `GISContext`, `GISDocument`.
   No current problem requires them.
 - **A generic geospatial file-format package.** WKT is in scope because it is NTS's own IO. Letting

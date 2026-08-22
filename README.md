@@ -5,6 +5,8 @@
 > **Status: early, but it runs.** Verified in vvvv gamma 7.4 on 2026-08-14: the nodes appear under
 > `NTS.Geometry` / `NTS.IO` / `NTS.Operation`, all four help patches open and compute correct
 > values. Nothing is published to nuget.org. The table below says exactly what has been shown.
+> The `NTS.Feature` category (two nodes, moved here from VL.Mapsui on 2026-08-22) postdates that
+> GUI run and **has not yet been seen in the NodeBrowser** — only compiled and tested.
 
 ---
 
@@ -43,7 +45,7 @@ is how a package oversells itself:
 
 | | proves | run |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ **81 tests**, ~70 ms, no network |
+| `dotnet test` | the arithmetic is right | ✅ **85 tests**, ~100 ms, no network |
 | `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed | ✅ 5 documents pass |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `vvvvc` headless compile | every node in a patch **resolved** — an unresolved one has its links dropped and vanishes from the generated C# | ✅ all 4 help patches |
@@ -82,7 +84,7 @@ eight help topics are still unwritten (see [docs/ROADMAP.md](docs/ROADMAP.md)).
 
 ## The nodes
 
-**Thirty-two**, in three categories. No node takes more than three inputs.
+**Thirty-four**, in four categories. No node takes more than three inputs.
 
 ### `NTS.Geometry` — making geometry
 
@@ -115,6 +117,19 @@ eight help topics are still unwritten (see [docs/ROADMAP.md](docs/ROADMAP.md)).
 | `Bounds` | `Geometry` → MinX, MinY, MaxX, MaxY |
 | `Coordinates` | `Geometry` → spread of `Coordinate` |
 | `Geometries` | `Geometry` → spread of `Geometry` |
+
+### `NTS.Feature` — attaching data to geometry
+
+| Node | in → out |
+|---|---|
+| `Feature` | `Geometry`, Dictionary of attributes → `Feature` |
+| `Split` | `Feature` → `Geometry`, Dictionary of attributes |
+
+The type is `NetTopologySuite.Features.Feature` — the NTS team's own neutral model, not a wrapper
+of ours. These two moved here from VL.Mapsui on 2026-08-22, because a feature has to be
+constructible without a map engine: VL.GeoJSON writes them, VL.Mapsui draws and picks them, and a
+patch can make one by hand. The reasoning and the field-wide evidence are in
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#where-a-feature-lives).
 
 ### `NTS.Operation`
 

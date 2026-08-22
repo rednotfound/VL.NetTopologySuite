@@ -10,7 +10,14 @@ comment; the work is deciding whether they earn a node, not writing them.
 
 ## Now — 0.0.1-alpha, unpublished
 
-32 nodes across `NTS.Geometry`, `NTS.Operation` and `NTS.IO`. 81 tests. Four help patches.
+34 nodes across `NTS.Geometry`, `NTS.Feature`, `NTS.Operation` and `NTS.IO`. 85 tests. Four help
+patches.
+
+**2026-08-22: `NTS.Feature` arrived** — `Feature` and `Split`, moved from VL.Mapsui with their
+tests, plus the `NetTopologySuite.Features 2.1.0` dependency. The reasoning and the field-wide
+evidence are in [ARCHITECTURE.md](ARCHITECTURE.md#where-a-feature-lives). **Not yet seen in the
+GUI**: the 2026-08-14 NodeBrowser verification below predates this category, so "appears under
+`NTS.Feature` with working pins" is currently a claim only a vvvv session can settle.
 
 **The two MVP paths are implemented and covered by tests:**
 
@@ -93,7 +100,7 @@ Recorded as *never* so it stops being re-proposed. The reasoning is in
 | **Rendering, styling, layers, maps** | A different question. `VL.Mapsui` answers it, and this package must not know that maps exist. |
 | **CRS transformation** | ProjNet's job, and a focused `VL.ProjNet` is where it belongs. No node here will ever imply that setting an SRID reprojects anything — because it does not. |
 | **GeoJSON** | Lives in a separate NuGet package, brings a feature model that is not this package's business, and deserves its own focused package. Taking it on is the first step towards becoming a generic geospatial file-format package. |
-| **A universal `Feature` model** | No `VLFeature`. `NetTopologySuite.Features.Feature` already exists as a neutral model if a real cross-package need appears — VL.Mapsui already uses it. |
+| **A `Feature` model of our own** | No `VLFeature`, ever. The cross-package need appeared and was answered on 2026-08-22 by wrapping `NetTopologySuite.Features.Feature` — the NTS team's neutral model — as `NTS.Feature`. Wrapping theirs is what keeps us from inventing ours. |
 | **Generalised GIS abstractions** | `IGISGeometry`, `IGeoObject`, `SpatialEntity`, `GISContext`, `GISDocument`. No current problem requires any of them. |
 | **File formats** | Shapefile, GeoPackage, GeoParquet, GeoTIFF, STAC. Each is its own ecosystem and its own package. |
 | **Mechanical coverage of NetTopologySuite** | Every class, method, constructor and overload as a node. That turns the node browser into an API dump. The rest of NTS stays reachable through VL's raw .NET nodes, which is a feature rather than a gap. |
