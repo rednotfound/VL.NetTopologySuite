@@ -32,7 +32,11 @@ Reasoning in [ARCHITECTURE.md](ARCHITECTURE.md#spatialindex--query--the-first-pr
 constructs `new SpatialIndexNode()` once, in `Create`, and calls only `Update` per frame — which is
 the whole point of a process node, now visible in the output; and a `Spread<Point>` fed the
 `IEnumerable<Geometry?>` input without a conversion node, so covariance holds across the VL import.
-**Not yet seen in the GUI**: the first consumer will be VL.Overworld's Tutorial 11.
+**Seen in the GUI the same evening**, through VL.Overworld's Tutorial 11 — 100,000 points, a mouse-driven
+query polygon, `Indexes Built` **holding at 1** while the mouse moved (the lifecycle contract, observed
+live), `Candidates` ≥ `Accepted`, and the indexed and brute-force `Accepted` counts equal. Category
+`NTS.Index` appears with both nodes. 8 fps with the brute-force loop alongside; the drawing of 100k
+points is not the cost.
 
 **2026-08-22: `Nearest Points` arrived**, by exactly the rule at the top of this file: the course's
 distance chapter needed to *draw* the shortest line between two geometries, not merely number it.

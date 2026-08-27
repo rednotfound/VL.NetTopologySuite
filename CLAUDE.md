@@ -11,8 +11,8 @@ inspection, spatial operations and WKT. Nothing about maps, rendering or reproje
 **Current state (2026-08-23): 37 nodes in five categories, 105 tests, 4 help patches.** The
 2026-08-14 GUI verification covered `NTS.Geometry` / `NTS.IO` / `NTS.Operation`; `NTS.Feature`
 (2026-08-22) was seen in the GUI through VL.Overworld's Tutorial 08 on 2026-08-23; **`NTS.Index`
-(2026-08-23) has not been seen in the GUI yet** — its first consumer will be VL.Overworld's
-Tutorial 11. Nothing is published to nuget.org. See
+(2026-08-23) was seen the same evening through Tutorial 11**, with `Indexes Built` holding at 1 over
+100,000 points. Every category has now been on a screen. Nothing is published to nuget.org. See
 [Verification](#verification-be-precise-about-which-one-you-have).
 
 **`NTS.Index` is this package's first `[ProcessNode]`.** `SpatialIndex` holds an `STRtree` and
