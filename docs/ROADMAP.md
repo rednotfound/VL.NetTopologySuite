@@ -10,8 +10,34 @@ comment; the work is deciding whether they earn a node, not writing them.
 
 ## Now — 0.0.1-alpha, unpublished
 
-37 nodes across `NTS.Geometry`, `NTS.Feature`, `NTS.Operation`, `NTS.IO` and `NTS.Index`. 105 tests.
-Four help patches.
+37 public nodes across `NTS.Geometry`, `NTS.Feature`, `NTS.Operation`, `NTS.IO` and `NTS.Index`, plus
+two **experimental** ones under `NTS.Experimental.Network`. 122 tests. Four help patches.
+
+**2026-08-23: an EXPERIMENTAL network — `BuildNetwork` and `ShortestPath` — under
+`NTS.Experimental.Network`, and deliberately not under `NTS.Network`.** Built for VL.Overworld's
+Tutorial 13 (*close does not mean reachable*). The distinction from `NTS.Index` is the reason for the
+category name: NTS owns STRtree, so `SpatialIndex` exposes NetTopologySuite; NTS ships **no**
+shortest-path capability (its `PlanarGraph` is a framework for algorithm authors), so this is an
+algorithm of ours, and an algorithm of ours in a package named after a library is a scope question
+that a chapter alone does not settle. **Promotion to a permanent public surface waits for evidence**:
+the chapter working, the abstraction that emerged from it, and at least two further genuine consumers
+wanting the same model — then a separate Network Package Scope Proposal (location, identity, types,
+surface, non-scope, relationship to NTS, whether our algorithms belong in this package at all).
+
+Its scope is one sentence, and is asserted by the tests: *an undirected spatial network built from
+EXPLICITLY connected LineStrings in a local Cartesian space, with geometric length as cost and
+Dijkstra as the path algorithm.* Connectivity is exact shared endpoints — no tolerance, no automatic
+noding, a crossing is not a junction, an interior vertex is shape not a node. From/To are Points
+snapped to the nearest node with the snap distances exposed. `Found = false` is a first-class
+result. The path keeps each edge's original geometry. Same rebuild contract as `SpatialIndex`
+(shared `InputSets`): closing a bridge is a new collection and one honest rebuild.
+
+**Explicitly out of scope, and this is not a promise of a routing library:** one-way edges, turn
+restrictions or penalties, speeds, travel time, custom costs, road classes; A*, heuristics,
+k-shortest paths, isochrones, contraction hierarchies; nearest-point-on-edge snapping, edge
+splitting, tolerance snapping, map matching; automatic noding, topology repair, fuzzy endpoints; OSM
+import and OSM semantics (`layer`, `level`, access); Z-aware connectivity; a generic graph framework
+or mutable graph API; geodesic weights or CRS transformation.
 
 **2026-08-23: `NTS.Index` arrived — and with it the package's first `[ProcessNode]`.** `SpatialIndex`
 builds an `STRtree` over a spread of geometries, once, and `Query` asks it for the geometries whose

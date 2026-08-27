@@ -8,7 +8,9 @@ Guidance for Claude Code (claude.ai/code) working in this repository.
 as nodes for [vvvv gamma](https://vvvv.org). One package, one library — geometry creation,
 inspection, spatial operations and WKT. Nothing about maps, rendering or reprojection.
 
-**Current state (2026-08-23): 37 nodes in five categories, 105 tests, 4 help patches.** The
+**Current state (2026-08-23): 37 public nodes in five categories plus two EXPERIMENTAL ones under
+`NTS.Experimental.Network` (built for Tutorial 13; not a public API — an algorithm of ours, not an
+exposure of NTS, and promoted only after a separate scope review), 122 tests, 4 help patches.** The
 2026-08-14 GUI verification covered `NTS.Geometry` / `NTS.IO` / `NTS.Operation`; `NTS.Feature`
 (2026-08-22) was seen in the GUI through VL.Overworld's Tutorial 08 on 2026-08-23; **`NTS.Index`
 (2026-08-23) was seen the same evening through Tutorial 11**, with `Indexes Built` holding at 1 over
@@ -143,7 +145,7 @@ listed, and every link must name a file that exists, because both failures are s
 
 | | proves | state |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ 105 tests, ~300 ms, no network |
+| `dotnet test` | the arithmetic is right | ✅ 122 tests, ~300 ms, no network |
 | `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed | ✅ 5 documents |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `vvvvc` headless compile | every node in a patch **resolved** | ✅ all 4 help patches |
@@ -213,7 +215,7 @@ vl-nettopologysuite/
 │   ├── GeometryNodes.Inspection.cs    # NTS.Geometry - Area, IsValid, Bounds, Coordinates …
 │   ├── OperationNodes.cs              # NTS.Operation - Buffer, overlay, predicates
 │   └── IONodes.cs                     # NTS.IO - Read WKT, Write WKT
-├── test/VL.NetTopologySuite.Tests/    # 105 xunit tests, no network, no vvvv
+├── test/VL.NetTopologySuite.Tests/    # 122 xunit tests, no network, no vvvv
 ├── help/VL.NetTopologySuite/          # 4 help patches + Help.xml (ordering and tags)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
 ├── docs/ARCHITECTURE.md               # why each node exists, what stays raw, the boundary

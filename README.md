@@ -45,7 +45,7 @@ is how a package oversells itself:
 
 | | proves | run |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ **105 tests**, ~300 ms, no network |
+| `dotnet test` | the arithmetic is right | ✅ **122 tests**, ~300 ms, no network |
 | `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed | ✅ 5 documents pass |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `vvvvc` headless compile | every node in a patch **resolved** — an unresolved one has its links dropped and vanishes from the generated C# | ✅ all 4 help patches |
@@ -158,6 +158,24 @@ and never looks at the geometry itself. Finish with the exact predicate you mean
 `Contains`, `Distance`) on the candidates. The index did not answer your question; it narrowed who
 gets asked. Reasoning and the lifecycle contract in
 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#spatialindex--query--the-first-process-node).
+
+### `NTS.Experimental.Network` — provisional, and named so you know it
+
+| Node | in → out |
+|---|---|
+| `BuildNetwork` | spread of `LineString` → `Network`, **Node Count**, **Edge Count**, **Networks Built** |
+| `ShortestPath` | `Network`, From `Point`, To `Point` → `Path` (`LineString`), **Length**, **Found**, **From Snap Distance**, **To Snap Distance** |
+
+Built 2026-08-23 for VL.Overworld's Tutorial 13, *close does not mean reachable*. **Not a public API
+yet, and not under `NTS.Network` on purpose**: NetTopologySuite ships no shortest-path capability, so
+this is an algorithm of ours, and whether an algorithm of ours belongs in a package named after a
+library is decided after the chapter exists and two more real consumers want the same model — see
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#the-experimental-network--and-why-it-is-ntsexperimentalnetwork-not-ntsnetwork).
+
+Connectivity is **exact shared endpoints** — no tolerance, no auto-noding, a crossing is not a
+junction, an interior vertex is shape. Cost is length, edges are undirected, From/To snap to the
+nearest node and the snap distances are pins. `Found = false` is a result. One sentence of scope, a
+long non-scope list in [docs/ROADMAP.md](docs/ROADMAP.md), and no promise of a routing library.
 
 Everything else NetTopologySuite offers — and it is a large library — stays reachable through VL's
 raw .NET nodes. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#what-stays-raw).

@@ -170,6 +170,7 @@ The prefix comes from `[assembly: ImportAsIs(Namespace = "VL")]`.
 | `NTS.Operation` | `OperationNodes.cs` | `[Name("Operation")]` |
 | `NTS.IO` | `IONodes.cs` | `[Name("IO")]` |
 | `NTS.Index` | `IndexNodes.cs` | `[ProcessNode(Name = "SpatialIndex", Category = "NTS.Index")]` on the class, `[Name("Index")]` on the static `Query` holder |
+| `NTS.Experimental.Network` | `NetworkNodes.cs` | namespace `VL.NTS.Experimental` + `[Name("Network")]`; **experimental by name, on purpose** — see its own section |
 
 Five, deliberately — `NTS.Validation` was considered and dropped, because one validity node does
 not earn a category level and §26 of the brief warns against deep nesting. `NTS.Feature` earns one
@@ -364,6 +365,78 @@ obtained outside this package. To change geometry, hand in a new collection; the
   lifecycle, waiting for a use case (ROADMAP).
 - **Nulls and empty geometries are skipped, not counted, not indexed**; an empty geometry has no
   envelope. A null collection yields no index, so `Query` can be wired before there is data.
+
+---
+
+## The experimental network — and why it is `NTS.Experimental.Network`, not `NTS.Network`
+
+Added 2026-08-23 for VL.Overworld's Tutorial 13, *close does not mean reachable*. Two nodes,
+`BuildNetwork` (a process node) and `ShortestPath` (stateless), and one opaque handle type,
+`Network`. Every line of it is deliberately provisional, and the category name says so.
+
+### The distinction that sets the scope bar
+
+`SpatialIndex` and this are not the same kind of change. For STRtree, **NetTopologySuite owns the
+algorithm and the data structure**; the work was a correct VL lifecycle around an existing NTS
+capability. For shortest paths, NTS ships **nothing** — the 2.6.0 API documentation contains the
+word "shortest" zero times, and `Planargraph.PlanarGraph` describes itself as a framework that
+*"must be subclassed to expose appropriate methods"*. So adjacency construction and Dijkstra here
+are **an algorithm of ours**. Publishing an algorithm of ours under the name of a library that does
+not contain it is a scope decision, and a chapter is not enough evidence to make it.
+
+Hence: the chapter is approved, a permanent public `NTS.Network` is not. The code lives here because
+the alternatives are worse — a new package created to resolve uncertainty about where code belongs
+turns the uncertainty into a dependency, and a Dijkstra written in dataflow inside the chapter would
+bury the lesson under its own implementation. It lives under `Experimental` so nobody mistakes it for
+a promise. It is promoted, moved, or removed **after** three things exist: the chapter, the
+abstraction that actually emerged from building it, and at least two more genuine consumers wanting
+the same model (a building–entrance–street connectivity prompt, a procedural network prompt, an
+accessibility experiment are the plausible ones). That review is a separate Network Package Scope
+Proposal, not a line in this file.
+
+### The scope, as one sentence, asserted by 18 tests
+
+> An undirected spatial network built from **explicitly** connected LineStrings in a local
+> Cartesian space, with geometric length as cost and Dijkstra as the path algorithm.
+
+If a change would make that sentence false, the change waits for the review above.
+
+### Decisions
+
+- **Connectivity is exact shared endpoints.** No tolerance, no automatic noding. Two lines that
+  cross in XY are *not* connected — the bridge over the river and the overpass over the road are
+  the chapter's own subject, and geometry alone cannot tell a crossing from a junction. A line
+  passing exactly through another line's endpoint does not connect either: **only a LineString's
+  first and last coordinates are nodes; interior vertices are shape.** Where a junction is meant,
+  the linework is noded first (`Union` does it), and the chapter presents that step as a *claim
+  about the world*, not a geometric fact. Proximity ≠ connectivity is the lesson; a tolerance would
+  blur it and auto-noding would hide it.
+- **From / To are Points**, not arbitrary geometry: the meaning is "from this location to that one".
+- **Snapping is to the nearest node, and visible.** `From Snap Distance` / `To Snap Distance` are
+  pins; on a marked place they read 0, off the network they say the route did not start where you
+  clicked. No snap tolerance, no silent rejection. Nearest-point-on-edge with edge splitting is
+  non-scope.
+- **Cost is `LineString.Length`.** No cost pin, no speeds, no callback.
+- **Undirected.** One-way streets are non-scope.
+- **`ShortestPath` is stateless.** Dijkstra over a hand-typed town is microseconds; a `Paths
+  Computed` counter was designed and then dropped because it would teach that path queries are
+  something to retain, which is false here. The retained thing is the topology — `BuildNetwork`
+  holds the graph and exposes `Networks Built`.
+- **Same rebuild contract as `SpatialIndex`, literally shared code** (`InputSets`): rebuild when the
+  set of LineString references changes. Closing a bridge is removing a line from the collection —
+  a new collection, one rebuild, the counter ticks. No `Enable Edge` channel to dodge the rebuild;
+  *new topology → new network* is the clearer contract. Mutating a line in place is unsupported and
+  undetectable, and a test says so by name.
+- **The path keeps original edge geometry**, each edge reversed where the route walks it against
+  the direction it was typed, junction coordinates deduplicated. The graph decides which edges; the
+  geometry decides what the path looks like.
+- **`Found = false` is a result.** Empty path, length 0, no exception, no silent straight line.
+- **Adjacency list + `PriorityQueue`**, not a `PlanarGraph` subclass: the framework offers nothing
+  for Dijkstra and would add an inheritance layer to code that is meant to stay small enough to
+  delete.
+- **The chapter's coordinate space is local Cartesian, one unit = one metre, and says so.** Not
+  WGS84 — chapter 10 spent itself on why a length in degrees is not a distance, and chapter 13
+  demonstrates the positive form: define the space as metres and `Length` legitimately *is* metres.
 
 ---
 

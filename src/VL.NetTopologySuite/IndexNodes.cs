@@ -73,9 +73,9 @@ public class SpatialIndexNode
             return null;
         }
 
-        var incoming = geometries as Geometry?[] ?? ToArray(geometries);
+        var incoming = InputSets.ToArray(geometries);
 
-        if (!_hasInput || !SameReferences(incoming, _indexed))
+        if (!_hasInput || !InputSets.SameReferences(incoming, _indexed))
         {
             _tree = Build(incoming, out var indexed);
             _indexed = incoming;
@@ -105,30 +105,7 @@ public class SpatialIndexNode
         return tree;
     }
 
-    /// <summary>
-    /// Same count, and the same object at every position. Reference equality only — never a
-    /// structural comparison, which would cost more than the index saves.
-    /// </summary>
-    static bool SameReferences(Geometry?[] a, Geometry?[] b)
-    {
-        if (ReferenceEquals(a, b)) return true;
-        if (a.Length != b.Length) return false;
-        for (var i = 0; i < a.Length; i++)
-            if (!ReferenceEquals(a[i], b[i])) return false;
-        return true;
-    }
-
-    static Geometry?[] ToArray(IEnumerable<Geometry?> geometries)
-    {
-        if (geometries is IReadOnlyCollection<Geometry?> known)
-        {
-            var array = new Geometry?[known.Count];
-            var i = 0;
-            foreach (var g in known) array[i++] = g;
-            return array;
-        }
-        return new List<Geometry?>(geometries).ToArray();
-    }
+    // Change detection lives in InputSets — one rule, shared with BuildNetwork, same words.
 }
 
 /// <summary>
