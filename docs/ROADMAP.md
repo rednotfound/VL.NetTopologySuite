@@ -28,6 +28,10 @@ never when only the spread wrapper is new, and never by structural comparison. M
 geometry in place is unsupported and undetectable, and unreachable through this package's own nodes
 (they copy on the way in). `Build()` is called explicitly, so `Indexes Built` means what it says.
 Reasoning in [ARCHITECTURE.md](ARCHITECTURE.md#spatialindex--query--the-first-process-node).
+**Resolves under `vvvvc`** (probe compiled from VL.Overworld's harness, 2026-08-23): the generated C#
+constructs `new SpatialIndexNode()` once, in `Create`, and calls only `Update` per frame — which is
+the whole point of a process node, now visible in the output; and a `Spread<Point>` fed the
+`IEnumerable<Geometry?>` input without a conversion node, so covariance holds across the VL import.
 **Not yet seen in the GUI**: the first consumer will be VL.Overworld's Tutorial 11.
 
 **2026-08-22: `Nearest Points` arrived**, by exactly the rule at the top of this file: the course's
