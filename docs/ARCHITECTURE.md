@@ -149,6 +149,10 @@ is what keeps the WKT reader cache (keyed on the factory, weakly) from rebuildin
 Neither cache needs `[ProcessNode]`: a factory and a reader hold no connection, handle or thread.
 This is the cheap end of that rule, not an exception to it.
 
+The other end of the rule arrived on 2026-08-23: **`SpatialIndex` is this package's first
+`[ProcessNode]`**, because an index over a hundred thousand geometries is expensive to build and
+must survive from one frame to the next. Its lifecycle contract is its own section, below.
+
 ---
 
 ## Node categories
@@ -165,11 +169,14 @@ The prefix comes from `[assembly: ImportAsIs(Namespace = "VL")]`.
 | `NTS.Feature` | `FeatureNodes.cs` | `[Name("Feature")]` |
 | `NTS.Operation` | `OperationNodes.cs` | `[Name("Operation")]` |
 | `NTS.IO` | `IONodes.cs` | `[Name("IO")]` |
+| `NTS.Index` | `IndexNodes.cs` | `[ProcessNode(Name = "SpatialIndex", Category = "NTS.Index")]` on the class, `[Name("Index")]` on the static `Query` holder |
 
-Four, deliberately — `NTS.Validation` was considered and dropped, because one validity node does
+Five, deliberately — `NTS.Validation` was considered and dropped, because one validity node does
 not earn a category level and §26 of the brief warns against deep nesting. `NTS.Feature` earns one
 because it wraps a distinct upstream package and a distinct layer of the data model, not merely a
-pair of methods.
+pair of methods. `NTS.Index` (2026-08-23) earns one with two nodes, because the criterion was never
+the count: it is whether the category protects a distinct concept — *build an acceleration
+structure, then ask it* — that is likely to grow coherently. See its own section below.
 
 **Assembly `VL.NetTopologySuite`, root namespace `VL.NTS`.** The package is named after the library
 it wraps, which is the rule for a single-library package; only the *category* is abbreviated,
@@ -289,6 +296,77 @@ people search for.
 
 ---
 
+## `SpatialIndex` / `Query` — the first process node
+
+Added 2026-08-23 for VL.Overworld's Tutorial 11, whose lesson is *a candidate is not a result*.
+Two nodes in a new category, `NTS.Index`, and the first stateful object in the package. Every
+decision below was made before the code, and each is pinned by a test in `IndexTests`.
+
+### Why a process node, and why a new category
+
+An index over 100,000 geometries takes real time to build. A static method would build it sixty
+times a second from the moment the document opened — rule 8 in [RULES.md](RULES.md), the rule that
+once opened 17,000 TCP connections. So the tree is held, and `Indexes Built` is exposed as a pin:
+it should reach 1 and stay, and if it climbs every frame the patch is re-creating its geometries
+every frame and the index is doing nothing.
+
+`NTS.Validation` was refused a category for holding one node; `NTS.Index` gets one for holding two.
+The count was never the criterion. The criterion is whether the category protects a concept that
+is distinct from its neighbours and likely to grow coherently. Spatial indexing is neither making
+geometry nor operating on it — its model is *build an acceleration structure, then ask it* — and if
+it grows it will grow with nearest-neighbour and prepared-geometry queries, which belong together.
+Nothing is added now to fill it.
+
+### The lifecycle contract: rebuild when the set of geometry REFERENCES changes
+
+This is the decision that had to be investigated rather than assumed. The evidence:
+
+- **VL's only change signal is object identity.** `Spread<T>` has no `Equals` override (measured:
+  two spreads over `{1,2,3}` compare `False`); `Cache`, `Changed` and `ChannelFlange` all reduce to
+  `ReferenceEquals`; no VL data type carries a version or dirty flag. A static node upstream
+  therefore hands out a **fresh spread every frame** even when every geometry inside is the same
+  object.
+- **VL.Mapsui's `FeatureLayer` — the family's only precedent — learned this on screen**: comparing
+  its features by reference rebuilt the layer every frame and the map flickered. It now compares
+  element-wise, `ReferenceEquals` first and `EqualsExact` (every coordinate) as the fallback.
+- **This package already forbids the mutation that would make identity lie.** Every creation node
+  copies coordinates on the way in, every reader copies on the way out (`MutationTests`, negative-
+  tested). A geometry made here cannot be moved through the handles the patch holds.
+
+So: the collection reference is **not** what is compared — that would rebuild every frame under a
+static producer. The coordinates are **not** what is compared either — `EqualsExact` over 100,000
+geometries per frame costs more than the index saves, and the user's brief named that trap. What is
+compared is the **elements, by reference**: same count, and the same object at every position. A
+hundred thousand pointer comparisons is tens of microseconds. It also catches the case identity
+alone would miss — the same mutable `List` with an item added — which is a test.
+
+The stated contract, in the node's remarks and in a test whose name says it: **mutating a geometry
+already in the index is unsupported and undetectable.** It is reachable only with a raw NTS handle
+obtained outside this package. To change geometry, hand in a new collection; the node rebuilds once.
+
+### Smaller decisions
+
+- **`Build()` is explicit.** NTS builds an STRtree lazily on the first query. The node calls
+  `Build()` itself after the last insert, so the cost lands where the patch can see it and
+  `Indexes Built` means exactly what it says. NTS allows `Build()` once per tree; a rebuild is a new
+  tree, so that constraint costs nothing. The test: an `Insert` into the returned tree throws.
+- **`Query` takes a geometry, not four floats.** `Bounds` returns four floats because *reading* an
+  extent is a debugging act; *searching* by one is a spatial act, and the patch already has the
+  geometry — a buffered point, a rectangle, a polygon. Its `EnvelopeInternal` is used inside. This
+  keeps `Envelope` off the public surface, which the `Bounds` decision above already chose.
+- **The output is named `Candidates`.** NTS documents `Query` as *"items whose bounds intersect the
+  given envelope"*. A diagonal line is a candidate for a corner it passes nowhere near
+  (`A_candidate_is_not_a_result`). The exact predicate is the patch's job, and the name says so.
+- **The handle is the raw `STRtree<Geometry>`.** Native types, and the one thing we add. Nearest-
+  neighbour, removal and node capacity stay reachable through raw .NET nodes and are not wrapped
+  until a chapter needs them.
+- **STRtree only.** `Quadtree` exists for incremental insertion into a mutable index — a different
+  lifecycle, waiting for a use case (ROADMAP).
+- **Nulls and empty geometries are skipped, not counted, not indexed**; an empty geometry has no
+  envelope. A null collection yields no index, so `Query` can be wired before there is data.
+
+---
+
 ## Where a feature lives
 
 **Decided 2026-08-22, after researching the question rather than arguing it**: the `Feature` and
@@ -355,8 +433,10 @@ geospatial concept that benefits from a VL-native node?* — answers no for all 
 - **The long tail of `Geometry`**: `IsSimple`, `Normalized`, `Reverse`, `Boundary`, `InteriorPoint`,
   `PointOnSurface`, `Relate`, `EqualsTopologically`, and roughly fifty more. All present, none
   wrapped until asked for.
-- **Whole subsystems**: prepared geometry, `STRtree`/`Quadtree`, `LinearReferencing`, `Triangulate`,
-  `Precision.*`, most of `Operation.*` and `Algorithm.*`.
+- **Whole subsystems**: prepared geometry, `Quadtree`, `LinearReferencing`, `Triangulate`,
+  `Precision.*`, most of `Operation.*` and `Algorithm.*`. (`STRtree` left this list on 2026-08-23
+  and became `NTS.Index`; its nearest-neighbour, removal and node-capacity APIs stay raw — the
+  handle `SpatialIndex` returns *is* the NTS tree, so they are one raw .NET node away.)
 - **WKB and GeoJSON.** See [ROADMAP.md](ROADMAP.md).
 
 NetTopologySuite is large. Wrapping all of it would turn the node browser into an API dump, which is

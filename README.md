@@ -45,7 +45,7 @@ is how a package oversells itself:
 
 | | proves | run |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ **89 tests**, ~100 ms, no network |
+| `dotnet test` | the arithmetic is right | ✅ **105 tests**, ~300 ms, no network |
 | `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed | ✅ 5 documents pass |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `vvvvc` headless compile | every node in a patch **resolved** — an unresolved one has its links dropped and vanishes from the generated C# | ✅ all 4 help patches |
@@ -84,7 +84,7 @@ eight help topics are still unwritten (see [docs/ROADMAP.md](docs/ROADMAP.md)).
 
 ## The nodes
 
-**Thirty-five**, in four categories. No node takes more than three inputs.
+**Thirty-seven**, in five categories. No node takes more than three inputs.
 
 ### `NTS.Geometry` — making geometry
 
@@ -138,6 +138,26 @@ patch can make one by hand. The reasoning and the field-wide evidence are in
 ### `NTS.IO`
 
 `Read WKT` · `Write WKT`
+
+### `NTS.Index` — asking many geometries a question without asking each one
+
+| Node | in → out |
+|---|---|
+| `SpatialIndex` | spread of `Geometry` → `STRtree`, **Count**, **Indexes Built** |
+| `Query` | `STRtree`, search `Geometry` → **Candidates** (spread of `Geometry`), **Candidate Count** |
+
+**The package's first process node** (2026-08-23). An index is built once, held, and rebuilt only
+when the *set of geometry references* changes — never when only the spread wrapper is new, and
+never by comparing coordinates. **Watch Indexes Built: it should reach 1 and stay.** If it climbs
+every frame, the geometries upstream are being re-created every frame and the index is doing
+nothing for you.
+
+**Candidates are not results.** `Query` returns the geometries whose *bounding boxes* intersect the
+search geometry's bounding box — NTS's words: *"items whose bounds intersect the given envelope"* —
+and never looks at the geometry itself. Finish with the exact predicate you meant (`Intersects`,
+`Contains`, `Distance`) on the candidates. The index did not answer your question; it narrowed who
+gets asked. Reasoning and the lifecycle contract in
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#spatialindex--query--the-first-process-node).
 
 Everything else NetTopologySuite offers — and it is a large library — stays reachable through VL's
 raw .NET nodes. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#what-stays-raw).

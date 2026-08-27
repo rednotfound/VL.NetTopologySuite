@@ -10,8 +10,25 @@ comment; the work is deciding whether they earn a node, not writing them.
 
 ## Now — 0.0.1-alpha, unpublished
 
-35 nodes across `NTS.Geometry`, `NTS.Feature`, `NTS.Operation` and `NTS.IO`. 89 tests. Four help
-patches.
+37 nodes across `NTS.Geometry`, `NTS.Feature`, `NTS.Operation`, `NTS.IO` and `NTS.Index`. 105 tests.
+Four help patches.
+
+**2026-08-23: `NTS.Index` arrived — and with it the package's first `[ProcessNode]`.** `SpatialIndex`
+builds an `STRtree` over a spread of geometries, once, and `Query` asks it for the geometries whose
+*bounds* intersect a search geometry's bounds. Two nodes, by decision: STRtree only (Quadtree's
+incremental-insert lifecycle is a different model and waits for a use case), no `Envelope` on any
+pin (the search geometry's own extent is used), no nearest-neighbour / node-capacity / remove until
+a chapter needs one. The output is named **Candidates**, not Results, because that is what
+`STRtree.Query` returns — NTS documents it as *"items whose bounds intersect the given envelope"* —
+and the course chapter it exists for teaches exactly that gap.
+
+The lifecycle contract, decided before a line was written and pinned by 16 tests: **rebuild when
+the set of geometry references changes** (count, or any position holding a different object) —
+never when only the spread wrapper is new, and never by structural comparison. Mutating an indexed
+geometry in place is unsupported and undetectable, and unreachable through this package's own nodes
+(they copy on the way in). `Build()` is called explicitly, so `Indexes Built` means what it says.
+Reasoning in [ARCHITECTURE.md](ARCHITECTURE.md#spatialindex--query--the-first-process-node).
+**Not yet seen in the GUI**: the first consumer will be VL.Overworld's Tutorial 11.
 
 **2026-08-22: `Nearest Points` arrived**, by exactly the rule at the top of this file: the course's
 distance chapter needed to *draw* the shortest line between two geometries, not merely number it.
@@ -89,7 +106,7 @@ Ordered by how likely something is to need them.
 | **Validation detail** | `IsValid` already reports a reason and a location. NTS also offers `IsValidOp` with self-touching-ring tolerance, and `GeometryFixer` for repairing invalid geometry. `GeometryFixer` in particular would be useful and needs thought about whether silently repairing geometry is a thing a node should do. |
 | **Precision tools** | Fixed-precision models, `GeometryPrecisionReducer`. `GeometryFactory` is already the way in — a `PrecisionModel` built through raw .NET nodes plugs straight into the same pin. A dedicated node waits for someone hitting a robustness problem. |
 | **Prepared geometry** | `PreparedGeometryFactory` makes repeated predicates against one fixed geometry much faster, which is exactly the shape of a VL patch testing many points against one polygon every frame. **This one needs `[ProcessNode]`**, not a static method: it holds a prepared index that must be built once and rebuilt only when the geometry changes. Written as a static method it would rebuild the index sixty times a second, which is the same class of mistake as rule 8 in [RULES.md](RULES.md). |
-| **Spatial indexing** | `STRtree`, `Quadtree`. Same `[ProcessNode]` reasoning, more so — an index is a resource with a lifetime. |
+| **Spatial indexing — `Quadtree`** | `STRtree` arrived 2026-08-23 as `NTS.Index` (see Now). `Quadtree` deliberately did not: it exists for incremental insertion into a mutable index, which is a different lifecycle from "build once, query many", and no chapter, prompt or user has asked for it. Not to be added because it is on the same NTS page. |
 | **Linear referencing** | `LengthIndexedLine` and friends. Useful for animating along a path, which is a plausible vvvv thing to want. |
 | **Triangulation** | Delaunay and Voronoi. Attractive for visual work, and the point where "is this geometry or is this rendering?" needs answering — the output is geometry, so probably here. |
 

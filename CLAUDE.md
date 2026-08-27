@@ -8,10 +8,18 @@ Guidance for Claude Code (claude.ai/code) working in this repository.
 as nodes for [vvvv gamma](https://vvvv.org). One package, one library — geometry creation,
 inspection, spatial operations and WKT. Nothing about maps, rendering or reprojection.
 
-**Current state (2026-08-14): 32 nodes, 81 tests, 4 help patches, all checks green including the
-GUI.** Verified in vvvv gamma 7.4: the nodes appear under `NTS.Geometry` / `NTS.IO` /
-`NTS.Operation`, and all four help patches open and compute correct values. Nothing is published to
-nuget.org. See [Verification](#verification-be-precise-about-which-one-you-have).
+**Current state (2026-08-23): 37 nodes in five categories, 105 tests, 4 help patches.** The
+2026-08-14 GUI verification covered `NTS.Geometry` / `NTS.IO` / `NTS.Operation`; `NTS.Feature`
+(2026-08-22) was seen in the GUI through VL.Overworld's Tutorial 08 on 2026-08-23; **`NTS.Index`
+(2026-08-23) has not been seen in the GUI yet** — its first consumer will be VL.Overworld's
+Tutorial 11. Nothing is published to nuget.org. See
+[Verification](#verification-be-precise-about-which-one-you-have).
+
+**`NTS.Index` is this package's first `[ProcessNode]`.** `SpatialIndex` holds an `STRtree` and
+rebuilds it only when the set of geometry *references* changes; `Query` returns **Candidates**, not
+results. The contract and why it is that one and not another are in
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#spatialindex--query--the-first-process-node), and it
+is the template for the next stateful node (prepared geometry, when a chapter needs it).
 
 Two sibling repositories sit beside this one and are **references, not dependencies**:
 
@@ -42,9 +50,10 @@ that bite hardest:
    into `deps\`.
 
 Also: a `public static` method is a node evaluated **sixty times a second from the moment the
-document opens**. Nothing here holds a socket or a file, so `[ProcessNode]` is not needed yet — but
-`GeometryFactory` and `WKTReader` are cached for exactly this reason, and **prepared geometry and
-spatial indexing will need `[ProcessNode]`** when they arrive (see ROADMAP).
+document opens**. `GeometryFactory` and `WKTReader` are cached for exactly this reason, and
+**`SpatialIndex` is a `[ProcessNode]` for the same reason at the other end of the scale** — an
+index over 100,000 geometries is not something to build sixty times a second. Prepared geometry, when
+it arrives, follows that node's pattern (see ROADMAP and ARCHITECTURE).
 
 ## The one thing this package adds to NTS
 
@@ -134,7 +143,7 @@ listed, and every link must name a file that exists, because both failures are s
 
 | | proves | state |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ 81 tests, ~70 ms, no network |
+| `dotnet test` | the arithmetic is right | ✅ 105 tests, ~300 ms, no network |
 | `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed | ✅ 5 documents |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `vvvvc` headless compile | every node in a patch **resolved** | ✅ all 4 help patches |
@@ -204,7 +213,7 @@ vl-nettopologysuite/
 │   ├── GeometryNodes.Inspection.cs    # NTS.Geometry - Area, IsValid, Bounds, Coordinates …
 │   ├── OperationNodes.cs              # NTS.Operation - Buffer, overlay, predicates
 │   └── IONodes.cs                     # NTS.IO - Read WKT, Write WKT
-├── test/VL.NetTopologySuite.Tests/    # 81 xunit tests, no network, no vvvv
+├── test/VL.NetTopologySuite.Tests/    # 105 xunit tests, no network, no vvvv
 ├── help/VL.NetTopologySuite/          # 4 help patches + Help.xml (ordering and tags)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
 ├── docs/ARCHITECTURE.md               # why each node exists, what stays raw, the boundary
