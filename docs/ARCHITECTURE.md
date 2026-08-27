@@ -392,7 +392,8 @@ a promise. It is promoted, moved, or removed **after** three things exist: the c
 abstraction that actually emerged from building it, and at least two more genuine consumers wanting
 the same model (a building–entrance–street connectivity prompt, a procedural network prompt, an
 accessibility experiment are the plausible ones). That review is a separate Network Package Scope
-Proposal, not a line in this file.
+Proposal, not a line in this file. The evidence it will need — chapter, emerged abstraction, the API
+that now looks useful, two consumers in outline — is in [NETWORK-SCOPE-EVIDENCE.md](NETWORK-SCOPE-EVIDENCE.md).
 
 ### The scope, as one sentence, asserted by 18 tests
 

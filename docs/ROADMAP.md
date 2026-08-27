@@ -39,6 +39,12 @@ splitting, tolerance snapping, map matching; automatic noding, topology repair, 
 import and OSM semantics (`layer`, `level`, access); Z-aware connectivity; a generic graph framework
 or mutable graph API; geodesic weights or CRS transformation.
 
+**Seen in the GUI the same evening** through Tutorial 13: 200 m straight against 800 m by the streets,
+`Found` False and the path gone when the bridge closes, `Networks Built` 1 → 2 → 3, snap distance 0
+on a corner. The four pieces of evidence the scope review asked for — the chapter, the abstraction
+that emerged, the API that now looks useful, two plausible consumers — are in
+[NETWORK-SCOPE-EVIDENCE.md](NETWORK-SCOPE-EVIDENCE.md). It is evidence, not a decision.
+
 **2026-08-23: `NTS.Index` arrived — and with it the package's first `[ProcessNode]`.** `SpatialIndex`
 builds an `STRtree` over a spread of geometries, once, and `Query` asks it for the geometries whose
 *bounds* intersect a search geometry's bounds. Two nodes, by decision: STRtree only (Quadtree's
