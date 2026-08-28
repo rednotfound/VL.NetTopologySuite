@@ -98,6 +98,16 @@ It also stresses the connectivity contract in a useful way: an entrance is not o
 the prompt has to say so out loud (the snap distance is the honest number). If the abstraction
 survives that, it is more than a toy.
 
+**Built 2026-08-28, rung 4 passed the same day** — as `Prompt Which door` in VL.Overworld, with one change
+from the outline above: the destination is the cursor, not a bus stop, so the question is asked
+three times a frame (once per door) and the totals compared. It used the experimental surface
+**exactly as it is**. `Nearest Node` turned out NOT to be needed: the returned path's first vertex
+is the snapped node, so the stub is drawn from it; the one case that cannot show — an empty path,
+door and cursor on the same node — is gated with `Count > 0`. That is the exact hole `Nearest
+Node` would fill, and one consumer is not enough to say it must. Streets came from a GeoJSON file
+rather than a WKT box, and `Networks Built` still held at 1: the reference rule survives a second
+producer. Full record in VL.Overworld's `docs/ACT-III-DESIGN.md`, "Second consumer".
+
 ### 4b. `Prompt Grow a town` — a procedural street network
 
 Chapter 05 grew shapes; this grows a network: a few seed streets, a rule that extends dead ends and
@@ -111,5 +121,6 @@ once per generation, which is the counter doing its job rather than reporting a 
 
 Costs, direction, turn rules, OSM. Both want the sentence in §2 unchanged. That is the pattern the
 review asked to see — *"several genuine uses naturally want the same abstraction"* — and it is
-present in outline. It is not yet present in code. Until at least one of them is built and passes
-its fourth rung, this file is a prediction, and `NTS.Experimental` stays exactly where it is.
+present in outline, and since 2026-08-28 **one of the two is present in code** (4a). Until the
+second is built and passes its fourth rung, this file is half a prediction, and `NTS.Experimental`
+stays exactly where it is.
