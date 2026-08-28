@@ -110,6 +110,14 @@ producer. Full record in VL.Overworld's `docs/ACT-III-DESIGN.md`, "Second consum
 
 ### 4b. `Prompt Grow a town` — a procedural street network
 
+**Built 2026-08-28, rung 4 passed the same day** (VL.Overworld `help\Prompt Grow a town.vl`; the record is in
+that repo's `docs/ACT-III-DESIGN.md`). It wanted the surface unchanged too: `BuildNetwork` + `ShortestPath`, nothing
+added. What it did surface: `ShortestPath` has **no snap tolerance** — any point snaps to some node, so a connected
+network answers `Found = true` from the first frame, and the chapter had to seed two components to show a flip. A
+*maximum snap distance* is the first pin either consumer has wanted; neither needed it badly enough to add.
+And the prediction below was half right: the route does not *keep* shrinking on a grid — it hits the Manhattan
+floor (960 m) and stays; `Networks Built` climbs exactly once per press, as designed.
+
 Chapter 05 grew shapes; this grows a network: a few seed streets, a rule that extends dead ends and
 sometimes joins them, a `BuildNetwork` every generation, and a `ShortestPath` between two fixed
 points whose length **shrinks as the town grows** — the emergent behaviour is the whole prompt.
@@ -121,6 +129,5 @@ once per generation, which is the counter doing its job rather than reporting a 
 
 Costs, direction, turn rules, OSM. Both want the sentence in §2 unchanged. That is the pattern the
 review asked to see — *"several genuine uses naturally want the same abstraction"* — and it is
-present in outline, and since 2026-08-28 **one of the two is present in code** (4a). Until the
-second is built and passes its fourth rung, this file is half a prediction, and `NTS.Experimental`
-stays exactly where it is.
+present in outline, and since 2026-08-28 **both are present in code and rung-4 verified** (4a in the morning, 4b in the
+evening). This file is no longer a prediction; the scope proposal can be written from it.
