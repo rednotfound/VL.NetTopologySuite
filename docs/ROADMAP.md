@@ -28,7 +28,10 @@ Its scope is one sentence, and is asserted by the tests: *an undirected spatial 
 EXPLICITLY connected LineStrings in a local Cartesian space, with geometric length as cost and
 Dijkstra as the path algorithm.* Connectivity is exact shared endpoints — no tolerance, no automatic
 noding, a crossing is not a junction, an interior vertex is shape not a node. From/To are Points
-snapped to the nearest node with the snap distances exposed. `Found = false` is a first-class
+snapped to the nearest node with the snap distances exposed. **A maximum snap distance is the first
+thing a consumer has wanted (VL.Overworld `Prompt Grow a town`, 2026-08-28: with no tolerance a connected
+network can never answer `Found = false`, so the chapter seeded two components instead) — evidence for the
+scope proposal, not a change made here.** `Found = false` is a first-class
 result. The path keeps each edge's original geometry. Same rebuild contract as `SpatialIndex`
 (shared `InputSets`): closing a bridge is a new collection and one honest rebuild.
 
