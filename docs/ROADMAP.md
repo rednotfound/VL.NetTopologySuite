@@ -10,8 +10,14 @@ comment; the work is deciding whether they earn a node, not writing them.
 
 ## Now — 0.0.1-alpha, unpublished
 
-37 public nodes across `NTS.Geometry`, `NTS.Feature`, `NTS.Operation`, `NTS.IO` and `NTS.Index`, plus
-two **experimental** ones under `NTS.Experimental.Network`. 122 tests. Four help patches.
+39 public nodes across `NTS.Geometry`, `NTS.Feature`, `NTS.Operation`, `NTS.IO`, `NTS.Index` and
+`NTS.Network`. 126 tests. Four help patches.
+
+**2026-08-28: the network was PROMOTED to `NTS.Network`** — `Network` (was `BuildNetwork`) and
+`ShortestPath`, with one new pin, `Max Snap Distance` — by the Network Package Scope Proposal
+([NETWORK-SCOPE-PROPOSAL.md](NETWORK-SCOPE-PROPOSAL.md)), the review the paragraph below demanded.
+`Nearest Node` stays unbuilt: both consumers managed without it, and it is the first candidate when
+one cannot. The history, kept because the reasoning still governs what may be added:
 
 **2026-08-23: an EXPERIMENTAL network — `BuildNetwork` and `ShortestPath` — under
 `NTS.Experimental.Network`, and deliberately not under `NTS.Network`.** Built for VL.Overworld's
@@ -28,10 +34,10 @@ Its scope is one sentence, and is asserted by the tests: *an undirected spatial 
 EXPLICITLY connected LineStrings in a local Cartesian space, with geometric length as cost and
 Dijkstra as the path algorithm.* Connectivity is exact shared endpoints — no tolerance, no automatic
 noding, a crossing is not a junction, an interior vertex is shape not a node. From/To are Points
-snapped to the nearest node with the snap distances exposed. **A maximum snap distance is the first
-thing a consumer has wanted (VL.Overworld `Prompt Grow a town`, 2026-08-28: with no tolerance a connected
-network can never answer `Found = false`, so the chapter seeded two components instead) — evidence for the
-scope proposal, not a change made here.** `Found = false` is a first-class
+snapped to the nearest node with the snap distances exposed. **A maximum snap distance was the first
+thing a consumer wanted (VL.Overworld `Prompt Grow a town`, 2026-08-28: with unbounded snapping a connected
+network can never answer `Found = false`, so the chapter seeded two components instead) — and the scope
+proposal added it the same day: `Max Snap Distance`, default infinity, refusal still reported.** `Found = false` is a first-class
 result. The path keeps each edge's original geometry. Same rebuild contract as `SpatialIndex`
 (shared `InputSets`): closing a bridge is a new collection and one honest rebuild.
 

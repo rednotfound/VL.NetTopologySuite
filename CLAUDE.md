@@ -8,9 +8,10 @@ Guidance for Claude Code (claude.ai/code) working in this repository.
 as nodes for [vvvv gamma](https://vvvv.org). One package, one library — geometry creation,
 inspection, spatial operations and WKT. Nothing about maps, rendering or reprojection.
 
-**Current state (2026-08-23): 37 public nodes in five categories plus two EXPERIMENTAL ones under
-`NTS.Experimental.Network` (built for Tutorial 13; not a public API — an algorithm of ours, not an
-exposure of NTS, and promoted only after a separate scope review), 122 tests, 4 help patches.** The
+**Current state (2026-08-28): 39 public nodes in six categories — `NTS.Network` (`Network` +
+`ShortestPath`, an algorithm of ours, promoted from `NTS.Experimental.Network` by
+`docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 126
+tests, 4 help patches.** The
 2026-08-14 GUI verification covered `NTS.Geometry` / `NTS.IO` / `NTS.Operation`; `NTS.Feature`
 (2026-08-22) was seen in the GUI through VL.Overworld's Tutorial 08 on 2026-08-23; **`NTS.Index`
 (2026-08-23) was seen the same evening through Tutorial 11**, with `Indexes Built` holding at 1 over

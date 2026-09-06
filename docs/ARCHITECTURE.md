@@ -384,7 +384,16 @@ word "shortest" zero times, and `Planargraph.PlanarGraph` describes itself as a 
 are **an algorithm of ours**. Publishing an algorithm of ours under the name of a library that does
 not contain it is a scope decision, and a chapter is not enough evidence to make it.
 
-Hence: the chapter is approved, a permanent public `NTS.Network` is not. The code lives here because
+**Decided 2026-08-28: promoted to `NTS.Network`, in place** — the review below happened
+([NETWORK-SCOPE-PROPOSAL.md](NETWORK-SCOPE-PROPOSAL.md)): both named consumers were built and rung-4
+verified in VL.Overworld the same day (`Prompt Which door`, `Prompt Grow a town`), both wanted the
+surface unchanged, and the one pin a consumer asked for (`Max Snap Distance`) was added with the
+refusal still measurable. The process node is `Network`, matching `SpatialIndex` — a process node is
+named for the thing it holds. This package now contains exactly one algorithm of ours, this one, and
+says so here; a second algorithm of ours wanting a home reopens the location question. The original
+reasoning, kept:
+
+Hence: the chapter was approved, a permanent public `NTS.Network` was not — then. The code lives here because
 the alternatives are worse — a new package created to resolve uncertainty about where code belongs
 turns the uncertainty into a dependency, and a Dijkstra written in dataflow inside the chapter would
 bury the lesson under its own implementation. It lives under `Experimental` so nobody mistakes it for
@@ -395,12 +404,14 @@ accessibility experiment are the plausible ones). That review is a separate Netw
 Proposal, not a line in this file. The evidence it will need — chapter, emerged abstraction, the API
 that now looks useful, two consumers in outline — is in [NETWORK-SCOPE-EVIDENCE.md](NETWORK-SCOPE-EVIDENCE.md).
 
-### The scope, as one sentence, asserted by 18 tests
+### The scope, as one sentence, asserted by 22 tests
 
 > An undirected spatial network built from **explicitly** connected LineStrings in a local
-> Cartesian space, with geometric length as cost and Dijkstra as the path algorithm.
+> Cartesian space, with geometric length as cost and Dijkstra as the path algorithm; queries snap
+> to the nearest node within an optional maximum distance, and the snap is always reported.
 
-If a change would make that sentence false, the change waits for the review above.
+If a change would make that sentence false, the change waits for a new review, with
+NETWORK-SCOPE-PROPOSAL.md as its template.
 
 ### Decisions
 

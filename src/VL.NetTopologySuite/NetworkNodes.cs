@@ -3,23 +3,23 @@ using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using VL.Core.Import;
 
-// EXPERIMENTAL. Built for VL.Overworld's Tutorial 13 ("close does not mean reachable") and placed
-// under NTS.Experimental on purpose: NetTopologySuite ships no shortest-path capability — its
-// PlanarGraph is a framework for algorithm authors — so everything in this file is an algorithm of
-// OURS, and an algorithm of ours is not "exposing NetTopologySuite". Whether it becomes a permanent
-// public surface (NTS.Network, another package, or nothing) is decided AFTER the chapter exists and
-// at least two more genuine consumers want the same abstraction. Until then: two nodes, one
-// sentence of scope, and a long non-scope list in ROADMAP.md.
+// Promoted from NTS.Experimental.Network on 2026-08-28 by the Network Package Scope Proposal
+// (docs/NETWORK-SCOPE-PROPOSAL.md), after the evidence the 2026-08-23 review asked for existed:
+// the chapter (VL.Overworld Tutorial 13), the abstraction that emerged, and two further consumers
+// wanting the same surface (Prompt Which door, Prompt Grow a town), all rung-4 verified. This is
+// an algorithm of OURS over NTS types - NetTopologySuite ships no shortest-path capability - and
+// ARCHITECTURE.md says so plainly; a second algorithm of ours wanting a home reopens the location
+// question.
 //
 //   An undirected spatial network built from EXPLICITLY connected LineStrings in a local Cartesian
-//   space, with geometric length as cost and Dijkstra as the path algorithm.
+//   space, with geometric length as cost and Dijkstra as the path algorithm; queries snap to the
+//   nearest node within an optional maximum distance, and the snap is always reported.
 //
 // If a change would stop that sentence being true, stop and discuss.
-namespace VL.NTS.Experimental;
+namespace VL.NTS;
 
 /// <summary>
 /// A retained network: nodes at LineString endpoints, one undirected edge per LineString.
-/// Experimental — see the note at the top of this file.
 /// </summary>
 /// <remarks>
 /// Opaque on purpose. The node and edge records inside are an implementation detail while the
@@ -72,8 +72,8 @@ public sealed class Network
 }
 
 /// <summary>
-/// Builds a <see cref="Network"/> from LineStrings, once, and holds it. Experimental.
-/// Category <c>NTS.Experimental.Network</c>.
+/// Builds a <see cref="Network"/> from LineStrings, once, and holds it.
+/// Category <c>NTS.Network</c>.
 /// </summary>
 /// <remarks>
 /// <para><b>Connectivity is explicit and exact.</b> Two LineStrings are connected when they share an
@@ -90,8 +90,8 @@ public sealed class Network
 /// <para>LineStrings become edges; each part of a MultiLineString becomes an edge; nulls, empties
 /// and anything else are skipped. <c>Edge Count</c> tells you how many survived.</para>
 /// </remarks>
-[ProcessNode(Name = "BuildNetwork", Category = "NTS.Experimental.Network")]
-public class BuildNetworkNode
+[ProcessNode(Name = "Network", Category = "NTS.Network")]
+public class NetworkNode
 {
     Network? _network;
     Geometry?[] _lines = [];
@@ -158,7 +158,7 @@ public class BuildNetworkNode
     }
 }
 
-/// <summary>Asking a network. Experimental. Category <c>NTS.Experimental.Network</c>.</summary>
+/// <summary>Asking a network. Category <c>NTS.Network</c>.</summary>
 [Name("Network")]
 public static class NetworkNodes
 {
@@ -178,14 +178,20 @@ public static class NetworkNodes
     /// decides what the path looks like. Length is the sum of the edge lengths, in the network's
     /// own coordinate units.</para>
     /// <para>From and To on the same node: found, empty path, length 0.</para>
+    /// <para><b>Max Snap Distance bounds the query, not the connectivity.</b> If either snap distance
+    /// exceeds it, the answer is not found — empty path, length 0 — and the snap distances are still
+    /// reported, because a refusal you cannot measure would break the rule above. The default is
+    /// infinity: unbounded snapping, the behaviour every existing chapter was built against. Edges
+    /// still connect only by exact shared endpoints; this is not tolerance snapping.</para>
     /// </remarks>
-    /// <param name="network">From <c>BuildNetwork</c>.</param>
+    /// <param name="network">From <c>Network</c>.</param>
     /// <param name="from">Where the route starts. Snapped to the nearest node.</param>
     /// <param name="to">Where the route ends. Snapped to the nearest node.</param>
     /// <param name="length">Length of the route along the network, in coordinate units. 0 when not found.</param>
     /// <param name="found">Whether a route exists. False is a real result.</param>
     /// <param name="fromSnapDistance">How far From moved to reach its node.</param>
     /// <param name="toSnapDistance">How far To moved to reach its node.</param>
+    /// <param name="maxSnapDistance">Farthest either end may snap. Beyond it: not found, snap still reported.</param>
     public static LineString ShortestPath(
         Network? network,
         Point? from,
@@ -193,7 +199,8 @@ public static class NetworkNodes
         out double length,
         out bool found,
         out double fromSnapDistance,
-        out double toSnapDistance)
+        out double toSnapDistance,
+        [Pin(Name = "Max Snap Distance")] double maxSnapDistance = double.PositiveInfinity)
     {
         length = 0;
         found = false;
@@ -205,6 +212,10 @@ public static class NetworkNodes
 
         var start = network.Nearest(from.Coordinate, out fromSnapDistance);
         var goal = network.Nearest(to.Coordinate, out toSnapDistance);
+
+        // The refusal is measurable: found stays false, the distances above stay reported.
+        if (fromSnapDistance > maxSnapDistance || toSnapDistance > maxSnapDistance)
+            return empty;
 
         if (start == goal)
         {

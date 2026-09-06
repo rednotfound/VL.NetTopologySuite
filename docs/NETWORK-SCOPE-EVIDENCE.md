@@ -1,5 +1,9 @@
 # The experimental network — evidence for a scope decision not yet made
 
+> **The decision was made on 2026-08-28**: promoted in place as `NTS.Network`, `BuildNetwork` renamed
+> `Network`, `Max Snap Distance` added, `Nearest Node` left out — see
+> [NETWORK-SCOPE-PROPOSAL.md](NETWORK-SCOPE-PROPOSAL.md), §7. This file stays as the evidence it was.
+
 Written 2026-08-23, the evening `NTS.Experimental.Network` and VL.Overworld's Tutorial 13 both passed
 their fourth rung. This file exists because the review that approved the chapter did **not** approve
 a permanent public API, and asked for four things before that question is reopened: the chapter,
