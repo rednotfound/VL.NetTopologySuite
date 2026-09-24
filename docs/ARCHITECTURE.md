@@ -345,6 +345,19 @@ The stated contract, in the node's remarks and in a test whose name says it: **m
 already in the index is unsupported and undetectable.** It is reachable only with a raw NTS handle
 obtained outside this package. To change geometry, hand in a new collection; the node rebuilds once.
 
+### Measured 2026-09-24: the reference contract is value equality whenever `Cons` is upstream
+
+`Read WKT` parses every frame and returns new geometry objects every frame (no cache; see
+`IONodes.ReadWKT`). So `Read WKT → Geometries → Network` rebuilt every frame in the shortest-path
+help patch — `Networks Built` read 1819 after thirty seconds. The six-pad `Read WKT ×6 → Cons →
+Network` version had read 1, but only because VL's `CollectionBuilders` behind `Cons` keeps the old
+items when the new ones are `Equals`, and NetTopologySuite's `Geometry.Equals` is value equality.
+The contract above is therefore already value-based on that path and reference-based on every
+other, which is a trap rather than a rule. The help patch now puts the parse in a `Cache` region
+(the community idiom); the candidate node-level answer — reference check first, element-wise
+`EqualsExact` before rebuilding — is on the ROADMAP for the user to decide, because it rewrites this
+section and its tests.
+
 ### Smaller decisions
 
 - **`Build()` is explicit.** NTS builds an STRtree lazily on the first query. The node calls

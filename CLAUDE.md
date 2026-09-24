@@ -11,7 +11,10 @@ inspection, spatial operations and WKT. Nothing about maps, rendering or reproje
 **Current state (2026-08-28): 39 public nodes in six categories — `NTS.Network` (`Network` +
 `ShortestPath`, an algorithm of ours, promoted from `NTS.Experimental.Network` by
 `docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 126
-tests, 15 help patches (the `Explanation` front door and ten new `HowTo`s arrived 2026-09-24, every one seen in the GUI).** The
+tests, 15 help patches.** All fifteen were (re)written on 2026-09-24 in the community's measured style
+([docs/HELP-PATCH-STYLE.md](docs/HELP-PATCH-STYLE.md)), every one seen in the GUI, every node opens one
+on **F1** (help flags, audited by `Test-VLPatch`), and `HowTo Find the shortest path` draws its town with
+VL.Skia through ForEach and Cache regions. The
 2026-08-14 GUI verification covered `NTS.Geometry` / `NTS.IO` / `NTS.Operation`; `NTS.Feature`
 (2026-08-22) was seen in the GUI through VL.Overworld's Tutorial 08 on 2026-08-23; **`NTS.Index`
 (2026-08-23) was seen the same evening through Tutorial 11**, with `Indexes Built` holding at 1 over
@@ -219,6 +222,15 @@ dotnet test test\VL.NetTopologySuite.Tests\VL.NetTopologySuite.Tests.csproj
     ".\help\VL.NetTopologySuite\HowTo Create a point.vl" --package-repositories .\dist
 ```
 
+**Two rules learned on 2026-09-24, each at a cost.** (1) The user hand-edits help patches in vvvv
+between sessions and does not commit them: run `git status help/` before regenerating or checking out
+any `.vl`, and treat a modified patch you did not touch as theirs — a hand-edited patch was destroyed
+that way. (2) Other Claude sessions (vl-mapsui, vl-overworld, sometimes a second one here) run vvvv on
+this machine; one killed this repository's window with `Stop-Process`. Every launcher here writes its
+pid to `%TEMP%\vl-nettopologysuite-vvvv.pid`, closes only that pid and only with `CloseMainWindow`,
+and refuses to launch while a vvvv it did not start is running. `tools\Open-HelpPatch.ps1` (and
+`Open-HelpPatch.cmd`, a picker) is the launcher; `tools\HelpPatchGen.ps1` scaffolds a patch.
+
 **Never leave vvvv running unattended, and never start it in the background.** Launch, read the
 value, close. In vvvv, having a patch open means having it running — there is no idle state.
 
@@ -240,7 +252,7 @@ vl-nettopologysuite/
 ├── docs/ROADMAP.md                    # next / later / never
 ├── docs/RULES.md                      # ⭐ carried from the siblings - read before any node
 ├── build.ps1, pack.ps1
-└── tools/                             # New-VLId, Find-Vvvv, Test-VLPackage, Test-VLPatch, Compile-HelpPatches, Normalize-HelpPatches, HelpPatchGen
+└── tools/                             # New-VLId, Find-Vvvv, Test-VLPackage, Test-VLPatch, Compile-HelpPatches, Normalize-HelpPatches, HelpPatchGen, Open-HelpPatch
 ```
 
 `GeometryNodes` is one `partial` class across two files so both halves land in one category without
