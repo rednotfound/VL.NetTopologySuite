@@ -11,7 +11,7 @@ inspection, spatial operations and WKT. Nothing about maps, rendering or reproje
 **Current state (2026-08-28): 39 public nodes in six categories — `NTS.Network` (`Network` +
 `ShortestPath`, an algorithm of ours, promoted from `NTS.Experimental.Network` by
 `docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 126
-tests, 5 help patches (the `Explanation` front door arrived 2026-09-24, seen in the GUI the same day).** The
+tests, 15 help patches (the `Explanation` front door and ten new `HowTo`s arrived 2026-09-24, every one seen in the GUI).** The
 2026-08-14 GUI verification covered `NTS.Geometry` / `NTS.IO` / `NTS.Operation`; `NTS.Feature`
 (2026-08-22) was seen in the GUI through VL.Overworld's Tutorial 08 on 2026-08-23; **`NTS.Index`
 (2026-08-23) was seen the same evening through Tutorial 11**, with `Indexes Built` holding at 1 over
@@ -139,7 +139,7 @@ in the help browser was `01 03 04 06`, and **every gap reads as a broken install
 the mistake was noticed. Numbering also means adding a topic in the middle renumbers files that
 other documents already link to.
 
-So: a new patch gets a `HowTo ...` name and is appended to the right `Topic` in `Help.xml`.
+So: a new patch gets a `HowTo ...` name and is appended to the right `Topic` in `Help.xml`. Scaffold it with `tools\HelpPatchGen.ps1` (intro box at 60,60 900 wide, dataflow below, 440-wide notes beside or under it - the shape all fifteen share), then compile it and READ the C#: a wrong pin name does not fail the compile, it makes that input read `default(...)`. After the GUI check the `.vl` is the truth and the scaffolding script is thrown away.
 `tools\Test-VLPatch.ps1` enforces the pairing in both directions — every patch on disk must be
 listed, and every link must name a file that exists, because both failures are silent.
 
@@ -148,9 +148,9 @@ listed, and every link must name a file that exists, because both failures are s
 | | proves | state |
 |---|---|---|
 | `dotnet test` | the arithmetic is right | ✅ 126 tests, ~300 ms, no network |
-| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 6 documents |
+| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 16 documents |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
-| `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 5 help patches, 2026-09-24 |
+| `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 15 help patches, 2026-09-24 |
 | the vvvv **NodeBrowser** | **which category a node is in** | ✅ `NTS` → Geometry, IO, Operation |
 | the vvvv **GUI, running** | the patch computes the right value | ✅ 2026-08-14, vvvv 7.4 |
 
@@ -222,13 +222,13 @@ vl-nettopologysuite/
 │   ├── OperationNodes.cs              # NTS.Operation - Buffer, overlay, predicates
 │   └── IONodes.cs                     # NTS.IO - Read WKT, Write WKT
 ├── test/VL.NetTopologySuite.Tests/    # 126 xunit tests, no network, no vvvv
-├── help/VL.NetTopologySuite/          # 5 help patches + Help.xml (ordering and tags)
+├── help/VL.NetTopologySuite/          # 15 help patches + Help.xml (ordering and tags)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
 ├── docs/ARCHITECTURE.md               # why each node exists, what stays raw, the boundary
 ├── docs/ROADMAP.md                    # next / later / never
 ├── docs/RULES.md                      # ⭐ carried from the siblings - read before any node
 ├── build.ps1, pack.ps1
-└── tools/                             # New-VLId, Find-Vvvv, Test-VLPackage, Test-VLPatch, Compile-HelpPatches, Normalize-HelpPatches
+└── tools/                             # New-VLId, Find-Vvvv, Test-VLPackage, Test-VLPatch, Compile-HelpPatches, Normalize-HelpPatches, HelpPatchGen
 ```
 
 `GeometryNodes` is one `partial` class across two files so both halves land in one category without

@@ -46,9 +46,9 @@ is how a package oversells itself:
 | | proves | run |
 |---|---|---|
 | `dotnet test` | the arithmetic is right | ✅ **126 tests**, ~300 ms, no network |
-| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed | ✅ 6 documents pass |
+| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed | ✅ 16 documents pass |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
-| `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved** — an unresolved one has its links dropped and vanishes from the generated C#, so the script reads the C# | ✅ all 5 help patches, 2026-09-24 |
+| `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved** — an unresolved one has its links dropped and vanishes from the generated C#, so the script reads the C# | ✅ all 15 help patches, 2026-09-24 |
 | **the vvvv GUI** | **a node appears under the right category, with the right label, computing the right value** | ✅ **run 2026-08-14, vvvv 7.4** |
 
 What the GUI actually showed:
