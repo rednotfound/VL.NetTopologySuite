@@ -80,6 +80,27 @@ package** — `dist\VL.NetTopologySuite\help\` when launched with `--package-rep
 Sources: [Providing Help](https://thegraybook.vvvv.org/reference/extending/providing-help.html),
 [Finding Help](https://thegraybook.vvvv.org/reference/hde/findinghelp.html).
 
+## Drawing the result with VL.Skia
+
+A help patch may use VL.Skia even though this package does not depend on it: VL.Skia ships inside
+vvvv, and the community's help draws with it everywhere. The document just declares
+`<NugetDependency Location="VL.Skia" ... />` (`Save-Doc -Dependencies 'VL.Skia'`).
+
+NTS geometry reaches Skia through a **ForEach region**: `Coordinates` → ForEach { `Split` →
+`ToFloat32` ×2 → `Vector (Join)` → `/ (Scale)` } → `Polygon` with `Closed` off draws a line through
+the points; a spread of geometries needs a second, outer ForEach with one `Polygon` per slice and
+`Group (Spectral)` to collect the layers. A Skia **Paint is made outside the shape** — `Stroke`
+(Color, Stroke Width) or `Fill` (Color) — and handed to the shape's `Paint` pin; wiring a layer into
+`Stroke`'s Input fails with `Layer is no SkiaPaint!`. `Group` collects the layers, `Renderer` shows
+them; its `Bounds` pin default places the window. The renderer's normalized space is −1..1 in
+height, y down, wider with the window's aspect, so divide data coordinates to fit (the network
+HowTo uses a town centred on the origin, ÷4, in a 900 × 450 window).
+
+`tools\HelpPatchGen.ps1` writes all of it: `Region` (nestable; link the spread into `.Top`, `.Top`
+into the first inner pin, the last output into `.Bottom`, `.Bottom` onward — every link lives in
+the outer patch), `-Region` on `Node`, `-Defaults` for pin values without an IOBox, `-CategoryRef`
+for `Vector (Join)`'s `Vector2Type` reference. The region XML shape was copied from a shipped
+patch; `HowTo Find the shortest path` is the worked example, seen rendering on 2026-09-24.
 ## Sizing (measured, so it need not be re-derived)
 
 | | 9pt body | 20pt heading |
