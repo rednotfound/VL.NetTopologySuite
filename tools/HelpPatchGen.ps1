@@ -207,18 +207,51 @@ function Node($d, [string]$Name, [string]$Category, [string]$Bounds,
 # Link works unchanged. A constant the whole loop needs is linked straight from outside to the inner
 # pin, with no control point. Nest by passing -Region to Region itself. Bounds are canvas
 # coordinates, inner nodes use absolute canvas coordinates inside them.
-function Region($d, [string]$Bounds, [string]$TopAt, [string]$BottomAt, $Region = $null) {
+function Region($d, [string]$Bounds, [string]$TopAt, [string]$BottomAt, $Region = $null, [ValidateSet('ForEach', 'Cache')][string]$Kind = 'ForEach') {
     $r = [pscustomobject]@{
-        Id = New-Id; Top = New-Id; Bottom = New-Id; Bounds = $Bounds; TopAt = $TopAt; BottomAt = $BottomAt
+        Id = New-Id; Top = New-Id; Bottom = New-Id; Bounds = $Bounds; TopAt = $TopAt; BottomAt = $BottomAt; Kind = $Kind
         Elements = [System.Collections.Generic.List[object]]::new()
     }
     if ($Region) { $Region.Elements.Add($r) } else { $d.Elements.Add($r) }
     $r
 }
 
+# A Cache region runs its body only when what comes in through its Top control point changes,
+# and hands the SAME objects out of its Bottom control point every other frame. That is what a
+# static node such as Read WKT needs in front of SpatialIndex or Network: those rebuild when the
+# geometry REFERENCES change, and a static node makes new objects every frame. (Cons happened to
+# hide this: VL's collection builder keeps the old items when the new ones are Equals, and NTS
+# compares geometry by value. Geometries hands the new objects straight through.) Shape copied
+# from shipped help: ProcessStatefulRegion Cache, pins Force / Dispose Cached Outputs / Has
+# Changed, inner patches Create and Then. Same wiring rules as ForEach.
+function CacheRegion($d, [string]$Bounds, [string]$TopAt, [string]$BottomAt, $Region = $null) {
+    Region $d $Bounds $TopAt $BottomAt -Region $Region -Kind 'Cache'
+}
+
 function Render-Element($e) {
     if ($e -is [string]) { return $e }
     $inner = @($e.Elements | ForEach-Object { Render-Element $_ }) -join "`r`n"
+    if ($e.Kind -eq 'Cache') {
+        return @(
+            "          <Node Bounds=`"$($e.Bounds)`" Id=`"$($e.Id)`">",
+            '            <p:NodeReference LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">',
+            '              <Choice Kind="StatefulRegion" Name="Region (Stateful)" Fixed="true" />',
+            '              <Choice Kind="ProcessStatefulRegion" Name="Cache" />',
+            '              <FullNameCategoryReference ID="Primitive" />',
+            '            </p:NodeReference>',
+            "            <Pin Id=`"$(New-Id)`" Name=`"Force`" Kind=`"InputPin`" />",
+            "            <Pin Id=`"$(New-Id)`" Name=`"Dispose Cached Outputs`" Kind=`"InputPin`" />",
+            "            <Pin Id=`"$(New-Id)`" Name=`"Has Changed`" Kind=`"OutputPin`" />",
+            $(if ($e.TopAt) { "            <ControlPoint Id=`"$($e.Top)`" Bounds=`"$($e.TopAt)`" Alignment=`"Top`" />" } else { $null }),
+            "            <ControlPoint Id=`"$($e.Bottom)`" Bounds=`"$($e.BottomAt)`" Alignment=`"Bottom`" />",
+            "            <Patch Id=`"$(New-Id)`" ManuallySortedPins=`"true`">",
+            "              <Patch Id=`"$(New-Id)`" Name=`"Create`" ManuallySortedPins=`"true`" />",
+            "              <Patch Id=`"$(New-Id)`" Name=`"Then`" ManuallySortedPins=`"true`" />",
+            $inner,
+            '            </Patch>',
+            '          </Node>'
+        ) -join "`r`n"
+    }
     @(
         "          <Node Bounds=`"$($e.Bounds)`" Id=`"$($e.Id)`">",
         '            <p:NodeReference LastCategoryFullName="Primitive" LastDependency="CoreLibBasics.vl">',
