@@ -16,7 +16,7 @@
       <Patch Id="NdBH8ENvtwGXtKOlDSRVPK">
         <Canvas Id="GST7YRTWETpOKayTKm3aHr" CanvasType="Group">
           <Pad Id="Ta6dTS6lfNRHBOsWLEkVRY" Bounds="60,40,405,41" ShowValueBox="true" isIOBox="true" Value="Use Coordinate and Point!">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -25,7 +25,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="EXfyeoM3jQEEUz7cqqd0op" Bounds="60,95,480,46" ShowValueBox="true" isIOBox="true" Value="Two numbers become a Coordinate, the Coordinate becomes a Point, and Write WKT shows what you made. X first, then Y.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -38,13 +38,13 @@
               <Choice Kind="TypeFlag" Name="Float64" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="EiKDUkSIInSJEJu8pIpT8j" Comment="Y" Bounds="60,210,100,15" ShowValueBox="true" isIOBox="true" Value="35.6812">
+          <Pad Id="EiKDUkSIInSJEJu8pIpT8j" Comment="Y" Bounds="137,220,100,15" ShowValueBox="true" isIOBox="true" Value="35.6812">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Float64" />
             </p:TypeAnnotation>
           </Pad>
           <Pad Id="RBFEKjz1ajoTUW5RSsSsbM" Bounds="580,170,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; X then Y. For geographic data that is longitude, then latitude - the opposite of how they are usually spoken, and the most common mistake in this domain.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -73,7 +73,7 @@
             <Pin Id="UiQI9faYoR2Ij2GiIJMMjI" Name="Result" Kind="OutputPin" />
           </Node>
           <Pad Id="TuF85o4jdL9B7D8LGmtCYr" Bounds="580,320,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Factory left unconnected: SRID 0, meaning &quot;unset&quot;. Connect a GeometryFactory node to say 4326. An SRID is a label - it never moves a coordinate.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -91,9 +91,9 @@
             <Pin Id="LJ29fcvoFIXt2vvOkzhwkc" Name="Include Z" Kind="InputPin" />
             <Pin Id="JoPCrcnHzlgckUI1keYt3n" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="GBOr3kfiXYl3s17QybFe2c" Comment="WKT" Bounds="60,420,300,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="GBOr3kfiXYl3s17QybFe2c" Comment="WKT" Bounds="62,430,300,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="MdCaZrrdtxLtBHm34nGerP" Bounds="580,408,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Well-Known Text: the same text pastes into any other GIS tool. See HowTo Read and write WKT.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
