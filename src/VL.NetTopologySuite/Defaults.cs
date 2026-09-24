@@ -1,4 +1,4 @@
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using NetTopologySuite;
@@ -15,7 +15,7 @@ namespace VL.NTS;
 /// <para><b>Why the copying exists.</b> NetTopologySuite geometries are commonly described as
 /// immutable, and that is only half true. Operations are non-mutating — <c>Buffer</c> and
 /// <c>Union</c> return new geometries — but coordinate <i>storage is shared and writable</i>.
-/// Measured against NTS 2.6.0 on 2026-08-14:</para>
+/// Measured against NTS 2.6.0:</para>
 /// <list type="bullet">
 /// <item><description><c>Coordinate.X</c> has a public setter.</description></item>
 /// <item><description><c>factory.CreatePoint(c)</c> followed by <c>c.X = 777</c> moves the point.
@@ -69,8 +69,7 @@ internal static class Defaults
     /// <para>A <c>public static</c> method is a node that runs <b>every frame</b> — sixty times a
     /// second, from the moment the document opens. So the obvious spelling of the
     /// <c>GeometryFactory</c> node, <c>new GeometryFactory(new PrecisionModel(), srid)</c>, would
-    /// allocate a factory and a precision model per frame forever, which is one of the
-    /// inefficiencies §24 of the brief names outright.</para>
+    /// allocate a factory and a precision model per frame forever.</para>
     /// <para>Caching also makes the node's output <b>reference-stable</b> for a given SRID, which
     /// matters more than the allocation: a stable instance is what lets anything downstream key a
     /// cache off the factory, and it is what keeps <see cref="ReaderFor"/> from building a new
@@ -93,7 +92,7 @@ internal static class Defaults
     /// <remarks>
     /// <para>Same per-frame reasoning as <see cref="FactoriesBySrid"/>: a reader is configuration
     /// rather than a per-call object, and rebuilding one sixty times a second to parse the same
-    /// string is the inefficiency §24 of the brief names. Measured safe to reuse — one instance
+    /// string is a per-frame allocation for nothing. Measured safe to reuse — one instance
     /// parses call after call, including after a call that threw.</para>
     /// <para>A <see cref="ConditionalWeakTable{TKey, TValue}"/> rather than a dictionary so a
     /// factory a patch has stopped using can be collected — the key is held weakly. That matters

@@ -1,4 +1,4 @@
-using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using VL.Core.Import;
 
@@ -12,8 +12,7 @@ namespace VL.NTS;
 /// and because it is what makes the rest of the package usable: it is how a geometry gets into a
 /// patch without wiring twenty coordinate nodes, how a help patch shows a shape in one IOBox, and
 /// how a result gets checked against a value from another tool.</para>
-/// <para><b>WKB and GeoJSON are deliberately not here.</b> WKB is a reasonable next step and is in
-/// <c>docs/ROADMAP.md</c>. GeoJSON is not: it lives in a separate NuGet package
+/// <para><b>WKB and GeoJSON are deliberately not here.</b> WKB is a reasonable next step. GeoJSON is not: it lives in a separate NuGet package
 /// (<c>NetTopologySuite.IO.GeoJSON</c>), it brings a feature model that is not this package's
 /// business, and taking it on is the first step towards the generic geospatial file-format package
 /// this one is explicitly not trying to be. It deserves its own package.</para>

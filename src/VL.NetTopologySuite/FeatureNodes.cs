@@ -1,4 +1,4 @@
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using NetTopologySuite.Geometries;
 using VL.Core.Import;
 
@@ -16,10 +16,9 @@ namespace VL.NTS;
 /// properties (+ id). Every geometry core in the field — JTS, GEOS/Shapely, NetTopologySuite —
 /// keeps features one level <i>above</i> the geometry types, and every renderer consumes or wraps
 /// them: Mapsui converts into its own <c>GeometryFeature</c> at its provider boundary, exactly as
-/// VL.Mapsui's <c>FeatureLayer</c> does. The evidence is collected in
-/// <c>docs/ARCHITECTURE.md</c>, "Where a feature lives".</para>
-/// <para><b>These two nodes lived in VL.Mapsui until 2026-08-22 and were moved here</b>, because a
-/// feature has to be constructible without a map engine: VL.GeoJSON writes them, VL.Mapsui draws
+/// VL.Mapsui's <c>FeatureLayer</c> does.</para>
+/// <para><b>A feature has to be constructible without a map engine</b>, which is why these
+/// nodes live here and not in a map package: VL.GeoJSON writes them, VL.Mapsui draws
 /// and picks them, and a patch can make one by hand — multiple producers and consumers, so the
 /// shared type belongs below all of them. That is also how the NTS team packages it upstream:
 /// <c>NetTopologySuite.Features</c> is their own companion package, sitting directly on the
@@ -27,8 +26,7 @@ namespace VL.NTS;
 /// <para><b>The type is NetTopologySuite's <c>Feature</c>, not a wrapper and not one of ours.</b>
 /// Geometry plus an attributes table, nothing about styles, layers or renderers — so a feature made
 /// here can be produced by something that has never heard of a map and consumed by something that
-/// draws one. Inventing a <c>VLFeature</c> instead is recorded under "What this will never contain"
-/// in <c>docs/ARCHITECTURE.md</c>.</para>
+/// draws one.</para>
 /// </remarks>
 [Name("Feature")]
 public static class FeatureNodes

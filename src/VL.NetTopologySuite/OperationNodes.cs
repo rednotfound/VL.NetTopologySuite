@@ -1,4 +1,4 @@
-using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Geometries;
 using VL.Core.Import;
 
 namespace VL.NTS;
@@ -7,7 +7,7 @@ namespace VL.NTS;
 /// Spatial operations: geometry in, geometry out. Category <c>NTS.Operation</c>.
 /// </summary>
 /// <remarks>
-/// <para>The point of this category is the chain in the brief's §12 —
+/// <para>The point of this category is the chain —
 /// <c>Polygon → Buffer → Intersection → Geometry</c> — with no conversion anywhere in it. Every
 /// node here takes <c>Geometry</c> and returns <c>Geometry</c>, which is why they compose in any
 /// order and why the result can be handed straight to another package.</para>
@@ -17,9 +17,9 @@ namespace VL.NTS;
 /// for where that distinction bites and what this package does about it.</para>
 /// <para>Nine nodes, not the twenty NTS could support. What is missing is missing on purpose:
 /// <c>SymmetricDifference</c>, <c>Touches</c>, <c>Crosses</c>, <c>Overlaps</c>, <c>Covers</c>,
-/// <c>ConvexHull</c> and <c>Simplify</c> are all one method each and are listed in
-/// <c>docs/ROADMAP.md</c> — they arrive when something needs them rather than because they exist.
-/// <c>Nearest Points</c> arrived exactly that way on 2026-08-22: the course's distance chapter
+/// <c>ConvexHull</c> and <c>Simplify</c> are all one method each —
+/// they arrive when something needs them rather than because they exist.
+/// <c>Nearest Points</c> arrived exactly that way: a consumer
 /// needed to draw the shortest line, not merely number it.
 /// <c>Disjoint</c> is deliberately absent: it is <c>Intersects</c> with a <c>Not</c> after it, and a
 /// node a patch can already build from two nodes is a help patch, not a node.</para>
@@ -111,8 +111,8 @@ public static class OperationNodes
     /// either input is missing or empty both outputs are missing rather than an error, matching how
     /// <c>Read WKT</c> treats a question that cannot be answered yet.</para>
     /// <para>The coordinates are copies. NTS can hand back live references into a geometry's own
-    /// storage, and writing through one would silently move the geometry — the mutation hazard
-    /// <c>docs/ARCHITECTURE.md</c> documents, defended the same way the creation nodes defend it.</para>
+    /// storage, and writing through one would silently move the geometry — a mutation hazard,
+    /// defended the same way the creation nodes defend it.</para>
     /// </remarks>
     [Name("Nearest Points")]
     public static void NearestPoints(Geometry? a, Geometry? b,
