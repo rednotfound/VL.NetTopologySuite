@@ -8,13 +8,13 @@
 
         vvvvc SomeDoc.vl --export-package-sources <repo>\dist\feed
 
-    That is what test\verify.ps1 -EndToEnd does, and it is the closest automated
-    equivalent to a user installing the package from nuget.org.
+    That is what tools\Compile-HelpPatches.ps1 does for every help patch, and it is the closest
+    automated equivalent to a user installing the package from nuget.org.
 
     Uses the NuGet.exe that ships with vvvv, so nothing extra needs installing.
 
-    Note: `nuget pack` reads <version> from the nuspec. The publish workflow overrides it
-    with -Version from the git tag, so the tag is the source of truth at release time.
+    Note: `nuget pack` reads <version> from the nuspec. There is no publish workflow yet;
+    when one exists it should override the version from the git tag.
 
 .EXAMPLE
     .\pack.ps1
@@ -92,8 +92,8 @@ foreach ($package in $Packages) {
 
     # NuGet treats a version as immutable and will happily reuse an already-extracted copy
     # from the global cache, so repacking 0.2.0 with different contents is invisible to any
-    # consumer that resolved it earlier. Evict our own entry; without this, verify.ps1's
-    # consumer test silently validates a stale package.
+    # consumer that resolved it earlier. Evict our own entry; without this,
+    # Compile-HelpPatches.ps1 silently validates a stale package.
     $meta    = ([xml](Get-Content $Nuspec -Raw)).package.metadata
     $cached  = Join-Path $env:USERPROFILE ".nuget\packages\$($meta.id.ToLowerInvariant())\$($meta.version)"
     if (Test-Path $cached) {
@@ -118,5 +118,5 @@ foreach ($nupkg in Get-ChildItem $FeedDir -Filter '*.nupkg' | Sort-Object Name) 
 Write-Host @"
 
 Next:
-  .\test\verify.ps1 -EndToEnd            consume the packed nupkg from a separate document
+  .\tools\Compile-HelpPatches.ps1        compile every help patch against the packed nupkg and read the C#
 "@ -ForegroundColor Yellow

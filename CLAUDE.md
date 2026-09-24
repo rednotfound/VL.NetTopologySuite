@@ -29,7 +29,8 @@ Two sibling repositories sit beside this one and are **references, not dependenc
 - `D:\2026_Projects\vl-mapsui` (`VL.Mapsui`) — consumes NTS geometry. Composes through
   NetTopologySuite, not through this package. Neither references the other.
 - `D:\2026_Projects\vvvv-gis` (`VL.GIS`) — an earlier package that already ships ~40 NTS nodes,
-  published as `0.2.0-alpha`. **Deliberately not a constraint here.** See
+  published as `0.2.0-alpha`. **Deliberately not a constraint here.** The folder is no longer on
+  disk (checked 2026-09-24); what it taught is carried in `docs/RULES.md` and `docs/AUDIT.md`. See
   [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#vvvv-gis-vlgis--a-reference-not-a-constraint).
 
 **Only this repository's `CLAUDE.md` loads automatically.** The siblings have their own rules; read
@@ -146,10 +147,10 @@ listed, and every link must name a file that exists, because both failures are s
 
 | | proves | state |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ 122 tests, ~300 ms, no network |
+| `dotnet test` | the arithmetic is right | ✅ 126 tests, ~300 ms, no network |
 | `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed | ✅ 5 documents |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
-| `vvvvc` headless compile | every node in a patch **resolved** | ✅ all 4 help patches |
+| `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 4 help patches, 2026-09-24 |
 | the vvvv **NodeBrowser** | **which category a node is in** | ✅ `NTS` → Geometry, IO, Operation |
 | the vvvv **GUI, running** | the patch computes the right value | ✅ 2026-08-14, vvvv 7.4 |
 
@@ -176,16 +177,19 @@ here, at the cost of nearly writing down a wrong conclusion:
 Headless first, because it is faster and its evidence is stronger about resolution:
 
 ```powershell
-& "C:\Program Files\vvvv\vvvv_gamma_7.4-win-x64\vvvvc.exe" `
-    ".\help\VL.NetTopologySuite\HowTo Buffer a geometry.vl" `
-    --package-repositories ".\dist;.\deps" --output-directory <abs-dir>
-# then READ <abs-dir>\src\*\*.vl.1.cs - the Update body must contain the whole chain.
+.\pack.ps1                          # the feed is what lets the export half restore
+.\tools\Compile-HelpPatches.ps1     # compiles EVERY patch, then READS the generated C#
+.\tools\Compile-HelpPatches.ps1 -Patch "*Buffer*" -KeepOutput   # one patch, keep the *.vl.1.cs
 ```
 
-The export's final NuGet restore fails with `NU1101: VL.NetTopologySuite not found` unless the
-package is on a feed — that is the **export** stage, after codegen, and is expected. The generated
-C# is already written by then. Run `.\pack.ps1` and pass `--export-package-sources .\dist\feed` if a
-fully green export is actually wanted.
+The script drops a `NuGet.config` pointing at `dist\feed` beside the generated project, so the
+export's restore finds the package and the whole export runs green — the kept output has the
+patch's own `.dll` in `bin\Release`. Before 2026-09-24 this file called the resulting `NU1101`
+"expected, because it is the export stage after codegen". The C# was indeed already written, but
+the export half never ran, so half of what a compile proves was never proved. Negative-tested the
+same day: a patch with the package dependency removed fails with `Not found: Read WKT`, no C#
+generated, exit code 1. Every node the patch takes from this package must be in the script's node
+table, so a new node shows up there the first time a patch uses it.
 
 ## Commands
 
@@ -196,6 +200,7 @@ dotnet test test\VL.NetTopologySuite.Tests\VL.NetTopologySuite.Tests.csproj
 .\tools\Test-VLPackage.ps1      # static package checks
 .\tools\Test-VLPatch.ps1        # structural checks on every .vl - BOM, IDs, link endpoints
 .\pack.ps1                      # pack into dist\feed\
+.\tools\Compile-HelpPatches.ps1 # after pack: vvvvc on every help patch, then READS the generated C#
 
 # The only thing that proves a node exists:
 & "C:\Program Files\vvvv\vvvv_gamma_7.4-win-x64\vvvv.exe" `
@@ -216,14 +221,14 @@ vl-nettopologysuite/
 │   ├── GeometryNodes.Inspection.cs    # NTS.Geometry - Area, IsValid, Bounds, Coordinates …
 │   ├── OperationNodes.cs              # NTS.Operation - Buffer, overlay, predicates
 │   └── IONodes.cs                     # NTS.IO - Read WKT, Write WKT
-├── test/VL.NetTopologySuite.Tests/    # 122 xunit tests, no network, no vvvv
+├── test/VL.NetTopologySuite.Tests/    # 126 xunit tests, no network, no vvvv
 ├── help/VL.NetTopologySuite/          # 4 help patches + Help.xml (ordering and tags)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
 ├── docs/ARCHITECTURE.md               # why each node exists, what stays raw, the boundary
 ├── docs/ROADMAP.md                    # next / later / never
 ├── docs/RULES.md                      # ⭐ carried from the siblings - read before any node
 ├── build.ps1, pack.ps1
-└── tools/                             # New-VLId, Find-Vvvv, Test-VLPackage, Test-VLPatch, Normalize-HelpPatches
+└── tools/                             # New-VLId, Find-Vvvv, Test-VLPackage, Test-VLPatch, Compile-HelpPatches, Normalize-HelpPatches
 ```
 
 `GeometryNodes` is one `partial` class across two files so both halves land in one category without
