@@ -126,6 +126,17 @@ Then look at it in the GUI. Capture the window with **`PrintWindow`** on its han
 grab: `SetForegroundWindow` loses the race whenever another app holds focus, and the result is a
 screenshot of whatever was in front — useless, and not the user's business.
 
+### Writing a help patch — the community's style, measured
+
+**Read [`docs/HELP-PATCH-STYLE.md`](docs/HELP-PATCH-STYLE.md) first.** The first fifteen patches were
+written as essays — a 900-pixel "One idea:" box and paragraphs of 300–600 characters — and the user
+recognised at once that this is not how vvvv help reads. Measured over 389 shipped HowTos and nine
+community packs: a **20pt one-line heading** (`Use Buffer!`), at most one short 9pt intro, the wired
+nodes, and **9pt notes beside the nodes starting with `<`**, median 34 characters, rarely over 150.
+The Explanation shows the nodes by category with one line each, like VL.IO.Redis. All fifteen were
+rewritten that way on 2026-09-24. Do not reference vl-overworld for style: it is ours, and is due the
+same rewrite.
+
 ### Naming a help patch
 
 **Prefix, never a number.** The five prefixes are `Explanation` (one per library, the front door),
