@@ -15,29 +15,39 @@
       </p:NodeReference>
       <Patch Id="EbvYEG2emY7qKe7Q6vkEI8">
         <Canvas Id="SfYlXxjJPDuU35PcNCjNya" CanvasType="Group">
-          <!--
-            One idea: WKT is the shortest way to get a geometry into a patch.
-
-            Well-Known Text is plain text, so it pastes in from anywhere and pastes out to
-            anywhere. Edit the string and watch the type and area follow.
-
-            Try these:
-              POINT (139.7671 35.6812)
-              LINESTRING (0 0, 1 1, 2 0)
-              POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))
-              POLYGON ((0 0, 1 0, 1 1, 0 1))            <- unclosed, and accepted anyway
-              SRID=4326;POINT (139.7671 35.6812)        <- the SRID travels with the text
-
-            Then try breaking it. Success goes false and the geometry goes empty; the node
-            does not throw, because half-typed text is the normal state of a box being
-            edited and an exception sixty times a second is not a diagnostic.
-          -->
-          <Pad Id="BiByAR6M68GvKeR4iQmMA4" Comment="WKT - edit me" Bounds="60,60,460,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))">
+          <Pad Id="NZsOm2X3Zd3X9y7cbCxHLm" Bounds="60,60,900,310" ShowValueBox="true" isIOBox="true" Value="One idea: WKT is the shortest way to get a geometry into a patch.&#xD;&#xA;&#xD;&#xA;Well-Known Text is plain text, so it pastes in from anywhere and out to anywhere. Edit the string and watch the type and area follow. Try these:&#xD;&#xA;POINT (139.7671 35.6812)&#xD;&#xA;LINESTRING (0 0, 1 1, 2 0)&#xD;&#xA;POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))&#xD;&#xA;POLYGON ((0 0, 1 0, 1 1, 0 1))          unclosed, and accepted anyway: the ring is closed for you&#xD;&#xA;SRID=4326;POINT (139.7671 35.6812)      the SRID travels with the text&#xD;&#xA;&#xD;&#xA;Then break it. Success goes False and the geometry goes empty; the node does not throw, because half-typed text is the normal state of a box being edited, and an exception sixty times a second is not a diagnostic.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">11</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="NABTKogKsF1ya6owJRUgLn" Bounds="60,780,440,240" ShowValueBox="true" isIOBox="true" Value="The output is a native NetTopologySuite Geometry, not a wrapper. That is what lets it go straight into any other package that speaks NTS, and into every node in NTS.Geometry and NTS.Operation.&#xD;&#xA;&#xD;&#xA;SRID 0 means &quot;unset&quot;, and it agrees with what the creation nodes produce. NetTopologySuite's own reader would say -1 here; this package corrects that, so a patch never sees two different numbers both meaning &quot;nobody said&quot;.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">11</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="PuzsiZoZPbUWVqM2frjITe" Bounds="520,780,440,140" ShowValueBox="true" isIOBox="true" Value="Write WKT closes the loop. Note that it does NOT carry the SRID back out: plain WKT has nowhere to put one, and this package does not pretend otherwise. Z is dropped too unless Include Z is on.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">11</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="BiByAR6M68GvKeR4iQmMA4" Comment="WKT - edit me" Bounds="60,400,460,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="60,120,90,19" Id="Q3cQTNd5k5nyIJlTUapBBj">
+          <Node Bounds="60,460,90,19" Id="Q3cQTNd5k5nyIJlTUapBBj">
             <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Read WKT" />
@@ -47,12 +57,8 @@
             <Pin Id="KBjRcOSgQSVpWbqKAG3kRc" Name="Result" Kind="OutputPin" />
             <Pin Id="UNa4MdFIQPaGooQ5d7ZzG3" Name="Success" Kind="OutputPin" />
           </Node>
-          <Pad Id="MCDerq7C6nDLItGKpNpUo9" Comment="parsed?" Bounds="200,120,60,15" ShowValueBox="true" isIOBox="true" />
-          <!--
-            The output is a native NetTopologySuite Geometry, not a wrapper. That is what lets
-            it go straight into any other package that speaks NTS.
-          -->
-          <Node Bounds="60,230,110,19" Id="QQAFjc1KHppr4JZvqGjFMD">
+          <Pad Id="MCDerq7C6nDLItGKpNpUo9" Comment="parsed?" Bounds="200,460,60,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="60,570,110,19" Id="QQAFjc1KHppr4JZvqGjFMD">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="GeometryType" />
@@ -60,8 +66,8 @@
             <Pin Id="GLH390kCjaLWZSIOUbpLwA" Name="Geometry" Kind="InputPin" />
             <Pin Id="IC8ChbXA8lNdNpMTp1yW73" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="Cs5jVWXUGsaSACZ16XQFcU" Comment="type" Bounds="60,275,160,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="360,230,50,19" Id="JnlsMTw6rlCisWIRPQItZg">
+          <Pad Id="Cs5jVWXUGsaSACZ16XQFcU" Comment="type" Bounds="60,615,160,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="360,570,50,19" Id="JnlsMTw6rlCisWIRPQItZg">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Area" />
@@ -69,8 +75,8 @@
             <Pin Id="Ha2nMin6JPBeSleaazvf5j" Name="Geometry" Kind="InputPin" />
             <Pin Id="FMeQ62l3WGI9FZHMPajxgp" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="Eh5zj0YBf70mEaKdAuDeE9" Comment="area" Bounds="360,275,160,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="660,230,50,19" Id="L0qu4DUn6nixa13O2B1PDb">
+          <Pad Id="Eh5zj0YBf70mEaKdAuDeE9" Comment="area" Bounds="360,615,160,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="660,570,50,19" Id="L0qu4DUn6nixa13O2B1PDb">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="SRID" />
@@ -78,17 +84,8 @@
             <Pin Id="ITLfZyZtvfzGdovrBQF4B0" Name="Geometry" Kind="InputPin" />
             <Pin Id="V1YgrIyDuthvipUeqDwYOn" Name="Result" Kind="OutputPin" />
           </Node>
-          <!--
-            0 means "unset", and it agrees with what the creation nodes produce. NTS's own
-            reader would say -1 here; this package corrects that, so a patch never sees two
-            different numbers both meaning "nobody said".
-          -->
-          <Pad Id="ADsq0bU1krNtf70wXZnmTV" Comment="SRID" Bounds="660,275,160,15" ShowValueBox="true" isIOBox="true" />
-          <!--
-            Write WKT closes the loop. Note it does NOT carry the SRID back out - plain WKT
-            has nowhere to put one, and this package does not pretend otherwise.
-          -->
-          <Node Bounds="60,340,90,19" Id="Bp7ZRjVNkX6VU55n6C9xeD">
+          <Pad Id="ADsq0bU1krNtf70wXZnmTV" Comment="SRID" Bounds="660,615,160,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="60,680,90,19" Id="Bp7ZRjVNkX6VU55n6C9xeD">
             <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Write WKT" />
@@ -97,7 +94,7 @@
             <Pin Id="QnqRsA2ngFOSh2b5QRyvwd" Name="Include Z" Kind="InputPin" />
             <Pin Id="TumGuTi7hXXZwPF4Xu34of" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="P7iBQVzOU3fS083DauArTo" Comment="written back out" Bounds="60,385,460,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="P7iBQVzOU3fS083DauArTo" Comment="written back out" Bounds="60,725,460,15" ShowValueBox="true" isIOBox="true" />
         </Canvas>
         <Patch Id="LP8NiHGvEUX7y9XD4G3WfS" Name="Create" />
         <Patch Id="HtHWALNzzCsuz7R8YfaFUX" Name="Update" />

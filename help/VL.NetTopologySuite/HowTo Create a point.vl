@@ -15,24 +15,36 @@
       </p:NodeReference>
       <Patch Id="GcelEpbc1MzIkveEjitHbR">
         <Canvas Id="JyNpRPWxBPjagpvoCEU6vQ" CanvasType="Group">
-          <!--
-            One idea: a geometry starts as a Coordinate.
-
-            X first, then Y. For geographic data that means longitude then latitude, which is the
-            opposite of how they are usually spoken and is the most common mistake in this domain.
-          -->
-          <Pad Id="VJNkffdenn8SAm82HE2wjT" Comment="X (longitude)" Bounds="60,60,100,15" ShowValueBox="true" isIOBox="true" Value="139.7671">
+          <Pad Id="GFq6f4tHTNr7P3Fvip0skE" Bounds="60,60,900,130" ShowValueBox="true" isIOBox="true" Value="One idea: a geometry starts as a Coordinate.&#xD;&#xA;&#xD;&#xA;X first, then Y. For geographic data that means longitude then latitude - the opposite of how they are usually spoken, and the most common mistake in this domain. Two numbers become a Coordinate, the Coordinate becomes a Point, and Write WKT shows you what you made: the same text pastes into any other GIS tool.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">11</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="Ngi439xa3sbNj5X3pCayFZ" Bounds="420,340,440,130" ShowValueBox="true" isIOBox="true" Value="Factory is left unconnected, so the Point gets SRID 0, meaning &quot;unset&quot;. That is NetTopologySuite's own default and it is honest: nothing here has seen the numbers and cannot know what reference system they are in. Connect a GeometryFactory node to say 4326. Setting an SRID is a label - it never moves a coordinate.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">11</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="VJNkffdenn8SAm82HE2wjT" Comment="X (longitude)" Bounds="60,220,100,15" ShowValueBox="true" isIOBox="true" Value="139.7671">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Float64" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="UptreV2MVsgaSRSCez537l" Comment="Y (latitude)" Bounds="60,100,100,15" ShowValueBox="true" isIOBox="true" Value="35.6812">
+          <Pad Id="UptreV2MVsgaSRSCez537l" Comment="Y (latitude)" Bounds="60,260,100,15" ShowValueBox="true" isIOBox="true" Value="35.6812">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Float64" />
             </p:TypeAnnotation>
           </Pad>
 
-          <Node Bounds="60,150,80,19" Id="PMUwCGiVJU90bqIPHKilMV">
+          <Node Bounds="60,310,80,19" Id="PMUwCGiVJU90bqIPHKilMV">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Coordinate" />
@@ -42,13 +54,7 @@
             <Pin Id="QpQvhnczSjJwgJbLKHDzFs" Name="Result" Kind="OutputPin" />
           </Node>
 
-          <!--
-            Leave Factory unconnected and the Point gets SRID 0, meaning "unset". That is
-            NetTopologySuite's own default and it is honest: the package has not seen the numbers
-            and cannot know what reference system they are in. Connect a GeometryFactory node to
-            say 4326.
-          -->
-          <Node Bounds="60,210,60,19" Id="KO9RqfyeWHAdBIozSek2vi">
+          <Node Bounds="60,370,60,19" Id="KO9RqfyeWHAdBIozSek2vi">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Point" />
@@ -58,11 +64,7 @@
             <Pin Id="Bu7aBJnlnXTPt5y0PQIwIi" Name="Result" Kind="OutputPin" />
           </Node>
 
-          <!--
-            Write WKT is the quickest way to see what you built. It is a real node, not a debug
-            aid - the same text pastes into any other GIS tool.
-          -->
-          <Node Bounds="60,270,80,19" Id="Fk4pQaEAfGRWqPljRwQToK">
+          <Node Bounds="60,430,80,19" Id="Fk4pQaEAfGRWqPljRwQToK">
             <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Write WKT" />
@@ -71,7 +73,7 @@
             <Pin Id="VsEG9mCLh6BsW7iLBnuhry" Name="Include Z" Kind="InputPin" />
             <Pin Id="RyNnAVA55jopi8ihRRrgqD" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="ApaUp0XFqHOrhedkq4tuqz" Comment="" Bounds="60,315,300,15" ShowValueBox="true" isIOBox="true" Value="POINT (139.7671 35.6812)">
+          <Pad Id="ApaUp0XFqHOrhedkq4tuqz" Comment="" Bounds="60,475,300,15" ShowValueBox="true" isIOBox="true" Value="POINT (139.7671 35.6812)">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
