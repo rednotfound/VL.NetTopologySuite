@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document xmlns:p="property" xmlns:r="reflection" Id="DjiBGKaFcXkE260pdh9xzv" LanguageVersion="2025.7.4" Version="0.128">
+  <NugetDependency Id="Dmxno6QmI54uRDEnxMsrOn" Location="VL.CoreLib" Version="2025.7.4" />
+  <Patch Id="ITFxfrj4FGQ0HrQ0HksBOr">
+    <Canvas Id="NyRv0mfZQsk1D1GZTnm3mn" DefaultCategory="Main" BordersChecked="false" CanvasType="FullCategory" />
+    <!--
+
+    ************************ Application ************************
+
+-->
+    <Node Name="Application" Bounds="100,100" Id="S9sa4O7VheW6Uvb8tURhOm">
+      <p:NodeReference>
+        <Choice Kind="ContainerDefinition" Name="Process" />
+        <CategoryReference Kind="Category" Name="Primitive" />
+      </p:NodeReference>
+      <Patch Id="PgCwSjYnS7zYOFzbk2xjn5">
+        <Canvas Id="Tijv8NsS4Xn57VlKTEwxAz" CanvasType="Group">
+          <Pad Id="KljUZfmypJ8ClBpdnARtGR" Bounds="50,30,900,220" ShowValueBox="true" isIOBox="true" Value="VL.NetTopologySuite&#xD;&#xA;&#xD;&#xA;NetTopologySuite is the .NET geometry library: points, lines and polygons, and the maths between them - area, distance, buffer, intersection, containment. This package makes it natural to use inside vvvv. That is all it does: there is no map here, no rendering, no reprojection, no file format.&#xD;&#xA;&#xD;&#xA;Every node hands back a native NetTopologySuite type - Point, LineString, Polygon, Geometry - never a wrapper of our own. So the output of any node is the input to the next, and a geometry made here goes straight into anything else that speaks NTS: VL.GeoJSON produces it, VL.Mapsui draws it, and none of the three packages references the others.&#xD;&#xA;&#xD;&#xA;Six categories, all under NTS. Most of what you would reach for around them - Spread, ForEach, Count, Not - is already in vvvv, and this package tries hard not to duplicate it.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">12</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="JDH3t0dEIPQgaAeD9oOhV9" Bounds="50,280,440,720" ShowValueBox="true" isIOBox="true" Value="The categories, and what is in each&#xD;&#xA;&#xD;&#xA;NTS.Geometry   making and inspecting. Coordinate, CoordinateZ and Split; GeometryFactory when you need an SRID; Point, LineString, LinearRing, Polygon, and the MultiPoint, MultiLineString, MultiPolygon and GeometryCollection containers. Then the readers: GeometryType, IsEmpty, SRID, IsValid (with a reason and a location), Area, Length, Centroid, Bounds, Coordinates, Geometries.&#xD;&#xA;&#xD;&#xA;NTS.IO   Read WKT and Write WKT. Well-Known Text is the plain-text form of a geometry - POINT (139.7671 35.6812) - and the quickest way to get one into a patch.&#xD;&#xA;&#xD;&#xA;NTS.Operation   Buffer, Intersection, Union, Difference; Distance and Nearest Points; and the yes/no questions Intersects, Contains, Within.&#xD;&#xA;&#xD;&#xA;NTS.Feature   Feature is a geometry with attributes attached, and Split opens one up again. It is the NTS team's own Feature type - the same one VL.GeoJSON reads and VL.Mapsui draws.&#xD;&#xA;&#xD;&#xA;NTS.Index   SpatialIndex and Query. Build an index over many geometries once, then ask which of them MIGHT touch an area. The answer is called Candidates, not results, because that is what it is.&#xD;&#xA;&#xD;&#xA;NTS.Network   Network and ShortestPath. An undirected network from LineStrings that share endpoints exactly, and the shortest route through it. Found can be False, and that is an answer, not an error.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">11</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="KhI8sx584VngeiXA86musp" Bounds="520,280,440,720" ShowValueBox="true" isIOBox="true" Value="What you will NOT find, and why&#xD;&#xA;&#xD;&#xA;Disjoint. It is Intersects followed by Not. A node you can build from nodes you already have is a help patch, not a node.&#xD;&#xA;&#xD;&#xA;Count, GetSlice or ForEach over the parts of a geometry. Coordinates and Geometries hand back a Spread, and vvvv's own nodes work on it.&#xD;&#xA;&#xD;&#xA;A map. VL.Mapsui draws NTS geometry; this package does not know that maps exist.&#xD;&#xA;&#xD;&#xA;Reprojection. Setting an SRID is a label. It never moves a coordinate, and no node here will pretend otherwise.&#xD;&#xA;&#xD;&#xA;The rest of NetTopologySuite. All of it stays reachable through vvvv's raw .NET nodes. A node browser you can read is worth more than one with everything in it.&#xD;&#xA;&#xD;&#xA;Three things worth knowing before the first patch&#xD;&#xA;&#xD;&#xA;Units follow the coordinates. On longitude and latitude, Buffer by 0.001 is a thousandth of a degree and Area comes out in square degrees. Nothing warns you.&#xD;&#xA;&#xD;&#xA;Mixing SRIDs never throws. 4326 against 0 quietly answers 4326. A wrong coordinate system gives a confident wrong answer, so make one GeometryFactory and connect it everywhere an SRID matters. The default is 0, meaning unset.&#xD;&#xA;&#xD;&#xA;Geometry from these nodes behaves as if it were immutable: coordinates are copied on the way in and on the way out. Send one geometry into two branches and neither branch can change the other.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">11</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="GepdkqEsebzq9hUE60t5Rn" Bounds="50,1030,900,300" ShowValueBox="true" isIOBox="true" Value="Where to go next&#xD;&#xA;&#xD;&#xA;HowTo Create a point   start here. Two numbers become a Point, and Write WKT shows you what you made.&#xD;&#xA;HowTo Create a polygon   a ring that has to close, a shell with holes, and IsValid pointing at where a polygon went wrong.&#xD;&#xA;HowTo Read and write WKT   text in, geometry out, and back to text again.&#xD;&#xA;HowTo Buffer a geometry   grow a shape by a distance, then intersect it with the original - the first real spatial operation.&#xD;&#xA;&#xD;&#xA;Where the data comes from: VL.GeoJSON reads GeoJSON into exactly the Feature and Geometry these nodes take.&#xD;&#xA;Where the map comes from: VL.Mapsui draws exactly the geometry these nodes produce. Neither package knows this one exists, and that is the design working.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">11</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+        </Canvas>
+        <Patch Id="DCcgXRCNcu0ZTD7xkHe6dY" Name="Create" />
+        <Patch Id="UztsRVWvXZOdDWXzNU15LL" Name="Update" />
+        <ProcessDefinition Id="SEeIIfn2Ea29VPkh71EowE">
+          <Fragment Id="NkZwJI2ltWb8MW1PrKsJ8Q" Patch="DCcgXRCNcu0ZTD7xkHe6dY" Enabled="true" />
+          <Fragment Id="BkbY1YO2mPi2Y4RS7tltpk" Patch="UztsRVWvXZOdDWXzNU15LL" Enabled="true" />
+        </ProcessDefinition>
+      </Patch>
+    </Node>
+  </Patch>
+  <NugetDependency Id="Bj0em280r8rNm1sFHZAnaJ" Location="VL.NetTopologySuite" Version="0.0.0" />
+</Document>

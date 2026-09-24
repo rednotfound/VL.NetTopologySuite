@@ -9,6 +9,9 @@
 	tools\Test-VLPatch.ps1 checks this file against the patches on disk in both directions.
 -->
 <Pack>
+	<Topic title="Start here">
+		<VLDocument link="Explanation Overview of available nodes.vl" tags="overview,explanation,start,categories,geometry,operation,io,feature,index,network,nts,netTopologySuite" />
+	</Topic>
 	<Topic title="Making geometry">
 		<VLDocument link="HowTo Create a point.vl" tags="coordinate,point,geometry,create,srid,factory,nts,netTopologySuite" />
 		<VLDocument link="HowTo Create a polygon.vl" tags="polygon,linearring,ring,shell,holes,closed,valid,area,geometry" />
