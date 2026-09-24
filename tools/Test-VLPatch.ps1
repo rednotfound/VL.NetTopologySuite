@@ -13,7 +13,9 @@
       ID format        22 chars, first [A-V] - vvvv's deserializer rejects anything else quietly
       ID uniqueness    duplicates make one node shadow another
       link endpoints   a Link naming an ID that is not a Pin or Pad is dropped without warning
-      dangling IOBox   a Pad connected to nothing is decoration the user cannot use
+      dangling IOBox   a Pad connected to nothing is decoration the user cannot use - EXCEPT an
+                       annotation box, which carries its own Value and no Comment. That is the
+                       shipped convention for explanatory text and is allowed on purpose
       empty Path IOBox Value="" on a Path means the DOCUMENT'S OWN FOLDER, not "empty" - this is
                        the one that wrote 444 files next to two repositories with every guard
                        reporting success
@@ -59,7 +61,14 @@ foreach ($file in $targets) {
     if ($bytes.Length -lt 3 -or -not (($bytes[0] -eq 0xEF) -and ($bytes[1] -eq 0xBB) -and ($bytes[2] -eq 0xBF))) {
         $problems.Add('missing UTF-8 BOM - vvvv will not load this document')
     }
-    try { $null = [xml]$raw } catch { $problems.Add("XML does not parse: $($_.Exception.Message)") }
+    # PowerShell's cast error embeds the ENTIRE document before saying what is wrong, so the one
+    # useful sentence - "An XML comment cannot contain '--' ... Line 18, position 31" - arrives
+    # after three thousand characters of the file you already have. Keep the tail.
+    try { $null = [xml]$raw }
+    catch {
+        $message = $_.Exception.Message -replace '(?s)^.*?Error:\s*', ''
+        $problems.Add("XML does not parse: " + ($message -replace '\s+', ' ').Trim())
+    }
 
     $allIds = @(([regex]'Id="([^"]+)"').Matches($raw) | ForEach-Object { $_.Groups[1].Value })
     $illegal = @($allIds | Where-Object { $_ -notmatch '^[A-V][0-9A-Za-z]{21}$' })
@@ -79,9 +88,193 @@ foreach ($file in $targets) {
         }
     }
 
+    # Three more references that must resolve, from the commit gate in docs\VL-PATCH-XML.md. Each
+    # corresponds to a defect that shipped in a sibling repository, and none of them produces an XML
+    # error - the document parses, vvvv loads it, and the patch is quietly not what you meant.
+    #
+    # ParticipatingElements is the expensive one: "deleting nodes made a Create seed link dangle,
+    # the sweep removed it, and Create named nothing" - so everything that was supposed to run once
+    # silently moved into Update, which is the per-frame mistake this whole ecosystem is about.
+    #
+    # All seven documents in this repository pass these today because they are simple: no slots, no
+    # ParticipatingElements. That is luck, not a check, which is exactly why they are here.
+    $declaredIds = @(([regex]'\bId="([^"]+)"').Matches($raw) | ForEach-Object { $_.Groups[1].Value })
+    $references = @(
+        @{ What = 'Pad@SlotId';                  Pattern = '<Pad\b[^>]*\bSlotId="([^"]+)"' }
+        @{ What = 'Fragment@Patch';              Pattern = '<Fragment\b[^>]*\bPatch="([^"]+)"' }
+        @{ What = 'Patch@ParticipatingElements'; Pattern = '\bParticipatingElements="([^"]+)"'; Split = $true }
+    )
+    foreach ($reference in $references) {
+        foreach ($m in ([regex]$reference.Pattern).Matches($raw)) {
+            # ContainsKey, not $reference.Split - StrictMode throws on a missing hashtable key,
+            # and only the ParticipatingElements entry carries one.
+            #
+            # NOT named $targets: that is the outer list of documents being validated, and shadowing
+            # it made the final summary report "1 document" instead of 7. The loop still ran - a
+            # foreach captures its collection up front - so only the count lied, which is the kind
+            # of wrong number that gets read past.
+            $referenced = if ($reference.ContainsKey('Split')) { $m.Groups[1].Value -split ',' } else { @($m.Groups[1].Value) }
+            foreach ($target in $referenced) {
+                $target = $target.Trim()
+                if ($target -and $declaredIds -notcontains $target) {
+                    $problems.Add("$($reference.What) names $target, which is not declared in this document")
+                }
+            }
+        }
+    }
+
+    # An XML comment cannot contain '--'. The document then does not parse at all, which the check
+    # above catches - but the message points at a byte offset rather than at the comment, and this
+    # has cost three rounds across these repositories and one more here, in a .csproj.
+    foreach ($m in ([regex]'(?s)<!--(.*?)-->').Matches($raw)) {
+        if ($m.Groups[1].Value -match '--') {
+            $problems.Add("an XML comment contains '--', which is not legal: " +
+                ($m.Groups[1].Value.Trim() -replace '\s+', ' ').Substring(0, [Math]::Min(60, $m.Groups[1].Value.Trim().Length)))
+        }
+    }
+
+    # A Pad wired to nothing is usually dead - a label the user cannot read a value out of.
+    #
+    # But NOT always, and the exception is a shipped convention rather than a loophole: an
+    # ANNOTATION IOBox holds explanatory text as its own Value and is deliberately connected to
+    # nothing. vvvv's own packs are full of them, and VL.Mapsui's "Explanation Overview of
+    # available nodes" is made of nothing else. An Explanation patch is prose, not dataflow.
+    #
+    # The two are told apart by what the Pad carries, which is exactly how they differ in intent:
+    #
+    #   Comment, no Value   a LABEL for a value arriving over a link. Unwired, it shows nothing
+    #                       and is the thing this check exists to catch.
+    #   Value, no Comment   an ANNOTATION. The text IS the content; a link would overwrite it.
+    #
+    # A Pad carrying both is a constant feeding something, and an unwired one still gets flagged -
+    # deliberately, since that is a link somebody forgot.
     $linked = @($linkMatches | ForEach-Object { $_.Groups[1].Value; $_.Groups[2].Value })
-    foreach ($pad in ([regex]'<Pad Id="([^"]+)"').Matches($raw) | ForEach-Object { $_.Groups[1].Value }) {
-        if ($linked -notcontains $pad) { $problems.Add("dangling Pad $pad - an IOBox wired to nothing") }
+    foreach ($m in ([regex]'<Pad Id="([^"]+)"([^>]*)>').Matches($raw)) {
+        $pad = $m.Groups[1].Value
+        if ($linked -contains $pad) { continue }
+
+        $attributes = $m.Groups[2].Value
+        $isAnnotation = ($attributes -match '\sValue="') -and ($attributes -notmatch '\sComment="')
+        if ($isAnnotation) { continue }
+
+        $problems.Add("dangling Pad $pad - an IOBox wired to nothing")
+    }
+
+    # An annotation Pad needs a String TypeAnnotation, or vvvv cannot type it: the box renders
+    # EMPTY, its text is reported as a warning in the Debug panel, and the patch looks broken to
+    # whoever opened it to learn from. Costs nothing to check and was missed on all six patches
+    # at once, because nothing static complains - only the running GUI does.
+    #
+    # The `stringtype = Comment` setting is what makes it a multi-line prose box rather than a
+    # one-line editable value; every annotation in vvvv's own packs and in VL.Mapsui carries both.
+    $padRegex = [regex]::new('<Pad Id="([^"]+)"([^>]*)>(?<body>.*?)</Pad>',
+        [System.Text.RegularExpressions.RegexOptions]::Singleline)
+    foreach ($m in $padRegex.Matches($raw)) {
+        $attributes = $m.Groups[2].Value
+        if (($attributes -notmatch '\sValue="') -or ($attributes -match '\sComment="')) { continue }
+
+        $body = $m.Groups['body'].Value
+        if ($body -notmatch '<Choice Kind="TypeFlag" Name="String" />') {
+            $problems.Add("annotation Pad $($m.Groups[1].Value) has no String TypeAnnotation - it will render as an empty box")
+        }
+        elseif ($body -notmatch 'StringType">Comment<') {
+            $problems.Add("annotation Pad $($m.Groups[1].Value) is not set to stringtype Comment - it will render as a one-line value box")
+        }
+    }
+    # A self-closing annotation Pad has no body at all, so the loop above cannot see it.
+    foreach ($m in ([regex]'<Pad Id="([^"]+)"([^>]*?)/>').Matches($raw)) {
+        $attributes = $m.Groups[2].Value
+        if (($attributes -match '\sValue="') -and ($attributes -notmatch '\sComment="')) {
+            $problems.Add("annotation Pad $($m.Groups[1].Value) is self-closing - it carries no TypeAnnotation and will render as an empty box")
+        }
+    }
+
+    # A Pad's `Comment` renders as a LABEL TO THE RIGHT of the box, so an IOBox occupies far more
+    # width than its Bounds says. CLAUDE.md here states this and allows "~200px of clear space
+    # to its right"; the arithmetic was first implemented in vl-geojson, and every label collision in the
+    # first help patches here came from ignoring it.
+    #
+    # It happened here too. One collision was visible in a screenshot; running this found TEN,
+    # across four patches, all of them a label reaching into an annotation box - which is precisely
+    # what "check overlaps arithmetically, counting the label strip" means and why doing it by eye
+    # does not work.
+    #
+    # 6.5px per character is calibrated from that ~200px-for-30-characters allowance. A warning,
+    # like the density check and for the same reason: it is arithmetic about a font this script
+    # cannot measure.
+    $glyph = 6.5
+    $boxes = @()
+    # Attribute order is NOT fixed and must not be assumed: a Pad is written
+    # `<Pad Id="…" Comment="…" Bounds="…">` but a Node is `<Node Bounds="…" Id="…">`. The first
+    # version of this matched `<(Pad|Node) Id="` and therefore never saw a single Node - so it
+    # reported ten Pad-on-Pad collisions and was structurally blind to every Pad-on-Node one.
+    # Caught by the negative test, which planted exactly that and stayed green.
+    foreach ($m in ([regex]'<(Pad|Node)\s([^>]*)').Matches($raw)) {
+        $attributes = $m.Groups[2].Value
+        $b = [regex]::Match($attributes, '\bBounds="(\d+),(\d+),(\d+),(\d+)"')
+        if (-not $b.Success) { continue }   # a two-number Bounds has no width to collide with
+        $id = [regex]::Match($attributes, '\bId="([^"]+)"').Groups[1].Value
+        if (-not $id) { continue }
+        $boxes += [pscustomobject]@{
+            Id      = $id
+            Kind    = $m.Groups[1].Value
+            X       = [int]$b.Groups[1].Value
+            Y       = [int]$b.Groups[2].Value
+            W       = [int]$b.Groups[3].Value
+            H       = [int]$b.Groups[4].Value
+            Comment = [regex]::Match($attributes, '\bComment="([^"]*)"').Groups[1].Value
+        }
+    }
+    foreach ($box in $boxes) {
+        if (-not $box.Comment) { continue }
+        $labelEnd = $box.X + $box.W + [int]($box.Comment.Length * $glyph)
+        foreach ($other in $boxes) {
+            if ($other.Id -eq $box.Id) { continue }
+            $sameRows = ($box.Y -lt ($other.Y + $other.H)) -and (($box.Y + $box.H) -gt $other.Y)
+            if ($sameRows -and $other.X -ge ($box.X + $box.W) -and $other.X -lt $labelEnd) {
+                Write-Host ("  warn  Pad {0} label '{1}' reaches x={2} and runs into a {3} at x={4} - a Comment renders to the RIGHT of the box" -f
+                    $box.Id, $box.Comment, $labelEnd, $other.Kind, $other.X) -ForegroundColor DarkYellow
+            }
+        }
+    }
+
+    # An annotation Pad whose text does not FIT its box overflows onto the canvas and lands on top
+    # of the nodes and labels underneath. `Bounds` is not a clip rectangle. Found by opening a patch
+    # and seeing a note spill across three other labels; nothing static complained, because to every
+    # other check the document was perfectly well formed.
+    #
+    # A WARNING, deliberately, not a failure. This is arithmetic about a font the script cannot
+    # measure, and the first version of it - a single 0.0045 budget - would have red-flagged ALL
+    # TWELVE annotation pads in vl-mapsui, every one of which has been through a GUI review. A gate
+    # that disagrees with shipped sibling code gets switched off, and a check nobody runs is worse
+    # than no check.
+    #
+    # The budgets come from vl-mapsui's reviewed set (its four Explanation blocks and eight HowTo
+    # notes span 0.0067-0.0413 chars/px2) intersected with what was measured here: at fontsize 12 a
+    # 420px-wide box wraps at ~48 characters with ~25px between lines. Capacity scales with the
+    # inverse square of the font size, which is why the two budgets are not the same number.
+    $densityBudget = @{ 11 = 0.0105; 12 = 0.0070 }
+    $defaultBudget = 0.0105   # vvvv's own default when no fontsize is given
+    foreach ($m in $padRegex.Matches($raw)) {
+        $attributes = $m.Groups[2].Value
+        if (($attributes -notmatch '\sValue="') -or ($attributes -match '\sComment="')) { continue }
+
+        $bounds = [regex]::Match($attributes, '\sBounds="(\d+),(\d+),(\d+),(\d+)"')
+        if (-not $bounds.Success) { continue }     # a two-number Bounds is not an IOBox
+        $area = [int]$bounds.Groups[3].Value * [int]$bounds.Groups[4].Value
+        if ($area -le 0) { continue }
+
+        $value = [regex]::Match($attributes, '\sValue="([^"]*)"').Groups[1].Value
+        $size = [regex]::Match($m.Groups['body'].Value, '<p:fontsize[^>]*>(\d+)</p:fontsize>')
+        $fontsize = if ($size.Success) { [int]$size.Groups[1].Value } else { 0 }
+        $budget = if ($densityBudget.ContainsKey($fontsize)) { $densityBudget[$fontsize] } else { $defaultBudget }
+
+        $density = $value.Length / $area
+        if ($density -gt $budget) {
+            Write-Host ("  warn  annotation Pad {0} may overflow: {1} chars in {2}x{3} at fontsize {4} is {5:F4} chars/px2, over {6} - open it and look" -f
+                $m.Groups[1].Value, $value.Length, $bounds.Groups[3].Value, $bounds.Groups[4].Value,
+                $(if ($fontsize) { $fontsize } else { 'default' }), $density, $budget) -ForegroundColor DarkYellow
+        }
     }
 
     # An empty Path IOBox is NOT empty: Value="" means the path relative to this document, which is
