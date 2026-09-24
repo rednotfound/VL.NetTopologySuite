@@ -1,148 +1,175 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" xmlns:r="reflection" Id="RN3XwpggR0kob5H3EyfghZ" LanguageVersion="2025.7.4" Version="0.128">
-  <NugetDependency Id="EDCHEOBbP6BJKIQhWy5QCV" Location="VL.CoreLib" Version="2025.7.4" />
-  <Patch Id="VHb71CxduRFi57AcTeB4cE">
-    <Canvas Id="SoaEuYS6EzDBrxELC9ijeV" DefaultCategory="Main" BordersChecked="false" CanvasType="FullCategory" />
+<Document xmlns:p="property" xmlns:r="reflection" Id="GxmZ82Q1lcGUELpI63Od2R" LanguageVersion="2025.7.4" Version="0.128">
+  <NugetDependency Id="EMBshU8lm3eSAB5zITzd48" Location="VL.CoreLib" Version="2025.7.4" />
+  <Patch Id="UOJ3j7eMFOzrLTZcbBWDi6">
+    <Canvas Id="MtuniUZqflWT9qQH4fGSo5" DefaultCategory="Main" BordersChecked="false" CanvasType="FullCategory" />
     <!--
 
     ************************ Application ************************
 
 -->
-    <Node Name="Application" Bounds="100,100" Id="DM0GLWzch8tRo1RYEiuOsr">
+    <Node Name="Application" Bounds="100,100" Id="Swxt3g3stfTXBsGdU8Y6z7">
       <p:NodeReference>
         <Choice Kind="ContainerDefinition" Name="Process" />
         <CategoryReference Kind="Category" Name="Primitive" />
       </p:NodeReference>
-      <Patch Id="Uqb2OSE42AmJIM4NEFjTfW">
-        <Canvas Id="Njbt6NbIARYqXBPQmHwrHR" CanvasType="Group">
-          <Pad Id="RCBRsMtAcE3x87rKjVl7CH" Bounds="60,60,900,150" ShowValueBox="true" isIOBox="true" Value="One idea: Distance is the shortest gap between two geometries, and Nearest Points tells you where that gap is.&#xD;&#xA;&#xD;&#xA;A is a unit square and B is a point some way off. Distance is measured between the closest parts, not the centres, so it is 0 for anything that touches or overlaps. Nearest Points gives the two coordinates that realise it, one on each geometry; turned into Points and written as WKT, they are the two ends of the line you would draw.">
+      <Patch Id="UkM1iYBoefDnr4wuahvRPq">
+        <Canvas Id="LLd3ntKJjbSHhmg6bG1Gfl" CanvasType="Group">
+          <Pad Id="SWaMDhWzyd3PR2RM0GFdNU" Bounds="60,40,510,41" ShowValueBox="true" isIOBox="true" Value="Use Distance and Nearest Points!">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
-              <p:fontsize p:Type="Int32">11</p:fontsize>
+              <p:fontsize p:Type="Int32">20</p:fontsize>
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="NpyxEow0bscR59ijLyzWqe" Comment="A" Bounds="60,250,460,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))">
+          <Pad Id="FQKxNthz98NWqoN0GEFCho" Bounds="60,95,480,46" ShowValueBox="true" isIOBox="true" Value="The shortest gap between two geometries, and where it is. A is a unit square, B a point some way off.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="G4ovuVYICxeMFJSpsSC5FF" Comment="A" Bounds="60,170,400,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="TftOyCk1dfcv0ay1MOkUVD" Comment="B - move it" Bounds="60,290,460,15" ShowValueBox="true" isIOBox="true" Value="POINT (3 2)">
+          <Pad Id="Jih4MkmXYDeMSQi8oyq9Z1" Comment="B" Bounds="60,210,400,15" ShowValueBox="true" isIOBox="true" Value="POINT (3 2)">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="60,340,90,19" Id="RDFIRKBLgwtEsKaioIBVAJ">
+          <Pad Id="L4wJu5b5HodJT1W8TlYJg6" Bounds="580,210,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Move B inside the square: Distance drops to 0. Move it level with a side: the nearest point on A slides along that side - a point on the boundary, not a vertex.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="60,260,90,19" Id="UxbITJmzVAmXdCMD1KsTMS">
             <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Read WKT" />
             </p:NodeReference>
-            <Pin Id="FDUeCutaUSgjo225H8AFEF" Name="WKT" Kind="InputPin" />
-            <Pin Id="ILTaXBfTKfpJAcWsw20eZA" Name="Factory" Kind="InputPin" />
-            <Pin Id="NO02Xpy7r0foKxeVqm071C" Name="Result" Kind="OutputPin" />
-            <Pin Id="IVdh4R1P66LPXBrEOV9yl4" Name="Success" Kind="OutputPin" />
+            <Pin Id="M9RGXeSYo1NDJ9C0vmVe0a" Name="WKT" Kind="InputPin" />
+            <Pin Id="S7ctNi8Xval3i3YfCu92zl" Name="Factory" Kind="InputPin" />
+            <Pin Id="Sm9EUftAEGybBi7vIE4Jxd" Name="Result" Kind="OutputPin" />
+            <Pin Id="MOhLsNgE3FRmSuDpoRIaJ6" Name="Success" Kind="OutputPin" />
           </Node>
-          <Node Bounds="330,340,90,19" Id="EyJT7Mo9FjHBKXBKEw9O4l">
+          <Node Bounds="230,260,90,19" Id="HaFEdbm5ZODJpflYjcDmIY">
             <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Read WKT" />
             </p:NodeReference>
-            <Pin Id="U0WF5h3lh2KabVUn5msLjO" Name="WKT" Kind="InputPin" />
-            <Pin Id="RkQtzCfD1fyYjrKzvDHNE3" Name="Factory" Kind="InputPin" />
-            <Pin Id="Li7uHI5VsQknZ5uzsmTK8J" Name="Result" Kind="OutputPin" />
-            <Pin Id="Qa1wt2Zr1ZDXl5CcdN5dIx" Name="Success" Kind="OutputPin" />
+            <Pin Id="CFu7jd9Z8Eu1mGq7450poW" Name="WKT" Kind="InputPin" />
+            <Pin Id="FZADNy2MiiRoLI4wwCBNIQ" Name="Factory" Kind="InputPin" />
+            <Pin Id="PyodXGxJqy6Hv9HT6mrNcO" Name="Result" Kind="OutputPin" />
+            <Pin Id="CZpvTVYFDlYs5dEIheEdwL" Name="Success" Kind="OutputPin" />
           </Node>
-          <Node Bounds="60,420,70,19" Id="AQ3vQiiTtMIOVBW7MMeoc2">
+          <Node Bounds="60,330,70,19" Id="KWmiX9I9hMijDOTuXZ05ZA">
             <p:NodeReference LastCategoryFullName="NTS.Operation" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Distance" />
             </p:NodeReference>
-            <Pin Id="KQRuccftkFCvHKS0YRXQNX" Name="A" Kind="InputPin" />
-            <Pin Id="ATVC2gzjxO3srdMvJ5Lkyi" Name="B" Kind="InputPin" />
-            <Pin Id="K8QDsy7oyCRvv6Ixe89lrj" Name="Result" Kind="OutputPin" />
+            <Pin Id="OfyqebigByxPK0mzvJWANh" Name="A" Kind="InputPin" />
+            <Pin Id="DPM8opQB2qfTkAX3eOliiO" Name="B" Kind="InputPin" />
+            <Pin Id="N7pUqM4GNpZgjixHFMrgC7" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="MRD4qNhtFktkFJ850EbZ5n" Comment="distance (sqrt 5, about 2.24)" Bounds="60,460,100,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="330,420,100,19" Id="C9be8gh6vxCU9CWVv1tGvO">
-            <p:NodeReference LastCategoryFullName="NTS.Operation" LastDependency="VL.NetTopologySuite.vl">
-              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Nearest Points" />
-            </p:NodeReference>
-            <Pin Id="PCnGKLKekq9Zg1NBtyuwSK" Name="A" Kind="InputPin" />
-            <Pin Id="HN8m8zf9zZfDmH0nZ3SFTU" Name="B" Kind="InputPin" />
-            <Pin Id="GCL2snigdyyaJymbFy3Wum" Name="On A" Kind="OutputPin" />
-            <Pin Id="VcVGqsAIFSX55KIdCVtBMU" Name="On B" Kind="OutputPin" />
-          </Node>
-          <Node Bounds="330,480,60,19" Id="Qa6Kro7weWl6w1pdILJDi2">
-            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
-              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Point" />
-            </p:NodeReference>
-            <Pin Id="VFd3q06f5Ui4X05h20BVsa" Name="Coordinate" Kind="InputPin" />
-            <Pin Id="UShrthe25iCb5paobQOSad" Name="Factory" Kind="InputPin" />
-            <Pin Id="EXftbAYxTLoHd6UmLI2dM9" Name="Result" Kind="OutputPin" />
-          </Node>
-          <Node Bounds="330,530,90,19" Id="VdfJLXPadEQsWTZM1ozNNT">
-            <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
-              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Write WKT" />
-            </p:NodeReference>
-            <Pin Id="VIVdJ4PkXrbc69svorg1w1" Name="Geometry" Kind="InputPin" />
-            <Pin Id="LwgJJh4YxntedbQP7HRUPT" Name="Include Z" Kind="InputPin" />
-            <Pin Id="RgoPAcr5zDNKWIPfP0Qzul" Name="Result" Kind="OutputPin" />
-          </Node>
-          <Pad Id="ElHhD0vyuWSxgyroMdvL7x" Comment="nearest on A" Bounds="330,570,150,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="600,480,60,19" Id="VOeul7YUG2iDoSSaz7x1Pc">
-            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
-              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Point" />
-            </p:NodeReference>
-            <Pin Id="JbS2L2r568lsrHXVdCYAeA" Name="Coordinate" Kind="InputPin" />
-            <Pin Id="APVrUwv5dLGJZjjrNbF4aA" Name="Factory" Kind="InputPin" />
-            <Pin Id="MdhgUkA81UCeH93uzNcyut" Name="Result" Kind="OutputPin" />
-          </Node>
-          <Node Bounds="600,530,90,19" Id="ErdxmBpKr3zzV97sa0OBeK">
-            <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
-              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Write WKT" />
-            </p:NodeReference>
-            <Pin Id="JXyNeLgxoWYOaVru4D3fum" Name="Geometry" Kind="InputPin" />
-            <Pin Id="FATfKhFMOHOL4liTntrCKE" Name="Include Z" Kind="InputPin" />
-            <Pin Id="EQDLRXVuxfUrrWlHBth4sc" Name="Result" Kind="OutputPin" />
-          </Node>
-          <Pad Id="HgFfhcsnoBkvSQpvdNqMAw" Comment="nearest on B" Bounds="600,570,150,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="IkUE5IZyxXiDqlzjVu8ICC" Bounds="60,630,900,130" ShowValueBox="true" isIOBox="true" Value="The distance is in the coordinates' own units, like everything else in this package. On longitude and latitude it comes out in degrees, which is not a distance anyone wants - project to a metric reference system first.&#xD;&#xA;&#xD;&#xA;Move B inside the square and Distance drops to 0 while the nearest point on A becomes B itself. Move it level with a side and the nearest point on A slides along that side: it is a point on the boundary, not a vertex. Buffer(A, Distance(A, B)) is a shape that just reaches B - a neat check that the two nodes agree.">
+          <Pad Id="VlKloWrDxC0mykpvYIEmP7" Comment="Distance" Bounds="60,370,80,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="EYTyMcGmKhd2Q43yFLZJzJ" Bounds="580,330,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Between the closest parts, not the centres: 0 for anything that touches. sqrt 5 here, in the coordinates' own units - degrees on lon/lat, so project first.">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
-              <p:fontsize p:Type="Int32">11</p:fontsize>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
+          <Node Bounds="230,330,100,19" Id="QJTLyuhb0KTUx0UKLo1obj">
+            <p:NodeReference LastCategoryFullName="NTS.Operation" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Nearest Points" />
+            </p:NodeReference>
+            <Pin Id="NNrgyqUWVVB7IrOoN0vdAg" Name="A" Kind="InputPin" />
+            <Pin Id="SheWOIjA8SWzK1P55OfqIx" Name="B" Kind="InputPin" />
+            <Pin Id="VavMLtde1KASlwPug57AbB" Name="On A" Kind="OutputPin" />
+            <Pin Id="Sn79nCELBF2IImOpwliPVF" Name="On B" Kind="OutputPin" />
+          </Node>
+          <Pad Id="LrjloAAoNxx8TtkLEj6rjA" Bounds="580,418,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Nearest Points gives one coordinate on each geometry: the two ends of the line you would draw. Point turns them into geometry again.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="230,400,60,19" Id="ArkDY74QuzoZHYweDqJT6i">
+            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Point" />
+            </p:NodeReference>
+            <Pin Id="Tngi48YabC28SNIxIG6WxT" Name="Coordinate" Kind="InputPin" />
+            <Pin Id="PtUFfyqE7a1HeccIwYToOr" Name="Factory" Kind="InputPin" />
+            <Pin Id="AZU2v2yV10Da3IyYV3Tzcp" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="230,450,90,19" Id="RE6BfpDaQTWvnB4IR5ebyl">
+            <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Write WKT" />
+            </p:NodeReference>
+            <Pin Id="FzvWLuBNyt6Br8ipAFjBNF" Name="Geometry" Kind="InputPin" />
+            <Pin Id="FNX9aOEhDiGOS0M048tNCn" Name="Include Z" Kind="InputPin" />
+            <Pin Id="FTUFYSGcWzpvp13Ars4jsA" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="SlL46acDJKy7EB4zg2H9Yj" Comment="On A" Bounds="230,490,140,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="400,400,60,19" Id="KgQqQpC4DaSyRkLizyPrCr">
+            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Point" />
+            </p:NodeReference>
+            <Pin Id="EFXbfZS0wCpXczF8ic0I4H" Name="Coordinate" Kind="InputPin" />
+            <Pin Id="HLMRiGlNegJlx9bEzcvZvE" Name="Factory" Kind="InputPin" />
+            <Pin Id="TrExW8Hkp7HW0uD8ycGygA" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="400,450,90,19" Id="FTV05pPVIfmnKqHA0OqvWB">
+            <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Write WKT" />
+            </p:NodeReference>
+            <Pin Id="OheQYfd7hiZw7QdXKfKHf5" Name="Geometry" Kind="InputPin" />
+            <Pin Id="RS0FNzHyiGivosT8Ing32G" Name="Include Z" Kind="InputPin" />
+            <Pin Id="Grvmxw4Hk6trcdittsK3uU" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="V8CLzmYF0VYk02iEb7YDg0" Comment="On B" Bounds="400,490,140,15" ShowValueBox="true" isIOBox="true" />
         </Canvas>
-        <Patch Id="UrWHzf1nbvUj9xE6KCY3zl" Name="Create" />
-        <Patch Id="TrlhlJL7svgSQuz1DjSCrU" Name="Update" />
-        <ProcessDefinition Id="JLCimjC5yqply0ooJC7WXa">
-          <Fragment Id="B8dOlP9i5xyKs8bZ1ZJemG" Patch="UrWHzf1nbvUj9xE6KCY3zl" Enabled="true" />
-          <Fragment Id="NnLY1xGMu6DxGK847yijbG" Patch="TrlhlJL7svgSQuz1DjSCrU" Enabled="true" />
+        <Patch Id="P2fkQE7kctTtTAlBNFdfpo" Name="Create" />
+        <Patch Id="K3rMtNPxr8fwTbXnAF1LQE" Name="Update" />
+        <ProcessDefinition Id="QIq2i7fzbA1KDZu7kTBcv1">
+          <Fragment Id="QYiaTtGG8YJz3rTILfjStF" Patch="P2fkQE7kctTtTAlBNFdfpo" Enabled="true" />
+          <Fragment Id="QjsTIhGI4HOcHwnNnLWZ9F" Patch="K3rMtNPxr8fwTbXnAF1LQE" Enabled="true" />
         </ProcessDefinition>
-        <Link Id="KaEz9wg3Awu8IfKUsVGOtH" Ids="NpyxEow0bscR59ijLyzWqe,FDUeCutaUSgjo225H8AFEF" />
-        <Link Id="UTcRMKFm3utWDyeZjc9FK2" Ids="TftOyCk1dfcv0ay1MOkUVD,U0WF5h3lh2KabVUn5msLjO" />
-        <Link Id="HWAAW7rGqjimM0ZU2jy7PF" Ids="NO02Xpy7r0foKxeVqm071C,KQRuccftkFCvHKS0YRXQNX" />
-        <Link Id="PskxzwfQEFFCpwVr96pjUe" Ids="Li7uHI5VsQknZ5uzsmTK8J,ATVC2gzjxO3srdMvJ5Lkyi" />
-        <Link Id="UUSV0IcXVloZNruLaCmhPa" Ids="K8QDsy7oyCRvv6Ixe89lrj,MRD4qNhtFktkFJ850EbZ5n" />
-        <Link Id="QEePs7BoWTMYpllEZJTK6J" Ids="NO02Xpy7r0foKxeVqm071C,PCnGKLKekq9Zg1NBtyuwSK" />
-        <Link Id="Ko4yqbwaBGKByvInC3kDb1" Ids="Li7uHI5VsQknZ5uzsmTK8J,HN8m8zf9zZfDmH0nZ3SFTU" />
-        <Link Id="KcU7QwpWXbFu2Uj1TffwQl" Ids="GCL2snigdyyaJymbFy3Wum,VFd3q06f5Ui4X05h20BVsa" />
-        <Link Id="TgY7YCGyX5Xl1yWeN5Rrwd" Ids="EXftbAYxTLoHd6UmLI2dM9,VIVdJ4PkXrbc69svorg1w1" />
-        <Link Id="PGB0eOQjMkI9DxVc3CvqNl" Ids="RgoPAcr5zDNKWIPfP0Qzul,ElHhD0vyuWSxgyroMdvL7x" />
-        <Link Id="GG5eyNlkWNcOtLowURMNvj" Ids="VcVGqsAIFSX55KIdCVtBMU,JbS2L2r568lsrHXVdCYAeA" />
-        <Link Id="TC9RuVz1aUDWIAbcMZEpYZ" Ids="MdhgUkA81UCeH93uzNcyut,JXyNeLgxoWYOaVru4D3fum" />
-        <Link Id="MvQTceLklhQRQBxcbGRiuB" Ids="EQDLRXVuxfUrrWlHBth4sc,HgFfhcsnoBkvSQpvdNqMAw" />
+        <Link Id="MvQuZKvhZ3u2Kb24km9KY5" Ids="G4ovuVYICxeMFJSpsSC5FF,M9RGXeSYo1NDJ9C0vmVe0a" />
+        <Link Id="JcZV6EPiTT0g4w8xP8VLuI" Ids="Jih4MkmXYDeMSQi8oyq9Z1,CFu7jd9Z8Eu1mGq7450poW" />
+        <Link Id="KKgYel9Xmtunv2sUEJI91c" Ids="Sm9EUftAEGybBi7vIE4Jxd,OfyqebigByxPK0mzvJWANh" />
+        <Link Id="Hasxz0W1k1ngTfxabwySzD" Ids="PyodXGxJqy6Hv9HT6mrNcO,DPM8opQB2qfTkAX3eOliiO" />
+        <Link Id="UgnB37j1JeUFyaW6nGE0BW" Ids="N7pUqM4GNpZgjixHFMrgC7,VlKloWrDxC0mykpvYIEmP7" />
+        <Link Id="TAOkwKHUg8geogpVKisGXZ" Ids="Sm9EUftAEGybBi7vIE4Jxd,NNrgyqUWVVB7IrOoN0vdAg" />
+        <Link Id="B3KDkrVz3m6ooQQS5aBEkK" Ids="PyodXGxJqy6Hv9HT6mrNcO,SheWOIjA8SWzK1P55OfqIx" />
+        <Link Id="KsMeH5MQvoHtbAtJU3avkQ" Ids="VavMLtde1KASlwPug57AbB,Tngi48YabC28SNIxIG6WxT" />
+        <Link Id="UE6QyZEyfZXp9AdtM7TbWd" Ids="AZU2v2yV10Da3IyYV3Tzcp,FzvWLuBNyt6Br8ipAFjBNF" />
+        <Link Id="NtD1NqWGYXTqfcjjuWHS6D" Ids="FTUFYSGcWzpvp13Ars4jsA,SlL46acDJKy7EB4zg2H9Yj" />
+        <Link Id="FF8LcKtEanqEhmf7clbNBZ" Ids="Sn79nCELBF2IImOpwliPVF,EFXbfZS0wCpXczF8ic0I4H" />
+        <Link Id="K96LUCYpw4P6in7R7YKe7Q" Ids="TrExW8Hkp7HW0uD8ycGygA,OheQYfd7hiZw7QdXKfKHf5" />
+        <Link Id="KGxvrLhnEqUfWJvBmypxFG" Ids="Grvmxw4Hk6trcdittsK3uU,V8CLzmYF0VYk02iEb7YDg0" />
       </Patch>
     </Node>
   </Patch>
-  <NugetDependency Id="TrzpqEUoVwNBZks33Md9BF" Location="VL.NetTopologySuite" Version="0.0.0" />
+  <NugetDependency Id="Iw2xkEriZUfTtDqEkeVi7L" Location="VL.NetTopologySuite" Version="0.0.0" />
 </Document>

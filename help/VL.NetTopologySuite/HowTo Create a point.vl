@@ -1,97 +1,117 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" xmlns:r="reflection" Id="BP9zJEJA7SStnfoD7OBAgG" LanguageVersion="2025.7.4" Version="0.128">
-  <NugetDependency Id="KnRLaTfZgF5BZrLadUO9GP" Location="VL.CoreLib" Version="2025.7.4" />
-  <Patch Id="SPNFSU3t2s7e4gPLxQvO39">
-    <Canvas Id="C39OJRC7JrLzkTr9stl83x" DefaultCategory="Main" BordersChecked="false" CanvasType="FullCategory" />
+<Document xmlns:p="property" xmlns:r="reflection" Id="Lhd1JXCgXlxLuSJO9LAU7t" LanguageVersion="2025.7.4" Version="0.128">
+  <NugetDependency Id="EZFqNQI8BmUOLwfQeZsqnw" Location="VL.CoreLib" Version="2025.7.4" />
+  <Patch Id="RaVNd7EGvsNNJilGmoh9u4">
+    <Canvas Id="Tc8ZVC2hQM2HcmQqTcSMrQ" DefaultCategory="Main" BordersChecked="false" CanvasType="FullCategory" />
     <!--
 
     ************************ Application ************************
 
 -->
-    <Node Name="Application" Bounds="100,100" Id="CIX1zmSsJgcca9Ipe8NABB">
+    <Node Name="Application" Bounds="100,100" Id="RPc8jkqCqFZb53jfIMoWAt">
       <p:NodeReference>
         <Choice Kind="ContainerDefinition" Name="Process" />
         <CategoryReference Kind="Category" Name="Primitive" />
       </p:NodeReference>
-      <Patch Id="GcelEpbc1MzIkveEjitHbR">
-        <Canvas Id="JyNpRPWxBPjagpvoCEU6vQ" CanvasType="Group">
-          <Pad Id="GFq6f4tHTNr7P3Fvip0skE" Bounds="60,60,900,130" ShowValueBox="true" isIOBox="true" Value="One idea: a geometry starts as a Coordinate.&#xD;&#xA;&#xD;&#xA;X first, then Y. For geographic data that means longitude then latitude - the opposite of how they are usually spoken, and the most common mistake in this domain. Two numbers become a Coordinate, the Coordinate becomes a Point, and Write WKT shows you what you made: the same text pastes into any other GIS tool.">
+      <Patch Id="TjbbxUZu3w0TNhomyIgEmE">
+        <Canvas Id="N1AXUBkL8x0sX1TcRJtjIN" CanvasType="Group">
+          <Pad Id="GAcDHuJkzSmscuygwLsJh5" Bounds="60,40,405,41" ShowValueBox="true" isIOBox="true" Value="Use Coordinate and Point!">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
-              <p:fontsize p:Type="Int32">11</p:fontsize>
+              <p:fontsize p:Type="Int32">20</p:fontsize>
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="Ngi439xa3sbNj5X3pCayFZ" Bounds="420,340,440,130" ShowValueBox="true" isIOBox="true" Value="Factory is left unconnected, so the Point gets SRID 0, meaning &quot;unset&quot;. That is NetTopologySuite's own default and it is honest: nothing here has seen the numbers and cannot know what reference system they are in. Connect a GeometryFactory node to say 4326. Setting an SRID is a label - it never moves a coordinate.">
+          <Pad Id="RGDugmNA3K49fidEoxkcEq" Bounds="60,95,480,46" ShowValueBox="true" isIOBox="true" Value="Two numbers become a Coordinate, the Coordinate becomes a Point, and Write WKT shows what you made. X first, then Y.">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
-              <p:fontsize p:Type="Int32">11</p:fontsize>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="VJNkffdenn8SAm82HE2wjT" Comment="X (longitude)" Bounds="60,220,100,15" ShowValueBox="true" isIOBox="true" Value="139.7671">
+          <Pad Id="Kao9a7kTWD37lLrrzkdta1" Comment="X" Bounds="60,170,100,15" ShowValueBox="true" isIOBox="true" Value="139.7671">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Float64" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="UptreV2MVsgaSRSCez537l" Comment="Y (latitude)" Bounds="60,260,100,15" ShowValueBox="true" isIOBox="true" Value="35.6812">
+          <Pad Id="AJcnZmDGNTnC6bicFp2s5T" Comment="Y" Bounds="60,210,100,15" ShowValueBox="true" isIOBox="true" Value="35.6812">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Float64" />
             </p:TypeAnnotation>
           </Pad>
-
-          <Node Bounds="60,310,80,19" Id="PMUwCGiVJU90bqIPHKilMV">
+          <Pad Id="VtrAAOrqJvQoXLPr064GfO" Bounds="580,170,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; X then Y. For geographic data that is longitude, then latitude - the opposite of how they are usually spoken, and the most common mistake in this domain.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="60,260,80,19" Id="LF0m202J5SSiXUzMUD2LKZ">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Coordinate" />
             </p:NodeReference>
-            <Pin Id="NiF5boi4dQkjODd90lDyJM" Name="X" Kind="InputPin" />
-            <Pin Id="PMKIC73LmCCsO26C3Nu5Wq" Name="Y" Kind="InputPin" />
-            <Pin Id="QpQvhnczSjJwgJbLKHDzFs" Name="Result" Kind="OutputPin" />
+            <Pin Id="NcFQ4AinLoTTOtex1yLD1W" Name="X" Kind="InputPin" />
+            <Pin Id="R1edom5Om1dYuyTvxxXyYp" Name="Y" Kind="InputPin" />
+            <Pin Id="SyNfLrc51nO6n6wu3FP9aD" Name="Result" Kind="OutputPin" />
           </Node>
-
-          <Node Bounds="60,370,60,19" Id="KO9RqfyeWHAdBIozSek2vi">
+          <Node Bounds="60,320,60,19" Id="QbLmnWyBxQvTtKJc0DCbTy">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Point" />
             </p:NodeReference>
-            <Pin Id="JvrkGdDFu18xB5MoDPvZQc" Name="Coordinate" Kind="InputPin" />
-            <Pin Id="LEb9OI3eBTLzbkCzs87eJq" Name="Factory" Kind="InputPin" />
-            <Pin Id="Bu7aBJnlnXTPt5y0PQIwIi" Name="Result" Kind="OutputPin" />
+            <Pin Id="ITvnntBXyIEzQB4ewknYW3" Name="Coordinate" Kind="InputPin" />
+            <Pin Id="NBntG5itxGva0529YNNP6r" Name="Factory" Kind="InputPin" />
+            <Pin Id="FZP5Q6lIYhcjPn9Z60kMAY" Name="Result" Kind="OutputPin" />
           </Node>
-
-          <Node Bounds="60,430,80,19" Id="Fk4pQaEAfGRWqPljRwQToK">
+          <Pad Id="HgSIJzimr7azBC73Y8Y3xU" Bounds="580,320,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Factory left unconnected: SRID 0, meaning &quot;unset&quot;. Connect a GeometryFactory node to say 4326. An SRID is a label - it never moves a coordinate.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="60,380,90,19" Id="BHeburbJD8pXvIKDheBOyd">
             <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Write WKT" />
             </p:NodeReference>
-            <Pin Id="LDtHV3peMkau9DD5L6X84n" Name="Geometry" Kind="InputPin" />
-            <Pin Id="VsEG9mCLh6BsW7iLBnuhry" Name="Include Z" Kind="InputPin" />
-            <Pin Id="RyNnAVA55jopi8ihRRrgqD" Name="Result" Kind="OutputPin" />
+            <Pin Id="GbEl7qfcuVUMq40LeonM72" Name="Geometry" Kind="InputPin" />
+            <Pin Id="PXLUIa8a05FuPsDb5w6pNY" Name="Include Z" Kind="InputPin" />
+            <Pin Id="Jt97Num33K39JooNMo3mjh" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="ApaUp0XFqHOrhedkq4tuqz" Comment="" Bounds="60,475,300,15" ShowValueBox="true" isIOBox="true" Value="POINT (139.7671 35.6812)">
-            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+          <Pad Id="GGEESDZSidouiFK8E71AqN" Comment="WKT" Bounds="60,420,300,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="MnW2FVovoEKOXP524aiumn" Bounds="580,408,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Well-Known Text: the same text pastes into any other GIS tool. See HowTo Read and write WKT.">
+            <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
           </Pad>
         </Canvas>
-        <Patch Id="IWX4DoeY0ouDI5JRdvg66g" Name="Create" />
-        <Patch Id="BtHbfni1wWVlCUMATe2fYb" Name="Update" />
-        <ProcessDefinition Id="MehksIVia0hl4ZhdVnsPk8">
-          <Fragment Id="Ns3XVnuk0qKaNtHyRZOYPk" Patch="IWX4DoeY0ouDI5JRdvg66g" Enabled="true" />
-          <Fragment Id="Dy3AzUmCrahJK2rPCjKaMr" Patch="BtHbfni1wWVlCUMATe2fYb" Enabled="true" />
+        <Patch Id="Qt7xImEJA6XIry830n5tpy" Name="Create" />
+        <Patch Id="JhbSmSXjlbY68fzRIqe6Vq" Name="Update" />
+        <ProcessDefinition Id="Eg1gB0r8KaF5Fr546nTwMA">
+          <Fragment Id="GnyQYlMRccjnbf0HKqE4XE" Patch="Qt7xImEJA6XIry830n5tpy" Enabled="true" />
+          <Fragment Id="Gtpw87qbHFHbTJnpEp4RCa" Patch="JhbSmSXjlbY68fzRIqe6Vq" Enabled="true" />
         </ProcessDefinition>
-        <Link Id="ORkEDpirfp21YOiv4BsAtD" Ids="VJNkffdenn8SAm82HE2wjT,NiF5boi4dQkjODd90lDyJM" />
-        <Link Id="SY22ylMKio86p6iA4KLmej" Ids="UptreV2MVsgaSRSCez537l,PMKIC73LmCCsO26C3Nu5Wq" />
-        <Link Id="TTHMVZUNtgqADcDoRKKD42" Ids="QpQvhnczSjJwgJbLKHDzFs,JvrkGdDFu18xB5MoDPvZQc" />
-        <Link Id="USCTDjTJkYq7cbPws0B5aB" Ids="Bu7aBJnlnXTPt5y0PQIwIi,LDtHV3peMkau9DD5L6X84n" />
-        <Link Id="HnM2zmVg35gM5qtE3i3cl6" Ids="RyNnAVA55jopi8ihRRrgqD,ApaUp0XFqHOrhedkq4tuqz" />
+        <Link Id="IIcAU5KpH78Q3h8LdkZYG5" Ids="Kao9a7kTWD37lLrrzkdta1,NcFQ4AinLoTTOtex1yLD1W" />
+        <Link Id="VGulbmkBSFyITkBpX0IjJV" Ids="AJcnZmDGNTnC6bicFp2s5T,R1edom5Om1dYuyTvxxXyYp" />
+        <Link Id="JgrVnxqSjiAukag3XQpZRc" Ids="SyNfLrc51nO6n6wu3FP9aD,ITvnntBXyIEzQB4ewknYW3" />
+        <Link Id="JZsWTBJFbcLeME6Phbd95D" Ids="FZP5Q6lIYhcjPn9Z60kMAY,GbEl7qfcuVUMq40LeonM72" />
+        <Link Id="AfBDmzZSphlCOoEGtnsl02" Ids="Jt97Num33K39JooNMo3mjh,GGEESDZSidouiFK8E71AqN" />
       </Patch>
     </Node>
   </Patch>
-  <NugetDependency Id="UfTMSN7hrvKVyAalUidUEU" Location="VL.NetTopologySuite" Version="0.0.0" />
+  <NugetDependency Id="OS7VNqpSupnu0utGiU5yNO" Location="VL.NetTopologySuite" Version="0.0.0" />
 </Document>

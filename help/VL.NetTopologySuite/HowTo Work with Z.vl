@@ -1,132 +1,168 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" xmlns:r="reflection" Id="MztLNJafrMap2ukHYsqxlL" LanguageVersion="2025.7.4" Version="0.128">
-  <NugetDependency Id="T7TPcqx9ClWdu1OscktZ7x" Location="VL.CoreLib" Version="2025.7.4" />
-  <Patch Id="TpyK6in8toypUu0bOykFgK">
-    <Canvas Id="JyOkGZl48DMsFNBVQPPADP" DefaultCategory="Main" BordersChecked="false" CanvasType="FullCategory" />
+<Document xmlns:p="property" xmlns:r="reflection" Id="AQdVa5Rnhoi6pXItIwysLj" LanguageVersion="2025.7.4" Version="0.128">
+  <NugetDependency Id="USCnyxT8B3r0LVqPM8Dkzz" Location="VL.CoreLib" Version="2025.7.4" />
+  <Patch Id="R6SywbJasYMJRZoaAMkt5T">
+    <Canvas Id="AyGs0m6ACUwZqS5GYK9O1x" DefaultCategory="Main" BordersChecked="false" CanvasType="FullCategory" />
     <!--
 
     ************************ Application ************************
 
 -->
-    <Node Name="Application" Bounds="100,100" Id="FJh4rbXnVtuN7cfuEJHJWF">
+    <Node Name="Application" Bounds="100,100" Id="ACcQA8LGenn1zfQJVA0Ab5">
       <p:NodeReference>
         <Choice Kind="ContainerDefinition" Name="Process" />
         <CategoryReference Kind="Category" Name="Primitive" />
       </p:NodeReference>
-      <Patch Id="Q8WW6aWMweGXRL2tVyeaPa">
-        <Canvas Id="F8aACvpc2Ktrw14iGD7FiA" CanvasType="Group">
-          <Pad Id="K6JO9Vpa83Y1NBfGixSQYt" Bounds="60,60,900,150" ShowValueBox="true" isIOBox="true" Value="One idea: a coordinate can carry a third number, and whether it survives depends on who you hand it to.&#xD;&#xA;&#xD;&#xA;CoordinateZ takes X, Y and Z, and Point keeps all three. Write WKT drops Z unless Include Z is on - the two boxes below are the same Point written both ways. Split takes any Coordinate apart again; on a plain XY Coordinate its Z comes back as NaN, which is how NetTopologySuite says &quot;never set&quot;.">
+      <Patch Id="FGuNXZJbTrGkKZcC7NRboD">
+        <Canvas Id="Ph1su8l60mb4XVLxWLMIBp" CanvasType="Group">
+          <Pad Id="CTY0YxG6I98hbvnesDkbIA" Bounds="60,40,270,41" ShowValueBox="true" isIOBox="true" Value="Use CoordinateZ!">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
-              <p:fontsize p:Type="Int32">11</p:fontsize>
+              <p:fontsize p:Type="Int32">20</p:fontsize>
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="UFHYjYaHaqh4QkNKEXMHEh" Comment="X (longitude)" Bounds="60,250,100,15" ShowValueBox="true" isIOBox="true" Value="139.7671">
+          <Pad Id="USY13QQe6o8ZKpO3jIUVDh" Bounds="60,95,480,46" ShowValueBox="true" isIOBox="true" Value="A coordinate can carry a third number. Who keeps it and who drops it is the whole story.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="JztbIwWBqAmcP1cw9CpQpY" Comment="X" Bounds="60,170,100,15" ShowValueBox="true" isIOBox="true" Value="139.7671">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Float64" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="ET5xfe6ddKblUbUb84mnku" Comment="Y (latitude)" Bounds="60,290,100,15" ShowValueBox="true" isIOBox="true" Value="35.6812">
+          <Pad Id="CLWsPiqgMtOicwBWNGPM0z" Comment="Y" Bounds="60,210,100,15" ShowValueBox="true" isIOBox="true" Value="35.6812">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Float64" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="C9gXQdWFyAkGVuk7V8UJv0" Comment="Z (height, in whatever unit you mean)" Bounds="60,330,100,15" ShowValueBox="true" isIOBox="true" Value="40">
+          <Pad Id="NmmXtcoLOhqMYuzPgnSC9Q" Comment="Z" Bounds="60,250,100,15" ShowValueBox="true" isIOBox="true" Value="40">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Float64" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="60,380,90,19" Id="CcjR2xd0wdRYHvtYUEvkcM">
+          <Pad Id="U0T6Oc49yGkzA3EeJ5vaAE" Bounds="580,250,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Z has no unit and no meaning of its own - metres, floors or a model axis, nothing here knows. M, the fourth ordinate, is not exposed.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="60,300,90,19" Id="Q9gtpAw22scKEwgClAzoOF">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="CoordinateZ" />
             </p:NodeReference>
-            <Pin Id="HxSvymhe96aPBJPkjjyDaA" Name="X" Kind="InputPin" />
-            <Pin Id="RpqRK074CfYf6vVitMANLJ" Name="Y" Kind="InputPin" />
-            <Pin Id="Hsy82B6Ahb8vxFOlOVAQ4P" Name="Z" Kind="InputPin" />
-            <Pin Id="J8PMURRw9l9JtZ8kQ3unx2" Name="Result" Kind="OutputPin" />
+            <Pin Id="C3eIsr2rMxozoebji8K45v" Name="X" Kind="InputPin" />
+            <Pin Id="Tvglz96BtDMJpOjVp4sW4r" Name="Y" Kind="InputPin" />
+            <Pin Id="VMEohs7h73NV8AswTRvjQG" Name="Z" Kind="InputPin" />
+            <Pin Id="U4xrelSHg8kQwcuHeWri0x" Name="Result" Kind="OutputPin" />
           </Node>
-          <Node Bounds="60,440,60,19" Id="Slc8wxc0QxN0VZS5wvxkkh">
+          <Node Bounds="60,360,60,19" Id="RaTd2N5KzNPcFxD1oPdg4h">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Point" />
             </p:NodeReference>
-            <Pin Id="OIR13ZXZjglEiJjrCp42AF" Name="Coordinate" Kind="InputPin" />
-            <Pin Id="IJyA07WtzLJO5EK6jPgOvt" Name="Factory" Kind="InputPin" />
-            <Pin Id="EthAcq9qpcis7yjI8rjRUK" Name="Result" Kind="OutputPin" />
+            <Pin Id="PuJdx2gWooa5FZ6Yv7gnzN" Name="Coordinate" Kind="InputPin" />
+            <Pin Id="HfeMZdTJGQprRHYEuQN2h8" Name="Factory" Kind="InputPin" />
+            <Pin Id="Li7Vs3UX1FIwamGFh8xrx0" Name="Result" Kind="OutputPin" />
           </Node>
-          <Node Bounds="60,500,90,19" Id="P36eP1DOixcP2heEaMdVJg">
+          <Node Bounds="60,420,90,19" Id="Mzg3DajK5yJGblIPWaP7Yx">
             <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Write WKT" />
             </p:NodeReference>
-            <Pin Id="JAs9yH8ZidwdXNp1mp738e" Name="Geometry" Kind="InputPin" />
-            <Pin Id="TjNClXA3apJwrQsu01w2aF" Name="Include Z" Kind="InputPin" />
-            <Pin Id="F4TQG96yDnx3uyBV2BoCpA" Name="Result" Kind="OutputPin" />
+            <Pin Id="FN05KWhMHAHUJf1eFJcFQD" Name="Geometry" Kind="InputPin" />
+            <Pin Id="QnoYIurkolaKtcdbvAAuTt" Name="Include Z" Kind="InputPin" />
+            <Pin Id="KjLpHq1u87IPTbT9R74xKR" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="MCqaHjRGRY2FTl9kEBBsSG" Comment="Include Z off - Z is silently gone" Bounds="60,540,300,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="FvUl5ART9TzXIQhAxv5KQR" Comment="Include Z" Bounds="620,460,60,15" ShowValueBox="true" isIOBox="true" Value="True">
-            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
-              <Choice Kind="TypeFlag" Name="Boolean" />
-            </p:TypeAnnotation>
-          </Pad>
-          <Node Bounds="620,500,90,19" Id="VaqHz6HVtyjgNI4Qbg4QPE">
-            <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
-              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Write WKT" />
-            </p:NodeReference>
-            <Pin Id="S0ygul7EiPN8OstX7BkBdy" Name="Geometry" Kind="InputPin" />
-            <Pin Id="OhVn3PzmJANjx0ndYL91ne" Name="Include Z" Kind="InputPin" />
-            <Pin Id="QvaKNkdRSbejFwkIR9Pe0R" Name="Result" Kind="OutputPin" />
-          </Node>
-          <Pad Id="BtZcv7CZm4OpvtyRLfV9oJ" Comment="Include Z on" Bounds="620,540,300,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="60,610,50,19" Id="TQheetGNxL0A2wecHW1npj">
-            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
-              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Split" />
-            </p:NodeReference>
-            <Pin Id="Vy1ETGG4Avvny1j3AaRKIk" Name="Coordinate" Kind="InputPin" />
-            <Pin Id="ANewboC1gxcCC1GWpXPqwB" Name="X" Kind="OutputPin" />
-            <Pin Id="USUaHP5qoAyLhvwl3WMySN" Name="Y" Kind="OutputPin" />
-            <Pin Id="OSdeCil1iN9c43hZVxDGrq" Name="Z" Kind="OutputPin" />
-          </Node>
-          <Pad Id="QEGSeWbimrndnzJPdGgQHP" Comment="X" Bounds="60,650,100,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="QYPuLZX6N0sv8ZrDRyDNuK" Comment="Y" Bounds="200,650,100,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="JA3WUu4T4lvd4Ecmnp5huZ" Comment="Z" Bounds="340,650,100,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="VUBEJXZAWWUEjlFqoQpO55" Bounds="60,710,900,130" ShowValueBox="true" isIOBox="true" Value="Read WKT understands the Z form too: paste POINT Z (139.7671 35.6812 40) into HowTo Read and write WKT and Split its first coordinate. Whether an operation such as Buffer keeps Z is NetTopologySuite's decision, not this package's - when it matters, check with Write WKT and Include Z on.&#xD;&#xA;&#xD;&#xA;Z is a number with no unit and no meaning of its own. Nothing here knows whether 40 is metres above sea level, floors, or the third axis of a model. M, the fourth ordinate, is not exposed yet.">
+          <Pad Id="UykueC1JmtygnzJoGRZQtd" Comment="WKT" Bounds="60,460,300,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="PkyYTc6yyEtWiSD1AIDj5s" Bounds="580,420,320,26" ShowValueBox="true" isIOBox="true" Value="&lt; Include Z off: Z is silently gone.">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
-              <p:fontsize p:Type="Int32">11</p:fontsize>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="ALOZFic1gAYX1k2lEusE2v" Comment="Include Z" Bounds="60,510,60,15" ShowValueBox="true" isIOBox="true" Value="True">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Boolean" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="60,550,90,19" Id="OddWpBrw0rWDOLiIgCHXDr">
+            <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Write WKT" />
+            </p:NodeReference>
+            <Pin Id="DHH2deUVnkcDfnrujBC5Ik" Name="Geometry" Kind="InputPin" />
+            <Pin Id="Qhpxo2r7WBKWg57P0AeiDR" Name="Include Z" Kind="InputPin" />
+            <Pin Id="Rc5hL8ewMGU3gCJf4ase2Y" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="LckxU5Kj64K8RYwvGmaIIn" Comment="WKT" Bounds="60,590,300,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="KZyJVY9MAHsKjfD3x7h6ot" Bounds="580,550,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Include Z on: POINT Z (...). Read WKT understands this form too. Whether Buffer and friends keep Z is NetTopologySuite's decision - check here when it matters.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="60,650,50,19" Id="SZc1EN9TBsHybzhhMTuXt4">
+            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Split" />
+            </p:NodeReference>
+            <Pin Id="KckaqRZeDz4SqJO6wefXLA" Name="Coordinate" Kind="InputPin" />
+            <Pin Id="EznZ1Hj6PijZQH26Z8pujh" Name="X" Kind="OutputPin" />
+            <Pin Id="DmlFNYXOpLpPjCJZZmsK7V" Name="Y" Kind="OutputPin" />
+            <Pin Id="Oogpuj81PTLu0SFOtNTb4d" Name="Z" Kind="OutputPin" />
+          </Node>
+          <Pad Id="G2QxYy3NH1ULdlmOeKNx1s" Comment="X" Bounds="60,690,80,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="BHdEu8JoxCVIOqibyh2t8q" Comment="Y" Bounds="170,690,80,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="O5lMJc6A72roFspfRixX6h" Comment="Z" Bounds="280,690,80,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="M8HxNzlvAaYla7z0YKKj9t" Bounds="580,650,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Split takes any Coordinate apart. On a plain XY Coordinate, Z comes back as NaN - NetTopologySuite's way of saying &quot;never set&quot;.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
         </Canvas>
-        <Patch Id="EXzy5qiDBL971stIh5aF0x" Name="Create" />
-        <Patch Id="HvcXTgvHP6pwXkE4Z9zmoI" Name="Update" />
-        <ProcessDefinition Id="LRM1vI5yJQ73fUdXeXwdoz">
-          <Fragment Id="QpaY3dMkgkJBw1kkIXD74x" Patch="EXzy5qiDBL971stIh5aF0x" Enabled="true" />
-          <Fragment Id="QdzecNxbBsQoooasVYMbHD" Patch="HvcXTgvHP6pwXkE4Z9zmoI" Enabled="true" />
+        <Patch Id="MZquhve8gYRl3Gw54UnoT7" Name="Create" />
+        <Patch Id="QZW6SjGTKxvxYDCMYS83zJ" Name="Update" />
+        <ProcessDefinition Id="A6RNSeQtMPW380yaPmY5hr">
+          <Fragment Id="Pi8djEZQGI4H0Yjbh0RTeE" Patch="MZquhve8gYRl3Gw54UnoT7" Enabled="true" />
+          <Fragment Id="Sk16HqwAcJ7lWQj0hmTYlC" Patch="QZW6SjGTKxvxYDCMYS83zJ" Enabled="true" />
         </ProcessDefinition>
-        <Link Id="REFSEml4e2HPKbiWl2j0OU" Ids="UFHYjYaHaqh4QkNKEXMHEh,HxSvymhe96aPBJPkjjyDaA" />
-        <Link Id="H6SJv1aFK3jVTKZsC6LVg5" Ids="ET5xfe6ddKblUbUb84mnku,RpqRK074CfYf6vVitMANLJ" />
-        <Link Id="LAVeUzo5TBPJyOy3yYKseW" Ids="C9gXQdWFyAkGVuk7V8UJv0,Hsy82B6Ahb8vxFOlOVAQ4P" />
-        <Link Id="H8cASllnGXDX8OJonwr6ls" Ids="J8PMURRw9l9JtZ8kQ3unx2,OIR13ZXZjglEiJjrCp42AF" />
-        <Link Id="LDb1IvwrKmPeJDaFSeKh20" Ids="EthAcq9qpcis7yjI8rjRUK,JAs9yH8ZidwdXNp1mp738e" />
-        <Link Id="LFO2Yjdd7Vi85cOcXqhlFd" Ids="F4TQG96yDnx3uyBV2BoCpA,MCqaHjRGRY2FTl9kEBBsSG" />
-        <Link Id="NbKVgRd9hoNan757GgAz78" Ids="EthAcq9qpcis7yjI8rjRUK,S0ygul7EiPN8OstX7BkBdy" />
-        <Link Id="SMX82QyU5yy0NiHWL1JCtL" Ids="FvUl5ART9TzXIQhAxv5KQR,OhVn3PzmJANjx0ndYL91ne" />
-        <Link Id="IpEn6WHHq5KP4RehIacjlc" Ids="QvaKNkdRSbejFwkIR9Pe0R,BtZcv7CZm4OpvtyRLfV9oJ" />
-        <Link Id="BZpMigRDkqCsXb78Tm329R" Ids="J8PMURRw9l9JtZ8kQ3unx2,Vy1ETGG4Avvny1j3AaRKIk" />
-        <Link Id="OR5Y2QGWcf8S5lMkOXrlpt" Ids="ANewboC1gxcCC1GWpXPqwB,QEGSeWbimrndnzJPdGgQHP" />
-        <Link Id="TNi2MsonhfhkWPM1CTF7p5" Ids="USUaHP5qoAyLhvwl3WMySN,QYPuLZX6N0sv8ZrDRyDNuK" />
-        <Link Id="Bo7PGiWXYDgzknxQ8Gqmjv" Ids="OSdeCil1iN9c43hZVxDGrq,JA3WUu4T4lvd4Ecmnp5huZ" />
+        <Link Id="JVJTwBN19hbZGF6WyubmbI" Ids="JztbIwWBqAmcP1cw9CpQpY,C3eIsr2rMxozoebji8K45v" />
+        <Link Id="EAX3wSOfogmABaAihMUHw2" Ids="CLWsPiqgMtOicwBWNGPM0z,Tvglz96BtDMJpOjVp4sW4r" />
+        <Link Id="JUaNA0rLNkdhQKVkbqsmCc" Ids="NmmXtcoLOhqMYuzPgnSC9Q,VMEohs7h73NV8AswTRvjQG" />
+        <Link Id="U2TGmHYKxtL7USSX1qjU5q" Ids="U4xrelSHg8kQwcuHeWri0x,PuJdx2gWooa5FZ6Yv7gnzN" />
+        <Link Id="VbcRuES27F7PoJJkUFH363" Ids="Li7Vs3UX1FIwamGFh8xrx0,FN05KWhMHAHUJf1eFJcFQD" />
+        <Link Id="AOXZ4Kiu95LnEfspMPiP83" Ids="KjLpHq1u87IPTbT9R74xKR,UykueC1JmtygnzJoGRZQtd" />
+        <Link Id="JBhE1N3jdUYOGfli2CLIV9" Ids="Li7Vs3UX1FIwamGFh8xrx0,DHH2deUVnkcDfnrujBC5Ik" />
+        <Link Id="EKrgozFXOcqlZEd61WxImE" Ids="ALOZFic1gAYX1k2lEusE2v,Qhpxo2r7WBKWg57P0AeiDR" />
+        <Link Id="SYO9kYALD7q9hdqOaeiA5J" Ids="Rc5hL8ewMGU3gCJf4ase2Y,LckxU5Kj64K8RYwvGmaIIn" />
+        <Link Id="NvkGs9EbOElxaAuE0tsl2r" Ids="U4xrelSHg8kQwcuHeWri0x,KckaqRZeDz4SqJO6wefXLA" />
+        <Link Id="VNcXj0UxcBxtBfNtDKRq9v" Ids="EznZ1Hj6PijZQH26Z8pujh,G2QxYy3NH1ULdlmOeKNx1s" />
+        <Link Id="F3tF63LFmIttY0GSC7Ts7d" Ids="DmlFNYXOpLpPjCJZZmsK7V,BHdEu8JoxCVIOqibyh2t8q" />
+        <Link Id="VFk6RRcfdIeipWLIaPaFuB" Ids="Oogpuj81PTLu0SFOtNTb4d,O5lMJc6A72roFspfRixX6h" />
       </Patch>
     </Node>
   </Patch>
-  <NugetDependency Id="LAyrboxzYHxDfOKoN5dJBL" Location="VL.NetTopologySuite" Version="0.0.0" />
+  <NugetDependency Id="BXkPDVduEmrukqv6QBWkTE" Location="VL.NetTopologySuite" Version="0.0.0" />
 </Document>

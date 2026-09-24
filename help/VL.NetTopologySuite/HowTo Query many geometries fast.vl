@@ -1,187 +1,214 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" xmlns:r="reflection" Id="QhJEm0BxiXkR78xuOug9oZ" LanguageVersion="2025.7.4" Version="0.128">
-  <NugetDependency Id="L54NGfOjacSN2oTwTfnUk7" Location="VL.CoreLib" Version="2025.7.4" />
-  <Patch Id="NemXZEANnUG0Gr4Wyx4Rex">
-    <Canvas Id="JSmenteK4JcMXW6Mkj0kw4" DefaultCategory="Main" BordersChecked="false" CanvasType="FullCategory" />
+<Document xmlns:p="property" xmlns:r="reflection" Id="Qbclqj4fXAKQfWrJD7Mgbk" LanguageVersion="2025.7.4" Version="0.128">
+  <NugetDependency Id="NLlBbEuNHymirucTAuu1St" Location="VL.CoreLib" Version="2025.7.4" />
+  <Patch Id="HsmTnbuDHOvSotcZmMyco5">
+    <Canvas Id="RAOdOt1taAjiRnhn9TxBao" DefaultCategory="Main" BordersChecked="false" CanvasType="FullCategory" />
     <!--
 
     ************************ Application ************************
 
 -->
-    <Node Name="Application" Bounds="100,100" Id="RozZh0TyNL6CcHXEEhuxRR">
+    <Node Name="Application" Bounds="100,100" Id="BPb53sU8IyTmU9DZJxMSyI">
       <p:NodeReference>
         <Choice Kind="ContainerDefinition" Name="Process" />
         <CategoryReference Kind="Category" Name="Primitive" />
       </p:NodeReference>
-      <Patch Id="Lsno7bzhT0giVWFlNSer4L">
-        <Canvas Id="Gt7YrAJaybe1CrCjUmgIcj" CanvasType="Group">
-          <Pad Id="E72ceoG8ZEQLcwfXV1HNy4" Bounds="60,60,900,190" ShowValueBox="true" isIOBox="true" Value="One idea: asking every geometry &quot;do you touch this?&quot; is fine for ten and hopeless for a hundred thousand. An index answers &quot;which ones MIGHT?&quot; in a handful of steps.&#xD;&#xA;&#xD;&#xA;SpatialIndex builds an STRtree over a Spread of geometries once, and rebuilds only when the set of geometries changes - Indexes Built shows that: edit the search area all you like and it stays at 1. Query asks the tree which geometries have a bounding box touching the search geometry's bounding box. Those are CANDIDATES, not answers: the boxes touched, the shapes may not have. The final yes/no is still Intersects on each candidate - but now on a few instead of on all.">
+      <Patch Id="CX7h9krSoqrTSkdeWfbGI7">
+        <Canvas Id="SCd7mpR0ByrUrTpIAefcxm" CanvasType="Group">
+          <Pad Id="TNOKXEk4at0bxYsBTkTsiC" Bounds="60,40,435,41" ShowValueBox="true" isIOBox="true" Value="Use SpatialIndex and Query!">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
-              <p:fontsize p:Type="Int32">11</p:fontsize>
+              <p:fontsize p:Type="Int32">20</p:fontsize>
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="EtFTzeROfp1ZC4tRcvFnSp" Comment="inside the search area" Bounds="60,290,300,15" ShowValueBox="true" isIOBox="true" Value="POINT (1 1)">
+          <Pad Id="Fn7Us1TpRybABpL47ruWRt" Bounds="60,95,480,64" ShowValueBox="true" isIOBox="true" Value="Asking every geometry &quot;do you touch this?&quot; is fine for ten and hopeless for a hundred thousand. An index answers &quot;which ones MIGHT?&quot; in a handful of steps.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="SNXTuXPdhvPvNFhOrhFvB9" Comment="Point" Bounds="60,170,250,15" ShowValueBox="true" isIOBox="true" Value="POINT (1 1)">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="600,290,90,19" Id="H6lriALp9zasg8UWZXtlAZ">
+          <Node Bounds="400,170,90,19" Id="OuiEYD1ODbC09djP59KenY">
             <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Read WKT" />
             </p:NodeReference>
-            <Pin Id="AHXxiyAFHNhLaejgB2e9w9" Name="WKT" Kind="InputPin" />
-            <Pin Id="Tk2A4zmOkTd3qpt9bNsFMF" Name="Factory" Kind="InputPin" />
-            <Pin Id="QYvWBoE8xSWffW4rGb7ri4" Name="Result" Kind="OutputPin" />
-            <Pin Id="BfQ1T8KF7XNnXartDCVROU" Name="Success" Kind="OutputPin" />
+            <Pin Id="LUEiB2ow5ejaaE8h6jXswp" Name="WKT" Kind="InputPin" />
+            <Pin Id="HoXVhgVNg0rWqxyfQJcVwn" Name="Factory" Kind="InputPin" />
+            <Pin Id="G0GppAEdKfsVPBSuTlBhaL" Name="Result" Kind="OutputPin" />
+            <Pin Id="UG9wLMJ5eag4BsEqlqMdnp" Name="Success" Kind="OutputPin" />
           </Node>
-          <Pad Id="NHHua8dRGyvt6QKZAhGt8W" Comment="far away" Bounds="60,330,300,15" ShowValueBox="true" isIOBox="true" Value="POINT (5 5)">
+          <Pad Id="HvAbKVc8DujDwlTN6GhZc7" Comment="Point" Bounds="60,210,250,15" ShowValueBox="true" isIOBox="true" Value="POINT (5 5)">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="600,330,90,19" Id="TZxwa6UUti8HUKngxtm6wa">
+          <Node Bounds="400,210,90,19" Id="Ikn8CV6c8dymDW7oROHJDs">
             <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Read WKT" />
             </p:NodeReference>
-            <Pin Id="VRpk9q0NvfRZ1EETKpB3pr" Name="WKT" Kind="InputPin" />
-            <Pin Id="RaCgMR9xvwOcdVtztkLqSl" Name="Factory" Kind="InputPin" />
-            <Pin Id="MVuBkNGtZKx0XOq1n0yBlL" Name="Result" Kind="OutputPin" />
-            <Pin Id="N0jFaSZRlZgV9o6qvpSbda" Name="Success" Kind="OutputPin" />
+            <Pin Id="AbUM1ned4ILrDjDvJ84EUY" Name="WKT" Kind="InputPin" />
+            <Pin Id="VYiALFuyot9vQkZq1JUari" Name="Factory" Kind="InputPin" />
+            <Pin Id="GQZEpZDbWHtOJHdXCfWaJY" Name="Result" Kind="OutputPin" />
+            <Pin Id="MbYM3yyHz7LKqVvIu6BxfD" Name="Success" Kind="OutputPin" />
           </Node>
-          <Pad Id="FSBh9yN7xrZG8odZkHFLpj" Comment="near, not touching" Bounds="60,370,300,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((2 2, 3 2, 3 3, 2 3, 2 2))">
+          <Pad Id="UnYaQmMtrDk5wtmhjokgWe" Comment="Polygon" Bounds="60,250,250,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((2 2, 3 2, 3 3, 2 3, 2 2))">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="600,370,90,19" Id="SlAbxmTDFmTIalhhJqkUp5">
+          <Node Bounds="400,250,90,19" Id="BbtlAcpIrUX8rIMekLd3mD">
             <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Read WKT" />
             </p:NodeReference>
-            <Pin Id="Umkqhcys0QVaJKAq225lRU" Name="WKT" Kind="InputPin" />
-            <Pin Id="Fzu2rDeHG3ljfTXwf2dIpD" Name="Factory" Kind="InputPin" />
-            <Pin Id="RdP5TGnuxXnacTKMH5oqs6" Name="Result" Kind="OutputPin" />
-            <Pin Id="GoK8CpBzUJjcZaF3ZnOCbx" Name="Success" Kind="OutputPin" />
+            <Pin Id="PMMzcQdp2W8X8AXr8uvQeI" Name="WKT" Kind="InputPin" />
+            <Pin Id="G7siYFhh89AmNFFx0ZxURC" Name="Factory" Kind="InputPin" />
+            <Pin Id="LIFijhpH9tauvpEkVAqYak" Name="Result" Kind="OutputPin" />
+            <Pin Id="OJImAShSxS5HZYv7ulueEy" Name="Success" Kind="OutputPin" />
           </Node>
-          <Pad Id="EtWf1rboz6GSDh6f3LEmKk" Comment="misses the area; its BOX covers it" Bounds="60,410,300,15" ShowValueBox="true" isIOBox="true" Value="LINESTRING (0 4, 4 0)">
+          <Pad Id="G7kr1c1ureUFURchGFXOC8" Comment="Line" Bounds="60,290,250,15" ShowValueBox="true" isIOBox="true" Value="LINESTRING (0 4, 4 0)">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="600,410,90,19" Id="CgqHFVgxQhbtolRac8hTAL">
+          <Node Bounds="400,290,90,19" Id="LvG827FX37tLvRkCMji3xE">
             <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Read WKT" />
             </p:NodeReference>
-            <Pin Id="ME4VnOF27PL8WlKLb2XXi8" Name="WKT" Kind="InputPin" />
-            <Pin Id="M3TDrvPZfnXvsXsRgFcvVX" Name="Factory" Kind="InputPin" />
-            <Pin Id="N4MxjWlruEfslWxOMPDflF" Name="Result" Kind="OutputPin" />
-            <Pin Id="HRNqGQAqNd2vEGscqiJETz" Name="Success" Kind="OutputPin" />
+            <Pin Id="L8dTtH4PtYBUnNTSkfSQ2k" Name="WKT" Kind="InputPin" />
+            <Pin Id="C5bRDDmA9tzTkSAZDpchBC" Name="Factory" Kind="InputPin" />
+            <Pin Id="EfsWTdr5fOJchoZt3pE7Qi" Name="Result" Kind="OutputPin" />
+            <Pin Id="EhnCqa0HH6ksO2mazDmAyN" Name="Success" Kind="OutputPin" />
           </Node>
-          <Node Bounds="800,410,39,19" Id="GwbAevz8HrKtw4XU0TqspR">
+          <Pad Id="VmqH6kPKzs3i7NqTzCdlrr" Bounds="580,290,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; This line misses the search area, but its bounding BOX covers it. It will be a candidate.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="60,340,39,19" Id="AsjRPcKCNXXF7MHOOBkvuN">
             <p:NodeReference LastCategoryFullName="Collections.Spread" LastDependency="VL.CoreLib.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Cons" />
               <CategoryReference Kind="RecordType" Name="Spread" NeedsToBeDirectParent="true" />
             </p:NodeReference>
-            <Pin Id="IC4qHwyBdWPp8mtgOmVo4W" Name="Input" Kind="InputPin" />
-            <Pin Id="Vv5K3WQahHALgZnm8SJVnu" Name="Input 2" Kind="InputPin" />
-            <Pin Id="ApdM0LxdFtfwzqrWSM2ONq" Name="Input 3" Kind="InputPin" />
-            <Pin Id="B6CKaRlFEULUbp4TOZpjsr" Name="Input 4" Kind="InputPin" />
-            <Pin Id="FAaye3X6sKD77K0g3Fj5xa" Name="Result" Kind="OutputPin" />
+            <Pin Id="IoTjN85CZLYIpBNJdo1FB9" Name="Input" Kind="InputPin" />
+            <Pin Id="P7HJJNRlMbJfbdAgQ1kiqI" Name="Input 2" Kind="InputPin" />
+            <Pin Id="McgM5ahTJvqWGgB6gFDr5j" Name="Input 3" Kind="InputPin" />
+            <Pin Id="M0NIabt5E4thHVQysIh9GK" Name="Input 4" Kind="InputPin" />
+            <Pin Id="V9M0DnhbpFTR7KPQACWnqi" Name="Result" Kind="OutputPin" />
           </Node>
-          <Node Bounds="60,480,100,19" Id="CYwYAWEP2zoKvanmOPjx5g">
+          <Node Bounds="60,400,100,19" Id="AVnfmI5Te8JPTF7SKuKANv">
             <p:NodeReference LastCategoryFullName="NTS.Index" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="SpatialIndex" />
             </p:NodeReference>
-            <Pin Id="Md1LwUNoqA9ulgpkfMUDsY" Name="Geometries" Kind="InputPin" />
-            <Pin Id="CouDzgjmgctw26Y8RPOa1V" Name="Result" Kind="OutputPin" />
-            <Pin Id="JnYX6fwJf4gmKytdCbXgGd" Name="Count" Kind="OutputPin" />
-            <Pin Id="D92rmUwuXuu2zD0apTB4OM" Name="Indexes Built" Kind="OutputPin" />
+            <Pin Id="PZbJYSngYjcvJv39IUQ6LC" Name="Geometries" Kind="InputPin" />
+            <Pin Id="P3yYbW4PaZT6QyOqsTLYQt" Name="Result" Kind="OutputPin" />
+            <Pin Id="RaIwlh1TMqg7aHyihlSqg0" Name="Count" Kind="OutputPin" />
+            <Pin Id="P3XBPU7nPE7VvXGVyccoai" Name="Indexes Built" Kind="OutputPin" />
           </Node>
-          <Pad Id="LXhmIXLbxnpMW7yx7a0S2E" Comment="geometries indexed" Bounds="240,480,60,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="DTkDakhuYTP1xDCQXFTEQZ" Comment="indexes built - stays at 1 while you edit the search" Bounds="480,480,60,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="GlrIP29mE1TOykO4hnV2BZ" Comment="search area - edit me" Bounds="60,550,460,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0.5 0.5, 1.5 0.5, 1.5 1.5, 0.5 1.5, 0.5 0.5))">
-            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
-              <Choice Kind="TypeFlag" Name="String" />
-            </p:TypeAnnotation>
-          </Pad>
-          <Node Bounds="60,590,90,19" Id="K23BONLiTGa14tTWzCtotB">
-            <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
-              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Read WKT" />
-            </p:NodeReference>
-            <Pin Id="UPnzvgKZfLh2DzAKEFTAQN" Name="WKT" Kind="InputPin" />
-            <Pin Id="KmM6gwns2GYIZstPvvdcyl" Name="Factory" Kind="InputPin" />
-            <Pin Id="AfS90JuRwUNj76Vu8F1d6o" Name="Result" Kind="OutputPin" />
-            <Pin Id="AUvD4SFkOtbuANs8VufpZK" Name="Success" Kind="OutputPin" />
-          </Node>
-          <Node Bounds="60,650,60,19" Id="OiJX9B3MZIjoUpMid1ZUug">
-            <p:NodeReference LastCategoryFullName="NTS.Index" LastDependency="VL.NetTopologySuite.vl">
-              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Query" />
-            </p:NodeReference>
-            <Pin Id="P2bT4qhEvtXcKETNKt1x35" Name="Index" Kind="InputPin" />
-            <Pin Id="CM9xjWHP3BfN7hqdVnnxLw" Name="Search Geometry" Kind="InputPin" />
-            <Pin Id="T7KDHV8Uu32DImLRrzd6xH" Name="Result" Kind="OutputPin" />
-            <Pin Id="NMHDnp6TBMPbY0DybS2BXR" Name="Candidate Count" Kind="OutputPin" />
-          </Node>
-          <Pad Id="PZ0ZHGJWce0VLZAuSuYVsF" Comment="candidates (2: point + line)" Bounds="240,650,60,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="UIS0ftBBvn1bvRbsnWOZEr" Comment="the candidates (a Spread)" Bounds="60,690,300,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="600,650,80,19" Id="Okrmxk7FZvjv7QppJGDA5c">
-            <p:NodeReference LastCategoryFullName="NTS.Operation" LastDependency="VL.NetTopologySuite.vl">
-              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Intersects" />
-            </p:NodeReference>
-            <Pin Id="I6iogBDrJ6YtB1PNASDFVB" Name="A" Kind="InputPin" />
-            <Pin Id="DTITsNr5ehWTzMCKR9x6l1" Name="B" Kind="InputPin" />
-            <Pin Id="TiYq6IxTr23kEMkK11i94q" Name="Result" Kind="OutputPin" />
-          </Node>
-          <Pad Id="OQBIrfQlyfoeKzb8gXa5tz" Comment="does the search really touch the line? No" Bounds="600,690,60,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="SLOYVNlWouGcRsJVTDNj6i" Bounds="60,750,900,240" ShowValueBox="true" isIOBox="true" Value="What the index promises: no false negatives. Everything that truly intersects is among the candidates; some candidates do not, and the line here is one - its bounding box covers the whole search area while the line itself passes wide of it. So Query is the first half of the question and Intersects is the second, run only on the candidates. On 100,000 points that is the difference between 8 frames a second and a smooth patch.&#xD;&#xA;&#xD;&#xA;Why a process node: an index over 100,000 geometries is not something to build sixty times a second. SpatialIndex rebuilds when the set of geometry REFERENCES changes - a different count, or a different object in any slot - never because the Spread wrapper is new or the search moved. Mutating an indexed geometry in place is undetectable, and unreachable through this package's own nodes, which copy on the way in.">
+          <Pad Id="EvQ8ZDrVnC2ip0ycFdqxJ9" Comment="Count" Bounds="200,400,50,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="D4dF81JaSOFYsS2nWvLKgX" Comment="Indexes Built" Bounds="320,400,50,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="KlzJLq5SVbFuc2yAELxeTw" Bounds="580,400,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Built once. Edit the search area all you like: Indexes Built stays at 1. It rebuilds only when the set of geometries changes - a different count or object.">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
-              <p:fontsize p:Type="Int32">11</p:fontsize>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
+          <Pad Id="FKcHyCbvSJSCG37EA8fXI0" Comment="Search area" Bounds="60,470,400,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0.5 0.5, 1.5 0.5, 1.5 1.5, 0.5 1.5, 0.5 0.5))">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="60,510,90,19" Id="N7P21SgcaVnkPb5WQxHUqp">
+            <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Read WKT" />
+            </p:NodeReference>
+            <Pin Id="TxvG1Mj0UBQahCO4ascO2u" Name="WKT" Kind="InputPin" />
+            <Pin Id="EDuV59FaBFIJmF7aJ4XTX0" Name="Factory" Kind="InputPin" />
+            <Pin Id="IpgAeYsTSRTGjiJwo7QsO9" Name="Result" Kind="OutputPin" />
+            <Pin Id="GE2kymhjebOdS46pgqoobj" Name="Success" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="60,570,60,19" Id="SQYBpbJFF0K6xseOUg4HmP">
+            <p:NodeReference LastCategoryFullName="NTS.Index" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Query" />
+            </p:NodeReference>
+            <Pin Id="OOsCnsDIUUWXwP2Xim4XKY" Name="Index" Kind="InputPin" />
+            <Pin Id="DAobkKbOYlvnUnHgdo3G0W" Name="Search Geometry" Kind="InputPin" />
+            <Pin Id="FPHXEy8qiU6VibzoWP1KHF" Name="Result" Kind="OutputPin" />
+            <Pin Id="HaY5pyqvIurnsL0GUFiKEk" Name="Candidate Count" Kind="OutputPin" />
+          </Node>
+          <Pad Id="PFyaj7MRlZYU8kP29zCZ4T" Comment="Candidates" Bounds="200,570,50,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="HVmHxY1Q4OTal6vBRcCosZ" Comment="Result" Bounds="60,610,280,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="DWP2O1hrScnoFqWATdzxRM" Bounds="580,570,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; CANDIDATES, not results: their boxes touch the search box, their shapes may not. Run Intersects on the candidates for the final yes/no - on a few instead of on all.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="400,570,80,19" Id="UL6gcMZDTjnJoWwGfawoNd">
+            <p:NodeReference LastCategoryFullName="NTS.Operation" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Intersects" />
+            </p:NodeReference>
+            <Pin Id="MFid2uiNjz4Mc95AweHtuH" Name="A" Kind="InputPin" />
+            <Pin Id="Cld65Xi6LN4CJcefmJdEgG" Name="B" Kind="InputPin" />
+            <Pin Id="TUZh4RexoRT0oIQ1EqHkHW" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="ODRdL8uZkuM8uDCY6szdj0" Comment="Line intersects?" Bounds="400,610,60,15" ShowValueBox="true" isIOBox="true" />
         </Canvas>
-        <Patch Id="AhtsZ4ECflo60ugyKaOLef" Name="Create" />
-        <Patch Id="TDxlVDAZa8oNOz8eqV9QFc" Name="Update" />
-        <ProcessDefinition Id="RB7mXaXN5Rx3LgkrAfyfP2">
-          <Fragment Id="Bp0LOGUBB8yssR1JBQ17V3" Patch="AhtsZ4ECflo60ugyKaOLef" Enabled="true" />
-          <Fragment Id="VR4yNxW2cEQyCBSH0hvlt8" Patch="TDxlVDAZa8oNOz8eqV9QFc" Enabled="true" />
+        <Patch Id="GCpbQIyUMMwKEPuS0O1Bbf" Name="Create" />
+        <Patch Id="MVypcQxGPyGU3a5FY9pEFS" Name="Update" />
+        <ProcessDefinition Id="I8NueNTzgrXvc7oRr0TXxy">
+          <Fragment Id="P41aXpljzANl5XgvmOdkU3" Patch="GCpbQIyUMMwKEPuS0O1Bbf" Enabled="true" />
+          <Fragment Id="SpCF7L9geipXZpMxHT9I1o" Patch="MVypcQxGPyGU3a5FY9pEFS" Enabled="true" />
         </ProcessDefinition>
-        <Link Id="OqzmfnYY9nenI9ozaGh9gt" Ids="EtFTzeROfp1ZC4tRcvFnSp,AHXxiyAFHNhLaejgB2e9w9" />
-        <Link Id="FeaYgL9hKAfZ5q7JcSxXV9" Ids="NHHua8dRGyvt6QKZAhGt8W,VRpk9q0NvfRZ1EETKpB3pr" />
-        <Link Id="Q8oADsX9f8XKJNLcm3rdMS" Ids="FSBh9yN7xrZG8odZkHFLpj,Umkqhcys0QVaJKAq225lRU" />
-        <Link Id="OwvOVMawfsnKxGVHK6fb5Y" Ids="EtWf1rboz6GSDh6f3LEmKk,ME4VnOF27PL8WlKLb2XXi8" />
-        <Link Id="N1wFgu94hoInMUx3qH7IKv" Ids="QYvWBoE8xSWffW4rGb7ri4,IC4qHwyBdWPp8mtgOmVo4W" />
-        <Link Id="NQ51exkspnz0rfdQ8yxjL5" Ids="MVuBkNGtZKx0XOq1n0yBlL,Vv5K3WQahHALgZnm8SJVnu" />
-        <Link Id="CcITJKmt5rkQbeK3ZNtETk" Ids="RdP5TGnuxXnacTKMH5oqs6,ApdM0LxdFtfwzqrWSM2ONq" />
-        <Link Id="KoMDl1E3SDJFyn3v9GtVBd" Ids="N4MxjWlruEfslWxOMPDflF,B6CKaRlFEULUbp4TOZpjsr" />
-        <Link Id="H7okCjU3wk8K9gAbnZfBfs" Ids="FAaye3X6sKD77K0g3Fj5xa,Md1LwUNoqA9ulgpkfMUDsY" />
-        <Link Id="N5mjQjBAKRmnVuaWMQmcr8" Ids="JnYX6fwJf4gmKytdCbXgGd,LXhmIXLbxnpMW7yx7a0S2E" />
-        <Link Id="QViAREZCliLSTEetZdvswU" Ids="D92rmUwuXuu2zD0apTB4OM,DTkDakhuYTP1xDCQXFTEQZ" />
-        <Link Id="Ty350Z0arZNMKZlkP4d9jr" Ids="GlrIP29mE1TOykO4hnV2BZ,UPnzvgKZfLh2DzAKEFTAQN" />
-        <Link Id="CPQabdlnTR4kzKX2c2XA90" Ids="CouDzgjmgctw26Y8RPOa1V,P2bT4qhEvtXcKETNKt1x35" />
-        <Link Id="G0tEVjuOGZrmAcrcXrVdws" Ids="AfS90JuRwUNj76Vu8F1d6o,CM9xjWHP3BfN7hqdVnnxLw" />
-        <Link Id="PFGxPDRm2DKEjV2Dsk3KQh" Ids="NMHDnp6TBMPbY0DybS2BXR,PZ0ZHGJWce0VLZAuSuYVsF" />
-        <Link Id="UkDzDomKztQt2WwxbkcpQ7" Ids="T7KDHV8Uu32DImLRrzd6xH,UIS0ftBBvn1bvRbsnWOZEr" />
-        <Link Id="Mvw6Ol9YcucpPHX93eu5OS" Ids="AfS90JuRwUNj76Vu8F1d6o,I6iogBDrJ6YtB1PNASDFVB" />
-        <Link Id="RdmiD6D8FIKLxgbi899uKd" Ids="N4MxjWlruEfslWxOMPDflF,DTITsNr5ehWTzMCKR9x6l1" />
-        <Link Id="RqzEvOJfEBdfZ5rI7o3Qji" Ids="TiYq6IxTr23kEMkK11i94q,OQBIrfQlyfoeKzb8gXa5tz" />
+        <Link Id="OenkOVDf1kQmitp4IbU8Xi" Ids="SNXTuXPdhvPvNFhOrhFvB9,LUEiB2ow5ejaaE8h6jXswp" />
+        <Link Id="EWgctIUzXDzcd0fObaWnK1" Ids="HvAbKVc8DujDwlTN6GhZc7,AbUM1ned4ILrDjDvJ84EUY" />
+        <Link Id="UcRKAuXzWdWpbKgzSj6vpg" Ids="UnYaQmMtrDk5wtmhjokgWe,PMMzcQdp2W8X8AXr8uvQeI" />
+        <Link Id="PufAi33j2BFMIlzjBSKouA" Ids="G7kr1c1ureUFURchGFXOC8,L8dTtH4PtYBUnNTSkfSQ2k" />
+        <Link Id="GYXMdjJjR5x3PgtzbUnMFV" Ids="G0GppAEdKfsVPBSuTlBhaL,IoTjN85CZLYIpBNJdo1FB9" />
+        <Link Id="LfV83Klq4Eqwl1TueFS2Ak" Ids="GQZEpZDbWHtOJHdXCfWaJY,P7HJJNRlMbJfbdAgQ1kiqI" />
+        <Link Id="KXdc3Qw6kKTNVxFt4gkebv" Ids="LIFijhpH9tauvpEkVAqYak,McgM5ahTJvqWGgB6gFDr5j" />
+        <Link Id="MJYVAAeEU6a7ORscajrghk" Ids="EfsWTdr5fOJchoZt3pE7Qi,M0NIabt5E4thHVQysIh9GK" />
+        <Link Id="CB4TWQ7BTGjnypPqStn7HM" Ids="V9M0DnhbpFTR7KPQACWnqi,PZbJYSngYjcvJv39IUQ6LC" />
+        <Link Id="Sr5KlkAK1k4pXq0VrnIxws" Ids="RaIwlh1TMqg7aHyihlSqg0,EvQ8ZDrVnC2ip0ycFdqxJ9" />
+        <Link Id="QPWNLailt2G90cYItLiLk8" Ids="P3XBPU7nPE7VvXGVyccoai,D4dF81JaSOFYsS2nWvLKgX" />
+        <Link Id="F8bngHDA1qJMe1c4B3STsK" Ids="FKcHyCbvSJSCG37EA8fXI0,TxvG1Mj0UBQahCO4ascO2u" />
+        <Link Id="JGA9A0DWtkwgbc9FAjrcgk" Ids="P3yYbW4PaZT6QyOqsTLYQt,OOsCnsDIUUWXwP2Xim4XKY" />
+        <Link Id="OGOLxEbAquS2wHb5b4FawO" Ids="IpgAeYsTSRTGjiJwo7QsO9,DAobkKbOYlvnUnHgdo3G0W" />
+        <Link Id="SMCyA0RWMhy2jNxIlLDu9L" Ids="HaY5pyqvIurnsL0GUFiKEk,PFyaj7MRlZYU8kP29zCZ4T" />
+        <Link Id="SkuS7m13ZcVNi9d9n9Hj1n" Ids="FPHXEy8qiU6VibzoWP1KHF,HVmHxY1Q4OTal6vBRcCosZ" />
+        <Link Id="KIQk4I8Cc1gtyAi4bHcoCR" Ids="IpgAeYsTSRTGjiJwo7QsO9,MFid2uiNjz4Mc95AweHtuH" />
+        <Link Id="PcxmWNQY6nwAKgQVx9dYo8" Ids="EfsWTdr5fOJchoZt3pE7Qi,Cld65Xi6LN4CJcefmJdEgG" />
+        <Link Id="J5vvaP2VwrlwJrm8dlTsA7" Ids="TUZh4RexoRT0oIQ1EqHkHW,ODRdL8uZkuM8uDCY6szdj0" />
       </Patch>
     </Node>
   </Patch>
-  <NugetDependency Id="UHN35vRYoiLiqGzAwpdWh6" Location="VL.NetTopologySuite" Version="0.0.0" />
+  <NugetDependency Id="M3LLFQcRSquh7UiK6yOwnL" Location="VL.NetTopologySuite" Version="0.0.0" />
 </Document>
