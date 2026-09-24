@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document xmlns:p="property" xmlns:r="reflection" Id="CSyct8I3Lvy048TL2UQQcY" LanguageVersion="2025.7.4" Version="0.128">
+  <NugetDependency Id="MC6K4oqTZts1svRkaLtpcp" Location="VL.CoreLib" Version="2025.7.4" />
+  <Patch Id="LlTj8Rf9TAHQyC4TWnEtM7">
+    <Canvas Id="T8QXQiNR1h01xceybv0WKI" DefaultCategory="Main" BordersChecked="false" CanvasType="FullCategory" />
+    <!--
+
+    ************************ Application ************************
+
+-->
+    <Node Name="Application" Bounds="100,100" Id="LBh91HDdgyrvH0bFyswG0h">
+      <p:NodeReference>
+        <Choice Kind="ContainerDefinition" Name="Process" />
+        <CategoryReference Kind="Category" Name="Primitive" />
+      </p:NodeReference>
+      <Patch Id="CNeKNpY1hqAXUZkz4XdLL9">
+        <Canvas Id="Fk1boSsGKrFTiG4BtwaiUW" CanvasType="Group">
+          <Pad Id="CsVIJrXO6JJl160ir19WkI" Bounds="60,60,900,170" ShowValueBox="true" isIOBox="true" Value="One idea: a Feature is a geometry with a bag of attributes attached - and it is NetTopologySuite's own type, not one of ours.&#xD;&#xA;&#xD;&#xA;Feature takes a Geometry and a Dictionary of attributes. The dictionary is built with vvvv's own Dictionary nodes: here Add puts one key, &quot;name&quot;, into an empty one. Split opens the Feature up again into its Geometry and its Dictionary. That is the whole surface, two nodes, because the attribute half is vvvv's Dictionary and the geometry half is everything else in this package.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">11</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="E9vv7y2GYPGxbYNuk30f9q" Comment="the geometry" Bounds="60,270,460,15" ShowValueBox="true" isIOBox="true" Value="POINT (139.7671 35.6812)">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="60,320,90,19" Id="BhqF4aEutBBipXRfBxSaEe">
+            <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Read WKT" />
+            </p:NodeReference>
+            <Pin Id="QcDPPrqkhT6Dzljt391Bxu" Name="WKT" Kind="InputPin" />
+            <Pin Id="LciY1s7KhfH9fr8XkoWBIU" Name="Factory" Kind="InputPin" />
+            <Pin Id="Ql0lTr2dTKyQZUxlYsSZlg" Name="Result" Kind="OutputPin" />
+            <Pin Id="ARIBqgl84pTuuuwuzuEMvt" Name="Success" Kind="OutputPin" />
+          </Node>
+          <Pad Id="VZBie9CF2jcG1x15ytJF9R" Comment="key" Bounds="660,270,100,15" ShowValueBox="true" isIOBox="true" Value="name">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="CdTojp5XawClK7vw7R2sQL" Comment="value" Bounds="660,310,200,15" ShowValueBox="true" isIOBox="true" Value="Tokyo Station">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="660,360,50,19" Id="F1lWXoPBx3gcdIKLfnWwYK">
+            <p:NodeReference LastCategoryFullName="Collections.Dictionary" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Add" />
+              <CategoryReference Kind="RecordType" Name="Dictionary" />
+            </p:NodeReference>
+            <Pin Id="MYpA9X8jBPnx5UT6f8gA90" Name="Input" Kind="StateInputPin" />
+            <Pin Id="EhWIQSZm1bJHcgTwhwxEq0" Name="Key" Kind="InputPin" />
+            <Pin Id="JqDUy6R0t3bOqx6PnDkdr4" Name="Value" Kind="InputPin" />
+            <Pin Id="Q8RGS3AumXh6lT73Q66693" Name="Output" Kind="StateOutputPin" />
+          </Node>
+          <Node Bounds="60,430,70,19" Id="GbgDgUgGbS8ID6lE9sgEpH">
+            <p:NodeReference LastCategoryFullName="NTS.Feature" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Feature" />
+            </p:NodeReference>
+            <Pin Id="VwDFe8wO1e0JYqaGHF7jgV" Name="Geometry" Kind="InputPin" />
+            <Pin Id="B4shrugpEPXOkfeTsuW5x2" Name="Attributes" Kind="InputPin" />
+            <Pin Id="Lkv4PAraZ1KEMdguAlPOOr" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="60,500,50,19" Id="HqSYTea5F2bNTN5fHLmMpY">
+            <p:NodeReference LastCategoryFullName="NTS.Feature" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Split" />
+            </p:NodeReference>
+            <Pin Id="Dlpv9GLg9xOMfVTRVHfiRp" Name="Feature" Kind="InputPin" />
+            <Pin Id="SRjyjPiVgHKoUA8HitLHLp" Name="Geometry" Kind="OutputPin" />
+            <Pin Id="PrasBjAs3gWLosaOvuOIHW" Name="Attributes" Kind="OutputPin" />
+          </Node>
+          <Pad Id="MyhCam7LTOCYrok0TTPpJD" Comment="the attributes back out" Bounds="420,500,300,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="60,560,90,19" Id="MD4lRRizhWEhxHeqjG9Uhw">
+            <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Write WKT" />
+            </p:NodeReference>
+            <Pin Id="Lssm6DAE69rvZSbMX26VTW" Name="Geometry" Kind="InputPin" />
+            <Pin Id="B4SOH8JtyMqJN1GcnQwxaV" Name="Include Z" Kind="InputPin" />
+            <Pin Id="S0jaLmI1q4yswpi1ygGwuc" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="VtsiHo23DP0pB2kK30I8Sk" Comment="the geometry back out" Bounds="60,600,300,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="LOqz6jtXj5HldJ2vn2GUuS" Bounds="60,660,900,220" ShowValueBox="true" isIOBox="true" Value="Why NetTopologySuite's Feature and not one of our own: VL.GeoJSON reads GeoJSON into exactly this Feature, and VL.Mapsui draws exactly this Feature. Three packages, one type, none of them referencing the others. A Feature type of our own would have needed converters in both directions, and would have been the first step towards a GIS framework nobody asked for.&#xD;&#xA;&#xD;&#xA;The attribute values are plain .NET objects - strings, numbers, booleans - so vvvv's Dictionary nodes do everything: Add, Remove, TryGetValue, Keys, Values, and a ForEach over the pairs. This package adds nothing there, on purpose. The Feature's geometry is the same Geometry as everywhere else: Area, Buffer and the rest take it straight from Split.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">11</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+        </Canvas>
+        <Patch Id="Is8JFStAmcwzO0px5sSqgd" Name="Create" />
+        <Patch Id="PRoM9A1ATLIvmi6CHXGioO" Name="Update" />
+        <ProcessDefinition Id="UpjprwxdGB8VLUOD9YQui1">
+          <Fragment Id="PflIFxnkUpmYn2mMVtx6Cf" Patch="Is8JFStAmcwzO0px5sSqgd" Enabled="true" />
+          <Fragment Id="V7HfB1solkdEHGUvqXtvAP" Patch="PRoM9A1ATLIvmi6CHXGioO" Enabled="true" />
+        </ProcessDefinition>
+        <Link Id="HQ4PV82uAz7x74IPjgb3xr" Ids="E9vv7y2GYPGxbYNuk30f9q,QcDPPrqkhT6Dzljt391Bxu" />
+        <Link Id="GPGLsuLiHnFDrTjfas4DSI" Ids="VZBie9CF2jcG1x15ytJF9R,EhWIQSZm1bJHcgTwhwxEq0" />
+        <Link Id="UlVIovuV6UHe9JSMofyZXy" Ids="CdTojp5XawClK7vw7R2sQL,JqDUy6R0t3bOqx6PnDkdr4" />
+        <Link Id="BqWfLANpKGs4ISher85KCG" Ids="Ql0lTr2dTKyQZUxlYsSZlg,VwDFe8wO1e0JYqaGHF7jgV" />
+        <Link Id="TR0NbS1YzNJ3SRFvDuzbHc" Ids="Q8RGS3AumXh6lT73Q66693,B4shrugpEPXOkfeTsuW5x2" />
+        <Link Id="APRypWP0usZRhL2pUW5gLE" Ids="Lkv4PAraZ1KEMdguAlPOOr,Dlpv9GLg9xOMfVTRVHfiRp" />
+        <Link Id="HSRFnzySDvvcyP67dIM8zc" Ids="PrasBjAs3gWLosaOvuOIHW,MyhCam7LTOCYrok0TTPpJD" />
+        <Link Id="B0rA0Nq5zpsCtHKq4wmT2r" Ids="SRjyjPiVgHKoUA8HitLHLp,Lssm6DAE69rvZSbMX26VTW" />
+        <Link Id="EuYs6ERLORYUn4nptn5Ouk" Ids="S0jaLmI1q4yswpi1ygGwuc,VtsiHo23DP0pB2kK30I8Sk" />
+      </Patch>
+    </Node>
+  </Patch>
+  <NugetDependency Id="CNCHpDZCsytLarl5IcPXLg" Location="VL.NetTopologySuite" Version="0.0.0" />
+</Document>

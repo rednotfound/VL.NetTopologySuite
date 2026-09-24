@@ -14,12 +14,30 @@
 	</Topic>
 	<Topic title="Making geometry">
 		<VLDocument link="HowTo Create a point.vl" tags="coordinate,point,geometry,create,srid,factory,nts,netTopologySuite" />
+		<VLDocument link="HowTo Create a linestring.vl" tags="linestring,line,path,coordinates,cons,spread,length,geometry,create" />
 		<VLDocument link="HowTo Create a polygon.vl" tags="polygon,linearring,ring,shell,holes,closed,valid,area,geometry" />
+		<VLDocument link="HowTo Group geometries.vl" tags="geometrycollection,multipoint,multilinestring,multipolygon,collection,group,parts,geometries,cons,spread" />
+		<VLDocument link="HowTo Work with Z.vl" tags="z,3d,height,coordinatez,split,includez,wkt,ordinate,nan" />
+	</Topic>
+	<Topic title="Looking at geometry">
+		<VLDocument link="HowTo Inspect a geometry.vl" tags="inspect,geometrytype,isempty,srid,area,length,centroid,bounds,envelope,readers,geometry" />
 	</Topic>
 	<Topic title="Text in, geometry out">
 		<VLDocument link="HowTo Read and write WKT.vl" tags="wkt,wellknowntext,read,write,parse,text,srid,io,roundtrip" />
 	</Topic>
 	<Topic title="Spatial operations">
 		<VLDocument link="HowTo Buffer a geometry.vl" tags="buffer,grow,shrink,offset,intersection,operation,units,segments" />
+		<VLDocument link="HowTo Combine two geometries.vl" tags="union,intersection,difference,overlay,combine,merge,cut,operation,area" />
+		<VLDocument link="HowTo Test how geometries relate.vl" tags="intersects,contains,within,predicate,relate,inside,overlap,boolean,operation" />
+		<VLDocument link="HowTo Measure distance.vl" tags="distance,nearest,nearestpoints,closest,gap,measure,operation,units" />
+	</Topic>
+	<Topic title="Features">
+		<VLDocument link="HowTo Attach attributes to a geometry.vl" tags="feature,attributes,properties,dictionary,split,geojson,mapsui,ntsfeature" />
+	</Topic>
+	<Topic title="Many geometries">
+		<VLDocument link="HowTo Query many geometries fast.vl" tags="index,spatialindex,strtree,query,candidates,fast,many,performance,envelope,processnode" />
+	</Topic>
+	<Topic title="Networks">
+		<VLDocument link="HowTo Find the shortest path.vl" tags="network,shortestpath,dijkstra,route,path,graph,reachable,found,snap,linestring" />
 	</Topic>
 </Pack>

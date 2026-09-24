@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document xmlns:p="property" xmlns:r="reflection" Id="D0dwIeAD8qzhryIXgKlUEO" LanguageVersion="2025.7.4" Version="0.128">
+  <NugetDependency Id="VZuqTbWNlWNIP08o2VBMCU" Location="VL.CoreLib" Version="2025.7.4" />
+  <Patch Id="P5SHDNqLrWeQZwoAscftrT">
+    <Canvas Id="QojosomhG1fzJWtwpdpPKI" DefaultCategory="Main" BordersChecked="false" CanvasType="FullCategory" />
+    <!--
+
+    ************************ Application ************************
+
+-->
+    <Node Name="Application" Bounds="100,100" Id="VIM3IBRuNg4bqBw36gocaO">
+      <p:NodeReference>
+        <Choice Kind="ContainerDefinition" Name="Process" />
+        <CategoryReference Kind="Category" Name="Primitive" />
+      </p:NodeReference>
+      <Patch Id="PdS1HCvktysrTZaYYLa7yA">
+        <Canvas Id="O3725XrNAPh8ZS9vPjbXRh" CanvasType="Group">
+          <Pad Id="I40sV9mXnmOepFZ4lCcs62" Bounds="60,60,900,170" ShowValueBox="true" isIOBox="true" Value="One idea: the yes/no questions about two geometries are cheaper than the overlays, and usually what you actually wanted.&#xD;&#xA;&#xD;&#xA;A is a big square, B is a small square inside it. Intersects asks whether they share any point at all. Contains asks whether A has all of B. Within is the same question asked from B's side - Contains(A, B) and Within(B, A) are always equal, and both are shown so you can see it. Edit B's WKT until it pokes out of A: Contains and Within fall to False while Intersects holds, and only when B leaves A entirely does Intersects fall too.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">11</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="EIrBAtalV3NqEvN6hvHaj9" Comment="A, the big square" Bounds="60,270,460,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0 0, 4 0, 4 4, 0 4, 0 0))">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="DvdUsmAbRiJQk03t3udFAH" Comment="B, the small one - edit me" Bounds="60,310,460,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((1 1, 2 1, 2 2, 1 2, 1 1))">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="60,360,90,19" Id="FLkcQyxpWuE3aIG0wkioBX">
+            <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Read WKT" />
+            </p:NodeReference>
+            <Pin Id="JTQnBKJ9LULLSscTR0TyWc" Name="WKT" Kind="InputPin" />
+            <Pin Id="LLgzwKQ4sL2gb28I8mkwk2" Name="Factory" Kind="InputPin" />
+            <Pin Id="RFJZoiwcHWVlFNsJIp1Zos" Name="Result" Kind="OutputPin" />
+            <Pin Id="QDRQFAfgivfGc8rvkcnMFP" Name="Success" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="330,360,90,19" Id="C1CveFzQXnvR3Lot3SlulQ">
+            <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Read WKT" />
+            </p:NodeReference>
+            <Pin Id="IUYuxYCQLOiItPnOpKv8T0" Name="WKT" Kind="InputPin" />
+            <Pin Id="G8s5F7o0MhL9J3xckZmlXu" Name="Factory" Kind="InputPin" />
+            <Pin Id="OkKCHl4dqXR6LKpQTfVJvs" Name="Result" Kind="OutputPin" />
+            <Pin Id="Jiqh0mmyGYUm0yOY9C2bt6" Name="Success" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="60,450,80,19" Id="EItDCy1EEvFkA8obJCl98e">
+            <p:NodeReference LastCategoryFullName="NTS.Operation" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Intersects" />
+            </p:NodeReference>
+            <Pin Id="LxXqLnGxQHS2pV9JFVXPNH" Name="A" Kind="InputPin" />
+            <Pin Id="FOzxmMSVBIsyqS3XAyW5mb" Name="B" Kind="InputPin" />
+            <Pin Id="TNNbhxWXJko3xvQbvapQn8" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="GEJUscX6tjpoP8OdWfPL2p" Comment="A intersects B?" Bounds="60,490,60,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="330,450,70,19" Id="PyLnF0pHCAzFezNpULbdpA">
+            <p:NodeReference LastCategoryFullName="NTS.Operation" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Contains" />
+            </p:NodeReference>
+            <Pin Id="HATl1HhtBaL9oU6Q08RCDa" Name="A" Kind="InputPin" />
+            <Pin Id="UPJywHA300qkK8QkkFY1tr" Name="B" Kind="InputPin" />
+            <Pin Id="Ivrt9xEeu3C3UoYZqT5lPY" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="K5VruK5Eznh8UqJx0ov0Df" Comment="A contains B?" Bounds="330,490,60,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="600,450,60,19" Id="C9uIFd9aCj8SWiuRpOaHrB">
+            <p:NodeReference LastCategoryFullName="NTS.Operation" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Within" />
+            </p:NodeReference>
+            <Pin Id="HXReHR1guvXnXLLhE85FOe" Name="A" Kind="InputPin" />
+            <Pin Id="RdZ1eJ3wOdd7My5Yg1aCqF" Name="B" Kind="InputPin" />
+            <Pin Id="AFZSif5zv0Hws87ilV6uCk" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="F1JNTjHEy52QbAxsLwC0br" Comment="B within A? (B is wired to A here)" Bounds="600,490,60,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="330,550,70,19" Id="Igy9wlS85U24PaH5YZzjrc">
+            <p:NodeReference LastCategoryFullName="NTS.Operation" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Contains" />
+            </p:NodeReference>
+            <Pin Id="HcIEafXxvkPvWo1nBN33BV" Name="A" Kind="InputPin" />
+            <Pin Id="OCuDCRcFj4Fpbjl6g0TbPH" Name="B" Kind="InputPin" />
+            <Pin Id="BzWNpOhnmPDJsYyFEzvbRo" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="H3lc2nx9vicH0Yn0qVAeCp" Comment="B contains A? - the other way round, and False" Bounds="330,590,60,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="Jz1Euk6G8UXtC2tokQlm8l" Bounds="60,650,900,130" ShowValueBox="true" isIOBox="true" Value="Disjoint is deliberately not a node: it is Intersects followed by Not, two nodes you already have. Touches, Crosses, Overlaps and Covers are not here yet either; they arrive when a patch needs them.&#xD;&#xA;&#xD;&#xA;The predicates take any geometry types. A Point against a Polygon is the everyday &quot;is this location inside this area&quot; question, and it is exactly Contains(area, point). Asking it for many points against one polygon every frame is what HowTo Query many geometries fast is about.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">11</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+        </Canvas>
+        <Patch Id="RzL1o5lM4roQVQnENh1PfQ" Name="Create" />
+        <Patch Id="GfneSOZbwqf3DGbJKglIqv" Name="Update" />
+        <ProcessDefinition Id="LoZulgLHZQX1SH6RvB9c1d">
+          <Fragment Id="PPRb3lFg9yLtfvI6VULPAy" Patch="RzL1o5lM4roQVQnENh1PfQ" Enabled="true" />
+          <Fragment Id="R4QfSEkXTk2T01SYgmbjkD" Patch="GfneSOZbwqf3DGbJKglIqv" Enabled="true" />
+        </ProcessDefinition>
+        <Link Id="B18pUljsGwt89PzbY3q8Ln" Ids="EIrBAtalV3NqEvN6hvHaj9,JTQnBKJ9LULLSscTR0TyWc" />
+        <Link Id="E0BZFu7XQNnSfyAJWUxexQ" Ids="DvdUsmAbRiJQk03t3udFAH,IUYuxYCQLOiItPnOpKv8T0" />
+        <Link Id="PxvDCzlM8t25yOTI6NDCqI" Ids="RFJZoiwcHWVlFNsJIp1Zos,LxXqLnGxQHS2pV9JFVXPNH" />
+        <Link Id="MK5lAkQEXv6HxlYH1Ekvlb" Ids="OkKCHl4dqXR6LKpQTfVJvs,FOzxmMSVBIsyqS3XAyW5mb" />
+        <Link Id="IRKyFEottJyM2PCX19fsYI" Ids="TNNbhxWXJko3xvQbvapQn8,GEJUscX6tjpoP8OdWfPL2p" />
+        <Link Id="SWOGDmGV88kX3tP2ozmEbE" Ids="RFJZoiwcHWVlFNsJIp1Zos,HATl1HhtBaL9oU6Q08RCDa" />
+        <Link Id="UvRPiXnmkFUwHutTwQkjYh" Ids="OkKCHl4dqXR6LKpQTfVJvs,UPJywHA300qkK8QkkFY1tr" />
+        <Link Id="FZ0mpatZkYhlpldd6UhNvm" Ids="Ivrt9xEeu3C3UoYZqT5lPY,K5VruK5Eznh8UqJx0ov0Df" />
+        <Link Id="NOZUWAtz6A3d7kd5dcxa2s" Ids="OkKCHl4dqXR6LKpQTfVJvs,HXReHR1guvXnXLLhE85FOe" />
+        <Link Id="VXa7yxoEbhdKtstuL02vGH" Ids="RFJZoiwcHWVlFNsJIp1Zos,RdZ1eJ3wOdd7My5Yg1aCqF" />
+        <Link Id="KlosYGgz12P9ZG287Cj7vo" Ids="AFZSif5zv0Hws87ilV6uCk,F1JNTjHEy52QbAxsLwC0br" />
+        <Link Id="BtsOaJea48h9iImu5vYaPE" Ids="OkKCHl4dqXR6LKpQTfVJvs,HcIEafXxvkPvWo1nBN33BV" />
+        <Link Id="P00ajlNigDDwlOJ94TDobx" Ids="RFJZoiwcHWVlFNsJIp1Zos,OCuDCRcFj4Fpbjl6g0TbPH" />
+        <Link Id="OHsN4UMIdSB2KAv8MQJOWr" Ids="BzWNpOhnmPDJsYyFEzvbRo,H3lc2nx9vicH0Yn0qVAeCp" />
+      </Patch>
+    </Node>
+  </Patch>
+  <NugetDependency Id="EnuTOEXJgfLLHVGzb2b5M1" Location="VL.NetTopologySuite" Version="0.0.0" />
+</Document>
