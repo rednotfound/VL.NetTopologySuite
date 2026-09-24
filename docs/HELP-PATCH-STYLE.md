@@ -53,6 +53,33 @@ VL.IO.Redis: the package's nodes placed on the canvas, unwired, each with one `<
 six boxes for six nodes. VL.Audio: one intro paragraph, then category labels with the nodes under each.
 Either way the front door **shows the nodes**; it does not describe the package in four essays.
 
+## Help flags — what makes F1 work
+
+Pressing **F1 on a selected node opens the help patch in which that node carries a High help flag**,
+and marks the node there with a bubble ("Click this bubble for Node Info"). Nothing else links a node
+to a patch: not the filename, not the node merely being used in the patch. Low flags list the patch
+under the node's Node Info instead. In the editor the flag is set with **Ctrl+H** on the node (once:
+High, twice: Low, three times: cleared). In the `.vl` it is one element right after the node's
+`</p:NodeReference>`:
+
+```xml
+<p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+```
+
+Measured on 2026-09-24: **511 of the 689 help patches shipped with vvvv 7.4 carry flags** — 1059
+High, 77 Low; Explanation patches carry them too (125 High). Our first fifteen carried none, which
+is why F1 found nothing. Now every one of the 39 nodes has exactly one High flag (a HowTo where one
+is dedicated to it, the Explanation otherwise), `tools\Test-VLPatch.ps1` audits that, and
+`tools\HelpPatchGen.ps1` writes them from one `Set-HelpFlags` line per patch. Verified end to end:
+F1 on a Buffer node in a scratch document opened `HowTo Buffer a geometry` with the bubble on Buffer.
+
+Two more things F1 needs: the patches must be **inside the package's `help\` folder as vvvv sees the
+package** — `dist\VL.NetTopologySuite\help\` when launched with `--package-repositories .\dist`, so
+`build.ps1` must have been run after the patch was written — and vvvv indexes them at start.
+
+Sources: [Providing Help](https://thegraybook.vvvv.org/reference/extending/providing-help.html),
+[Finding Help](https://thegraybook.vvvv.org/reference/hde/findinghelp.html).
+
 ## Sizing (measured, so it need not be re-derived)
 
 | | 9pt body | 20pt heading |

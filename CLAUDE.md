@@ -164,6 +164,7 @@ listed, and every link must name a file that exists, because both failures are s
 | `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 15 help patches, 2026-09-24 |
 | the vvvv **NodeBrowser** | **which category a node is in** | ✅ `NTS` → Geometry, IO, Operation |
 | the vvvv **GUI, running** | the patch computes the right value | ✅ 2026-08-14, vvvv 7.4 |
+| **F1 on a node** | the node carries a High help flag in a patch vvvv has indexed | ✅ 2026-09-24, all 39 nodes; `Test-VLPatch` audits the flags |
 
 **The last three rows are three different claims, and this is where a false proof lives.** Learned
 here, at the cost of nearly writing down a wrong conclusion:
