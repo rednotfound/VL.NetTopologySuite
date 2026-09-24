@@ -96,6 +96,18 @@ them; its `Bounds` pin default places the window. The renderer's normalized spac
 height, y down, wider with the window's aspect, so divide data coordinates to fit (the network
 HowTo uses a town centred on the origin, ÷4, in a 900 × 450 window).
 
+**A static node in front of `SpatialIndex` or `Network` needs a `Cache` region.** Measured on
+2026-09-24: `Read WKT` parses every frame and returns new geometry objects every frame, and those
+two nodes rebuild whenever the geometry *references* change — `Read WKT → Geometries → Network`
+showed Networks Built at 1819 after thirty seconds. `Read WKT ×6 → Cons → Network` stayed at 1, but
+only by accident: VL's collection builder behind `Cons` keeps the old items when the new ones are
+`Equals`, and NetTopologySuite compares geometry by value. The honest fix in a patch is the
+community's `Cache` region around the parse: it runs its body only when what enters through its
+**Top control point** changes and hands the same objects out otherwise (`CacheRegion` in the
+generator). The Top control point is not optional here — a link crossing the border without one is
+not tracked as an input, the generated `CacheManager<ValueTuple, …>` has nothing to compare, and the
+body never sees the text (Nodes 0, path EMPTY). With it: Nodes 19, Edges 22, Networks Built 1.
+
 `tools\HelpPatchGen.ps1` writes all of it: `Region` (nestable; link the spread into `.Top`, `.Top`
 into the first inner pin, the last output into `.Bottom`, `.Bottom` onward — every link lives in
 the outer patch), `-Region` on `Node`, `-Defaults` for pin values without an IOBox, `-CategoryRef`
