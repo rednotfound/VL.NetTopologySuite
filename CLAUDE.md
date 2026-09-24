@@ -11,7 +11,7 @@ inspection, spatial operations and WKT. Nothing about maps, rendering or reproje
 **Current state (2026-08-28): 39 public nodes in six categories — `NTS.Network` (`Network` +
 `ShortestPath`, an algorithm of ours, promoted from `NTS.Experimental.Network` by
 `docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 126
-tests, 4 help patches.** The
+tests, 5 help patches (the `Explanation` front door arrived 2026-09-24, seen in the GUI the same day).** The
 2026-08-14 GUI verification covered `NTS.Geometry` / `NTS.IO` / `NTS.Operation`; `NTS.Feature`
 (2026-08-22) was seen in the GUI through VL.Overworld's Tutorial 08 on 2026-08-23; **`NTS.Index`
 (2026-08-23) was seen the same evening through Tutorial 11**, with `Indexes Built` holding at 1 over
@@ -148,9 +148,9 @@ listed, and every link must name a file that exists, because both failures are s
 | | proves | state |
 |---|---|---|
 | `dotnet test` | the arithmetic is right | ✅ 126 tests, ~300 ms, no network |
-| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed | ✅ 5 documents |
+| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 6 documents |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
-| `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 4 help patches, 2026-09-24 |
+| `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 5 help patches, 2026-09-24 |
 | the vvvv **NodeBrowser** | **which category a node is in** | ✅ `NTS` → Geometry, IO, Operation |
 | the vvvv **GUI, running** | the patch computes the right value | ✅ 2026-08-14, vvvv 7.4 |
 
@@ -222,7 +222,7 @@ vl-nettopologysuite/
 │   ├── OperationNodes.cs              # NTS.Operation - Buffer, overlay, predicates
 │   └── IONodes.cs                     # NTS.IO - Read WKT, Write WKT
 ├── test/VL.NetTopologySuite.Tests/    # 126 xunit tests, no network, no vvvv
-├── help/VL.NetTopologySuite/          # 4 help patches + Help.xml (ordering and tags)
+├── help/VL.NetTopologySuite/          # 5 help patches + Help.xml (ordering and tags)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
 ├── docs/ARCHITECTURE.md               # why each node exists, what stays raw, the boundary
 ├── docs/ROADMAP.md                    # next / later / never
