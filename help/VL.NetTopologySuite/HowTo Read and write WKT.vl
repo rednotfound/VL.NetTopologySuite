@@ -1,21 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" xmlns:r="reflection" Id="DcWQ3LuRCO28T4UMRiaL08" LanguageVersion="2025.7.4" Version="0.128">
-  <NugetDependency Id="RGu0mx7Cl0XblGpWxlUnEi" Location="VL.CoreLib" Version="2025.7.4" />
-  <Patch Id="D25bdIyoK07cSTVwqoaTQp">
-    <Canvas Id="JwThZlwSNYbJp364LtMWqH" DefaultCategory="Main" BordersChecked="false" CanvasType="FullCategory" />
+<Document xmlns:p="property" xmlns:r="reflection" Id="Ofiiz4o9rMeFsq7exRAoHS" LanguageVersion="2025.7.4" Version="0.128">
+  <NugetDependency Id="BfmxJRITa9VbIfjzSnSZOc" Location="VL.CoreLib" Version="2025.7.4" />
+  <Patch Id="R9J70mqjVBHkyqIe8t96lr">
+    <Canvas Id="CLSOYtnNSj7x555GsED86A" DefaultCategory="Main" BordersChecked="false" CanvasType="FullCategory" />
     <!--
 
     ************************ Application ************************
 
 -->
-    <Node Name="Application" Bounds="100,100" Id="Qm3Sf7lo1Upuxqd4Rz5Jks">
+    <Node Name="Application" Bounds="100,100" Id="KI7p823khxayhMMqmO97ex">
       <p:NodeReference>
         <Choice Kind="ContainerDefinition" Name="Process" />
         <CategoryReference Kind="Category" Name="Primitive" />
       </p:NodeReference>
-      <Patch Id="ABDOmF3k99HjEZdbWvcjHB">
-        <Canvas Id="RetGerIzRlf0yz2N1Q8Ntz" CanvasType="Group">
-          <Pad Id="Mpu65VykMnCCTgWpTm4UyI" Bounds="60,40,435,41" ShowValueBox="true" isIOBox="true" Value="Use Read WKT and Write WKT!">
+      <Patch Id="IHjwVSYwJCFaMpJaNomk7j">
+        <Canvas Id="HS5Q7sUcAAjzStk4P8Pxyi" CanvasType="Group">
+          <Pad Id="GEcmAdSuFVxgFuESd22b2E" Bounds="60,40,435,41" ShowValueBox="true" isIOBox="true" Value="Use Read WKT and Write WKT!">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -24,7 +24,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="MK02ovM7HmscgtisGJgcVO" Bounds="60,95,480,64" ShowValueBox="true" isIOBox="true" Value="Well-Known Text is the plain-text form of a geometry, and the quickest way to get one into a patch. Edit the box and watch type, area and SRID follow.">
+          <Pad Id="CLYkwk14nkECrzNbOzKV7y" Bounds="60,95,480,64" ShowValueBox="true" isIOBox="true" Value="Well-Known Text is the plain-text form of a geometry, and the quickest way to get one into a patch. Edit the box and watch type, area and SRID follow.">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -33,12 +33,12 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="ASDbIXFhtvswMXzyFBYiNB" Comment="WKT" Bounds="60,170,400,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))">
+          <Pad Id="VoEGDObH6HUA8OtIueJ34x" Comment="WKT" Bounds="60,170,400,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="UI17z6d0Txb1uJSslKzGD3" Bounds="580,170,380,116" ShowValueBox="true" isIOBox="true" Value="&lt; Try these:&#xD;&#xA;POINT (139.7671 35.6812)&#xD;&#xA;LINESTRING (0 0, 1 1, 2 0)&#xD;&#xA;POLYGON ((0 0, 1 0, 1 1, 0 1))   unclosed - closed for you&#xD;&#xA;SRID=4326;POINT (1 2)   the SRID travels along">
+          <Pad Id="Vm6W1iWYFsKUpQA1TAzDzk" Bounds="580,170,380,116" ShowValueBox="true" isIOBox="true" Value="&lt; Try these:&#xD;&#xA;POINT (139.7671 35.6812)&#xD;&#xA;LINESTRING (0 0, 1 1, 2 0)&#xD;&#xA;POLYGON ((0 0, 1 0, 1 1, 0 1))   unclosed - closed for you&#xD;&#xA;SRID=4326;POINT (1 2)   the SRID travels along">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -47,18 +47,19 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="60,220,90,19" Id="S1O4ZqkiIvSjywqBM67gEG">
+          <Node Bounds="60,220,90,19" Id="Srj4s9VyFfcdufAoEso80L">
             <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Read WKT" />
             </p:NodeReference>
-            <Pin Id="Fiinz0RHlCq8weecbA1tqA" Name="WKT" Kind="InputPin" />
-            <Pin Id="LZl3AALpEhuHVrSRrziEQd" Name="Factory" Kind="InputPin" />
-            <Pin Id="OtLTS3uW0rBOXs1FLcTHjZ" Name="Result" Kind="OutputPin" />
-            <Pin Id="UjZJlBTulugYcH9BteJObQ" Name="Success" Kind="OutputPin" />
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="Ql3oue3P0mBZDX5Qr8a5v4" Name="WKT" Kind="InputPin" />
+            <Pin Id="Jp5CdaLpy0n6LfLoc8CeI1" Name="Factory" Kind="InputPin" />
+            <Pin Id="Q8y5IhzojDdx6KYJT2wUkB" Name="Result" Kind="OutputPin" />
+            <Pin Id="BPhb82JVD4JXaVxsr8KP72" Name="Success" Kind="OutputPin" />
           </Node>
-          <Pad Id="NL80N0MnpWmPwjcWE6EFrM" Comment="Success" Bounds="200,220,60,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="NVdCVybI2QV4hAZnZzPDz1" Bounds="580,294,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Break the text on purpose: Success goes False and the geometry goes empty. The node never throws - half-typed text is the normal state of a box being edited.">
+          <Pad Id="JBe7nTQdiIq6FDpxj4QklN" Comment="Success" Bounds="200,220,60,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="D6XM5leAavrGu3u3RDOGgm" Bounds="580,294,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Break the text on purpose: Success goes False and the geometry goes empty. The node never throws - half-typed text is the normal state of a box being edited.">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -67,34 +68,37 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="60,350,110,19" Id="S439mJl7rOxtrDDL2zi4fn">
+          <Node Bounds="60,350,110,19" Id="Be0QDjUj1Q83bISufumMeC">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="GeometryType" />
             </p:NodeReference>
-            <Pin Id="Kf6uppdwImeh8Nc0u6gJWD" Name="Geometry" Kind="InputPin" />
-            <Pin Id="HmvAlEf8mNWBZ6k9YZMRm1" Name="Result" Kind="OutputPin" />
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="E7VGqFTWNWYMXRrrrjD2E2" Name="Geometry" Kind="InputPin" />
+            <Pin Id="PmBbzBCySUN66T36mSvyhN" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="KtAmEhCdnRrjkvIsxZw7BH" Comment="Type" Bounds="60,390,120,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="230,350,50,19" Id="Vy0e3pink9Y6mturbOdR84">
+          <Pad Id="Q1eTZCi8D6KPQ9ysnnXu38" Comment="Type" Bounds="60,390,120,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="230,350,50,19" Id="SpqHorPoDLt3lb3WXaa49s">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Area" />
             </p:NodeReference>
-            <Pin Id="RpHzWasr8wPNSaYzDOjm9y" Name="Geometry" Kind="InputPin" />
-            <Pin Id="OSfCv4KDnKrM9qnPEW6WGD" Name="Result" Kind="OutputPin" />
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="JtqJv24bvOuIN6aleMvEKJ" Name="Geometry" Kind="InputPin" />
+            <Pin Id="Hfk1uXQomFqUbV7UDEVb4r" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="A3pVx5JBdzpedmeHKSt2wf" Comment="Area" Bounds="230,390,80,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="360,350,50,19" Id="UaHL3c2s9TZMLRbxLsglJg">
+          <Pad Id="P8e52CKpTBUV3BREvKSAKa" Comment="Area" Bounds="230,390,80,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="360,350,50,19" Id="FVHmbNT7W7K6HlR23crWvi">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="SRID" />
             </p:NodeReference>
-            <Pin Id="StnOqJC2YDqVgtVlognq70" Name="Geometry" Kind="InputPin" />
-            <Pin Id="FZVF2FtCkRMLAhIWw3hycV" Name="Result" Kind="OutputPin" />
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="THJ5wPY7ZcbJn5mpQmE6pO" Name="Geometry" Kind="InputPin" />
+            <Pin Id="Rfzx2tclNRz4fm5NRZRoVS" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="DH5I8UB7n3eleF0sXxrBeJ" Comment="SRID" Bounds="360,390,60,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="ApYSB9FnxlZQfh920LV3NO" Bounds="580,382,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; SRID 0 means &quot;unset&quot;, the same as the creation nodes say. NetTopologySuite's own reader would say -1 here; this package corrects it so one number means &quot;nobody said&quot;.">
+          <Pad Id="JK8auEo5ECQO5lzZaaJo3g" Comment="SRID" Bounds="360,390,60,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="D1UsBcR3tK09B6EyD5czt3" Bounds="580,382,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; SRID 0 means &quot;unset&quot;, the same as the creation nodes say. NetTopologySuite's own reader would say -1 here; this package corrects it so one number means &quot;nobody said&quot;.">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -103,17 +107,18 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="60,460,90,19" Id="EhKrbadRz1ToFh0iK1AEST">
+          <Node Bounds="60,460,90,19" Id="M4sgdUf6Qp6tc3H1qFHGRY">
             <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Write WKT" />
             </p:NodeReference>
-            <Pin Id="DVsgddW4wrHh6E5SLUXvhr" Name="Geometry" Kind="InputPin" />
-            <Pin Id="CmZ5NsdRTqGNmHlwmFjMfm" Name="Include Z" Kind="InputPin" />
-            <Pin Id="DStlaOgXy3NUkZk4ORPMxv" Name="Result" Kind="OutputPin" />
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="Gc9PJWpfOR6SkXXQ0uVhcz" Name="Geometry" Kind="InputPin" />
+            <Pin Id="JBXWHysNotvmGfeRw4wysh" Name="Include Z" Kind="InputPin" />
+            <Pin Id="InDbfZDjSddncSR4oFxiS8" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="C3uE93dCHMzfOJjLbOvL26" Comment="WKT" Bounds="60,500,400,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="QK89otar8NKjVt2ZPbXe2E" Bounds="580,470,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Write WKT does NOT carry the SRID back out - plain WKT has nowhere to put it. Z is dropped too unless Include Z is on.">
+          <Pad Id="MFYUcxMgykJFFt0PU03qIj" Comment="WKT" Bounds="60,500,400,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="SDIi3LrwTg8hL9fJsILesk" Bounds="580,470,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Write WKT does NOT carry the SRID back out - plain WKT has nowhere to put it. Z is dropped too unless Include Z is on.">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -123,24 +128,24 @@
             </p:ValueBoxSettings>
           </Pad>
         </Canvas>
-        <Patch Id="Qm49um2efx3e4qvTx3ZvMI" Name="Create" />
-        <Patch Id="O6Q7zCz1WPAymTj82HKbhT" Name="Update" />
-        <ProcessDefinition Id="BezD4sVgijjHr8tq2p7neR">
-          <Fragment Id="AVemXnWOCOUwr4L33nXb37" Patch="Qm49um2efx3e4qvTx3ZvMI" Enabled="true" />
-          <Fragment Id="UDU1rj8cXaffUsN0yCK0bn" Patch="O6Q7zCz1WPAymTj82HKbhT" Enabled="true" />
+        <Patch Id="BVYSzGOauoUPBoxhGVuC3l" Name="Create" />
+        <Patch Id="RKxjr5X4fIvX4526zqp5ar" Name="Update" />
+        <ProcessDefinition Id="JtG8sBmiP6DrvcykpFQxUi">
+          <Fragment Id="Er7UUjzyks2ch28AU3ZxWx" Patch="BVYSzGOauoUPBoxhGVuC3l" Enabled="true" />
+          <Fragment Id="M31BfVjlS6AlTsIK31yMFv" Patch="RKxjr5X4fIvX4526zqp5ar" Enabled="true" />
         </ProcessDefinition>
-        <Link Id="GibB8F6zHDFJ1pI4jmIZt3" Ids="ASDbIXFhtvswMXzyFBYiNB,Fiinz0RHlCq8weecbA1tqA" />
-        <Link Id="GTQv9LPTm287JgMrgVIPd2" Ids="UjZJlBTulugYcH9BteJObQ,NL80N0MnpWmPwjcWE6EFrM" />
-        <Link Id="C5WIHfWGRTOm2ykbzWkXCX" Ids="OtLTS3uW0rBOXs1FLcTHjZ,Kf6uppdwImeh8Nc0u6gJWD" />
-        <Link Id="MiSrId2MKsj2wfKiAGniXk" Ids="HmvAlEf8mNWBZ6k9YZMRm1,KtAmEhCdnRrjkvIsxZw7BH" />
-        <Link Id="FP63Xpjk3xppAo4qwnmHJx" Ids="OtLTS3uW0rBOXs1FLcTHjZ,RpHzWasr8wPNSaYzDOjm9y" />
-        <Link Id="DBcTzjxU9hUTwcyjuaPS8x" Ids="OSfCv4KDnKrM9qnPEW6WGD,A3pVx5JBdzpedmeHKSt2wf" />
-        <Link Id="LtDuo2ViRp71BlQHRnGi4X" Ids="OtLTS3uW0rBOXs1FLcTHjZ,StnOqJC2YDqVgtVlognq70" />
-        <Link Id="NPIrmmiA84F9mPYcXlwVQ5" Ids="FZVF2FtCkRMLAhIWw3hycV,DH5I8UB7n3eleF0sXxrBeJ" />
-        <Link Id="FEZmQpKQ3P3aU6nvPjJ47N" Ids="OtLTS3uW0rBOXs1FLcTHjZ,DVsgddW4wrHh6E5SLUXvhr" />
-        <Link Id="TV5KBcUyveINrYbpHEGDAe" Ids="DStlaOgXy3NUkZk4ORPMxv,C3uE93dCHMzfOJjLbOvL26" />
+        <Link Id="VTHcWhGbxOuncuWrXIEXNG" Ids="VoEGDObH6HUA8OtIueJ34x,Ql3oue3P0mBZDX5Qr8a5v4" />
+        <Link Id="E8gutQDN7m1JVHqCsjqPdi" Ids="BPhb82JVD4JXaVxsr8KP72,JBe7nTQdiIq6FDpxj4QklN" />
+        <Link Id="NO8KD7zwp7DVYZq84jE8RX" Ids="Q8y5IhzojDdx6KYJT2wUkB,E7VGqFTWNWYMXRrrrjD2E2" />
+        <Link Id="TgoGoBtbe8SGPp19sjDmqv" Ids="PmBbzBCySUN66T36mSvyhN,Q1eTZCi8D6KPQ9ysnnXu38" />
+        <Link Id="DeiJKfO7EVLyZJztqeeFfP" Ids="Q8y5IhzojDdx6KYJT2wUkB,JtqJv24bvOuIN6aleMvEKJ" />
+        <Link Id="FuNGzG2zlaS40882OHUiCM" Ids="Hfk1uXQomFqUbV7UDEVb4r,P8e52CKpTBUV3BREvKSAKa" />
+        <Link Id="GQvjzE3puOWIPL4ttPAzik" Ids="Q8y5IhzojDdx6KYJT2wUkB,THJ5wPY7ZcbJn5mpQmE6pO" />
+        <Link Id="GFKAKeyrbIeGx9wcptnCIq" Ids="Rfzx2tclNRz4fm5NRZRoVS,JK8auEo5ECQO5lzZaaJo3g" />
+        <Link Id="R66waHLlu0UjF9sCzSi9Jg" Ids="Q8y5IhzojDdx6KYJT2wUkB,Gc9PJWpfOR6SkXXQ0uVhcz" />
+        <Link Id="OWcb4HU8ESN8mXvJelgJtv" Ids="InDbfZDjSddncSR4oFxiS8,MFYUcxMgykJFFt0PU03qIj" />
       </Patch>
     </Node>
   </Patch>
-  <NugetDependency Id="RewaeEyIDyY96qIcMnHw0X" Location="VL.NetTopologySuite" Version="0.0.0" />
+  <NugetDependency Id="VkaWPQ9DgXh5XzP6L6h4sT" Location="VL.NetTopologySuite" Version="0.0.0" />
 </Document>
