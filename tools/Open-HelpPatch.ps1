@@ -96,9 +96,9 @@ $vvvvArgs = @("`"$target`"", '--package-repositories', "`"$($repos -join ';')`""
 if ($Log) { $vvvvArgs += '--log'; Write-Host ('  logging to ' + $env:USERPROFILE + '\Documents\vvvv\gamma\vvvv_<timestamp>.log') }
 $proc = Start-Process -FilePath $vvvv -ArgumentList $vvvvArgs -PassThru
 # Sibling repositories launch vvvv from their own sessions. The rule agreed 2026-09-24 after one
-# session killed anothers window: each launcher records its pid here, stops only that pid, and
+# session killed another's window: each launcher records its pid here, stops only that pid, and
 # waits instead of launching while a vvvv it did not start is running.
-Set-Content (Join-Path $env:TEMP vl-nettopologysuite-vvvv.pid) $proc.Id
+Set-Content (Join-Path $env:TEMP 'vl-nettopologysuite-vvvv.pid') $proc.Id
 
 Write-Host "READ IT, ADJUST IT, SAVE IT, CLOSE VVVV. Opening a document in vvvv is running it." -ForegroundColor Yellow
 Write-Host "  afterwards: .\tools\Normalize-HelpPatches.ps1 ; .\tools\Test-VLPatch.ps1`n" -ForegroundColor Yellow
