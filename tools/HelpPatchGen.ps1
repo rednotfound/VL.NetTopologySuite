@@ -58,7 +58,7 @@ function Esc([string]$t) {
 
 function New-Doc {
     [pscustomobject]@{
-        Elements = [System.Collections.Generic.List[string]]::new()
+        Elements = [System.Collections.Generic.List[object]]::new()   # strings, or Region objects
         Links    = [System.Collections.Generic.List[string]]::new()
         # bottom edge of the last Note per column (X), so a Note never lands on the one above it
         NoteBottom = @{}
@@ -123,12 +123,14 @@ function Note($d, [int]$X, [int]$Y, [string]$Text, [int]$Width = 320) {
     Box $d "$X,$Y,$Width,$h" $Text 9
 }
 
-# A value IOBox: Float64 | Integer32 | String | Boolean. Returns its Id, which is also its pin id.
-function Pad($d, [string]$Type, [string]$Bounds, [string]$Value, [string]$Comment = '') {
+# A value IOBox: Float64 | Integer32 | String | Boolean (Primitive), or e.g. RGBA with
+# -Category Color -Dependency CoreLibBasics.vl. Returns its Id, which is also its pin id.
+function Pad($d, [string]$Type, [string]$Bounds, [string]$Value, [string]$Comment = '',
+             [string]$Category = 'Primitive', [string]$Dependency = 'VL.CoreLib.vl') {
     $id = New-Id
     $d.Elements.Add(@(
         "          <Pad Id=`"$id`" Comment=`"$(Esc $Comment)`" Bounds=`"$Bounds`" ShowValueBox=`"true`" isIOBox=`"true`" Value=`"$(Esc $Value)`">",
-        '            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">',
+        "            <p:TypeAnnotation LastCategoryFullName=`"$Category`" LastDependency=`"$Dependency`">",
         "              <Choice Kind=`"TypeFlag`" Name=`"$Type`" />",
         '            </p:TypeAnnotation>',
         '          </Pad>') -join "`r`n")
@@ -146,11 +148,16 @@ function OutPad($d, [string]$Bounds, [string]$Comment = '') {
 # -Spread adds the CategoryReference a Collections.Spread node carries; -RecordType 'Dictionary' the
 # one a Collections.Dictionary node carries. Returns an object whose properties are the pin ids, named
 # after the pins with spaces removed ('Candidate Count' -> CandidateCount).
+# -Region places the node inside a ForEach region (see Region). -Defaults sets a pin's value
+# without an IOBox, the way the editor does: @{ 'Closed' = 'False|Boolean'; 'Bounds' =
+# '60,700,900,450|Rectangle|System.Drawing|System.Drawing.dll' } - value|type[|category|dependency].
+# -CategoryRef adds a raw <CategoryReference .../> line (Vector (Join) needs Vector2Type).
 function Node($d, [string]$Name, [string]$Category, [string]$Bounds,
               [string[]]$In = @(), [string[]]$Out = @(),
               [string]$Kind = 'OperationCallFlag', [string]$Dependency = 'VL.NetTopologySuite.vl',
               [switch]$Spread, [string[]]$StateIn = @(), [string]$RecordType = '', [string[]]$StateOut = @(),
-              [ValidateSet('', 'High', 'Low', 'None')][string]$HelpFocus = '') {
+              [ValidateSet('', 'High', 'Low', 'None')][string]$HelpFocus = '',
+              $Region = $null, [hashtable]$Defaults = @{}, [string]$CategoryRef = '') {
     $id = New-Id
     $pins = [ordered]@{}
     $lines = [System.Collections.Generic.List[string]]::new()
@@ -160,6 +167,8 @@ function Node($d, [string]$Name, [string]$Category, [string]$Bounds,
     $lines.Add("              <Choice Kind=`"$Kind`" Name=`"$Name`" />")
     if ($Spread) { $lines.Add('              <CategoryReference Kind="RecordType" Name="Spread" NeedsToBeDirectParent="true" />') }
     if ($RecordType) { $lines.Add("              <CategoryReference Kind=`"RecordType`" Name=`"$RecordType`" />") }
+    if ($CategoryRef) { $lines.Add("              $CategoryRef") }
+    foreach ($p in $Defaults.Keys) { $lines.Add("              <PinReference Kind=`"InputPin`" Name=`"$p`" />") }
     $lines.Add('            </p:NodeReference>')
     # -HelpFocus None: this instance carries no flag even though the document flags its name
     # (the second Contains in HowTo Test how geometries relate, wired the other way round).
@@ -167,12 +176,67 @@ function Node($d, [string]$Name, [string]$Category, [string]$Bounds,
     if ($flag) { $lines.Add("            <p:HelpFocus p:Assembly=`"VL.Lang`" p:Type=`"VL.Model.HelpPriority`">$flag</p:HelpFocus>") }
     # $pid is PowerShell's read-only process id - hence $pinId.
     foreach ($p in $StateIn)  { $pinId = New-Id; $pins[($p -replace '\s', '')] = $pinId; $lines.Add("            <Pin Id=`"$pinId`" Name=`"$p`" Kind=`"StateInputPin`" />") }
-    foreach ($p in $In)       { $pinId = New-Id; $pins[($p -replace '\s', '')] = $pinId; $lines.Add("            <Pin Id=`"$pinId`" Name=`"$p`" Kind=`"InputPin`" />") }
+    foreach ($p in $In) {
+        $pinId = New-Id; $pins[($p -replace '\s', '')] = $pinId
+        if ($Defaults.ContainsKey($p)) {
+            $parts = $Defaults[$p] -split '\|'
+            $cat = if ($parts.Count -gt 2) { $parts[2] } else { 'Primitive' }
+            $dep = if ($parts.Count -gt 3) { $parts[3] } else { 'VL.CoreLib.vl' }
+            $lines.Add("            <Pin Id=`"$pinId`" Name=`"$p`" Kind=`"InputPin`" DefaultValue=`"$(Esc $parts[0])`">")
+            $lines.Add("              <p:TypeAnnotation LastCategoryFullName=`"$cat`" LastDependency=`"$dep`">")
+            $lines.Add("                <Choice Kind=`"TypeFlag`" Name=`"$($parts[1])`" />")
+            $lines.Add('              </p:TypeAnnotation>')
+            $lines.Add('            </Pin>')
+        }
+        else { $lines.Add("            <Pin Id=`"$pinId`" Name=`"$p`" Kind=`"InputPin`" />") }
+    }
     foreach ($p in $Out)      { $pinId = New-Id; $pins[($p -replace '\s', '')] = $pinId; $lines.Add("            <Pin Id=`"$pinId`" Name=`"$p`" Kind=`"OutputPin`" />") }
     foreach ($p in $StateOut) { $pinId = New-Id; $pins[($p -replace '\s', '')] = $pinId; $lines.Add("            <Pin Id=`"$pinId`" Name=`"$p`" Kind=`"StateOutputPin`" />") }
     $lines.Add('          </Node>')
-    $d.Elements.Add($lines -join "`r`n")
+    # not `$t = if (...) { list } else { list }`: an if-expression enumerates the List into a
+    # fixed-size array, and Add then fails with "Collection was of a fixed size"
+    if ($Region) { $Region.Elements.Add($lines -join "`r`n") } else { $d.Elements.Add($lines -join "`r`n") }
     [pscustomobject]$pins
+}
+
+# A ForEach region, copied from the shape shipped help uses: a Node carrying StatefulRegion +
+# ApplicationStatefulRegion ForEach, an inner Patch (Create/Update/Dispose, ManuallySortedPins)
+# holding the nodes placed with -Region, and a Top and a Bottom ControlPoint. The Top control point
+# is the SPLICER: link the spread into .Top, and .Top into the first inner pin; link the last inner
+# output into .Bottom and .Bottom onward. EVERY link lives in the outer patch, region or not - so
+# Link works unchanged. A constant the whole loop needs is linked straight from outside to the inner
+# pin, with no control point. Nest by passing -Region to Region itself. Bounds are canvas
+# coordinates, inner nodes use absolute canvas coordinates inside them.
+function Region($d, [string]$Bounds, [string]$TopAt, [string]$BottomAt, $Region = $null) {
+    $r = [pscustomobject]@{
+        Id = New-Id; Top = New-Id; Bottom = New-Id; Bounds = $Bounds; TopAt = $TopAt; BottomAt = $BottomAt
+        Elements = [System.Collections.Generic.List[object]]::new()
+    }
+    if ($Region) { $Region.Elements.Add($r) } else { $d.Elements.Add($r) }
+    $r
+}
+
+function Render-Element($e) {
+    if ($e -is [string]) { return $e }
+    $inner = @($e.Elements | ForEach-Object { Render-Element $_ }) -join "`r`n"
+    @(
+        "          <Node Bounds=`"$($e.Bounds)`" Id=`"$($e.Id)`">",
+        '            <p:NodeReference LastCategoryFullName="Primitive" LastDependency="CoreLibBasics.vl">',
+        '              <Choice Kind="StatefulRegion" Name="Region (Stateful)" Fixed="true" />',
+        '              <Choice Kind="ApplicationStatefulRegion" Name="ForEach" />',
+        '              <CategoryReference Kind="Category" Name="Primitive" />',
+        '            </p:NodeReference>',
+        "            <Pin Id=`"$(New-Id)`" Name=`"Break`" Kind=`"OutputPin`" />",
+        "            <Patch Id=`"$(New-Id)`" ManuallySortedPins=`"true`">",
+        "              <Patch Id=`"$(New-Id)`" Name=`"Create`" ManuallySortedPins=`"true`" />",
+        "              <Patch Id=`"$(New-Id)`" Name=`"Update`" ManuallySortedPins=`"true`" />",
+        "              <Patch Id=`"$(New-Id)`" Name=`"Dispose`" ManuallySortedPins=`"true`" />",
+        $inner,
+        '            </Patch>',
+        "            <ControlPoint Id=`"$($e.Top)`" Bounds=`"$($e.TopAt)`" Alignment=`"Top`" />",
+        "            <ControlPoint Id=`"$($e.Bottom)`" Bounds=`"$($e.BottomAt)`" Alignment=`"Bottom`" />",
+        '          </Node>'
+    ) -join "`r`n"
 }
 
 function Link($d, [string]$From, [string]$To) {
@@ -180,14 +244,18 @@ function Link($d, [string]$From, [string]$To) {
     $d.Links.Add("        <Link Id=`"$(New-Id)`" Ids=`"$From,$To`" />")
 }
 
-function Save-Doc($d, [string]$Path) {
+# -Dependencies adds packages that ship with vvvv itself (VL.Skia for a Renderer) - never a
+# package this one does not declare in its nuspec.
+function Save-Doc($d, [string]$Path, [string[]]$Dependencies = @()) {
     $docId = New-Id; $coreDep = New-Id; $patch = New-Id; $canvas = New-Id; $app = New-Id
     $appPatch = New-Id; $group = New-Id; $create = New-Id; $update = New-Id; $procDef = New-Id
     $frag1 = New-Id; $frag2 = New-Id; $ntsDep = New-Id
+    $extraDeps = @($Dependencies | ForEach-Object { "  <NugetDependency Id=`"$(New-Id)`" Location=`"$_`" Version=`"2025.7.4`" />" })
+    $rendered = @($d.Elements | ForEach-Object { Render-Element $_ })
     $xml = @(
         '<?xml version="1.0" encoding="utf-8"?>',
         "<Document xmlns:p=`"property`" xmlns:r=`"reflection`" Id=`"$docId`" LanguageVersion=`"2025.7.4`" Version=`"0.128`">",
-        "  <NugetDependency Id=`"$coreDep`" Location=`"VL.CoreLib`" Version=`"2025.7.4`" />",
+        "  <NugetDependency Id=`"$coreDep`" Location=`"VL.CoreLib`" Version=`"2025.7.4`" />") + $extraDeps + @(
         "  <Patch Id=`"$patch`">",
         "    <Canvas Id=`"$canvas`" DefaultCategory=`"Main`" BordersChecked=`"false`" CanvasType=`"FullCategory`" />",
         '    <!--',
@@ -202,7 +270,7 @@ function Save-Doc($d, [string]$Path) {
         '      </p:NodeReference>',
         "      <Patch Id=`"$appPatch`">",
         "        <Canvas Id=`"$group`" CanvasType=`"Group`">"
-    ) + @($d.Elements) + @(
+    ) + $rendered + @(
         '        </Canvas>',
         "        <Patch Id=`"$create`" Name=`"Create`" />",
         "        <Patch Id=`"$update`" Name=`"Update`" />",

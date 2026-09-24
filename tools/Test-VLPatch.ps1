@@ -80,11 +80,13 @@ foreach ($file in $targets) {
     $endpoints = @(
         ([regex]'<Pin Id="([^"]+)"').Matches($raw)  | ForEach-Object { $_.Groups[1].Value }
         ([regex]'<Pad Id="([^"]+)"').Matches($raw)  | ForEach-Object { $_.Groups[1].Value }
+        # a ForEach region's border control points are link endpoints too: every link of a region lives in the outer patch
+        ([regex]'<ControlPoint Id="([^"]+)"').Matches($raw) | ForEach-Object { $_.Groups[1].Value }
     )
     $linkMatches = ([regex]'<Link Id="[^"]+" Ids="([^,]+),([^"]+)"').Matches($raw)
     foreach ($m in $linkMatches) {
         foreach ($e in @($m.Groups[1].Value, $m.Groups[2].Value)) {
-            if ($endpoints -notcontains $e) { $problems.Add("link endpoint $e is neither a Pin nor a Pad") }
+            if ($endpoints -notcontains $e) { $problems.Add("link endpoint $e is neither a Pin, a Pad nor a ControlPoint") }
         }
     }
 
