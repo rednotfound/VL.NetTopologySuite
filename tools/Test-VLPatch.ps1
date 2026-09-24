@@ -348,6 +348,51 @@ if (-not $Path) {
     }
 }
 
+# ── Help flags: F1 works only through them ──
+# Pressing F1 on a node opens the help patch in which that node carries a HIGH help flag
+# (<p:HelpFocus ...>High</p:HelpFocus> right after </p:NodeReference>; Ctrl+H in the editor). A
+# node with no High flag anywhere has no F1 help, and nothing says so - the first fifteen patches
+# here shipped without a single flag, and F1 found none of them. Low flags list the patch under
+# the node's Node Info. Measured 2026-09-24: 511 of vvvv 7.4's 689 shipped help patches carry flags.
+if (-not $Path) {
+    Write-Host "`nvalidating help flags (F1)" -ForegroundColor Cyan
+    $ourNodes = @(
+        'NTS.Geometry|Coordinate', 'NTS.Geometry|CoordinateZ', 'NTS.Geometry|Split', 'NTS.Geometry|GeometryFactory',
+        'NTS.Geometry|Point', 'NTS.Geometry|LineString', 'NTS.Geometry|LinearRing', 'NTS.Geometry|Polygon',
+        'NTS.Geometry|MultiPoint', 'NTS.Geometry|MultiLineString', 'NTS.Geometry|MultiPolygon', 'NTS.Geometry|GeometryCollection',
+        'NTS.Geometry|GeometryType', 'NTS.Geometry|IsEmpty', 'NTS.Geometry|SRID', 'NTS.Geometry|IsValid', 'NTS.Geometry|Area',
+        'NTS.Geometry|Length', 'NTS.Geometry|Centroid', 'NTS.Geometry|Bounds', 'NTS.Geometry|Coordinates', 'NTS.Geometry|Geometries',
+        'NTS.Feature|Feature', 'NTS.Feature|Split', 'NTS.IO|Read WKT', 'NTS.IO|Write WKT',
+        'NTS.Operation|Buffer', 'NTS.Operation|Intersection', 'NTS.Operation|Union', 'NTS.Operation|Difference',
+        'NTS.Operation|Distance', 'NTS.Operation|Nearest Points', 'NTS.Operation|Intersects', 'NTS.Operation|Contains', 'NTS.Operation|Within',
+        'NTS.Index|SpatialIndex', 'NTS.Index|Query', 'NTS.Network|Network', 'NTS.Network|ShortestPath')
+    $high = @{}; $low = @{}; $used = @{}
+    foreach ($vl in Get-ChildItem (Join-Path $RepoRoot 'help') -Filter *.vl -Recurse -File) {
+        $raw = [IO.File]::ReadAllText($vl.FullName)
+        $pattern = '<p:NodeReference LastCategoryFullName="([^"]+)" LastDependency="VL\.NetTopologySuite\.vl">(?:(?!</p:NodeReference>).)*?<Choice Kind="(?:OperationCallFlag|ProcessAppFlag)" Name="([^"]+)" />\s*</p:NodeReference>\s*(?:<p:HelpFocus[^>]*>(High|Low)</p:HelpFocus>)?'
+        foreach ($m in [regex]::Matches($raw, $pattern, 'Singleline')) {
+            $key = "$($m.Groups[1].Value)|$($m.Groups[2].Value)"
+            $used[$key] = $true
+            if ($m.Groups[3].Success) {
+                $table = if ($m.Groups[3].Value -eq 'High') { $high } else { $low }
+                if (-not $table.ContainsKey($key)) { $table[$key] = @() }
+                $table[$key] += $vl.BaseName
+            }
+        }
+    }
+    $flagProblems = 0
+    foreach ($n in $ourNodes) {
+        if (-not $high.ContainsKey($n)) {
+            $where = if ($used.ContainsKey($n)) { 'used in a patch but never flagged High' } else { 'in no help patch at all' }
+            Write-Host "  warn  $n has no F1 help - $where" -ForegroundColor Yellow
+        }
+        elseif ($high[$n].Count -gt 1) {
+            Write-Host "  warn  $n carries a High flag in $($high[$n].Count) patches - F1 can open only one: $($high[$n] -join ', ')" -ForegroundColor Yellow
+        }
+    }
+    $covered = @($ourNodes | Where-Object { $high.ContainsKey($_) }).Count
+    Write-Host "  ok    $covered of $($ourNodes.Count) nodes open a help patch on F1; $(($low.Values | Measure-Object -Sum Count).Sum) Low flags list patches under Node Info" -ForegroundColor DarkGray
+}
 Write-Host ''
 if ($totalProblems -gt 0) {
     Write-Host "FAIL - $totalProblems problem(s) across $($targets.Count) document(s)." -ForegroundColor Red

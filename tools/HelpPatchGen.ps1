@@ -62,7 +62,18 @@ function New-Doc {
         Links    = [System.Collections.Generic.List[string]]::new()
         # bottom edge of the last Note per column (X), so a Note never lands on the one above it
         NoteBottom = @{}
+        # node name -> 'High' | 'Low': the help flag every Node of that name in this document gets
+        HelpFlags = @{}
     }
+}
+
+# HELP FLAGS ARE WHAT MAKES F1 WORK. Pressing F1 on a node opens the help patch in which that node
+# carries a High flag (<p:HelpFocus ...>High</p:HelpFocus> right after </p:NodeReference>, which
+# is what Ctrl+H writes in the editor); Low flags list the patch under the node's Node Info. 511 of
+# the 689 help patches shipped with vvvv 7.4 carry flags. One High per node across the library.
+function Set-HelpFlags($d, [string[]]$High = @(), [string[]]$Low = @()) {
+    foreach ($n in $High) { $d.HelpFlags[$n] = 'High' }
+    foreach ($n in $Low)  { $d.HelpFlags[$n] = 'Low' }
 }
 
 # An annotation box: stringtype Comment, no Comment attribute, so Test-VLPatch knows it is prose.
@@ -138,7 +149,8 @@ function OutPad($d, [string]$Bounds, [string]$Comment = '') {
 function Node($d, [string]$Name, [string]$Category, [string]$Bounds,
               [string[]]$In = @(), [string[]]$Out = @(),
               [string]$Kind = 'OperationCallFlag', [string]$Dependency = 'VL.NetTopologySuite.vl',
-              [switch]$Spread, [string[]]$StateIn = @(), [string]$RecordType = '', [string[]]$StateOut = @()) {
+              [switch]$Spread, [string[]]$StateIn = @(), [string]$RecordType = '', [string[]]$StateOut = @(),
+              [ValidateSet('', 'High', 'Low', 'None')][string]$HelpFocus = '') {
     $id = New-Id
     $pins = [ordered]@{}
     $lines = [System.Collections.Generic.List[string]]::new()
@@ -149,6 +161,10 @@ function Node($d, [string]$Name, [string]$Category, [string]$Bounds,
     if ($Spread) { $lines.Add('              <CategoryReference Kind="RecordType" Name="Spread" NeedsToBeDirectParent="true" />') }
     if ($RecordType) { $lines.Add("              <CategoryReference Kind=`"RecordType`" Name=`"$RecordType`" />") }
     $lines.Add('            </p:NodeReference>')
+    # -HelpFocus None: this instance carries no flag even though the document flags its name
+    # (the second Contains in HowTo Test how geometries relate, wired the other way round).
+    $flag = if ($HelpFocus -eq 'None') { '' } elseif ($HelpFocus) { $HelpFocus } elseif ($d.HelpFlags.ContainsKey($Name)) { $d.HelpFlags[$Name] } else { '' }
+    if ($flag) { $lines.Add("            <p:HelpFocus p:Assembly=`"VL.Lang`" p:Type=`"VL.Model.HelpPriority`">$flag</p:HelpFocus>") }
     # $pid is PowerShell's read-only process id - hence $pinId.
     foreach ($p in $StateIn)  { $pinId = New-Id; $pins[($p -replace '\s', '')] = $pinId; $lines.Add("            <Pin Id=`"$pinId`" Name=`"$p`" Kind=`"StateInputPin`" />") }
     foreach ($p in $In)       { $pinId = New-Id; $pins[($p -replace '\s', '')] = $pinId; $lines.Add("            <Pin Id=`"$pinId`" Name=`"$p`" Kind=`"InputPin`" />") }
