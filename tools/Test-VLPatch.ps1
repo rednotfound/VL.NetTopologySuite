@@ -76,16 +76,26 @@ foreach ($file in $targets) {
     $dupes = @($allIds | Group-Object | Where-Object Count -gt 1 | ForEach-Object Name)
     if ($dupes.Count) { $problems.Add("duplicate IDs: $($dupes -join ', ')") }
 
-    # Pins and Pads are the only things a Link may join.
+    # Pins, Pads and ControlPoints are the only things a Link's path may name.
     $endpoints = @(
         ([regex]'<Pin Id="([^"]+)"').Matches($raw)  | ForEach-Object { $_.Groups[1].Value }
         ([regex]'<Pad Id="([^"]+)"').Matches($raw)  | ForEach-Object { $_.Groups[1].Value }
-        # a ForEach region's border control points are link endpoints too: every link of a region lives in the outer patch
+        # region border control points and link waypoints are both ControlPoint elements
         ([regex]'<ControlPoint Id="([^"]+)"').Matches($raw) | ForEach-Object { $_.Groups[1].Value }
     )
-    $linkMatches = ([regex]'<Link Id="[^"]+" Ids="([^,]+),([^"]+)"').Matches($raw)
-    foreach ($m in $linkMatches) {
-        foreach ($e in @($m.Groups[1].Value, $m.Groups[2].Value)) {
+    # A LINK'S Ids IS A PATH: source, any number of waypoint ControlPoints, sink. A link given a bend
+    # in the GUI is written Ids="src,waypoint,sink" (134 shipped help files do it). This check used
+    # to read exactly two ids, so a bent link produced a false "endpoint is neither a Pin ..." -
+    # "waypoint,sink" read as one id (found in vl-mapsui on 2026-09-25 when the user bent a link by
+    # hand). Parse once; Source is the first id, Sink the last, and every id on the path must exist.
+    # $ids, not $path: this script has a [string]$Path parameter and PowerShell names are
+    # case-insensitive, so assigning the split to $path turns it back into one string.
+    $linkMatches = @([regex]::Matches($raw, '<Link Id="([^"]+)" Ids="([^"]+)"') | ForEach-Object {
+        $ids = $_.Groups[2].Value -split ','
+        [pscustomobject]@{ Id = $_.Groups[1].Value; Path = $ids; Source = $ids[0]; Sink = $ids[$ids.Count - 1] }
+    })
+    foreach ($l in $linkMatches) {
+        foreach ($e in $l.Path) {
             if ($endpoints -notcontains $e) { $problems.Add("link endpoint $e is neither a Pin, a Pad nor a ControlPoint") }
         }
     }
@@ -150,7 +160,7 @@ foreach ($file in $targets) {
     #
     # A Pad carrying both is a constant feeding something, and an unwired one still gets flagged -
     # deliberately, since that is a link somebody forgot.
-    $linked = @($linkMatches | ForEach-Object { $_.Groups[1].Value; $_.Groups[2].Value })
+    $linked = @($linkMatches | ForEach-Object { $_.Source; $_.Sink })
     foreach ($m in ([regex]'<Pad Id="([^"]+)"([^>]*)>').Matches($raw)) {
         $pad = $m.Groups[1].Value
         if ($linked -contains $pad) { continue }
