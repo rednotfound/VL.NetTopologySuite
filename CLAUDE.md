@@ -10,8 +10,11 @@ inspection, spatial operations and WKT. Nothing about maps, rendering or reproje
 
 **Current state (2026-09-25): release-ready and unpublished — every local proof is green, the
 maintainer has reviewed every help patch by hand, `tools\Test-Install.ps1` passes, and what remains
-is the five decisions in [docs/RELEASE.md](docs/RELEASE.md). Never push to nuget.org without the
-user's explicit go; a push cannot be undone.** 39 public nodes in six categories — `NTS.Network` (`Network` +
+is the decisions in [docs/RELEASE.md](docs/RELEASE.md). **The version is `0.0.1-alpha`: always a
+prerelease (`-alpha` suffix, installed with `-pre`), managed in step with VL.Mapsui and the family —
+the maintainer's rule, 2026-09-25 — and bumped to `0.0.2-alpha` the day after a publish.** Never push
+to nuget.org without the user's explicit go; the user performs the irreversible step; a push cannot
+be undone.** 39 public nodes in six categories — `NTS.Network` (`Network` +
 `ShortestPath`, an algorithm of ours, promoted from `NTS.Experimental.Network` by
 `docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 126
 tests, 15 help patches.** All fifteen were (re)written on 2026-09-24 in the community's measured style

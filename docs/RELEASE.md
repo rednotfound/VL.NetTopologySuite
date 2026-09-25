@@ -35,26 +35,48 @@ it does not prove the patches *run* — only the GUI round does.
 
 ---
 
+## Versioning — a prerelease, in step with the family
+
+Decided by the maintainer on 2026-09-25:
+
+- **Every release is a prerelease until further notice.** The version always carries a
+  `-suffix`; nuget.org then hides it from a default search and a user installs it with
+  `nuget install VL.NetTopologySuite -pre`. There is no "正式版" planned yet, and nothing here
+  should read as if there were.
+- **The version is managed together with VL.Mapsui's, and the four family packages stay in step
+  — at least to begin with.** All four (`VL.NetTopologySuite`, `VL.GeoJSON`, `VL.Mapsui`,
+  `VL.Overworld`) are at **`0.0.1-alpha`** on 2026-09-25, and VL.Mapsui's nuspec declares its
+  dependency on `VL.NetTopologySuite 0.0.1-alpha`. So the first release is **`0.0.1-alpha`**, the
+  same suffix as the siblings (not `-pre`, not `-preview`), and the number the nuspec already
+  holds. The earlier idea of `0.1.0-alpha` is withdrawn.
+- **Right after publishing, the working version becomes `0.0.2-alpha`** (the rule vl-mapsui wrote
+  down): the dev loop repacks the same version all day, and NuGet uses any cached copy whose
+  version matches without looking at the feed — once a real `0.0.1-alpha` exists in someone's
+  cache, a local one with that number is indistinguishable from it. Whoever bumps VL.Mapsui bumps
+  this one the same day, and VL.Mapsui's dependency line follows.
+- **One place holds the version:** `<version>` in `VL.NetTopologySuite.nuspec`. There is no
+  publish workflow overriding it. The help patches pin `Version="0.0.0"`
+  (`tools\Normalize-HelpPatches.ps1`) and never change.
+
 ## Decisions that are the maintainer's
 
-None of these is made in the repository yet. Each is one line to change once decided.
+Still open on 2026-09-25. Each is one line to change once decided.
 
-1. **Version.** The nuspec says `0.0.1-alpha`. Proposed: **`0.1.0-alpha`** — six categories, three
-   consumers (VL.Overworld's tutorials 08, 11, 13; VL.Mapsui; VL.GeoJSON), a stable surface since
-   2026-08-28. One place to change: `<version>` in `VL.NetTopologySuite.nuspec`. The help patches
-   pin `Version="0.0.0"` (`tools\Normalize-HelpPatches.ps1`) and need no change.
-2. **Who pushes.** By hand from the maintainer's machine with their own API key, or with a key
-   handed to a session. The first push should be by hand either way.
-3. **The public home.** The nuspec `projectUrl` and `repository`, and the git remote, all say
-   `github.com/rednotfound/VL.NetTopologySuite`. If that is the public repository, it must be public
-   before the push, because nuget.org links to it. `<authors>` and `<owners>` currently read
-   `VL.NetTopologySuite Contributors`.
-4. **The description's first line.** It opens with `EARLY - not ready for real work yet.` That was
-   true in 2026-08. Whether it stays for an alpha is a judgement about what the package page should
-   say to a stranger.
-5. **`<readme>`.** nuget.org shows a README on the package page only when the nuspec names one
+1. **Who pushes.** By hand from the maintainer's machine with their own API key, or a
+   tag-triggered GitHub Actions workflow with the key in a `NUGET_KEY` secret (the maintainer's
+   choice on vvvv-gis, so the key never passes through a local shell). vl-mapsui has the same
+   question open. Either way **the maintainer performs the irreversible step**: a session prepares,
+   validates and commits, then hands over the exact command and stops.
+2. **The description's first line.** It opens with `EARLY - not ready for real work yet.` That was
+   true in 2026-08. Whether it stays for the alpha is a judgement about what the package page should
+   say to a stranger; VL.Mapsui's reads "First public preview".
+3. **`<readme>`.** nuget.org shows a README on the package page only when the nuspec names one
    (`<readme>docs\README.md</readme>` — the file is already packed to `docs\`). Recommended, but it
    is a nuspec change and belongs in its own commit.
+
+Settled: **the public home.** The nuspec `projectUrl` and `repository`, and the git remote, all say
+`github.com/rednotfound/VL.NetTopologySuite`, and the repository is public (checked 2026-09-25, as
+are the other three and vvvv-gis). `<authors>` and `<owners>` read `VL.NetTopologySuite Contributors`.
 
 ---
 
@@ -66,9 +88,8 @@ Every step is separate, and a validator never runs in the same command as a comm
 # 0. vvvv closed. The tree clean except for what this release changes.
 git status
 
-# 1. Decide the version (decision 1) and change it in ONE place.
-#    VL.NetTopologySuite.nuspec: <version>0.1.0-alpha</version>
-#    Also the <releaseNotes> for this version.
+# 1. The version stays 0.0.1-alpha (see Versioning). Only the <releaseNotes> change: they still
+#    say "First package. Not published." Same file, one commit.
 
 # 2. Everything green, from a clean build:
 .\build.ps1
@@ -83,21 +104,24 @@ dotnet test test\VL.NetTopologySuite.Tests\VL.NetTopologySuite.Tests.csproj
 #    open the Help Browser, find VL.NetTopologySuite, open the Explanation, press F1 on a node.
 .\tools\Open-HelpPatch.ps1 "Explanation"
 
-# 4. Commit the version bump by name, tag, push the source.
+# 4. Commit the release notes by name, tag, push the source.
 git add VL.NetTopologySuite.nuspec
-git commit -m "release: 0.1.0-alpha"
-git tag v0.1.0-alpha
+git commit -m "release: 0.0.1-alpha"
+git tag v0.0.1-alpha
 git push origin main --tags
 
-# 5. Push the package BY HAND. This is the irreversible step.
+# 5. The maintainer pushes the package. This is the irreversible step.
 $nuget = .\tools\Find-Vvvv.ps1 -NuGet
-& $nuget push .\dist\feed\VL.NetTopologySuite.0.1.0-alpha.nupkg -Source https://api.nuget.org/v3/index.json -ApiKey <key>
+& $nuget push .\dist\feed\VL.NetTopologySuite.0.0.1-alpha.nupkg -Source https://api.nuget.org/v3/index.json -ApiKey <key>
 
 # 6. Wait for indexing (minutes to an hour), then in a vvvv that has never seen the package:
 #    vvvv's command line:   nuget install VL.NetTopologySuite -pre
 #    Help Browser -> VL.NetTopologySuite -> the fifteen patches; F1 on a node.
 
 # 7. A GitHub release on the tag, with the nuspec's release notes as its body.
+
+# 8. The same day: bump the working version to 0.0.2-alpha in the nuspec (see Versioning), so a
+#    local repack can never be mistaken for the published package.
 ```
 
 **Automation comes second.** A GitHub Actions workflow that packs on a tag and pushes with a
