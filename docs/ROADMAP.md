@@ -8,10 +8,15 @@ comment; the work is deciding whether they earn a node, not writing them.
 
 ---
 
-## Now — 0.0.1-alpha, unpublished
+## Now — 0.0.1-alpha on nuget.org, 0.0.2-alpha in the tree
 
 39 public nodes across `NTS.Geometry`, `NTS.Feature`, `NTS.Operation`, `NTS.IO`, `NTS.Index` and
 `NTS.Network`. 126 tests. Fifteen help patches - the `Explanation` front door and fourteen `HowTo`s, ten of them written 2026-09-24 with `tools\HelpPatchGen.ps1` and every one seen in the GUI.
+
+**2026-09-26: released.** `0.0.1-alpha` was published by the maintainer through nuget.org's browser
+upload, installed back from nuget.org alone with both dependencies, its fifteen help patches
+compiled from that install and `HowTo Find the shortest path` run in vvvv from it. The working
+version is `0.0.2-alpha`. The paragraph below is the state the day before, kept as the record.
 
 **2026-09-25: ready to release, and not released.** The node surface has not moved since
 2026-08-28. The maintainer reviewed every help patch by hand in vvvv (2026-09-24/25, eleven adjusted
@@ -145,7 +150,7 @@ once, and re-run the overlap check.
 
 | | |
 |---|---|
-| **Release `0.0.1-alpha`** — a prerelease, in step with VL.Mapsui | Every local proof is green (2026-09-25, [RELEASE.md](RELEASE.md)). Blocked only on the maintainer's decisions listed there. The maintainer pushes; a workflow at the earliest for the second release. Right after: working version `0.0.2-alpha`. |
+| **Release `0.0.1-alpha` — done 2026-09-26** | Browser upload by the maintainer; installed back from nuget.org, 15 help patches compile from it, one run in vvvv. Working version `0.0.2-alpha`. Next release: Trusted Publishing from GitHub Actions, written once for the family ([RELEASE.md](RELEASE.md)). |
 | **`Explanation Overview of available nodes.vl` — done 2026-09-24, seen in the GUI** | One per library, the front door — 57 of vvvv's own packs have one. Help is the teaching surface: VL.Skia ships 4 C# nodes and 98 help patches, and in libraries people learn from help runs 16–24% of node count. Four patches against 32 nodes is 12%, so this is under-served rather than done. |
 | **The remaining help patches — done 2026-09-24: ten `HowTo`s, one per node group, every category covered, all seen in the GUI** | `HowTo Create a linestring`, `HowTo Inspect a geometry`, `HowTo Intersect two geometries`, `HowTo Test how geometries relate`. Append each to the right `Topic` in `Help.xml` — **do not number the files.** They were numbered `01 03 04 06` at first, and because only four of the eight existed, every gap read as a broken install. `Help.xml` is the only place ordering lives. |
 | **The cross-package example** | `Coordinates → Polygon → Buffer → Geometry → VL.Mapsui Feature → Map`, living **outside** both repositories. A patch needing two packages cannot ship inside one whose dependencies do not guarantee the other. Precedent: `vvvv-gis\examples\Example Map with data on it.vl`. |

@@ -8,13 +8,15 @@ Guidance for Claude Code (claude.ai/code) working in this repository.
 as nodes for [vvvv gamma](https://vvvv.org). One package, one library — geometry creation,
 inspection, spatial operations and WKT. Nothing about maps, rendering or reprojection.
 
-**Current state (2026-09-25): release-ready and unpublished — every local proof is green, the
-maintainer has reviewed every help patch by hand, `tools\Test-Install.ps1` passes, and what remains
-is the decisions in [docs/RELEASE.md](docs/RELEASE.md). **The version is `0.0.1-alpha`: always a
-prerelease (`-alpha` suffix, installed with `-pre`), managed in step with VL.Mapsui and the family —
-the maintainer's rule, 2026-09-25 — and bumped to `0.0.2-alpha` the day after a publish.** Never push
-to nuget.org without the user's explicit go; the user performs the irreversible step; a push cannot
-be undone.** 39 public nodes in six categories — `NTS.Network` (`Network` +
+**Current state (2026-09-26): `0.0.1-alpha` is on nuget.org** — published by the maintainer through
+the browser upload on 2026-09-26, installed back from nuget.org alone, its 15 help patches compiled
+from that install and one run in vvvv from it. **The working version is now `0.0.2-alpha`**, always
+one ahead of the published one. **Every version is a prerelease** (`-alpha` suffix, installed with
+`-pre`), managed in step with VL.Mapsui and the family — the maintainer's rule, 2026-09-25. The
+process and its rules are in [docs/RELEASE.md](docs/RELEASE.md): the maintainer performs the
+irreversible step, and nuget.org's 2026 policy (API keys 30 days at most, Trusted Publishing for CI,
+browser upload for manual) is written there. Never push to nuget.org without the user's explicit
+go; a publish cannot be undone.** 39 public nodes in six categories — `NTS.Network` (`Network` +
 `ShortestPath`, an algorithm of ours, promoted from `NTS.Experimental.Network` by
 `docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 126
 tests, 15 help patches.** All fifteen were (re)written on 2026-09-24 in the community's measured style
@@ -24,7 +26,7 @@ VL.Skia through ForEach and Cache regions. The
 2026-08-14 GUI verification covered `NTS.Geometry` / `NTS.IO` / `NTS.Operation`; `NTS.Feature`
 (2026-08-22) was seen in the GUI through VL.Overworld's Tutorial 08 on 2026-08-23; **`NTS.Index`
 (2026-08-23) was seen the same evening through Tutorial 11**, with `Indexes Built` holding at 1 over
-100,000 points. Every category has now been on a screen. Nothing is published to nuget.org. See
+100,000 points. Every category has now been on a screen. `0.0.1-alpha` is on nuget.org (2026-09-26). See
 [Verification](#verification-be-precise-about-which-one-you-have).
 
 **`NTS.Index` is this package's first `[ProcessNode]`.** `SpatialIndex` holds an `STRtree` and

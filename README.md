@@ -2,13 +2,20 @@
 
 **NetTopologySuite made natural inside [vvvv gamma](https://vvvv.org).** Not another GIS framework.
 
-> **Status: `0.0.1-alpha`, working, unpublished.** 39 nodes in six categories, 126 tests, 15 help
-> patches, every node opens one on **F1**. Every category has been seen running in vvvv gamma 7.4
-> (2026-08-14 to 2026-09-25), all fifteen help patches were reviewed by hand in the editor, and the
-> packed package installs from a local feed with its dependencies and compiles every shipped help
-> patch (`tools\Test-Install.ps1`, 2026-09-25). **Nothing is on nuget.org yet**; the release steps
-> and the decisions still open are in [docs/RELEASE.md](docs/RELEASE.md). The table below says
-> exactly what has been shown.
+> **Status: `0.0.1-alpha` on nuget.org since 2026-09-26 — a prerelease, early, and it works.**
+> 39 nodes in six categories, 126 tests, 15 help patches, every node opens one on **F1**. Every
+> category has been seen running in vvvv gamma 7.4, all fifteen help patches were reviewed by hand
+> in the editor, and the published package was installed back from nuget.org alone, its fifteen help
+> patches compiled from that install and one of them run in vvvv from it. The table below says
+> exactly what has been shown; the release process and its rules are in
+> [docs/RELEASE.md](docs/RELEASE.md).
+>
+> ```text
+> nuget install VL.NetTopologySuite -pre
+> ```
+>
+> in vvvv's command line, or the Package Manager. `-pre` because every version of this package is a
+> prerelease for now; the version moves in step with VL.Mapsui and the rest of the family.
 
 ---
 
@@ -52,6 +59,7 @@ a package oversells itself:
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved** — an unresolved one has its links dropped and vanishes from the generated C#, so the script reads the C# | ✅ all 15 help patches |
 | `tools\Test-Install.ps1` | the **packed** package installs from a feed with its dependencies, and every help patch inside it compiles with that install as the only package repository | ✅ 2026-09-25 |
+| **install from nuget.org** | the published package resolves with its dependencies from nuget.org alone; its 15 shipped help patches compile from that install; `HowTo Find the shortest path` runs in vvvv from it | ✅ 2026-09-26, `0.0.1-alpha` |
 | **the vvvv GUI** | **a node appears under the right category, with the right label, computing the right value** | ✅ every category; all 15 help patches seen 2026-09-24, reviewed by hand 2026-09-25 |
 | **F1 on a node** | the node opens its help patch | ✅ all 39 nodes, 2026-09-24 |
 
@@ -263,8 +271,10 @@ dotnet test test\VL.NetTopologySuite.Tests\VL.NetTopologySuite.Tests.csproj
 assemblies, and would not pick up the change anyway. `dist\VL.NetTopologySuite\help` is a junction
 to the repository's help folder, so a patch saved in vvvv is the one git sees.
 
-Until the package is on nuget.org, a vvvv document can use it by pointing vvvv at the staged
-folder: `vvvv.exe MyPatch.vl --package-repositories <repo>\dist;<repo>\deps`.
+To use the working tree instead of the published package, point vvvv at the staged folder:
+`vvvv.exe MyPatch.vl --package-repositories <repo>\dist;<repo>\deps`. The working version is
+always one ahead of the published one (`0.0.2-alpha` while `0.0.1-alpha` is on nuget.org), so the
+two can never be mistaken for each other in a NuGet cache.
 
 ---
 

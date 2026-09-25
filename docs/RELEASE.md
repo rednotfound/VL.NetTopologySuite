@@ -24,9 +24,11 @@ VL.GeoJSON first**, then VL.Mapsui, then VL.Overworld. This package gates the ch
 | **`tools\Test-Install.ps1`** | `nuget install` from `dist\feed` brings NetTopologySuite and NetTopologySuite.Features along, and every help patch **inside the installed package** compiles with that install as the only package repository | ✅ first pass 2026-09-25 |
 | the vvvv GUI | every category on a screen, every help patch computing what its notes say, F1 on all 39 nodes | ✅ 2026-08-14 … 2026-09-25 |
 | the maintainer's own review in vvvv | the patches read right to someone who reads vvvv help daily | ✅ 2026-09-24/25, eleven patches adjusted by hand and committed |
-| push to nuget.org | a stranger's vvvv can install it | ⬜ **not done** |
-| install from nuget.org in a clean vvvv | nuget.org behaves like the local feed | ⬜ |
-| GitHub release + tag | the source that matches the package is findable | ⬜ |
+| publish to nuget.org | a stranger's vvvv can install it | ✅ **2026-09-26, `0.0.1-alpha`**, browser upload by the maintainer (way A), validated and indexed within the hour |
+| install from nuget.org into a fresh folder | nuget.org behaves like the local feed | ✅ 2026-09-26: `nuget install VL.NetTopologySuite -Version 0.0.1-alpha -PreRelease` from nuget.org alone brought NetTopologySuite 2.6.0 and NetTopologySuite.Features 2.1.0; all 15 shipped help patches compiled with that folder as the only package repository; `HowTo Find the shortest path` opened from it in vvvv and drew the town and the path |
+| tag `v0.0.1-alpha` on GitHub | the source that matches the package is findable | ✅ 2026-09-26, pushed with main |
+| GitHub release on the tag | release notes readable without opening the nuspec | ⬜ the maintainer, in the browser: Releases → Draft a new release → tag `v0.0.1-alpha`, body = the nuspec's release notes |
+| working version bumped to `0.0.2-alpha` | a local repack can never be mistaken for the published package | ✅ 2026-09-26 |
 
 **nuget.org, checked 2026-09-25:** the four family IDs (`VL.NetTopologySuite`, `VL.GeoJSON`,
 `VL.Mapsui`, `VL.Overworld`) do not exist there yet, so no ID is taken and the first push creates
@@ -249,9 +251,16 @@ workflow yet either; when one is written it should override the nuspec version f
 
 ## After the first release
 
-- Tell the sibling repositories: VL.Mapsui and VL.Overworld's documents currently reach this
-  package through `--package-repositories`; once it is on nuget.org they can declare it like any
-  other package.
+**How the first one went (2026-09-26).** Browser upload, way A: the Verify page showed every nuspec
+field and the README preview; Submit; the package page said "not been published yet ... validation
+and indexing may take up to an hour"; the registration and flat-container endpoints answered 404
+for about ten minutes, then the confirmation email arrived and both answered 200. Nothing needed a
+retry. The install-back check above ran within the hour.
+
+- Tell the sibling repositories: VL.Mapsui's nuspec already declares `VL.NetTopologySuite
+  0.0.1-alpha`, and from 2026-09-26 that resolves from nuget.org; VL.Overworld's documents still
+  reach this package through `--package-repositories` and can now declare it like any other
+  package.
 - The ROADMAP's open design question — reference-then-value rebuild detection in `SpatialIndex` and
   `Network` — changes a documented contract and is better decided *before* a release that people
   build on, or explicitly deferred to `0.2`.
