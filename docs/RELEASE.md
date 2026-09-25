@@ -84,58 +84,104 @@ Settled by the maintainer on 2026-09-25:
   `VL.NetTopologySuite Contributors`.
 
 Open: **who pushes, and how.** The maintainer wants to learn the process step by step before
-choosing; the two ways are laid out below. Either way **the maintainer performs the irreversible
-step**: a session prepares, validates and commits, then hands over the exact command and stops.
+choosing; the three ways nuget.org offers in 2026 are laid out below. Whichever it is, **the
+maintainer performs the irreversible step**: a session prepares, validates and commits, then hands
+over and stops.
 
-## Two ways to push, and which to learn first
+## The three ways to publish in 2026, and which to learn first
 
-Both end with the same HTTP request to nuget.org carrying an **API key** — a secret string from
-the maintainer's nuget.org account that authorises publishing under that account. The difference
-is where the key lives and who types the command.
+Checked against the official documentation on 2026-09-26. The nuget.org account page now labels
+**API Keys "Not Recommended"**, and the reason is a policy change announced on the .NET Blog on
+2026-08-03 (*Strengthening NuGet Supply Chain Security: Reducing API Key Lifetime*):
 
-### A. By hand, from this machine (recommended for the first release)
+- "Starting August 17, 2026, new API keys will be limited to 30 days. A 365-day duration will no
+  longer be available for new API keys."
+- "All existing API keys created before that date will expire on November 1, 2026." So the key
+  that published VL.GIS, whatever its expiry says, stops working on that date.
+- For CI: migrate to **Trusted Publishing** (OIDC, launched September 2025).
+- For manual publishing: "Package publishing through the NuGet.org web interface remains available
+  for manual scenarios."
 
-1. Sign in at https://www.nuget.org, then *Account → API Keys → Create*. Give it a name
-   (`vl-family`), an expiry (a year), the scope **Push new packages and package versions**, and a
-   **glob pattern** `VL.*` so the key can publish nothing else. Copy the key once; nuget.org never
-   shows it again.
-2. Put the key in an environment variable for the one shell session, never in a file in the
-   repository and never on a command line that ends up in a shell history:
-   ```powershell
-   $env:NUGET_KEY = Read-Host -AsSecureString "nuget.org API key" | ConvertFrom-SecureString -AsPlainText
+### A. Upload in the browser — no key at all (recommended for `0.0.1-alpha`)
+
+1. Sign in at https://www.nuget.org and select **Upload** in the top menu.
+2. Browse to `dist\feed\VL.NetTopologySuite.0.0.1-alpha.nupkg`, open it.
+3. nuget.org reads the package and shows a **Verify** section with every field from the nuspec —
+   id, version, description, tags, dependencies, licence — and, because the nuspec names a
+   `<readme>`, a **Preview** button that renders `docs\README.md` exactly as the package page will.
+   If the ID were already taken this is where it would say so (it is not; checked 2026-09-25).
+4. Anything wrong: change the nuspec, repack, upload again — nothing has been published yet.
+5. **Submit.** This is the irreversible step. Validation and indexing "usually take less than
+   15 minutes"; until then the package sits under *Manage packages → Unlisted Packages* with a
+   "not yet published" notice, then an email confirms it.
+
+What it teaches: every field a stranger will see, checked by eye before the one click that cannot
+be undone, with no secret created and nothing stored anywhere. What it costs: a browser step per
+release, so it does not scale — which is fine for the first one.
+
+### B. A 30-day API key from the command line — the old way, still working
+
+*Account → API Keys → Create*: name `vl-family`, expiry at most 30 days now, scope **Push new
+packages and package versions**, glob pattern `VL.*`. Copy once. Then, with the key in an
+environment variable for the one shell session and never on a command line that reaches a history:
+
+```powershell
+$env:NUGET_KEY = Read-Host -AsSecureString "nuget.org API key" | ConvertFrom-SecureString -AsPlainText
+$nuget = .\tools\Find-Vvvv.ps1 -NuGet
+& $nuget push .\dist\feed\VL.NetTopologySuite.0.0.1-alpha.nupkg -Source https://api.nuget.org/v3/index.json -ApiKey $env:NUGET_KEY
+```
+
+It works, and a repeat push of an existing version is refused (409), so it is safe to retry. But
+a key now lives 30 days, so every release month needs a fresh one — the exact chore Trusted
+Publishing removes. Use this only if the browser upload is unavailable for some reason.
+
+### C. Trusted Publishing from GitHub Actions — no stored secret (the shape from `0.0.2-alpha`)
+
+The workflow asks GitHub for a short-lived OIDC token that says "this is repository
+`rednotfound/VL.NetTopologySuite`, workflow `publish.yml`"; nuget.org checks it against a policy
+the maintainer registered and hands back a **temporary API key valid for one hour**, used once.
+Nothing is stored in GitHub secrets except, optionally, the nuget.org username.
+
+1. On nuget.org: username → **Trusted Publishing** → add a policy. *Repository Owner*
+   `rednotfound`, *Repository* `VL.NetTopologySuite`, *Workflow File* `publish.yml` (file name only),
+   *Environment* empty, scope **Push new packages and package versions**, glob `VL.*`, owner: you.
+   For a public repository the policy is active at once; a private one is "temporarily active" for
+   seven days until the first successful publish locks it to the repository's IDs.
+2. In the repository, `.github\workflows\publish.yml`, triggered by a pushed tag `v*`, with the two
+   lines the docs insist on:
+   ```yaml
+   jobs:
+     publish:
+       runs-on: windows-latest
+       permissions:
+         contents: read
+         id-token: write            # lets GitHub issue the OIDC token
+       steps:
+         - uses: actions/checkout@v4
+         - uses: actions/setup-dotnet@v4
+           with: { dotnet-version: 8.0.x }
+         # build src\, then pack with the nuspec (nuget.exe or dotnet pack) into dist\feed
+         - name: NuGet login (OIDC -> temporary API key)
+           uses: NuGet/login@v1
+           id: login
+           with:
+             user: ${{ secrets.NUGET_USER }}   # the nuget.org USERNAME, not the email
+         - name: push
+           run: dotnet nuget push dist\feed\*.nupkg --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
    ```
-3. Push the packed file:
-   ```powershell
-   $nuget = .\tools\Find-Vvvv.ps1 -NuGet
-   & $nuget push .\dist\feed\VL.NetTopologySuite.0.0.1-alpha.nupkg -Source https://api.nuget.org/v3/index.json -ApiKey $env:NUGET_KEY
-   ```
-4. nuget.org answers within seconds; the package page appears in a few minutes and search finds
-   it within an hour. A push of a version that already exists is refused (409), so a repeat is
-   harmless.
+3. `git push origin v0.0.2-alpha` is then the irreversible step.
 
-What it teaches: exactly what a publish is, with nothing hidden, and it needs no repository
-change. What it costs: the key passes through a local shell once, and every later release is a
-manual step that someone must remember to run after the gate.
+What it costs, and why it is not the first release: a GitHub runner has no vvvv, so `vvvvc`,
+`Compile-HelpPatches` and `Test-Install` cannot run there — the workflow packs and pushes, and the
+gate stays a local step that must be green *before* the tag. The runner also packs with a
+different NuGet than vvvv's, so the first run should be compared against a local `pack.ps1` output
+(same file list, same nuspec inside). Written once, the same file serves VL.Mapsui, VL.GeoJSON and
+VL.Overworld with one policy each on nuget.org.
 
-### B. GitHub Actions on a tag (the shape for the second release)
-
-1. Create the same kind of key on nuget.org.
-2. In the GitHub repository: *Settings → Secrets and variables → Actions → New repository secret*,
-   name `NUGET_KEY`, paste the key. GitHub stores it encrypted and never shows it again; a workflow
-   reads it as `${{ secrets.NUGET_KEY }}`.
-3. Add `.github\workflows\publish.yml`: on a pushed tag `v*`, check out, install .NET 8, download
-   vvvv (or use `dotnet pack` with the nuspec), run the gate, `nuget push` with the secret. vvvv's
-   own `vvvvc` and `NuGet.exe` are not on a GitHub runner, so the workflow either installs vvvv
-   there (slow, ~1 GB) or packs with `dotnet nuget` alone and trusts the gate that ran locally.
-4. `git push origin v0.0.1-alpha` is then the irreversible step.
-
-What it teaches: a release becomes `git tag` + `git push`, repeatable and logged, and the key never
-touches a local machine — this is what the maintainer chose on vvvv-gis. What it costs: a
-workflow to write and debug, a runner without vvvv, and a first failure that is harder to read than
-a local one.
-
-**Recommendation:** A for `0.0.1-alpha`, on both this package and VL.Mapsui, so the maintainer has
-seen a publish end to end once. Then B for `0.0.2-alpha`, written once and copied across the family.
+**Recommendation:** **A** for `0.0.1-alpha`, on this package and then VL.Mapsui — the maintainer
+sees every field before the click, and no key is created that expires on 2026-11-01 anyway. Then
+**C** for `0.0.2-alpha` across the family. **B** only as a fallback. Whatever key published VL.GIS
+can be deleted now; it dies on 2026-11-01 regardless.
 
 ---
 
@@ -169,11 +215,11 @@ git commit -m "release: 0.0.1-alpha"
 git tag v0.0.1-alpha
 git push origin main --tags
 
-# 5. The maintainer pushes the package. This is the irreversible step.
-$nuget = .\tools\Find-Vvvv.ps1 -NuGet
-& $nuget push .\dist\feed\VL.NetTopologySuite.0.0.1-alpha.nupkg -Source https://api.nuget.org/v3/index.json -ApiKey <key>
+# 5. The maintainer publishes the package: nuget.org -> Upload -> dist\feed\VL.NetTopologySuite.0.0.1-alpha.nupkg
+#    -> Verify (Preview the readme) -> Submit. This is the irreversible step. (Way A below; B and C
+#    are the command-line and the GitHub Actions alternatives.)
 
-# 6. Wait for indexing (minutes to an hour), then in a vvvv that has never seen the package:
+# 6. Wait for validation and indexing (usually under 15 minutes), then in a vvvv that has never seen the package:
 #    vvvv's command line:   nuget install VL.NetTopologySuite -pre
 #    Help Browser -> VL.NetTopologySuite -> the fifteen patches; F1 on a node.
 
