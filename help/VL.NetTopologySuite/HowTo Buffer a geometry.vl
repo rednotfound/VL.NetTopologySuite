@@ -16,7 +16,7 @@
       <Patch Id="SJpWGSfFnd3hxukFcbVHox">
         <Canvas Id="M7EFGUyS020ImAkTQEOHmV" CanvasType="Group">
           <Pad Id="Np9WINrPWt0P0Tz0jH54up" Bounds="60,40,195,41" ShowValueBox="true" isIOBox="true" Value="Use Buffer!">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -25,7 +25,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="JMGFFoImmZ2YlE6Wfjpjgn" Bounds="60,95,480,64" ShowValueBox="true" isIOBox="true" Value="Buffer grows a geometry outwards by a distance, and shrinks it with a negative one. Whatever goes in, a polygon comes out: a point becomes a disc, a line a corridor.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -50,7 +50,7 @@
             <Pin Id="QIMcLpWKMSmy2sPylXlol9" Name="Success" Kind="OutputPin" />
           </Node>
           <Pad Id="Vee6hDcErDHs3QdrcDtvsb" Bounds="580,170,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; Feed it a LINESTRING and see the corridor.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -58,7 +58,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="400,220,50,19" Id="O2VqKMguuxqXpg8KyMK9pz">
+          <Node Bounds="316,260,50,19" Id="O2VqKMguuxqXpg8KyMK9pz">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Area" />
@@ -67,14 +67,14 @@
             <Pin Id="LeRmeV5Ve4ZLLvRFM5u3FO" Name="Geometry" Kind="InputPin" />
             <Pin Id="JpG2Tyrx1oIdQ2sTzFMvP7" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="HDJE2ercKEZM7M81XV8sn9" Comment="Area before" Bounds="400,260,80,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="E5HPNB2PBUVrf0Pzu3QJrd" Comment="Distance" Bounds="230,280,80,15" ShowValueBox="true" isIOBox="true" Value="0.25">
+          <Pad Id="HDJE2ercKEZM7M81XV8sn9" Comment="Area before" Bounds="316,300,80,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="E5HPNB2PBUVrf0Pzu3QJrd" Comment="Distance" Bounds="94,310,80,15" ShowValueBox="true" isIOBox="true" Value="0.25">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Float64" />
             </p:TypeAnnotation>
           </Pad>
           <Pad Id="SkKHjv4DpLRwCNdEIVExr2" Bounds="580,280,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; THE DISTANCE IS IN THE GEOMETRY'S OWN UNITS. Here 0.25 is a quarter of the unit square. On longitude/latitude it would be a quarter DEGREE - project to metres first.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -82,13 +82,13 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="PzVjkpNIRqASYXk4Pu4G2J" Comment="Segments" Bounds="230,320,80,15" ShowValueBox="true" isIOBox="true" Value="8">
+          <Pad Id="PzVjkpNIRqASYXk4Pu4G2J" Comment="Segments" Bounds="127,340,80,15" ShowValueBox="true" isIOBox="true" Value="8">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Integer32" />
             </p:TypeAnnotation>
           </Pad>
           <Pad Id="M3IJYU7rygqNe9AYCIptjE" Bounds="580,368,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Segments per quarter turn. 8 is NetTopologySuite's default and visibly faceted; raise it and watch &quot;Area after&quot; converge.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -108,7 +108,7 @@
             <Pin Id="ShVM7FfJ1J7Cev3P5AQoBJ" Name="Output" Kind="OutputPin" />
           </Node>
           <Pad Id="AasBwdG79lGSoijoWJDw88" Bounds="580,438,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; Try a negative distance: the shape shrinks.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -116,7 +116,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="60,430,50,19" Id="SkzMQ2eVpGXtvOnnhVR67T">
+          <Node Bounds="103,440,50,19" Id="SkzMQ2eVpGXtvOnnhVR67T">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Area" />
@@ -125,8 +125,8 @@
             <Pin Id="NsgKlzmi2gnNeeo1dor7b3" Name="Geometry" Kind="InputPin" />
             <Pin Id="EWfwl9xfhVnlq4Js6W18VU" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="PeiSmpE3qzt8XAg1jhGp8M" Comment="Area after" Bounds="60,470,80,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="230,430,100,19" Id="MHG034oWrNzLzFhcag4KDj">
+          <Pad Id="PeiSmpE3qzt8XAg1jhGp8M" Comment="Area after" Bounds="103,480,80,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="272,440,100,19" Id="MHG034oWrNzLzFhcag4KDj">
             <p:NodeReference LastCategoryFullName="NTS.Operation" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Intersection" />
@@ -136,7 +136,7 @@
             <Pin Id="AnozXOihq44WeKXVjXSd8J" Name="B" Kind="InputPin" />
             <Pin Id="CZs98kZFsWaS6LJoy4qzy6" Name="Output" Kind="OutputPin" />
           </Node>
-          <Node Bounds="230,490,50,19" Id="QczzksB55S9zXlnyIcZ5yL">
+          <Node Bounds="272,500,50,19" Id="QczzksB55S9zXlnyIcZ5yL">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Area" />
@@ -145,9 +145,9 @@
             <Pin Id="B7lpVtQ9E6R2j0aqzaqMsL" Name="Geometry" Kind="InputPin" />
             <Pin Id="L09i48AwUE3NtVFeXFmQn6" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="IhGkrpRrVzP4SQsgNkfwLV" Comment="Intersection area" Bounds="230,530,80,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="IhGkrpRrVzP4SQsgNkfwLV" Comment="Intersection area" Bounds="272,540,80,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="DCSW42bxhmqP3Fe8A8z3j1" Bounds="580,490,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Intersection of the buffered shape with the original gives the original back - area 1 again. Geometry in, geometry out: operations chain with nothing in between.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>

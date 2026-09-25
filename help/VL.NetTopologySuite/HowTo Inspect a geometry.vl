@@ -16,7 +16,7 @@
       <Patch Id="B0IfjrZ85uPGHjCFfjzKp4">
         <Canvas Id="Hc6W6OMgv0bGcV6neUJ3yo" CanvasType="Group">
           <Pad Id="MufjvxnGrZthOSfIyvDFWD" Bounds="60,40,510,41" ShowValueBox="true" isIOBox="true" Value="Use the readers in NTS.Geometry!">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -25,7 +25,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="IayeEi5sbncS2SgCtURS4z" Bounds="60,95,480,64" ShowValueBox="true" isIOBox="true" Value="Every reader takes any Geometry - a Point, a LineString, a Polygon with holes, a collection. Paste a different WKT and every readout follows.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -39,7 +39,7 @@
             </p:TypeAnnotation>
           </Pad>
           <Pad Id="SaK55bK0VvRm06SBmCPT12" Bounds="580,170,320,26" ShowValueBox="true" isIOBox="true" Value="&lt; A 4 x 3 rectangle with a unit hole.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -58,7 +58,7 @@
             <Pin Id="AY28YyZEeolSqhzOcWHojq" Name="Result" Kind="OutputPin" />
             <Pin Id="V3PtEsAMufV37x0wpGq2Zk" Name="Success" Kind="OutputPin" />
           </Node>
-          <Node Bounds="60,290,110,19" Id="R28GWtzAsg0MOdG8CHDuES">
+          <Node Bounds="91,310,110,19" Id="R28GWtzAsg0MOdG8CHDuES">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="GeometryType" />
@@ -67,8 +67,8 @@
             <Pin Id="RCFHhudpu35nF3gNtVna65" Name="Geometry" Kind="InputPin" />
             <Pin Id="B6Dz7mjNWWy24EtrkgnOy2" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="IbGpYmGYq3Uhg0RXBbuukg" Comment="Type" Bounds="60,330,120,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="230,290,70,19" Id="JAvVVyRU3tzBII8f6MzcQm">
+          <Pad Id="IbGpYmGYq3Uhg0RXBbuukg" Comment="Type" Bounds="91,350,120,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="261,310,70,19" Id="JAvVVyRU3tzBII8f6MzcQm">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="IsEmpty" />
@@ -77,8 +77,8 @@
             <Pin Id="GhQsW5Dstj3OeSVpmSTdoM" Name="Geometry" Kind="InputPin" />
             <Pin Id="HluFWTO941RRkwMF09ro9C" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="DpJJKe1v1OUuqg1WXp8BEz" Comment="Empty" Bounds="230,330,60,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="360,290,50,19" Id="KNhL6gd2PgoJKX1FShithj">
+          <Pad Id="DpJJKe1v1OUuqg1WXp8BEz" Comment="Empty" Bounds="261,350,60,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="391,310,50,19" Id="KNhL6gd2PgoJKX1FShithj">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="SRID" />
@@ -87,9 +87,9 @@
             <Pin Id="OgI50w9eQZxc4S10Du1xLD" Name="Geometry" Kind="InputPin" />
             <Pin Id="QuosgCFxWt87mqVOQ54KKu" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="Tbsg60h5aHN8h8YRxz26h6" Comment="SRID" Bounds="360,330,60,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="Tbsg60h5aHN8h8YRxz26h6" Comment="SRID" Bounds="391,350,60,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="OTT1KDqv6g3kTtWgtejpwi" Bounds="580,290,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; IsValid is the one reader not shown here - HowTo Create a polygon has it.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -97,7 +97,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="60,400,50,19" Id="DZIf5yLdVkAMYnvn83wojZ">
+          <Node Bounds="89,410,50,19" Id="DZIf5yLdVkAMYnvn83wojZ">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Area" />
@@ -106,8 +106,8 @@
             <Pin Id="V7bof3aV8yIJZNaVCqNZyL" Name="Geometry" Kind="InputPin" />
             <Pin Id="UHuRqNJDaYENypKCIUAzYN" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="IOWzd0X7FXfqpJzaotkXMK" Comment="Area" Bounds="60,440,80,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="230,400,60,19" Id="OzZBKZUJC7fFVrgXSpty9E">
+          <Pad Id="IOWzd0X7FXfqpJzaotkXMK" Comment="Area" Bounds="91,460,80,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="261,420,60,19" Id="OzZBKZUJC7fFVrgXSpty9E">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Length" />
@@ -116,9 +116,9 @@
             <Pin Id="BpPD63hxb4b8Iq4LXHDUKK" Name="Geometry" Kind="InputPin" />
             <Pin Id="QNTknksRiSY2m8ttlxo6Pc" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="GCIfW3uwOy4f3HM6E1ZwX9" Comment="Length" Bounds="230,440,80,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="GCIfW3uwOy4f3HM6E1ZwX9" Comment="Length" Bounds="261,460,80,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="V4OnvzZcuPoJHLXEqHqJ4h" Bounds="580,400,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Area: 12 minus the hole. Length: the perimeter, both rings counted. Both in the coordinates' own units - on longitude/latitude that is degrees and square degrees.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -126,7 +126,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="360,400,70,19" Id="UX6B3OzOWgK2Zl9CyuovhJ">
+          <Node Bounds="391,420,70,19" Id="UX6B3OzOWgK2Zl9CyuovhJ">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Centroid" />
@@ -135,7 +135,7 @@
             <Pin Id="AUugM5by3xO0ACFQnxACDp" Name="Geometry" Kind="InputPin" />
             <Pin Id="GAyUp8kq8od66bChuyckyV" Name="Result" Kind="OutputPin" />
           </Node>
-          <Node Bounds="360,450,90,19" Id="BviqfbIPJGUACgAo2y9Bl6">
+          <Node Bounds="391,470,90,19" Id="BviqfbIPJGUACgAo2y9Bl6">
             <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Write WKT" />
@@ -144,9 +144,9 @@
             <Pin Id="OvwNbKUgNVFr6pm2bw9mQJ" Name="Include Z" Kind="InputPin" />
             <Pin Id="BReOEtYj0dEgVxo1F45z0W" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="R6sJhEotGgv2vBTLWR9fEa" Comment="Centroid" Bounds="360,490,160,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="R6sJhEotGgv2vBTLWR9fEa" Comment="Centroid" Bounds="391,510,160,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="Nmy79UgJBD471HLjbGCtRg" Bounds="580,488,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; The hole pulls the centroid a little right of the rectangle's middle.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -154,7 +154,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="60,550,60,19" Id="KHywiXEKbCXEyM4xP7iIeq">
+          <Node Bounds="60,550,328,19" Id="KHywiXEKbCXEyM4xP7iIeq">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Bounds" />
@@ -171,7 +171,7 @@
           <Pad Id="MntLt75WkMaxW4gYdBtKOB" Comment="Max X" Bounds="280,590,70,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="SjcfFeaRiquKdcYlSfs9ca" Comment="Max Y" Bounds="390,590,70,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="UXv1DWeMB3Zv0B8qdqV8Yo" Bounds="580,550,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Bounds is the axis-aligned box around the geometry: the cheapest question there is, and the one spatial indexes are built on - see HowTo Query many geometries fast.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>

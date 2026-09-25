@@ -16,7 +16,7 @@
       <Patch Id="KzCUrHuyUKgiFoI75oDFcK">
         <Canvas Id="HwmJ05ls1mDCkfjIp9o0HO" CanvasType="Group">
           <Pad Id="H6Yv5AuIQusu1AZP117i4K" Bounds="60,40,360,41" ShowValueBox="true" isIOBox="true" Value="Use Feature and Split!">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -25,7 +25,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="T8ThLP9zBfOIXdBqfQ9waj" Bounds="60,95,480,82" ShowValueBox="true" isIOBox="true" Value="A Feature is a geometry with a Dictionary of attributes. It is NetTopologySuite's own type - the one VL.GeoJSON reads and VL.Mapsui draws, so all three packages share it without referencing each other.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -49,17 +49,17 @@
             <Pin Id="O95HTsvidcIcDO1UoPT5jC" Name="Result" Kind="OutputPin" />
             <Pin Id="Vd5vQ1VNIJYw9effE57rZN" Name="Success" Kind="OutputPin" />
           </Node>
-          <Pad Id="MjJoOINiUwKdmdKgB3tzEE" Comment="Key" Bounds="60,280,100,15" ShowValueBox="true" isIOBox="true" Value="name">
+          <Pad Id="MjJoOINiUwKdmdKgB3tzEE" Comment="Key" Bounds="151,280,100,15" ShowValueBox="true" isIOBox="true" Value="name">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="HKRsxzoZQASyhNmwsN3jDP" Comment="Value" Bounds="60,320,200,15" ShowValueBox="true" isIOBox="true" Value="Tokyo Station">
+          <Pad Id="HKRsxzoZQASyhNmwsN3jDP" Comment="Value" Bounds="175,320,200,15" ShowValueBox="true" isIOBox="true" Value="Tokyo Station">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="60,370,50,19" Id="DXjNH3dXJLLOLYSSOkjoxR">
+          <Node Bounds="125,370,53,26" Id="DXjNH3dXJLLOLYSSOkjoxR">
             <p:NodeReference LastCategoryFullName="Collections.Dictionary" LastDependency="VL.CoreLib.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Add" />
@@ -71,7 +71,7 @@
             <Pin Id="OMdi8Px6Etsg9womYEo553" Name="Output" Kind="StateOutputPin" />
           </Node>
           <Pad Id="DMy3iEDvndGrHy8EK2Htuy" Bounds="580,300,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; The attributes are vvvv's own Dictionary: Add, Remove, TryGetValue, Keys, Values and a ForEach over the pairs all work. This package adds nothing there, on purpose.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -99,9 +99,9 @@
             <Pin Id="IuhhLU9Ane6RPnjCO7qSc5" Name="Geometry" Kind="OutputPin" />
             <Pin Id="JhYlNHa3e9uT0o6bhHJugv" Name="Attributes" Kind="OutputPin" />
           </Node>
-          <Pad Id="PeooMkfxv8h2NoXPCvTlRW" Comment="Attributes" Bounds="230,490,250,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="Fd5G5e3tWGLlZDHF9ZBPjm" Bounds="580,490,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Split opens the Feature up again. Its geometry is the same Geometry as everywhere else: Area, Buffer and the rest take it straight from here.">
-            <p:TypeAnnotation>
+          <Pad Id="PeooMkfxv8h2NoXPCvTlRW" Comment="Attributes" Bounds="157,540,249,58" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="Fd5G5e3tWGLlZDHF9ZBPjm" Bounds="580,537,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Split opens the Feature up again. Its geometry is the same Geometry as everywhere else: Area, Buffer and the rest take it straight from here.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -109,7 +109,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="60,550,90,19" Id="EvUa8M4Dx8IljkC05OhZXb">
+          <Node Bounds="60,610,90,19" Id="EvUa8M4Dx8IljkC05OhZXb">
             <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Write WKT" />
@@ -118,7 +118,7 @@
             <Pin Id="SKiK1XmUyC96cIWLMkT5A0" Name="Include Z" Kind="InputPin" />
             <Pin Id="V3MaMjCx1Q92ETjBpcjw5b" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="UQQZed1MOcgFWkQqzHunMB" Comment="Geometry" Bounds="60,590,300,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="UQQZed1MOcgFWkQqzHunMB" Comment="Geometry" Bounds="60,650,312,25" ShowValueBox="true" isIOBox="true" />
         </Canvas>
         <Patch Id="LvahuOZMoqzxlQESwF7eYW" Name="Create" />
         <Patch Id="KCzE1eT4SpVSbOKBrqSZ6J" Name="Update" />

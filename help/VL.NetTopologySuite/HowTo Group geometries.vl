@@ -16,7 +16,7 @@
       <Patch Id="NhjLq5Ad8o3BmRifgHGjZJ">
         <Canvas Id="M7qCD78iJ9eli3OAQedlWm" CanvasType="Group">
           <Pad Id="B55QkQrB3oEocp4i6Zj9gY" Bounds="60,40,375,41" ShowValueBox="true" isIOBox="true" Value="Use GeometryCollection!">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -25,7 +25,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="M82CqNXXC6mnHgBp6IplNL" Bounds="60,95,480,46" ShowValueBox="true" isIOBox="true" Value="Several geometries travel as one. Cons gathers them, GeometryCollection wraps them, and Geometries takes them apart again.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -33,12 +33,12 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="O3ZqEUK8DmR483v0uDwhQg" Comment="Point" Bounds="60,170,250,15" ShowValueBox="true" isIOBox="true" Value="POINT (0 0)">
+          <Pad Id="O3ZqEUK8DmR483v0uDwhQg" Comment="Point" Bounds="62,201,80,15" ShowValueBox="true" isIOBox="true" Value="POINT (0 0)">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="400,170,90,19" Id="PaIZnbV61ysfYWaBPXmRbx">
+          <Node Bounds="60,230,90,19" Id="PaIZnbV61ysfYWaBPXmRbx">
             <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Read WKT" />
@@ -49,12 +49,12 @@
             <Pin Id="MzM047jW7lPdKbVO1NDHry" Name="Result" Kind="OutputPin" />
             <Pin Id="Grd8VtwLc0I0vMM5QI9fLD" Name="Success" Kind="OutputPin" />
           </Node>
-          <Pad Id="JOxxW67wUfwOdSa97DC6Si" Comment="Line" Bounds="60,210,250,15" ShowValueBox="true" isIOBox="true" Value="LINESTRING (0 0, 2 0)">
+          <Pad Id="JOxxW67wUfwOdSa97DC6Si" Comment="Line" Bounds="214,201,125,15" ShowValueBox="true" isIOBox="true" Value="LINESTRING (0 0, 2 0)">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="400,210,90,19" Id="IspNmu6CTlQFgIaYaAvEW8">
+          <Node Bounds="212,230,90,19" Id="IspNmu6CTlQFgIaYaAvEW8">
             <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Read WKT" />
@@ -65,12 +65,12 @@
             <Pin Id="ML9Ri4Y3I4fmQucO2eeUb1" Name="Result" Kind="OutputPin" />
             <Pin Id="MkDLUMAsdjgZWj0MBZEA1l" Name="Success" Kind="OutputPin" />
           </Node>
-          <Pad Id="E8a7LwqfOKlD6gYBEdTtc2" Comment="Polygon" Bounds="60,250,250,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))">
+          <Pad Id="E8a7LwqfOKlD6gYBEdTtc2" Comment="Polygon" Bounds="363,201,174,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="400,250,90,19" Id="IhH0vMkZAO12lddgSNG3O9">
+          <Node Bounds="361,230,90,19" Id="IhH0vMkZAO12lddgSNG3O9">
             <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Read WKT" />
@@ -81,7 +81,7 @@
             <Pin Id="V4HhxSzmNLSvbHL5J13dt6" Name="Result" Kind="OutputPin" />
             <Pin Id="Tkdy86axy0ARLwmuXNRQK2" Name="Success" Kind="OutputPin" />
           </Node>
-          <Node Bounds="60,310,39,19" Id="KM2xo1L8j6wwDo58X0l2o3">
+          <Node Bounds="60,310,300,19" Id="KM2xo1L8j6wwDo58X0l2o3">
             <p:NodeReference LastCategoryFullName="Collections.Spread" LastDependency="VL.CoreLib.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Cons" />
@@ -103,7 +103,7 @@
             <Pin Id="RW3FoCIFKgMCbptbal3eHf" Name="Result" Kind="OutputPin" />
           </Node>
           <Pad Id="GK7n2F1uLXRx9deGsPORJi" Bounds="580,370,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; A GeometryCollection promises nothing about its parts. MultiPoint, MultiLineString and MultiPolygon take only their own type: a Spread of Point fits MultiPoint.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -111,7 +111,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="60,430,110,19" Id="Hub8ETrrRGPzs1rGsNOlN9">
+          <Node Bounds="104,440,110,19" Id="Hub8ETrrRGPzs1rGsNOlN9">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="GeometryType" />
@@ -120,8 +120,8 @@
             <Pin Id="IghLyHkvps8ZLRTEkfFrhi" Name="Geometry" Kind="InputPin" />
             <Pin Id="RlExhN7mDy1gertr1DFNnm" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="K3o7FR076bNh4SMbTwNrvx" Comment="Type" Bounds="60,470,140,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="230,430,50,19" Id="REGsf9TxrjuDzSQ0gML1Td">
+          <Pad Id="K3o7FR076bNh4SMbTwNrvx" Comment="Type" Bounds="104,480,140,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="274,440,50,19" Id="REGsf9TxrjuDzSQ0gML1Td">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Area" />
@@ -129,8 +129,8 @@
             <Pin Id="EeFEAn3EzVdCcAgnNSsJSQ" Name="Geometry" Kind="InputPin" />
             <Pin Id="IqYlcOSQAfSOzdctUM3mYu" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="UAvR2IIpFkLSFW034HUfx0" Comment="Area" Bounds="230,470,80,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="340,430,60,19" Id="MvUol4wNq77IQPPXPdmLBO">
+          <Pad Id="UAvR2IIpFkLSFW034HUfx0" Comment="Area" Bounds="274,480,80,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="384,440,60,19" Id="MvUol4wNq77IQPPXPdmLBO">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Length" />
@@ -139,9 +139,9 @@
             <Pin Id="Qp8uBxDYyACkqzmgpzxiNV" Name="Geometry" Kind="InputPin" />
             <Pin Id="LXDcPuBBFMkbGpy23W6Tuz" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="HAHMBGeCPE8A4UvmdMIH6P" Comment="Length" Bounds="340,470,80,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="HAHMBGeCPE8A4UvmdMIH6P" Comment="Length" Bounds="384,480,80,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="GhlXmaQjfTWUct1zs658Kk" Bounds="580,458,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Area and Length sum over the parts that have any: only the square has area, the line and the square's outline both have length.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -158,9 +158,9 @@
             <Pin Id="O2bdBgMpyO8vVkc07EjrLX" Name="Geometry" Kind="InputPin" />
             <Pin Id="VIc5g82Psbfu36d5IASHwB" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="KI1ZMFYwYQN08q2ejyC3qe" Comment="Parts" Bounds="60,570,300,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="KI1ZMFYwYQN08q2ejyC3qe" Comment="Parts" Bounds="94,570,317,44" ShowValueBox="true" isIOBox="true" />
           <Pad Id="EzWPcEFJg61j7ElVoUs8bZ" Bounds="580,530,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Geometries hands the parts back as a Spread, for vvvv's own Count, GetSlice and ForEach. On a single Polygon it hands back that one geometry.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>

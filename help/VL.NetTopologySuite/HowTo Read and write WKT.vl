@@ -16,7 +16,7 @@
       <Patch Id="IHjwVSYwJCFaMpJaNomk7j">
         <Canvas Id="HS5Q7sUcAAjzStk4P8Pxyi" CanvasType="Group">
           <Pad Id="GEcmAdSuFVxgFuESd22b2E" Bounds="60,40,435,41" ShowValueBox="true" isIOBox="true" Value="Use Read WKT and Write WKT!">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -25,7 +25,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="CLYkwk14nkECrzNbOzKV7y" Bounds="60,95,480,64" ShowValueBox="true" isIOBox="true" Value="Well-Known Text is the plain-text form of a geometry, and the quickest way to get one into a patch. Edit the box and watch type, area and SRID follow.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -39,7 +39,7 @@
             </p:TypeAnnotation>
           </Pad>
           <Pad Id="Vm6W1iWYFsKUpQA1TAzDzk" Bounds="580,170,380,116" ShowValueBox="true" isIOBox="true" Value="&lt; Try these:&#xD;&#xA;POINT (139.7671 35.6812)&#xD;&#xA;LINESTRING (0 0, 1 1, 2 0)&#xD;&#xA;POLYGON ((0 0, 1 0, 1 1, 0 1))   unclosed - closed for you&#xD;&#xA;SRID=4326;POINT (1 2)   the SRID travels along">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -60,7 +60,7 @@
           </Node>
           <Pad Id="JBe7nTQdiIq6FDpxj4QklN" Comment="Success" Bounds="200,220,60,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="D6XM5leAavrGu3u3RDOGgm" Bounds="580,294,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Break the text on purpose: Success goes False and the geometry goes empty. The node never throws - half-typed text is the normal state of a box being edited.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -68,7 +68,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="60,350,110,19" Id="Be0QDjUj1Q83bISufumMeC">
+          <Node Bounds="99,350,110,19" Id="Be0QDjUj1Q83bISufumMeC">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="GeometryType" />
@@ -77,8 +77,8 @@
             <Pin Id="E7VGqFTWNWYMXRrrrjD2E2" Name="Geometry" Kind="InputPin" />
             <Pin Id="PmBbzBCySUN66T36mSvyhN" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="Q1eTZCi8D6KPQ9ysnnXu38" Comment="Type" Bounds="60,390,120,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="230,350,50,19" Id="SpqHorPoDLt3lb3WXaa49s">
+          <Pad Id="Q1eTZCi8D6KPQ9ysnnXu38" Comment="Type" Bounds="99,390,120,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="269,350,50,19" Id="SpqHorPoDLt3lb3WXaa49s">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Area" />
@@ -87,8 +87,8 @@
             <Pin Id="JtqJv24bvOuIN6aleMvEKJ" Name="Geometry" Kind="InputPin" />
             <Pin Id="Hfk1uXQomFqUbV7UDEVb4r" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="P8e52CKpTBUV3BREvKSAKa" Comment="Area" Bounds="230,390,80,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="360,350,50,19" Id="FVHmbNT7W7K6HlR23crWvi">
+          <Pad Id="P8e52CKpTBUV3BREvKSAKa" Comment="Area" Bounds="269,390,80,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="399,350,50,19" Id="FVHmbNT7W7K6HlR23crWvi">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="SRID" />
@@ -97,9 +97,9 @@
             <Pin Id="THJ5wPY7ZcbJn5mpQmE6pO" Name="Geometry" Kind="InputPin" />
             <Pin Id="Rfzx2tclNRz4fm5NRZRoVS" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="JK8auEo5ECQO5lzZaaJo3g" Comment="SRID" Bounds="360,390,60,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="JK8auEo5ECQO5lzZaaJo3g" Comment="SRID" Bounds="399,390,60,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="D1UsBcR3tK09B6EyD5czt3" Bounds="580,382,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; SRID 0 means &quot;unset&quot;, the same as the creation nodes say. NetTopologySuite's own reader would say -1 here; this package corrects it so one number means &quot;nobody said&quot;.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -119,7 +119,7 @@
           </Node>
           <Pad Id="MFYUcxMgykJFFt0PU03qIj" Comment="WKT" Bounds="60,500,400,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="SDIi3LrwTg8hL9fJsILesk" Bounds="580,470,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Write WKT does NOT carry the SRID back out - plain WKT has nowhere to put it. Z is dropped too unless Include Z is on.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>

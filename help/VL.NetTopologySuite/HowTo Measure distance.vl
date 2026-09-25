@@ -16,7 +16,7 @@
       <Patch Id="RSja6GeY1Jqttlpsx3KhNX">
         <Canvas Id="A120dye9diErfPhXRi5HvI" CanvasType="Group">
           <Pad Id="FxuUMWtbVzQbdfW0Uyix2c" Bounds="60,40,510,41" ShowValueBox="true" isIOBox="true" Value="Use Distance and Nearest Points!">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -25,7 +25,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="OmDwWQxq8r408LpFvLYXDg" Bounds="60,95,480,46" ShowValueBox="true" isIOBox="true" Value="The shortest gap between two geometries, and where it is. A is a unit square, B a point some way off.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -33,18 +33,18 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="ADKnLB014VAS3tX5L054q8" Comment="A" Bounds="60,170,400,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))">
+          <Pad Id="ADKnLB014VAS3tX5L054q8" Comment="A" Bounds="60,170,186,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="T51sxGSv2srlvXK4RBA0W3" Comment="B" Bounds="60,210,400,15" ShowValueBox="true" isIOBox="true" Value="POINT (3 2)">
+          <Pad Id="T51sxGSv2srlvXK4RBA0W3" Comment="B" Bounds="232,210,186,15" ShowValueBox="true" isIOBox="true" Value="POINT (3 2)">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
           <Pad Id="UMrf4Nx5BUcbBZ9ddYBq90" Bounds="580,210,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Move B inside the square: Distance drops to 0. Move it level with a side: the nearest point on A slides along that side - a point on the boundary, not a vertex.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -86,7 +86,7 @@
           </Node>
           <Pad Id="EBGWqWJIaFkNuw2Zxe74M9" Comment="Distance" Bounds="60,370,80,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="SIe3RlLeV3gLOo8xiHQwcN" Bounds="580,330,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Between the closest parts, not the centres: 0 for anything that touches. sqrt 5 here, in the coordinates' own units - degrees on lon/lat, so project first.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -106,7 +106,7 @@
             <Pin Id="I8DCBWRk0mrR2U2FqlkkY7" Name="On B" Kind="OutputPin" />
           </Node>
           <Pad Id="GC5lIuHYbyOkwpRIXx7BzU" Bounds="580,418,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Nearest Points gives one coordinate on each geometry: the two ends of the line you would draw. Point turns them into geometry again.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>

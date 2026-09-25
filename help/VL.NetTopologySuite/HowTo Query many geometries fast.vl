@@ -16,7 +16,7 @@
       <Patch Id="QfOBHV7yWhsOC3BdaO3dQc">
         <Canvas Id="P68F1iQ8SchLqIjaOTUI8b" CanvasType="Group">
           <Pad Id="JZa9Stm8hLKQa91ItjBYno" Bounds="60,40,435,41" ShowValueBox="true" isIOBox="true" Value="Use SpatialIndex and Query!">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -24,8 +24,8 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="CSl2bTbUQ3uKHq7N9U1U3r" Bounds="60,95,480,64" ShowValueBox="true" isIOBox="true" Value="Asking every geometry &quot;do you touch this?&quot; is fine for ten and hopeless for a hundred thousand. An index answers &quot;which ones MIGHT?&quot; in a handful of steps.">
-            <p:TypeAnnotation>
+          <Pad Id="CSl2bTbUQ3uKHq7N9U1U3r" Bounds="60,95,480,47" ShowValueBox="true" isIOBox="true" Value="Asking every geometry &quot;do you touch this?&quot; is fine for ten and hopeless for a hundred thousand. An index answers &quot;which ones MIGHT?&quot; in a handful of steps.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -33,12 +33,12 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="RzNZSnmGO0qKZa0ocg66PS" Comment="Point" Bounds="60,170,250,15" ShowValueBox="true" isIOBox="true" Value="POINT (1 1)">
+          <Pad Id="RzNZSnmGO0qKZa0ocg66PS" Comment="Point" Bounds="62,271,68,15" ShowValueBox="true" isIOBox="true" Value="POINT (1 1)">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="400,170,90,19" Id="AZmRH9y0C894cG5fJsAFLO">
+          <Node Bounds="60,300,90,19" Id="AZmRH9y0C894cG5fJsAFLO">
             <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Read WKT" />
@@ -49,12 +49,12 @@
             <Pin Id="VDW6zvSY3VJljPe0GFnemD" Name="Result" Kind="OutputPin" />
             <Pin Id="AtCHfkIE2AU4xaM544iQGn" Name="Success" Kind="OutputPin" />
           </Node>
-          <Pad Id="T4ZEhIiiTyZfRpy8rNx5AB" Comment="Point" Bounds="60,210,250,15" ShowValueBox="true" isIOBox="true" Value="POINT (5 5)">
+          <Pad Id="T4ZEhIiiTyZfRpy8rNx5AB" Comment="Point" Bounds="200,270,68,15" ShowValueBox="true" isIOBox="true" Value="POINT (5 5)">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="400,210,90,19" Id="UXAewKfrgMw9drLGkbSlNJ">
+          <Node Bounds="198,300,90,19" Id="UXAewKfrgMw9drLGkbSlNJ">
             <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Read WKT" />
@@ -65,12 +65,12 @@
             <Pin Id="RTSHlQYQR12tPWCy4Z3fSO" Name="Result" Kind="OutputPin" />
             <Pin Id="TfQ0sldhdRBhpJhqi9LacL" Name="Success" Kind="OutputPin" />
           </Node>
-          <Pad Id="Vhj2KefsNohReKPbBTGUB4" Comment="Polygon" Bounds="60,250,250,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((2 2, 3 2, 3 3, 2 3, 2 2))">
+          <Pad Id="Vhj2KefsNohReKPbBTGUB4" Comment="Polygon" Bounds="338,201,185,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((2 2, 3 2, 3 3, 2 3, 2 2))">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="400,250,90,19" Id="GJDolVJG6YE04kdX1noRGW">
+          <Node Bounds="336,300,90,19" Id="GJDolVJG6YE04kdX1noRGW">
             <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Read WKT" />
@@ -81,12 +81,12 @@
             <Pin Id="F6VWjh4CB13gbLPMQQ7y0V" Name="Result" Kind="OutputPin" />
             <Pin Id="EccznEJt16WvnXQILm8IEe" Name="Success" Kind="OutputPin" />
           </Node>
-          <Pad Id="N81XYwf6N5V0oid7GgmSaG" Comment="Line" Bounds="60,290,250,15" ShowValueBox="true" isIOBox="true" Value="LINESTRING (0 4, 4 0)">
+          <Pad Id="N81XYwf6N5V0oid7GgmSaG" Comment="Line" Bounds="489,261,137,15" ShowValueBox="true" isIOBox="true" Value="LINESTRING (0 4, 4 0)">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="400,290,90,19" Id="FpftG78xvIkyY5JpxDM9TN">
+          <Node Bounds="487,300,90,19" Id="FpftG78xvIkyY5JpxDM9TN">
             <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Read WKT" />
@@ -98,7 +98,7 @@
             <Pin Id="Ti7RJeQU5QGLkbLDkrEAhf" Name="Success" Kind="OutputPin" />
           </Node>
           <Pad Id="FwvEJJ1QyBFIF8Jvy1iSeF" Bounds="580,290,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; This line misses the search area, but its bounding BOX covers it. It will be a candidate.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -106,7 +106,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="60,340,39,19" Id="PVa40BjzT7vvT5DZcJuuBG">
+          <Node Bounds="60,360,419,19" Id="PVa40BjzT7vvT5DZcJuuBG">
             <p:NodeReference LastCategoryFullName="Collections.Spread" LastDependency="VL.CoreLib.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Cons" />
@@ -129,10 +129,10 @@
             <Pin Id="JX3teMQg3fyLYapWMOAruQ" Name="Count" Kind="OutputPin" />
             <Pin Id="L7XqeiivfgussCoOSb1Ach" Name="Indexes Built" Kind="OutputPin" />
           </Node>
-          <Pad Id="PnRmGGY559ZgPDRApMeqXs" Comment="Count" Bounds="200,400,50,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="OTFyzpeug6bM85W23Np92b" Comment="Indexes Built" Bounds="320,400,50,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="BVahQ8gCaWtcWX0h2eWJ3F" Bounds="580,400,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Built once. Edit the search area all you like: Indexes Built stays at 1. It rebuilds only when the set of geometries changes - a different count or object.">
-            <p:TypeAnnotation>
+          <Pad Id="PnRmGGY559ZgPDRApMeqXs" Comment="Count" Bounds="110,440,50,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="OTFyzpeug6bM85W23Np92b" Comment="Indexes Built" Bounds="157,470,50,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="BVahQ8gCaWtcWX0h2eWJ3F" Bounds="580,439,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Built once. Edit the search area all you like: Indexes Built stays at 1. It rebuilds only when the set of geometries changes - a different count or object.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -140,12 +140,12 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="IeDhLyqa9K5U3OUmxbjSKh" Comment="Search area" Bounds="60,470,400,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0.5 0.5, 1.5 0.5, 1.5 1.5, 0.5 1.5, 0.5 0.5))">
+          <Pad Id="IeDhLyqa9K5U3OUmxbjSKh" Comment="Search area" Bounds="117,560,207,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0.5 0.5, 1.5 0.5, 1.5 1.5, 0.5 1.5, 0.5 0.5))">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="60,510,90,19" Id="CIfYEDQoSjrKZlM9hcJqcZ">
+          <Node Bounds="115,600,90,19" Id="CIfYEDQoSjrKZlM9hcJqcZ">
             <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Read WKT" />
@@ -156,7 +156,7 @@
             <Pin Id="PUcAkk2J046PRKILoZvRzR" Name="Result" Kind="OutputPin" />
             <Pin Id="Lmyg6KcrT0OBzFPKWyd6B8" Name="Success" Kind="OutputPin" />
           </Node>
-          <Node Bounds="60,570,60,19" Id="P6F5VTZAqLf9HlL3SahkXT">
+          <Node Bounds="60,660,60,19" Id="P6F5VTZAqLf9HlL3SahkXT">
             <p:NodeReference LastCategoryFullName="NTS.Index" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Query" />
@@ -167,10 +167,10 @@
             <Pin Id="FtOvgcfaWVxOLT3AfWFQBD" Name="Result" Kind="OutputPin" />
             <Pin Id="ATTwMRykeeBSx5Ap97Bo1W" Name="Candidate Count" Kind="OutputPin" />
           </Node>
-          <Pad Id="PIoaeu8SiocIjTGcjDsPWM" Comment="Candidates" Bounds="200,570,50,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="QGhP7c6EeQtyl4s277pAic" Comment="Result" Bounds="60,610,280,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="L53ltEYaP8itBzLneoPuay" Bounds="580,570,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; CANDIDATES, not results: their boxes touch the search box, their shapes may not. Run Intersects on the candidates for the final yes/no - on a few instead of on all.">
-            <p:TypeAnnotation>
+          <Pad Id="PIoaeu8SiocIjTGcjDsPWM" Comment="Candidates" Bounds="117,700,50,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="QGhP7c6EeQtyl4s277pAic" Comment="Result" Bounds="62,750,270,122" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="L53ltEYaP8itBzLneoPuay" Bounds="580,590,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; CANDIDATES, not results: their boxes touch the search box, their shapes may not. Run Intersects on the candidates for the final yes/no - on a few instead of on all.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -178,7 +178,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="400,570,80,19" Id="CklGbUnyF0NquPGCVNCG5b">
+          <Node Bounds="400,660,80,19" Id="CklGbUnyF0NquPGCVNCG5b">
             <p:NodeReference LastCategoryFullName="NTS.Operation" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Intersects" />
@@ -188,7 +188,7 @@
             <Pin Id="EarU1k9AhNAPVKGTNKG4Pu" Name="B" Kind="InputPin" />
             <Pin Id="B6OcrdoMscxUgk8JlrLwdL" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="HtBMidNy8DwRg1Nrppb5rr" Comment="Line intersects?" Bounds="400,610,60,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="HtBMidNy8DwRg1Nrppb5rr" Comment="Line intersects?" Bounds="402,710,60,15" ShowValueBox="true" isIOBox="true" />
         </Canvas>
         <Patch Id="CMa1XXEGnZne2LXczuPNQl" Name="Create" />
         <Patch Id="OP5U5hs0D4zWQ0D50r0rXh" Name="Update" />

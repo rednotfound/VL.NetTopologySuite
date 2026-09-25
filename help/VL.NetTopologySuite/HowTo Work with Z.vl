@@ -16,7 +16,7 @@
       <Patch Id="KWZN1mv3N5wvHBZo6L9yww">
         <Canvas Id="VzBlntedZO1YAkGu9ieOPk" CanvasType="Group">
           <Pad Id="HFqHEyAriuRSDOPZUYtPbT" Bounds="60,40,270,41" ShowValueBox="true" isIOBox="true" Value="Use CoordinateZ!">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -25,7 +25,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="OVlU7cZmpzv9cvoqInWdai" Bounds="60,95,480,46" ShowValueBox="true" isIOBox="true" Value="A coordinate can carry a third number. Who keeps it and who drops it is the whole story.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -38,18 +38,18 @@
               <Choice Kind="TypeFlag" Name="Float64" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="Bur2ga4zfFmrHCHF9rumKh" Comment="Y" Bounds="60,210,100,15" ShowValueBox="true" isIOBox="true" Value="35.6812">
+          <Pad Id="Bur2ga4zfFmrHCHF9rumKh" Comment="Y" Bounds="104,210,100,15" ShowValueBox="true" isIOBox="true" Value="35.6812">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Float64" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="C2oCJaJBMZIMRs6gWmYyF1" Comment="Z" Bounds="60,250,100,15" ShowValueBox="true" isIOBox="true" Value="40">
+          <Pad Id="C2oCJaJBMZIMRs6gWmYyF1" Comment="Z" Bounds="147,250,100,15" ShowValueBox="true" isIOBox="true" Value="40">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Float64" />
             </p:TypeAnnotation>
           </Pad>
           <Pad Id="BM06S1IEJEv9WJQNUpH1nr" Bounds="580,250,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Z has no unit and no meaning of its own - metres, floors or a model axis, nothing here knows. M, the fourth ordinate, is not exposed.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -88,9 +88,9 @@
             <Pin Id="Euf9SH8uDeYpBnIpl015sT" Name="Include Z" Kind="InputPin" />
             <Pin Id="NGijjjHHiukDhY9nedHc7n" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="RB9FAUBm6ferWuYylvrbva" Comment="WKT" Bounds="60,460,300,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="RB9FAUBm6ferWuYylvrbva" Comment="WKT" Bounds="106,480,318,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="Q6CNgYtJRlykMzAPOj7z5o" Bounds="580,420,320,26" ShowValueBox="true" isIOBox="true" Value="&lt; Include Z off: Z is silently gone.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -98,7 +98,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="K53NAmHfRSipK56b1PTN0L" Comment="Include Z" Bounds="60,510,60,15" ShowValueBox="true" isIOBox="true" Value="True">
+          <Pad Id="K53NAmHfRSipK56b1PTN0L" Comment="Include Z" Bounds="147,510,60,15" ShowValueBox="true" isIOBox="true" Value="True">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Boolean" />
             </p:TypeAnnotation>
@@ -113,9 +113,9 @@
             <Pin Id="QMRHHhVnMBI2u3qPFtGrTm" Name="Include Z" Kind="InputPin" />
             <Pin Id="UqJq5UcdZx913WvsciQboZ" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="ONBNOqDbg0gmjwnhnwUqya" Comment="WKT" Bounds="60,590,300,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="ONBNOqDbg0gmjwnhnwUqya" Comment="WKT" Bounds="109,610,300,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="RXHUWcRiynGoJBQ8aJDJXk" Bounds="580,550,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Include Z on: POINT Z (...). Read WKT understands this form too. Whether Buffer and friends keep Z is NetTopologySuite's decision - check here when it matters.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -123,7 +123,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="60,650,50,19" Id="TBDYYh5PWq9Mv0kXGn9SJL">
+          <Node Bounds="60,650,223,19" Id="TBDYYh5PWq9Mv0kXGn9SJL">
             <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Split" />
@@ -138,7 +138,7 @@
           <Pad Id="I1W0SJU4wdlF3FOCZPIvbB" Comment="Y" Bounds="170,690,80,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="NJv1yLfSKaC4gkASfneG53" Comment="Z" Bounds="280,690,80,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="NbUTfeONU3Vk2EUNEEeb7D" Bounds="580,650,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Split takes any Coordinate apart. On a plain XY Coordinate, Z comes back as NaN - NetTopologySuite's way of saying &quot;never set&quot;.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>

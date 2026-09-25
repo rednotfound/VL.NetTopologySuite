@@ -16,7 +16,7 @@
       <Patch Id="VRe73Diahw9NvWcEz9cOCe">
         <Canvas Id="Dh7A3Q6n3biDgGrPxWowVE" CanvasType="Group">
           <Pad Id="IBh3Zh43KYSEzHo3S9MyWr" Bounds="60,40,615,41" ShowValueBox="true" isIOBox="true" Value="Use Union, Intersection and Difference!">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -25,7 +25,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="M0yPOs04sjNknzxVq3BkRy" Bounds="60,95,480,46" ShowValueBox="true" isIOBox="true" Value="Two unit squares overlapping by a quarter. Each result is a Geometry again, so Area reads it and it can feed the next operation.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -38,7 +38,7 @@
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="UepX2U47OamZGsNNttfEat" Comment="B" Bounds="60,210,400,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0.5 0.5, 1.5 0.5, 1.5 1.5, 0.5 1.5, 0.5 0.5))">
+          <Pad Id="UepX2U47OamZGsNNttfEat" Comment="B" Bounds="232,210,400,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0.5 0.5, 1.5 0.5, 1.5 1.5, 0.5 1.5, 0.5 0.5))">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -126,7 +126,7 @@
           </Node>
           <Pad Id="GLvt5KQPoqv71CZ0H1vOgz" Comment="Difference" Bounds="400,430,80,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="DqWvXlqbnhWPUnq8ldviO9" Bounds="580,330,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Union: everything either covers. Intersection: only what both cover. Difference: A with B cut away.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -135,7 +135,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="AzZvHgqJa3kvzsF03GmJ7I" Bounds="580,410,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; 1 + 1 - 0.25 = 1.75, then 0.25 and 0.75. If the areas do not add up, the overlay did not do what you meant.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -154,7 +154,7 @@
           </Node>
           <Pad Id="MMotUSrZbTqlepVQVtUi4W" Comment="Union as WKT" Bounds="60,540,420,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="CrfKakVba4u0H1ZD4ICfdn" Bounds="580,500,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; SymmetricDifference is not a node: Union minus Intersection. Any types go in - two touching squares intersect in a LineString, two corner-touching squares in a Point.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
