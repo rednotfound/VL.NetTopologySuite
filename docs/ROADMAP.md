@@ -13,6 +13,14 @@ comment; the work is deciding whether they earn a node, not writing them.
 39 public nodes across `NTS.Geometry`, `NTS.Feature`, `NTS.Operation`, `NTS.IO`, `NTS.Index` and
 `NTS.Network`. 126 tests. Fifteen help patches - the `Explanation` front door and fourteen `HowTo`s, ten of them written 2026-09-24 with `tools\HelpPatchGen.ps1` and every one seen in the GUI.
 
+**2026-09-25: ready to release, and not released.** The node surface has not moved since
+2026-08-28. The maintainer reviewed every help patch by hand in vvvv (2026-09-24/25, eleven adjusted
+and committed), every node opens its patch on F1, and `tools\Test-Install.ps1` passed for the first
+time: the packed package installs from `dist\feed` with both dependencies and every shipped help
+patch compiles from the installed copy. What remains is in [RELEASE.md](RELEASE.md): five
+decisions that are the maintainer's (version, who pushes, public home, the description's first
+line, `<readme>`), then a push by hand.
+
 **2026-08-28: the network was PROMOTED to `NTS.Network`** — `Network` (was `BuildNetwork`) and
 `ShortestPath`, with one new pin, `Max Snap Distance` — by the Network Package Scope Proposal
 ([NETWORK-SCOPE-PROPOSAL.md](NETWORK-SCOPE-PROPOSAL.md)), the review the paragraph below demanded.
@@ -82,13 +90,13 @@ points is not the cost.
 **2026-08-22: `Nearest Points` arrived**, by exactly the rule at the top of this file: the course's
 distance chapter needed to *draw* the shortest line between two geometries, not merely number it.
 `DistanceOp.NearestPoints`, coordinates copied on the way out, empty-or-missing in → nothing out.
-Like `NTS.Feature` below, it has not yet been seen in the GUI.
+Seen in the GUI 2026-09-24 in `HowTo Measure distance`.
 
 **2026-08-22: `NTS.Feature` arrived** — `Feature` and `Split`, moved from VL.Mapsui with their
 tests, plus the `NetTopologySuite.Features 2.1.0` dependency. The reasoning and the field-wide
-evidence are in [ARCHITECTURE.md](ARCHITECTURE.md#where-a-feature-lives). **Not yet seen in the
-GUI**: the 2026-08-14 NodeBrowser verification below predates this category, so "appears under
-`NTS.Feature` with working pins" is currently a claim only a vvvv session can settle.
+evidence are in [ARCHITECTURE.md](ARCHITECTURE.md#where-a-feature-lives). Seen in the GUI on
+2026-08-23 through VL.Overworld's Tutorial 08, and on 2026-09-24 in `HowTo Attach attributes to a
+geometry`.
 
 **The two MVP paths are implemented and covered by tests:**
 
@@ -135,6 +143,7 @@ once, and re-run the overlap check.
 
 | | |
 |---|---|
+| **Release `0.1.0-alpha`** | Every local proof is green (2026-09-25, [RELEASE.md](RELEASE.md)). Blocked only on the maintainer's decisions listed there. First push by hand; a workflow for the second release. |
 | **`Explanation Overview of available nodes.vl` — done 2026-09-24, seen in the GUI** | One per library, the front door — 57 of vvvv's own packs have one. Help is the teaching surface: VL.Skia ships 4 C# nodes and 98 help patches, and in libraries people learn from help runs 16–24% of node count. Four patches against 32 nodes is 12%, so this is under-served rather than done. |
 | **The remaining help patches — done 2026-09-24: ten `HowTo`s, one per node group, every category covered, all seen in the GUI** | `HowTo Create a linestring`, `HowTo Inspect a geometry`, `HowTo Intersect two geometries`, `HowTo Test how geometries relate`. Append each to the right `Topic` in `Help.xml` — **do not number the files.** They were numbered `01 03 04 06` at first, and because only four of the eight existed, every gap read as a broken install. `Help.xml` is the only place ordering lives. |
 | **The cross-package example** | `Coordinates → Polygon → Buffer → Geometry → VL.Mapsui Feature → Map`, living **outside** both repositories. A patch needing two packages cannot ship inside one whose dependencies do not guarantee the other. Precedent: `vvvv-gis\examples\Example Map with data on it.vl`. |

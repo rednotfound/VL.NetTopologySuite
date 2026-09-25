@@ -8,7 +8,10 @@ Guidance for Claude Code (claude.ai/code) working in this repository.
 as nodes for [vvvv gamma](https://vvvv.org). One package, one library — geometry creation,
 inspection, spatial operations and WKT. Nothing about maps, rendering or reprojection.
 
-**Current state (2026-08-28): 39 public nodes in six categories — `NTS.Network` (`Network` +
+**Current state (2026-09-25): release-ready and unpublished — every local proof is green, the
+maintainer has reviewed every help patch by hand, `tools\Test-Install.ps1` passes, and what remains
+is the five decisions in [docs/RELEASE.md](docs/RELEASE.md). Never push to nuget.org without the
+user's explicit go; a push cannot be undone.** 39 public nodes in six categories — `NTS.Network` (`Network` +
 `ShortestPath`, an algorithm of ours, promoted from `NTS.Experimental.Network` by
 `docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 126
 tests, 15 help patches.** All fifteen were (re)written on 2026-09-24 in the community's measured style
@@ -111,6 +114,7 @@ Two more, learned while verifying:
 | Fluent output pin | **confirmed**: `var Output_6 = OperationNodes.Buffer(...)` vs `var Result_7 = GeometryNodes.Area(...)`. Return type equals first parameter type → `Output`; otherwise `Result` |
 | An `int` pin needs an `Integer32` IOBox | a `Float64` one fails the compile with `Float64 is no Integer32!`. Cost one round on `HowTo Buffer a geometry.vl`'s `Segments` pin |
 | **A Pad's `Comment` renders as a label to the RIGHT of the box** | so an IOBox occupies far more width than its `Bounds` says, and every label collision in the first help patches came from ignoring it. Give each Pad its own row, or ~200px of clear space to its right |
+| Skia `AddPoly`'s `Close` pin defaults to **True** | from SkiaSharp's `AddPoly(points, close = true)`; a polyline drawn through it needs `DefaultValue="False"` on the pin or every street closes into a zigzag. Cost one GUI round on `HowTo Find the shortest path` (2026-09-25); recipe in `docs/HELP-PATCH-STYLE.md` |
 
 ### Laying out a patch
 
@@ -165,8 +169,9 @@ listed, and every link must name a file that exists, because both failures are s
 | `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 16 documents |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 15 help patches, 2026-09-24 |
+| `tools\Test-Install.ps1` | the **packed** package installs from `dist\feed` with its dependencies, and every help patch inside the install compiles with that install as the only repository | ✅ 2026-09-25, first pass |
 | the vvvv **NodeBrowser** | **which category a node is in** | ✅ `NTS` → Geometry, IO, Operation |
-| the vvvv **GUI, running** | the patch computes the right value | ✅ 2026-08-14, vvvv 7.4 |
+| the vvvv **GUI, running** | the patch computes the right value | ✅ 2026-08-14, vvvv 7.4; all 15 help patches 2026-09-24, reviewed by the maintainer 2026-09-25 |
 | **F1 on a node** | the node carries a High help flag in a patch vvvv has indexed | ✅ 2026-09-24, all 39 nodes; `Test-VLPatch` audits the flags |
 
 **The last three rows are three different claims, and this is where a false proof lives.** Learned
@@ -216,6 +221,8 @@ dotnet test test\VL.NetTopologySuite.Tests\VL.NetTopologySuite.Tests.csproj
 .\tools\Test-VLPatch.ps1        # structural checks on every .vl - BOM, IDs, link endpoints
 .\pack.ps1                      # pack into dist\feed\
 .\tools\Compile-HelpPatches.ps1 # after pack: vvvvc on every help patch, then READS the generated C#
+.\tools\Test-Install.ps1        # after pack: nuget install from dist\feed, then compile the INSTALLED help patches
+.\tools\Open-HelpPatch.ps1 "Buffer"   # open one patch in vvvv with the right repositories (Open-HelpPatch.cmd is the picker)
 
 # The only thing that proves a node exists:
 & "C:\Program Files\vvvv\vvvv_gamma_7.4-win-x64\vvvv.exe" `
@@ -240,7 +247,10 @@ is open, `Open-HelpPatch` opens the next patch as another tab in it (vvvv is sin
 forwards the file) - so a GUI session can open, adjust and save several patches without closing
 between them; the picker's "Close my vvvv" asks that pid to close and never forces it, because a
 dirty tab makes vvvv ask "save changes?". (5) A link's `Ids` is a path, `src,waypoint,sink`, once a
-link is bent in the GUI; `Test-VLPatch` parses it that way.
+link is bent in the GUI; `Test-VLPatch` parses it that way. (6) `CloseMainWindow` closes the editor
+and **an open Help Browser window keeps the process alive** (measured 2026-09-25): a launcher that
+wants its vvvv gone sends WM_CLOSE to every visible window of its own pid — still the X button,
+still never a kill — which the picker and the capture script now do.
 
 **Never leave vvvv running unattended, and never start it in the background.** Launch, read the
 value, close. In vvvv, having a patch open means having it running — there is no idle state.
@@ -260,10 +270,15 @@ vl-nettopologysuite/
 ├── help/VL.NetTopologySuite/          # 15 help patches + Help.xml (ordering and tags)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
 ├── docs/ARCHITECTURE.md               # why each node exists, what stays raw, the boundary
+├── docs/HELP-PATCH-STYLE.md           # the community's help style, measured; help flags; the Skia recipe
+├── docs/NETWORK-SCOPE-*.md            # the review that promoted NTS.Network, and its evidence
 ├── docs/ROADMAP.md                    # next / later / never
+├── docs/RELEASE.md                    # release checklist, what each step proves, the maintainer's open decisions
 ├── docs/RULES.md                      # ⭐ carried from the siblings - read before any node
 ├── build.ps1, pack.ps1
-└── tools/                             # New-VLId, Find-Vvvv, Test-VLPackage, Test-VLPatch, Compile-HelpPatches, Normalize-HelpPatches, HelpPatchGen, Open-HelpPatch
+├── Open-HelpPatch.cmd                 # the picker: Help.xml order, Open / Close my vvvv / Normalize / Check
+└── tools/                             # New-VLId, New-VLDocument, Find-Vvvv, Test-VLPackage, Test-VLPatch, Test-VLImportAttribute,
+                                       # Compile-HelpPatches, Test-Install, Normalize-HelpPatches, HelpPatchGen, Open-HelpPatch(-GUI)
 ```
 
 `GeometryNodes` is one `partial` class across two files so both halves land in one category without
