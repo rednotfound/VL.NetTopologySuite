@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     A double-clickable picker for the help patches - select one, vvvv opens it.
 
@@ -36,6 +36,21 @@ $ErrorActionPreference = 'Stop'
 
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
+Add-Type -TypeDefinition @'
+using System; using System.Runtime.InteropServices; using System.Collections.Generic;
+public static class Win32 {
+    public delegate bool EnumProc(IntPtr h, IntPtr l);
+    [DllImport("user32.dll")] public static extern bool EnumWindows(EnumProc p, IntPtr l);
+    [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr h);
+    [DllImport("user32.dll")] public static extern uint GetWindowThreadProcessId(IntPtr h, out uint pid);
+    [DllImport("user32.dll")] public static extern bool PostMessage(IntPtr h, uint m, IntPtr w, IntPtr l);
+    public static List<IntPtr> WindowsOf(uint pid) {
+        var list = new List<IntPtr>();
+        EnumWindows((h, l) => { uint q; GetWindowThreadProcessId(h, out q); if (q == pid && IsWindowVisible(h)) list.Add(h); return true; }, IntPtr.Zero);
+        return list;
+    }
+}
+'@
 
 $RepoRoot    = Split-Path $PSScriptRoot -Parent
 $Launcher    = Join-Path $PSScriptRoot 'Open-HelpPatch.ps1'
@@ -205,7 +220,11 @@ $closeMine = {
     # dirty, and killing it after a timeout would throw away exactly the edits the person made -
     # vl-mapsui's first version of this button did that after 8 seconds. Ask, wait a little, and
     # if it is still up, say where the question is.
+    # Ask EVERY visible window of that pid to close, not only the main one: after the editor closes,
+    # an open Help Browser window keeps the process alive indefinitely (measured 2026-09-25).
+    # WM_CLOSE is the X button - vvvv still asks before dropping a dirty tab.
     [void]$p.CloseMainWindow()
+    foreach ($h in [Win32]::WindowsOf([uint32]$ourPid)) { [void][Win32]::PostMessage($h, 0x0010, [IntPtr]::Zero, [IntPtr]::Zero) }
     if ($p.WaitForExit(5000)) { Write-Log "closed pid $ourPid.`r`n" }
     else { Write-Log "vvvv is still open - it is probably asking whether to save. Answer it in vvvv; nothing was forced.`r`n" }
     $others = @(Get-Process vvvv -ErrorAction SilentlyContinue)
