@@ -231,6 +231,17 @@ pid to `%TEMP%\vl-nettopologysuite-vvvv.pid`, closes only that pid and only with
 and refuses to launch while a vvvv it did not start is running. `tools\Open-HelpPatch.ps1` (and
 `Open-HelpPatch.cmd`, a picker) is the launcher; `tools\HelpPatchGen.ps1` scaffolds a patch.
 
+**Three more, carried from vl-mapsui on 2026-09-25.** (3) `dist\VL.NetTopologySuite\help` is a
+**junction** to `help\VL.NetTopologySuite`, not a copy: vvvv opens the dist path for F1 and the Help
+Browser, and while it was a copy a layout arranged after F1 was saved where the next build deleted
+it. If `build.ps1` refuses with "edited in dist\", copy the named files into `help\` first. A patch
+saved in the GUI needs no rebuild to be what F1 shows. (4) While the vvvv **this launcher started**
+is open, `Open-HelpPatch` opens the next patch as another tab in it (vvvv is single-instance and
+forwards the file) - so a GUI session can open, adjust and save several patches without closing
+between them; the picker's "Close my vvvv" asks that pid to close and never forces it, because a
+dirty tab makes vvvv ask "save changes?". (5) A link's `Ids` is a path, `src,waypoint,sink`, once a
+link is bent in the GUI; `Test-VLPatch` parses it that way.
+
 **Never leave vvvv running unattended, and never start it in the background.** Launch, read the
 value, close. In vvvv, having a patch open means having it running — there is no idle state.
 
