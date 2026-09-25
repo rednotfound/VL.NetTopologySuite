@@ -87,8 +87,13 @@ vvvv, and the community's help draws with it everywhere. The document just decla
 `<NugetDependency Location="VL.Skia" ... />` (`Save-Doc -Dependencies 'VL.Skia'`).
 
 NTS geometry reaches Skia through a **ForEach region**: `Coordinates` → ForEach { `Split` →
-`ToFloat32` ×2 → `Vector (Join)` → `/ (Scale)` } → `Polygon` with `Closed` off draws a line through
-the points; a spread of geometries needs a second, outer ForEach with one `Polygon` per slice and
+`ToFloat32` ×2 → `Vector (Join)` → `/ (Scale)` } → `AddPoly` (category `Graphics.Skia.Paths`) strings
+the points into a Path and `DrawPath` draws it. **Set `AddPoly`'s `Close` pin to False explicitly**
+(`DefaultValue="False"` on the pin): it defaults to True, from SkiaSharp's `AddPoly(points, close = true)`,
+and a closed street draws a line back to its start - measured 2026-09-25, the first render was a zigzag.
+**VL.Skia has no Polyline layer**: `Line` takes two points, `Polygon` with `Closed` off would draw the same line but no shipped
+patch does that (0 of 10 `Polygon` uses), and the user asked why a polyline was called a polygon. A
+spread of geometries needs a second, outer ForEach with one `AddPoly` + `DrawPath` per slice and
 `Group (Spectral)` to collect the layers. A Skia **Paint is made outside the shape** — `Stroke`
 (Color, Stroke Width) or `Fill` (Color) — and handed to the shape's `Paint` pin; wiring a layer into
 `Stroke`'s Input fails with `Layer is no SkiaPaint!`. `Group` collects the layers, `Renderer` shows
