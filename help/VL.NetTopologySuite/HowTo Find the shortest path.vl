@@ -285,7 +285,7 @@
               <Choice Kind="TypeFlag" Name="RGBA" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="-344,1454,239,352" Id="Q5o1aZUadyAleEwBC0VlWi">
+          <Node Bounds="-344,1454,239,382" Id="Q5o1aZUadyAleEwBC0VlWi">
             <p:NodeReference LastCategoryFullName="Primitive" LastDependency="CoreLibBasics.vl">
               <Choice Kind="StatefulRegion" Name="Region (Stateful)" Fixed="true" />
               <Choice Kind="ApplicationStatefulRegion" Name="ForEach" />
@@ -371,7 +371,7 @@
                 <ControlPoint Id="VP3FR2MXbFPZBqKyi0LnFi" Bounds="-272,1530" Alignment="Top" />
                 <ControlPoint Id="PWzekyFAbKQ4MY45fcsZAq" Bounds="-272,1708" Alignment="Bottom" />
               </Node>
-              <Node Bounds="-274,1750,60,19" Id="R0wnMBmlh3c5a2bQvmCBiF">
+              <Node Bounds="-302,1750,60,26" Id="R0wnMBmlh3c5a2bQvmCBiF">
                 <p:NodeReference LastCategoryFullName="Graphics.Skia.Paths" LastDependency="VL.Skia.vl">
                   <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                   <CategoryReference Kind="Category" Name="Paths" />
@@ -382,11 +382,12 @@
                 <Pin Id="EJzGBSWTbtS2AZ0gpBvupP" Name="Close" Kind="InputPin" DefaultValue="False" />
                 <Pin Id="MDSKeX4Jdf24085UqRJEO6" Name="Output" Kind="OutputPin" />
               </Node>
-              <Node Bounds="-274,1790,70,19" Id="JU6RkxenJ0XwoLmIKPz0Zj">
+              <Node Bounds="-302,1790,70,19" Id="JU6RkxenJ0XwoLmIKPz0Zj">
                 <p:NodeReference LastCategoryFullName="Graphics.Skia.Layers" LastDependency="VL.Skia.vl">
                   <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
                   <Choice Kind="ProcessAppFlag" Name="DrawPath" />
                 </p:NodeReference>
+                <Pin Id="KGuhGnRk5y9L1Bvt3qtK45" Name="Node Context" Kind="InputPin" IsHidden="true" />
                 <Pin Id="L2H8CCvWOpdVzyNtrKNl1x" Name="Path" Kind="InputPin" />
                 <Pin Id="RgyDXAgLaXOHBKkreSswUm" Name="Paint" Kind="InputPin" />
                 <Pin Id="Ebwkk9x6uD319ggT6IWao5" Name="Enabled" Kind="InputPin" />
@@ -394,9 +395,9 @@
               </Node>
             </Patch>
             <ControlPoint Id="SXSTRdpVLSUm532DOpT6sD" Bounds="-272,1460" Alignment="Top" />
-            <ControlPoint Id="UsG0qJeyeSFDRAjPQm9KA8" Bounds="-272,1800" Alignment="Bottom" />
+            <ControlPoint Id="UsG0qJeyeSFDRAjPQm9KA8" Bounds="-300,1830" Alignment="Bottom" />
           </Node>
-          <Node Bounds="-317,1840,45,19" Id="QUBlfZU3t1zqtxpvWGUsjb">
+          <Node Bounds="-339,1890,45,19" Id="QUBlfZU3t1zqtxpvWGUsjb">
             <p:NodeReference LastCategoryFullName="Graphics.Skia" LastDependency="VL.Skia.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="Group (Spectral)" />
@@ -531,6 +532,7 @@
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="DrawPath" />
             </p:NodeReference>
+            <Pin Id="TGOUo8HxqFDN4ZWpu7eZE5" Name="Node Context" Kind="InputPin" IsHidden="true" />
             <Pin Id="SiHXrgEpH3XzeFVQ7ToouC" Name="Path" Kind="InputPin" />
             <Pin Id="If9LfEJjln7dUTVo3sI7SM" Name="Paint" Kind="InputPin" />
             <Pin Id="VeWMJznAYwzc8YeRmm5BZi" Name="Enabled" Kind="InputPin" />
