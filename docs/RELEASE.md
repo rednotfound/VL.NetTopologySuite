@@ -28,6 +28,17 @@ VL.GeoJSON first**, then VL.Mapsui, then VL.Overworld. This package gates the ch
 | install from nuget.org in a clean vvvv | nuget.org behaves like the local feed | ⬜ |
 | GitHub release + tag | the source that matches the package is findable | ⬜ |
 
+**nuget.org, checked 2026-09-25:** the four family IDs (`VL.NetTopologySuite`, `VL.GeoJSON`,
+`VL.Mapsui`, `VL.Overworld`) do not exist there yet, so no ID is taken and the first push creates
+the package under the pushing account. `VL.GIS` exists with six versions (`0.0.1` … `0.2.0-alpha`),
+**all unlisted** — they no longer appear in search or in the maintainer's public profile, but each
+is still installable by exact version. That account is the one this package will be published
+from, and its existing API key may be scoped to `VL.GIS` only — see step 1 below.
+
+**The gate ran green in full on 2026-09-25 after the release notes were written**, as its own step
+before the commit: build, 126 tests, `Test-VLPackage`, `Test-VLPatch`, pack, `Compile-HelpPatches`
+(15 patches), `Test-Install` (3 packages, 15 installed patches compile).
+
 `Test-Install.ps1` is the strongest evidence available short of publishing. It is carried from
 vl-geojson (which carried it from vl-mapsui) and was not negative-tested here; its "does not even
 install" path was exercised there. It does **not** prove nuget.org behaves like a local feed, and
