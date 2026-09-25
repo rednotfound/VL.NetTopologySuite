@@ -58,25 +58,73 @@ Decided by the maintainer on 2026-09-25:
   publish workflow overriding it. The help patches pin `Version="0.0.0"`
   (`tools\Normalize-HelpPatches.ps1`) and never change.
 
-## Decisions that are the maintainer's
+## Decisions — settled and open
 
-Still open on 2026-09-25. Each is one line to change once decided.
+Settled by the maintainer on 2026-09-25:
 
-1. **Who pushes.** By hand from the maintainer's machine with their own API key, or a
-   tag-triggered GitHub Actions workflow with the key in a `NUGET_KEY` secret (the maintainer's
-   choice on vvvv-gis, so the key never passes through a local shell). vl-mapsui has the same
-   question open. Either way **the maintainer performs the irreversible step**: a session prepares,
-   validates and commits, then hands over the exact command and stops.
-2. **The description's first line.** It opens with `EARLY - not ready for real work yet.` That was
-   true in 2026-08. Whether it stays for the alpha is a judgement about what the package page should
-   say to a stranger; VL.Mapsui's reads "First public preview".
-3. **`<readme>`.** nuget.org shows a README on the package page only when the nuspec names one
-   (`<readme>docs\README.md</readme>` — the file is already packed to `docs\`). Recommended, but it
-   is a nuspec change and belongs in its own commit.
+- **The description keeps its first line, `EARLY - not ready for real work yet.`** It is true, and
+  a prerelease page should say so.
+- **`<readme>docs\README.md</readme>` is in the nuspec.** `nuget pack` accepts it (it refuses when
+  the file is not in `<files>`; `README.md` was already packed to `docs\`), `Test-VLPackage` passes,
+  and the packed nuspec carries the element — checked in the nupkg.
+- **The public home.** The nuspec `projectUrl` and `repository`, and the git remote, all say
+  `github.com/rednotfound/VL.NetTopologySuite`, and the repository is public (checked 2026-09-25,
+  as are the other three and vvvv-gis). `<authors>` and `<owners>` read
+  `VL.NetTopologySuite Contributors`.
 
-Settled: **the public home.** The nuspec `projectUrl` and `repository`, and the git remote, all say
-`github.com/rednotfound/VL.NetTopologySuite`, and the repository is public (checked 2026-09-25, as
-are the other three and vvvv-gis). `<authors>` and `<owners>` read `VL.NetTopologySuite Contributors`.
+Open: **who pushes, and how.** The maintainer wants to learn the process step by step before
+choosing; the two ways are laid out below. Either way **the maintainer performs the irreversible
+step**: a session prepares, validates and commits, then hands over the exact command and stops.
+
+## Two ways to push, and which to learn first
+
+Both end with the same HTTP request to nuget.org carrying an **API key** — a secret string from
+the maintainer's nuget.org account that authorises publishing under that account. The difference
+is where the key lives and who types the command.
+
+### A. By hand, from this machine (recommended for the first release)
+
+1. Sign in at https://www.nuget.org, then *Account → API Keys → Create*. Give it a name
+   (`vl-family`), an expiry (a year), the scope **Push new packages and package versions**, and a
+   **glob pattern** `VL.*` so the key can publish nothing else. Copy the key once; nuget.org never
+   shows it again.
+2. Put the key in an environment variable for the one shell session, never in a file in the
+   repository and never on a command line that ends up in a shell history:
+   ```powershell
+   $env:NUGET_KEY = Read-Host -AsSecureString "nuget.org API key" | ConvertFrom-SecureString -AsPlainText
+   ```
+3. Push the packed file:
+   ```powershell
+   $nuget = .\tools\Find-Vvvv.ps1 -NuGet
+   & $nuget push .\dist\feed\VL.NetTopologySuite.0.0.1-alpha.nupkg -Source https://api.nuget.org/v3/index.json -ApiKey $env:NUGET_KEY
+   ```
+4. nuget.org answers within seconds; the package page appears in a few minutes and search finds
+   it within an hour. A push of a version that already exists is refused (409), so a repeat is
+   harmless.
+
+What it teaches: exactly what a publish is, with nothing hidden, and it needs no repository
+change. What it costs: the key passes through a local shell once, and every later release is a
+manual step that someone must remember to run after the gate.
+
+### B. GitHub Actions on a tag (the shape for the second release)
+
+1. Create the same kind of key on nuget.org.
+2. In the GitHub repository: *Settings → Secrets and variables → Actions → New repository secret*,
+   name `NUGET_KEY`, paste the key. GitHub stores it encrypted and never shows it again; a workflow
+   reads it as `${{ secrets.NUGET_KEY }}`.
+3. Add `.github\workflows\publish.yml`: on a pushed tag `v*`, check out, install .NET 8, download
+   vvvv (or use `dotnet pack` with the nuspec), run the gate, `nuget push` with the secret. vvvv's
+   own `vvvvc` and `NuGet.exe` are not on a GitHub runner, so the workflow either installs vvvv
+   there (slow, ~1 GB) or packs with `dotnet nuget` alone and trusts the gate that ran locally.
+4. `git push origin v0.0.1-alpha` is then the irreversible step.
+
+What it teaches: a release becomes `git tag` + `git push`, repeatable and logged, and the key never
+touches a local machine — this is what the maintainer chose on vvvv-gis. What it costs: a
+workflow to write and debug, a runner without vvvv, and a first failure that is harder to read than
+a local one.
+
+**Recommendation:** A for `0.0.1-alpha`, on both this package and VL.Mapsui, so the maintainer has
+seen a publish end to end once. Then B for `0.0.2-alpha`, written once and copied across the family.
 
 ---
 
