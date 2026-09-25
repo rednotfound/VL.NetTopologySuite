@@ -2,7 +2,9 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>VL.NetTopologySuite</id>
-    <version>0.0.1-alpha</version>
+    <!-- The WORKING version: always one ahead of what is on nuget.org, so a local repack can never be
+         mistaken for the published package in a NuGet cache. Managed in step with VL.Mapsui. -->
+    <version>0.0.2-alpha</version>
     <title>VL.NetTopologySuite — NetTopologySuite geometry nodes for vvvv gamma</title>
     <authors>VL.NetTopologySuite Contributors</authors>
     <owners>VL.NetTopologySuite Contributors</owners>
@@ -27,7 +29,9 @@
     </description>
     <summary>NetTopologySuite geometry as composable nodes for vvvv gamma.</summary>
     <releaseNotes>
-      0.0.1-alpha - The first release, a prerelease. 39 nodes in six categories - NTS.Geometry,
+      0.0.2-alpha - In development, not published.
+
+      0.0.1-alpha (2026-09-26) - The first release, a prerelease. 39 nodes in six categories - NTS.Geometry,
       NTS.Feature, NTS.Operation, NTS.IO, NTS.Index, NTS.Network - 126 tests, 15 help patches, and
       F1 on every node opens one. Verified in vvvv gamma 7.4. Coordinates are copied on the way in
       and out, so a geometry cannot be moved behind your back. Not ready for real work: the node
