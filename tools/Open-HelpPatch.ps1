@@ -7,7 +7,9 @@
     NEVER type the launch by hand: vvvv IGNORES a repository folder that does not exist and
     the failure surfaces as an error naming something else. This script passes dist\ (the
     staged package, from build.ps1) and deps\ (NetTopologySuite and its dependencies), and
-    refuses to launch when either is missing or when vvvv is already running.
+    refuses to launch when either is missing. When the vvvv THIS launcher started is still
+    running, the patch is opened as another tab in it (vvvv is single-instance and forwards the
+    file); a vvvv somebody else started is never touched.
 
     OPENING A DOCUMENT IN VVVV IS RUNNING IT. Read it, adjust it, save it, close vvvv. Then run
     tools\Normalize-HelpPatches.ps1: opening a patch rewrites its NugetDependency version to
@@ -81,10 +83,36 @@ if (-not (Get-ChildItem (Join-Path $RepoRoot 'dist') -Directory -ErrorAction Sil
     exit 1
 }
 
-# Detect and refuse - never kill. A running vvvv holds the staged assemblies open.
+$pidFile = Join-Path $env:TEMP 'vl-nettopologysuite-vvvv.pid'
+
+# ALREADY RUNNING: open the patch as a new tab in OUR vvvv instead of refusing (2026-09-25,
+# carried from vl-mapsui, which measured it). vvvv gamma is single-instance unless started with
+# -m: a second `vvvv.exe <file>` hands the file to the running instance and exits within a second.
+# The running instance already has the package repositories, so none are passed. Only when the
+# running vvvv is the one this launcher started (its pid is in the pid file) and it is the only
+# one: a sibling session on this machine runs its own vvvv, and a file must never be pushed into
+# their window - nor could we say which of two instances would receive it. Never kill either.
 $running = @(Get-Process vvvv -ErrorAction SilentlyContinue)
 if ($running.Count -gt 0) {
-    Write-Host "`nvvvv is ALREADY RUNNING (PID $($running.Id -join ', ')). Close it first.`n" -ForegroundColor Red
+    $ours = $null
+    if (Test-Path $pidFile) { $ours = [int](Get-Content $pidFile -ErrorAction SilentlyContinue) }
+    if ($running.Count -eq 1 -and $running[0].Id -eq $ours) {
+        Write-Host "`nopening $(Split-Path $target -Leaf) as a new tab in the running vvvv (pid $ours)"
+        Start-Process -FilePath $vvvv -ArgumentList @("`"$target`"") | Out-Null
+        # If forwarding ever stops working a second vvvv stays up - say so rather than leaving two
+        # instances holding the same staged assemblies.
+        Start-Sleep -Seconds 3
+        $now = @(Get-Process vvvv -ErrorAction SilentlyContinue | Where-Object { $_.Id -ne $ours })
+        if ($now) {
+            Write-Host "a SECOND vvvv started (pid $($now.Id -join ', ')) instead of a new tab - close it; forwarding did not work" -ForegroundColor Red
+            exit 1
+        }
+        Write-Host "READ IT, ADJUST IT, SAVE IT. Every open tab is running.`n" -ForegroundColor Yellow
+        exit 0
+    }
+    Write-Host "`na vvvv is running that this launcher did not start (pid $($running.Id -join ', '))." -ForegroundColor Red
+    Write-Host "It may belong to another session on this machine - not opening anything into it." -ForegroundColor Red
+    Write-Host "Close it (if it is yours) and try again.`n" -ForegroundColor Red
     exit 1
 }
 
@@ -98,8 +126,10 @@ $proc = Start-Process -FilePath $vvvv -ArgumentList $vvvvArgs -PassThru
 # Sibling repositories launch vvvv from their own sessions. The rule agreed 2026-09-24 after one
 # session killed another's window: each launcher records its pid here, stops only that pid, and
 # waits instead of launching while a vvvv it did not start is running.
-Set-Content (Join-Path $env:TEMP 'vl-nettopologysuite-vvvv.pid') $proc.Id
+Set-Content $pidFile $proc.Id
+Write-Host "vvvv pid $($proc.Id) (written to $pidFile - close that pid, never every vvvv)" -ForegroundColor DarkGray
 
-Write-Host "READ IT, ADJUST IT, SAVE IT, CLOSE VVVV. Opening a document in vvvv is running it." -ForegroundColor Yellow
-Write-Host "  afterwards: .\tools\Normalize-HelpPatches.ps1 ; .\tools\Test-VLPatch.ps1`n" -ForegroundColor Yellow
+Write-Host "READ IT, ADJUST IT, SAVE IT. Opening a document in vvvv is running it; the next launch" -ForegroundColor Yellow
+Write-Host "  opens as another tab in this same vvvv. When done: close vvvv, then" -ForegroundColor Yellow
+Write-Host "  .\tools\Normalize-HelpPatches.ps1 ; .\tools\Test-VLPatch.ps1`n" -ForegroundColor Yellow
 exit 0
