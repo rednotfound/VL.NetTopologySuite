@@ -27,7 +27,11 @@
     </description>
     <summary>NetTopologySuite geometry as composable nodes for vvvv gamma.</summary>
     <releaseNotes>
-      0.0.1-alpha - First package. Not published.
+      0.0.1-alpha - The first release, a prerelease. 39 nodes in six categories - NTS.Geometry,
+      NTS.Feature, NTS.Operation, NTS.IO, NTS.Index, NTS.Network - 126 tests, 15 help patches, and
+      F1 on every node opens one. Verified in vvvv gamma 7.4. Coordinates are copied on the way in
+      and out, so a geometry cannot be moved behind your back. Not ready for real work: the node
+      surface may still change between prereleases.
     </releaseNotes>
     <copyright>Copyright 2026 VL.NetTopologySuite Contributors</copyright>
     <!-- The "VL" tag is what makes the pack discoverable at https://vvvv.org/packs -->
