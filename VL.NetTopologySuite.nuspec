@@ -9,6 +9,9 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/rednotfound/VL.NetTopologySuite</projectUrl>
+    <!-- nuget.org shows this on the package page. The file is packed to docs\ below; the path here is
+         the path INSIDE the package, and nuget pack refuses to pack if it is not in <files>. -->
+    <readme>docs\README.md</readme>
     <description>
       EARLY - not ready for real work yet.
 
