@@ -27,8 +27,37 @@ VL.GeoJSON first**, then VL.Mapsui, then VL.Overworld. This package gates the ch
 | publish to nuget.org | a stranger's vvvv can install it | ✅ **2026-09-26, `0.0.1-alpha`**, browser upload by the maintainer (way A), validated and indexed within the hour |
 | install from nuget.org into a fresh folder | nuget.org behaves like the local feed | ✅ 2026-09-26: `nuget install VL.NetTopologySuite -Version 0.0.1-alpha -PreRelease` from nuget.org alone brought NetTopologySuite 2.6.0 and NetTopologySuite.Features 2.1.0; all 15 shipped help patches compiled with that folder as the only package repository; `HowTo Find the shortest path` opened from it in vvvv and drew the town and the path |
 | tag `v0.0.1-alpha` on GitHub | the source that matches the package is findable | ✅ 2026-09-26, pushed with main |
-| GitHub release on the tag | release notes readable without opening the nuspec | ⬜ the maintainer, in the browser: Releases → Draft a new release → tag `v0.0.1-alpha`, body = the nuspec's release notes |
+| `Test-Install.ps1 -FromNuGetOrg -Version 0.0.1-alpha` | the same, repeatably, with no local feed and no cache: the installed nupkg carries nuget.org's `.signature.p7s` | ✅ 2026-09-26, 3 packages, 15 of 15 compile; the two guards (non-empty folder, missing `-Version`) negative-tested |
+| listed at vvvv.org/packs | the `VL` tag did its job | ✅ 2026-09-26, both VL.NetTopologySuite and VL.Mapsui appear |
+| GitHub release on the tag | release notes readable without opening the nuspec | ⬜ the maintainer, in the browser — text below |
+| the README's install path, walked by the maintainer in vvvv | the one check no script can make: a person follows "Install and your first geometry" against the published package | ⬜ the maintainer (VL.Mapsui's was walked 2026-09-26: "可以用") |
 | working version bumped to `0.0.2-alpha` | a local repack can never be mistaken for the published package | ✅ 2026-09-26 |
+
+**The GitHub release** (repository → Releases → Draft a new release → choose tag `v0.0.1-alpha` →
+title `VL.NetTopologySuite 0.0.1-alpha` → tick **Set as a pre-release** → Publish). Body:
+
+```markdown
+The first release, a prerelease. **EARLY — not ready for real work yet:** the node
+surface may still change between prereleases.
+
+- 39 nodes in six categories — NTS.Geometry, NTS.Feature, NTS.Operation, NTS.IO, NTS.Index, NTS.Network
+- 126 tests, 15 help patches, and F1 on every node opens one
+- Geometry from coordinates, inspection and validation, buffer / overlay / predicates / distance,
+  WKT in and out, a spatial index, and a shortest path over a street network
+- Coordinates are copied on the way in and out, so a geometry cannot be moved behind your back
+- Wraps NetTopologySuite 2.6.0; verified in vvvv gamma 7.4
+
+Install in vvvv (Quad menu → Manage Nugets → Commandline):
+
+    nuget install VL.NetTopologySuite -pre
+
+NuGet: https://www.nuget.org/packages/VL.NetTopologySuite/0.0.1-alpha
+```
+
+Optional, and the same for VL.Mapsui: the GitHub repository has no **description** or **topics**
+yet (Settings, or the gear beside *About*). A description such as *NetTopologySuite geometry nodes
+for vvvv gamma* and topics `vvvv`, `vl`, `nettopologysuite`, `geometry`, `gis` are what GitHub
+search and the vvvv community find a repository by.
 
 **nuget.org, checked 2026-09-25:** the four family IDs (`VL.NetTopologySuite`, `VL.GeoJSON`,
 `VL.Mapsui`, `VL.Overworld`) do not exist there yet, so no ID is taken and the first push creates

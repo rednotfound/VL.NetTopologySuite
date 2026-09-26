@@ -10,12 +10,46 @@
 > exactly what has been shown; the release process and its rules are in
 > [docs/RELEASE.md](docs/RELEASE.md).
 >
-> ```text
-> nuget install VL.NetTopologySuite -pre
-> ```
->
-> in vvvv's command line, or the Package Manager. `-pre` because every version of this package is a
-> prerelease for now; the version moves in step with VL.Mapsui and the rest of the family.
+> **[Install and your first geometry](#install-and-your-first-geometry)** is three steps below.
+
+---
+
+## Install and your first geometry
+
+VL.NetTopologySuite is listed at [vvvv.org/packs](https://vvvv.org/packs) and on
+[nuget.org](https://www.nuget.org/packages/VL.NetTopologySuite). Verified in vvvv gamma **7.4**.
+
+**1. Install.** In vvvv gamma 7.x: Quad menu → **Manage Nugets → Commandline**, then
+
+```
+nuget install VL.NetTopologySuite -pre
+```
+
+`-pre` is needed because every version so far is a prerelease; the version moves in step with
+[VL.Mapsui](https://github.com/rednotfound/VL.Mapsui) and the rest of the family. The install
+brings NetTopologySuite 2.6.0 and NetTopologySuite.Features 2.1.0 along — every node here names a
+type from one of them. vvvv gamma 8.0 previews also have **Packman** (Ctrl+F3: Browse → the pack →
+Add, which installs and references it in one step); that path has not been tried with this
+package, and its announcement does not say whether prereleases are listed — if the package does
+not show up there, use the command line above.
+
+**2. See it work.** Press **F1** with nothing selected to open the Help Browser, go to **Learn**
+and find VL.NetTopologySuite. Start with `Explanation Overview of available nodes`, then
+`HowTo Create a point`: two numbers become a `Coordinate`, a `Point`, and the text
+`POINT (139.7671 35.6812)`. Every node opens its own help patch with **F1**.
+
+**3. Use it in your own patch.** Installing does not reference a package by itself. In your
+document: **Document menu → Dependencies → NuGets**, right-click **VL.NetTopologySuite** to
+reference it. Then double-click the canvas and type a node name — they are in the `NTS`
+categories below. The smallest chain is three nodes and an IOBox:
+
+```
+Coordinate (X, Y)  →  Point  →  Write WKT  →  an IOBox showing POINT (139.7671 35.6812)
+```
+
+From there, `Read WKT` turns any text into geometry, `Buffer` grows it, `Area` measures it, and
+`HowTo Buffer a geometry` shows the four wired together. Coordinates go X first: longitude, then
+latitude.
 
 ---
 
@@ -262,6 +296,7 @@ dotnet test test\VL.NetTopologySuite.Tests\VL.NetTopologySuite.Tests.csproj
 .\pack.ps1                      # pack into dist\feed\
 .\tools\Compile-HelpPatches.ps1 # vvvvc on every help patch, then READS the generated C#
 .\tools\Test-Install.ps1        # install the packed package from dist\feed like a user would
+.\tools\Test-Install.ps1 -FromNuGetOrg -Version 0.0.1-alpha   # the PUBLISHED package, from nuget.org alone
 
 # Open a help patch in vvvv with the right package repositories (or double-click Open-HelpPatch.cmd):
 .\tools\Open-HelpPatch.ps1 "Buffer"
