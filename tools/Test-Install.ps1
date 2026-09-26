@@ -39,7 +39,16 @@
     Where to install. Defaults to a temp folder. Keep it to inspect what landed.
 
 .PARAMETER Version
-    Which version to install. Defaults to the version in the nuspec.
+    Which version to install. Defaults to the version in the nuspec. Required with -FromNuGetOrg,
+    because the nuspec holds the WORKING version, which is one ahead of anything published.
+
+.PARAMETER FromNuGetOrg
+    Install from nuget.org itself: no local feed, and neither the global packages folder nor the
+    HTTP cache is read. Without it, a copy already cached from a LOCAL pack of the same version
+    passes silently - measured in vl-mapsui on 2026-09-26, where this package "came along" from
+    %USERPROFILE%\.nuget\packages a day after the real one reached nuget.org. With it, the
+    installed VL.NetTopologySuite must carry .signature.p7s, the repository signature nuget.org adds
+    to every package it serves and a local pack never has. This is the check to run after a publish.
 
 .EXAMPLE
     .\pack.ps1 ; .\tools\Test-Install.ps1
@@ -47,7 +56,8 @@
 param(
     [string]$OutputDirectory,
     [string]$Version,
-    [switch]$KeepOutput
+    [switch]$KeepOutput,
+    [switch]$FromNuGetOrg
 )
 
 Set-StrictMode -Version Latest
@@ -64,8 +74,12 @@ foreach ($tool in @($NuGet, $Vvvvc)) {
 }
 
 $feed = Join-Path $RepoRoot 'dist\feed'
-if (-not (Get-ChildItem $feed -Filter *.nupkg -ErrorAction SilentlyContinue)) {
+if (-not $FromNuGetOrg -and -not (Get-ChildItem $feed -Filter *.nupkg -ErrorAction SilentlyContinue)) {
     Write-Host "no nupkg in dist\feed - run .\pack.ps1 first" -ForegroundColor Red
+    exit 1
+}
+if ($FromNuGetOrg -and -not $Version) {
+    Write-Host "-FromNuGetOrg needs -Version: the nuspec holds the working version, which is not published" -ForegroundColor Red
     exit 1
 }
 
@@ -90,11 +104,18 @@ if (-not $OutputDirectory) {
 $OutputDirectory = [IO.Path]::GetFullPath($OutputDirectory)
 New-Item -ItemType Directory $OutputDirectory -Force | Out-Null
 
-Write-Host "installing $packageId $Version -> $OutputDirectory`n"
+if ($FromNuGetOrg -and (Get-ChildItem $OutputDirectory -ErrorAction SilentlyContinue)) {
+    Write-Host "-FromNuGetOrg needs an empty OutputDirectory: packages already there are reused" -ForegroundColor Red
+    exit 1
+}
+Write-Host "installing $packageId $Version -> $OutputDirectory$(if ($FromNuGetOrg) { '  (from nuget.org only, no cache)' })`n"
 
-$sources = @($feed, 'https://api.nuget.org/v3/index.json')
+# [string[]]: a one-element array assigned from an if-expression unrolls to a string, and the
+# -join below then sees characters, not sources (vl-mapsui hit exactly that, 2026-09-26).
+[string[]]$sources = if ($FromNuGetOrg) { @('https://api.nuget.org/v3/index.json') } else { @($feed, 'https://api.nuget.org/v3/index.json') }
+$cacheFlags = if ($FromNuGetOrg) { @('-NoHttpCache', '-DirectDownload') } else { @() }
 
-$log = & $NuGet install $packageId -Version $Version -PreRelease `
+$log = & $NuGet install $packageId -Version $Version -PreRelease @cacheFlags `
     -Source ($sources -join ';') -OutputDirectory $OutputDirectory -NonInteractive 2>&1
 
 if ($LASTEXITCODE -ne 0) {
@@ -118,6 +139,23 @@ foreach ($dependency in $expected) {
 }
 Write-Host ("        ({0} packages in total)`n" -f $landed.Count)
 
+# ---- 1b. with -FromNuGetOrg: prove the package itself came from nuget.org ---------------------
+if ($FromNuGetOrg) {
+    $own = Get-ChildItem $OutputDirectory -Directory | Where-Object { $_.Name -like "$packageId.*" } | Select-Object -First 1
+    $nupkg = Get-ChildItem $own.FullName -Filter *.nupkg | Select-Object -First 1
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    $zip = [IO.Compression.ZipFile]::OpenRead($nupkg.FullName)
+    $signed = [bool]($zip.Entries | Where-Object { $_.FullName -eq '.signature.p7s' })
+    $zip.Dispose()
+    if ($signed) {
+        Write-Host ("  ok    {0} carries nuget.org's repository signature - it came from nuget.org" -f $own.Name) -ForegroundColor DarkGray
+    } else {
+        $missing += $packageId
+        Write-Host ("  FAIL  {0} has no .signature.p7s - it came from a local build, not nuget.org" -f $own.Name) -ForegroundColor Red
+    }
+    Write-Host ''
+}
+
 # ---- 2. compile the help patches that shipped inside the package -----------------------------
 $installed = Get-ChildItem $OutputDirectory -Directory | Where-Object { $_.Name -like "$packageId.*" } | Select-Object -First 1
 $helpPatches = @(Get-ChildItem (Join-Path $installed.FullName 'help') -Filter *.vl -Recurse -ErrorAction SilentlyContinue)
@@ -135,7 +173,7 @@ New-Item -ItemType Directory $compileRoot -Force | Out-Null
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
   <packageSources>
-    <add key="feed" value="$feed" />
+$(if ($FromNuGetOrg) { '    <add key="nuget.org" value="https://api.nuget.org/v3/index.json" />' } else { "    <add key=`"feed`" value=`"$feed`" />" })
   </packageSources>
 </configuration>
 "@ | Set-Content (Join-Path $compileRoot 'NuGet.config') -Encoding utf8
@@ -168,5 +206,6 @@ if ($missing.Count -gt 0 -or $failed.Count -gt 0) {
 
 Write-Host "PASS - the package installs with its dependencies and every shipped help patch compiles from it." -ForegroundColor Green
 Write-Host "  This is resolution and node existence. It does not prove the patches RUN - that still needs a"
-Write-Host "  GUI round - and it does not prove nuget.org behaves like a local feed."
+if ($FromNuGetOrg) { Write-Host "  GUI round. The package and its dependencies came from nuget.org, uncached and signed." }
+else { Write-Host "  GUI round - and it does not prove nuget.org behaves like a local feed (-FromNuGetOrg does)." }
 exit 0
