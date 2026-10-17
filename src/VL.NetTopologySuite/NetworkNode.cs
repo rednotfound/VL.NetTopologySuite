@@ -5,11 +5,11 @@ using VL.Core.Import;
 
 // The scope sentence this package promises for networks is in Network.cs, above the type that
 // embodies it. One type per file, as vvvv's own libraries do (measured 2026-10-17).
-namespace VL.NTS;
+namespace VL.NetTopologySuite;
 
 /// <summary>
 /// Builds a <see cref="Network"/> from LineStrings, once, and holds it.
-/// Category <c>NTS.Network</c>.
+/// Category <c>NetTopologySuite.Network</c>.
 /// </summary>
 /// <remarks>
 /// <para><b>Connectivity is explicit and exact.</b> Two LineStrings are connected when they share an
@@ -26,7 +26,7 @@ namespace VL.NTS;
 /// <para>LineStrings become edges; each part of a MultiLineString becomes an edge; nulls, empties
 /// and anything else are skipped. <c>Edge Count</c> tells you how many survived.</para>
 /// </remarks>
-[ProcessNode(Name = "Network", Category = "NTS.Network")]
+[ProcessNode(Name = "Network", Category = "NetTopologySuite.Network")]
 public class NetworkNode
 {
     Network? _network;

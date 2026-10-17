@@ -1,8 +1,8 @@
 using NetTopologySuite.Geometries;
-using VL.NTS;
+using VL.NetTopologySuite;
 using Xunit;
 
-namespace VL.NTS.Tests;
+namespace VL.NetTopologySuite.Tests;
 
 /// <summary>
 /// The regression suite for the one thing this package does that the raw API does not.

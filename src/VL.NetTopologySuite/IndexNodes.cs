@@ -3,13 +3,13 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Index.Strtree;
 using VL.Core.Import;
 
-namespace VL.NTS;
+namespace VL.NetTopologySuite;
 
 // One type per file, as vvvv's own libraries do (VL.CoreLib, VL.ImGui, VL.Skia; measured 2026-10-17):
-// the process node lives in SpatialIndexNode.cs, the static Query holder here. Both are NTS.Index.
+// the process node lives in SpatialIndexNode.cs, the static Query holder here. Both are NetTopologySuite.Index.
 
 /// <summary>
-/// Asking a spatial index. Category <c>NTS.Index</c>. Uses NetTopologySuite.
+/// Asking a spatial index. Category <c>NetTopologySuite.Index</c>. Uses NetTopologySuite.
 /// </summary>
 [Name("Index")]
 public static class IndexNodes

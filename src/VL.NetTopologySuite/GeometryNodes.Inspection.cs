@@ -3,10 +3,10 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Valid;
 using VL.Core.Import;
 
-namespace VL.NTS;
+namespace VL.NetTopologySuite;
 
 /// <summary>
-/// Reading what a geometry is and what it measures. Category <c>NTS.Geometry</c>.
+/// Reading what a geometry is and what it measures. Category <c>NetTopologySuite.Geometry</c>.
 /// </summary>
 /// <remarks>
 /// The other half of <c>GeometryNodes.Creation.cs</c>. See that file for the category rule and for

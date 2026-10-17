@@ -1,8 +1,8 @@
 using NetTopologySuite.Geometries;
-using VL.NTS;
+using VL.NetTopologySuite;
 using Xunit;
 
-namespace VL.NTS.Tests;
+namespace VL.NetTopologySuite.Tests;
 
 /// <summary>
 /// Geometry creation: coordinate order, ring closure, holes, empties, SRID, Z.

@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using NetTopologySuite.Geometries;
-using VL.NTS;
+using VL.NetTopologySuite;
 using Xunit;
 
-namespace VL.NTS.Tests;
+namespace VL.NetTopologySuite.Tests;
 
 /// <summary>
 /// The network built for VL.Overworld's Tutorial 13 — "close does not mean reachable" — and
-/// promoted to <c>NTS.Network</c> on 2026-08-28 (docs/NETWORK-SCOPE-PROPOSAL.md). Scope, in one
+/// promoted to <c>NetTopologySuite.Network</c> on 2026-08-28 (docs/NETWORK-SCOPE-PROPOSAL.md). Scope, in one
 /// sentence and asserted here: an undirected spatial network built from EXPLICITLY connected
 /// LineStrings in a local Cartesian space, with geometric length as cost and Dijkstra as the path
 /// algorithm; queries snap to the nearest node within an optional maximum distance, and the snap

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace VL.NTS;
+namespace VL.NetTopologySuite;
 
 /// <summary>
 /// The one change-detection rule the package's stateful nodes share: an input SET has changed when

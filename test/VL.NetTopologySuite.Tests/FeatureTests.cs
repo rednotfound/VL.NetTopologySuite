@@ -1,7 +1,7 @@
 using System.Collections.Immutable;
 using Xunit;
 
-namespace VL.NTS.Tests;
+namespace VL.NetTopologySuite.Tests;
 
 /// <summary>
 /// The feature boundary: geometry plus attributes in, and the same two back out.

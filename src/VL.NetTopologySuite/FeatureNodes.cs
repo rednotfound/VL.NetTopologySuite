@@ -5,10 +5,10 @@ using VL.Core.Import;
 using NtsFeature = NetTopologySuite.Features.Feature;
 using AttributesTable = NetTopologySuite.Features.AttributesTable;
 
-namespace VL.NTS;
+namespace VL.NetTopologySuite;
 
 /// <summary>
-/// Geometry with attributes: the unit a spatial dataset is made of. Category <c>NTS.Feature</c>.
+/// Geometry with attributes: the unit a spatial dataset is made of. Category <c>NetTopologySuite.Feature</c>.
 /// </summary>
 /// <remarks>
 /// <para><b>A feature is a data-model concept, not a rendering one.</b> ISO 19109 defines it as an

@@ -1,7 +1,7 @@
-using VL.NTS;
+using VL.NetTopologySuite;
 using Xunit;
 
-namespace VL.NTS.Tests;
+namespace VL.NetTopologySuite.Tests;
 
 /// <summary>
 /// Inspection against known values, plus what every node does with an unconnected pin.

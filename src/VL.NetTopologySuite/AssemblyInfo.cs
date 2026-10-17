@@ -11,5 +11,5 @@ using VL.Core.Import;
 // shipped that way.
 //
 // The "VL" prefix is also what makes the category rule work: category is the namespace minus
-// this prefix, plus the type name. Namespace VL.NTS therefore gives NTS.
+// this prefix, plus the type name. Namespace VL.NetTopologySuite therefore gives NTS.
 [assembly: ImportAsIs(Namespace = "VL")]

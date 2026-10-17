@@ -29,10 +29,12 @@
     </description>
     <summary>NetTopologySuite geometry as composable nodes for vvvv gamma.</summary>
     <releaseNotes>
-      0.0.2-alpha - In development, not published.
+      0.0.2-alpha - In development, not published. The top category is NetTopologySuite, not NTS:
+      search the NodeBrowser for the package's own name. Patches made with 0.0.1-alpha keep
+      resolving (a node resolves by name within the referenced package).
 
-      0.0.1-alpha (2026-09-26) - The first release, a prerelease. 39 nodes in six categories - NTS.Geometry,
-      NTS.Feature, NTS.Operation, NTS.IO, NTS.Index, NTS.Network - 126 tests, 15 help patches, and
+      0.0.1-alpha (2026-09-26) - The first release, a prerelease. 39 nodes in six categories - NetTopologySuite.Geometry,
+      NetTopologySuite.Feature, NetTopologySuite.Operation, NetTopologySuite.IO, NetTopologySuite.Index, NetTopologySuite.Network - 126 tests, 15 help patches, and
       F1 on every node opens one. Verified in vvvv gamma 7.4. Coordinates are copied on the way in
       and out, so a geometry cannot be moved behind your back. Not ready for real work: the node
       surface may still change between prereleases.

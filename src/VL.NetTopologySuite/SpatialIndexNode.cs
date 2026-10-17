@@ -3,11 +3,11 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Index.Strtree;
 using VL.Core.Import;
 
-namespace VL.NTS;
+namespace VL.NetTopologySuite;
 
 /// <summary>
 /// A spatial index over a collection of geometries. Built once, retained, queried many times.
-/// Category <c>NTS.Index</c>. Uses NetTopologySuite's <c>STRtree</c>.
+/// Category <c>NetTopologySuite.Index</c>. Uses NetTopologySuite's <c>STRtree</c>.
 /// </summary>
 /// <remarks>
 /// <para><b>This is the package's first process node, and it is one for the reason RULES.md rule 8
@@ -41,7 +41,7 @@ namespace VL.NTS;
 /// geometry has no envelope to index. A null collection yields no index at all, so a Query can be
 /// wired up before there is anything to search.</para>
 /// </remarks>
-[ProcessNode(Name = "SpatialIndex", Category = "NTS.Index")]
+[ProcessNode(Name = "SpatialIndex", Category = "NetTopologySuite.Index")]
 public class SpatialIndexNode
 {
     STRtree<Geometry>? _tree;

@@ -2,10 +2,10 @@
 using NetTopologySuite.IO;
 using VL.Core.Import;
 
-namespace VL.NTS;
+namespace VL.NetTopologySuite;
 
 /// <summary>
-/// Reading and writing geometry as text. Category <c>NTS.IO</c>.
+/// Reading and writing geometry as text. Category <c>NetTopologySuite.IO</c>.
 /// </summary>
 /// <remarks>
 /// <para>WKT — Well-Known Text — is here because it belongs to NetTopologySuite's own IO namespace

@@ -1,7 +1,7 @@
-using VL.NTS;
+using VL.NetTopologySuite;
 using Xunit;
 
-namespace VL.NTS.Tests;
+namespace VL.NetTopologySuite.Tests;
 
 /// <summary>
 /// WKT reading and writing, including the SRID correction and the failure-on-a-pin behaviour.
@@ -15,7 +15,7 @@ public class WktTests
         var geometry = IONodes.ReadWKT("POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))", null, out var success);
 
         Assert.True(success);
-        Assert.IsAssignableFrom<NetTopologySuite.Geometries.Geometry>(geometry);
+        Assert.IsAssignableFrom<global::NetTopologySuite.Geometries.Geometry>(geometry);
         Assert.Equal("Polygon", GeometryNodes.GeometryType(geometry));
         Assert.Equal(1.0, GeometryNodes.Area(geometry), 12);
     }

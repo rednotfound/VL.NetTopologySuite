@@ -4,7 +4,7 @@
   <NugetDependency Id="DTy7iE5eFsRzoeh2zgEo7e" Location="NetTopologySuite" Version="2.6.0" />
   <NugetDependency Id="UXPtslUbwd2WFuU1UkiXOs" Location="NetTopologySuite.Features" Version="2.1.0" />
   <Patch Id="IPZaBDODCgGXecbuoymjVe">
-    <Canvas Id="UfRfxF9XNfMHdmzAKLcTVL" DefaultCategory="NTS" CanvasType="FullCategory" />
+    <Canvas Id="UfRfxF9XNfMHdmzAKLcTVL" DefaultCategory="NetTopologySuite" CanvasType="FullCategory" />
     <!--
 
     ************************ Application ************************

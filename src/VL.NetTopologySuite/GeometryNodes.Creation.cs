@@ -2,14 +2,14 @@ using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using VL.Core.Import;
 
-namespace VL.NTS;
+namespace VL.NetTopologySuite;
 
 /// <summary>
-/// Creating and inspecting NetTopologySuite geometry. Category <c>NTS.Geometry</c>.
+/// Creating and inspecting NetTopologySuite geometry. Category <c>NetTopologySuite.Geometry</c>.
 /// </summary>
 /// <remarks>
 /// <para>The VL category is (namespace minus the "VL" prefix) + type name, so namespace
-/// <c>VL.NTS</c> plus <c>[Name("Geometry")]</c> gives <c>NTS.Geometry</c>. <c>[Name]</c> renames
+/// <c>VL.NetTopologySuite</c> plus <c>[Name("Geometry")]</c> gives <c>NetTopologySuite.Geometry</c>. <c>[Name]</c> renames
 /// the type for VL only — the C# class stays <c>GeometryNodes</c>, because a class literally named
 /// <c>Geometry</c> would shadow NetTopologySuite's <c>Geometry</c> in every signature in this
 /// assembly.</para>

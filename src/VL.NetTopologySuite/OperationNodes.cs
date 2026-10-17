@@ -1,10 +1,10 @@
 ﻿using NetTopologySuite.Geometries;
 using VL.Core.Import;
 
-namespace VL.NTS;
+namespace VL.NetTopologySuite;
 
 /// <summary>
-/// Spatial operations: geometry in, geometry out. Category <c>NTS.Operation</c>.
+/// Spatial operations: geometry in, geometry out. Category <c>NetTopologySuite.Operation</c>.
 /// </summary>
 /// <remarks>
 /// <para>The point of this category is the chain —
@@ -125,7 +125,7 @@ public static class OperationNodes
             return;
         }
 
-        var points = NetTopologySuite.Operation.Distance.DistanceOp.NearestPoints(a, b);
+        var points = global::NetTopologySuite.Operation.Distance.DistanceOp.NearestPoints(a, b);
         onA = points[0].Copy();
         onB = points[1].Copy();
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using VL.Core.Import;
 
-// Promoted from NTS.Experimental.Network on 2026-08-28 by the Network Package Scope Proposal
+// Promoted from NetTopologySuite.Experimental.Network on 2026-08-28 by the Network Package Scope Proposal
 // (docs/NETWORK-SCOPE-PROPOSAL.md), after the evidence the 2026-08-23 review asked for existed:
 // the chapter (VL.Overworld Tutorial 13), the abstraction that emerged, and two further consumers
 // wanting the same surface (Prompt Which door, Prompt Grow a town), all rung-4 verified. This is
@@ -16,7 +16,7 @@ using VL.Core.Import;
 //   nearest node within an optional maximum distance, and the snap is always reported.
 //
 // If a change would stop that sentence being true, stop and discuss.
-namespace VL.NTS;
+namespace VL.NetTopologySuite;
 
 /// <summary>
 /// A retained network: nodes at LineString endpoints, one undirected edge per LineString.

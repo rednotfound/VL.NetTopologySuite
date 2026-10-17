@@ -6,17 +6,18 @@
     <LangVersion>12.0</LangVersion>
     <AssemblyName>VL.NetTopologySuite</AssemblyName>
     <!--
-      Deliberately not VL.NetTopologySuite. The VL node category is derived from the NAMESPACE
-      minus the "VL" prefix (see AssemblyInfo.cs), so this yields categories under "NTS" -
-      NTS.Geometry, NTS.Operation, NTS.IO - rather than the unreadable
-      NetTopologySuite.Geometry.Point that the assembly name would produce.
+      The VL node category is derived from the NAMESPACE minus the "VL" prefix (see
+      AssemblyInfo.cs), so this yields NetTopologySuite.Geometry, NetTopologySuite.Operation,
+      NetTopologySuite.IO ... - the package's own name, which is what a user types into the
+      NodeBrowser after `nuget install VL.NetTopologySuite`.
 
-      The package is still named after the library it wraps, which is the rule for a
-      single-library package. Only the category is abbreviated, and only because a patch author
-      has to read it in a node browser. Both sibling repositories decouple these two names the
-      same way and document it as deliberate.
+      Until 2026-10-17 this was VL.NTS, giving NTS.Geometry, on the theory that the full name was
+      too long to read. The maintainer then searched for "NetTopologySuite" and found nothing;
+      measured over 55 installed packs, no other VL pack abbreviates its library's name. Note that
+      inside this namespace the bare identifier NetTopologySuite resolves to US, so a fully
+      qualified NTS name in code needs global:: (OperationNodes.cs, two tests).
     -->
-    <RootNamespace>VL.NTS</RootNamespace>
+    <RootNamespace>VL.NetTopologySuite</RootNamespace>
     <Version>0.0.1</Version>
     <Authors>VL.NetTopologySuite Contributors</Authors>
     <Description>NetTopologySuite geometry as vvvv gamma nodes</Description>

@@ -6,7 +6,7 @@
     <LangVersion>12.0</LangVersion>
     <IsPackable>false</IsPackable>
     <AssemblyName>VL.NetTopologySuite.Tests</AssemblyName>
-    <RootNamespace>VL.NTS.Tests</RootNamespace>
+    <RootNamespace>VL.NetTopologySuite.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

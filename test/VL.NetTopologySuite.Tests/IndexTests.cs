@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index.Strtree;
-using VL.NTS;
+using VL.NetTopologySuite;
 using Xunit;
 
-namespace VL.NTS.Tests;
+namespace VL.NetTopologySuite.Tests;
 
 /// <summary>
 /// The package's first stateful node, and the contract that makes it one: an index is built once,

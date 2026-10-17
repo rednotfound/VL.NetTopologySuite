@@ -5,7 +5,7 @@ using NetTopologySuite;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 
-namespace VL.NTS;
+namespace VL.NetTopologySuite;
 
 /// <summary>
 /// The package's default <see cref="GeometryFactory"/> and the defensive copying every creation

@@ -5,9 +5,9 @@ using VL.Core.Import;
 
 // The scope sentence this package promises for networks is in Network.cs, above the type that
 // embodies it. One type per file, as vvvv's own libraries do (measured 2026-10-17).
-namespace VL.NTS;
+namespace VL.NetTopologySuite;
 
-/// <summary>Asking a network. Category <c>NTS.Network</c>.</summary>
+/// <summary>Asking a network. Category <c>NetTopologySuite.Network</c>.</summary>
 [Name("Network")]
 public static class NetworkNodes
 {

@@ -1,7 +1,7 @@
-using VL.NTS;
+using VL.NetTopologySuite;
 using Xunit;
 
-namespace VL.NTS.Tests;
+namespace VL.NetTopologySuite.Tests;
 
 /// <summary>
 /// Spatial operations against known values, and the geometry-preserving chain the package exists
@@ -252,13 +252,13 @@ public class OperationTests
         var polygon = GeometryNodes.Polygon(GeometryNodes.LinearRing(coordinates));
         var buffered = OperationNodes.Buffer(polygon, 0.1, 16);
 
-        Assert.IsAssignableFrom<NetTopologySuite.Geometries.Geometry>(buffered);
+        Assert.IsAssignableFrom<global::NetTopologySuite.Geometries.Geometry>(buffered);
         Assert.True(GeometryNodes.Area(buffered) > 1.0);
         Assert.True(GeometryNodes.IsValid(buffered, out _, out _));
     }
 
     /// <summary>An axis-aligned square, for tests that need a second shape.</summary>
-    private static NetTopologySuite.Geometries.Polygon Square(double x, double y, double size)
+    private static global::NetTopologySuite.Geometries.Polygon Square(double x, double y, double size)
         => GeometryNodes.Polygon(GeometryNodes.LinearRing(
         [
             GeometryNodes.Coordinate(x, y),
