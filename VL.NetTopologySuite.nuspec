@@ -4,7 +4,7 @@
     <id>VL.NetTopologySuite</id>
     <!-- The WORKING version: always one ahead of what is on nuget.org, so a local repack can never be
          mistaken for the published package in a NuGet cache. Managed in step with VL.Mapsui. -->
-    <version>0.0.2-alpha</version>
+    <version>0.0.3-alpha</version>
     <title>VL.NetTopologySuite — NetTopologySuite geometry nodes for vvvv gamma</title>
     <authors>VL.NetTopologySuite Contributors</authors>
     <owners>VL.NetTopologySuite Contributors</owners>
@@ -29,6 +29,8 @@
     </description>
     <summary>NetTopologySuite geometry as composable nodes for vvvv gamma.</summary>
     <releaseNotes>
+      0.0.3-alpha - In development, not published.
+
       0.0.2-alpha (2026-10-17) - The nodes now live under NetTopologySuite.Geometry, .Operation, .IO,
       .Feature, .Index and .Network instead of NTS.*, so searching the NodeBrowser for the package's
       own name finds them. Patches made with 0.0.1-alpha keep working: a node resolves by name
