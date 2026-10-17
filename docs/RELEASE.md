@@ -278,6 +278,26 @@ workflow yet either; when one is written it should override the nuspec version f
 
 ---
 
+## `0.0.2-alpha` — ready on 2026-10-17, and the sooner the better
+
+What it carries: the top category renamed from `NTS` to `NetTopologySuite` (the one change a user
+notices), one type per source file, `Test-Install -FromNuGetOrg`, the README install section. The
+whole gate ran green on 2026-10-17 after the rename, and the NodeBrowser showed the
+`NetTopologySuite` folder for that search term.
+
+**Why soon:** every day `0.0.1-alpha` is the latest, a new user searches for the package's name
+and finds nothing, and every patch they save writes `NTS.*` category hints that will read as stale
+afterwards. Nothing in `0.0.2-alpha` is half done, and a prerelease is allowed to move. The rename
+breaks no existing patch.
+
+**How:** way A again (browser upload) - it is known to work and takes ten minutes; Trusted
+Publishing (way C) is worth setting up for the family, but as its own task, not as a gate in
+front of this release. The steps are the same list as for the first release: rewrite the
+`0.0.2-alpha` line of `<releaseNotes>` (it still says "In development"), run the gate, tag
+`v0.0.2-alpha`, push, upload, install back with `-FromNuGetOrg -Version 0.0.2-alpha`, bump the
+tree to `0.0.3-alpha` the same day. VL.Mapsui's dependency `VL.NetTopologySuite 0.0.1-alpha` is
+a floor, so it needs no change.
+
 ## After the first release
 
 **How the first one went (2026-09-26).** Browser upload, way A: the Verify page showed every nuspec
