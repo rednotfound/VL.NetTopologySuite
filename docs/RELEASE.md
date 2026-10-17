@@ -298,6 +298,16 @@ front of this release. The steps are the same list as for the first release: rew
 tree to `0.0.3-alpha` the same day. VL.Mapsui's dependency `VL.NetTopologySuite 0.0.1-alpha` is
 a floor, so it needs no change.
 
+## Updating a vvvv that already has the previous version
+
+`nuget install VL.NetTopologySuite -pre` again, in vvvv's command line; the nugets folder then
+holds both versions and vvvv uses the newest. **Within 30 minutes of a publish this can silently
+do nothing** (measured 2026-10-17): NuGet caches each package's version list in
+`%LOCALAPPDATA%\NuGet\v3-cache` for 30 minutes, and a list fetched before the publish says the
+old version is the latest, so the install reports it as already present and the Dependencies menu
+keeps showing the old number. Either wait out the 30 minutes, pass `-version <new>`, or delete
+that folder's `list_vl.nettopologysuite_index.dat` - it is only a cache.
+
 ## After the first release
 
 **How the first one went (2026-09-26).** Browser upload, way A: the Verify page showed every nuspec
