@@ -8,7 +8,13 @@ comment; the work is deciding whether they earn a node, not writing them.
 
 ---
 
-## Now — 0.0.1-alpha on nuget.org, 0.0.2-alpha in the tree
+## Now — 0.0.2-alpha on nuget.org, 0.0.3-alpha in the tree
+
+**2026-10-17: `0.0.2-alpha` released** the same day the category rename was made - browser upload by
+the maintainer, nuget.org validated it in about ten minutes, installed back from nuget.org alone.
+The nodes are under `NetTopologySuite.*` for every new install; the tree is at `0.0.3-alpha`.
+
+## The day before: 0.0.1-alpha on nuget.org, 0.0.2-alpha in the tree
 
 39 public nodes across `NetTopologySuite.Geometry`, `NetTopologySuite.Feature`, `NetTopologySuite.Operation`, `NetTopologySuite.IO`, `NetTopologySuite.Index` and
 `NetTopologySuite.Network`. 126 tests. Fifteen help patches - the `Explanation` front door and fourteen `HowTo`s, ten of them written 2026-09-24 with `tools\HelpPatchGen.ps1` and every one seen in the GUI.

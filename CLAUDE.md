@@ -8,10 +8,10 @@ Guidance for Claude Code (claude.ai/code) working in this repository.
 as nodes for [vvvv gamma](https://vvvv.org). One package, one library — geometry creation,
 inspection, spatial operations and WKT. Nothing about maps, rendering or reprojection.
 
-**Current state (2026-09-26): `0.0.1-alpha` is on nuget.org** — published by the maintainer through
-the browser upload on 2026-09-26, installed back from nuget.org alone, its 15 help patches compiled
-from that install and one run in vvvv from it. **The working version is now `0.0.2-alpha`**, always
-one ahead of the published one. **Every version is a prerelease** (`-alpha` suffix, installed with
+**Current state (2026-10-17): `0.0.2-alpha` is on nuget.org** — `0.0.1-alpha` went up on 2026-09-26
+and `0.0.2-alpha` (the category rename to `NetTopologySuite.*`) on 2026-10-17, both by the maintainer's
+browser upload, both installed back from nuget.org alone with `Test-Install -FromNuGetOrg`. **The
+working version is now `0.0.3-alpha`**, always one ahead of the published one. **Every version is a prerelease** (`-alpha` suffix, installed with
 `-pre`), managed in step with VL.Mapsui and the family — the maintainer's rule, 2026-09-25. The
 process and its rules are in [docs/RELEASE.md](docs/RELEASE.md): the maintainer performs the
 irreversible step, and nuget.org's 2026 policy (API keys 30 days at most, Trusted Publishing for CI,
