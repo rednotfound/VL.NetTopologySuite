@@ -369,15 +369,15 @@ if (-not $Path) {
 if (-not $Path) {
     Write-Host "`nvalidating help flags (F1)" -ForegroundColor Cyan
     $ourNodes = @(
-        'NTS.Geometry|Coordinate', 'NTS.Geometry|CoordinateZ', 'NTS.Geometry|Split', 'NTS.Geometry|GeometryFactory',
-        'NTS.Geometry|Point', 'NTS.Geometry|LineString', 'NTS.Geometry|LinearRing', 'NTS.Geometry|Polygon',
-        'NTS.Geometry|MultiPoint', 'NTS.Geometry|MultiLineString', 'NTS.Geometry|MultiPolygon', 'NTS.Geometry|GeometryCollection',
-        'NTS.Geometry|GeometryType', 'NTS.Geometry|IsEmpty', 'NTS.Geometry|SRID', 'NTS.Geometry|IsValid', 'NTS.Geometry|Area',
-        'NTS.Geometry|Length', 'NTS.Geometry|Centroid', 'NTS.Geometry|Bounds', 'NTS.Geometry|Coordinates', 'NTS.Geometry|Geometries',
-        'NTS.Feature|Feature', 'NTS.Feature|Split', 'NTS.IO|Read WKT', 'NTS.IO|Write WKT',
-        'NTS.Operation|Buffer', 'NTS.Operation|Intersection', 'NTS.Operation|Union', 'NTS.Operation|Difference',
-        'NTS.Operation|Distance', 'NTS.Operation|Nearest Points', 'NTS.Operation|Intersects', 'NTS.Operation|Contains', 'NTS.Operation|Within',
-        'NTS.Index|SpatialIndex', 'NTS.Index|Query', 'NTS.Network|Network', 'NTS.Network|ShortestPath')
+        'NetTopologySuite.Geometry|Coordinate', 'NetTopologySuite.Geometry|CoordinateZ', 'NetTopologySuite.Geometry|Split', 'NetTopologySuite.Geometry|GeometryFactory',
+        'NetTopologySuite.Geometry|Point', 'NetTopologySuite.Geometry|LineString', 'NetTopologySuite.Geometry|LinearRing', 'NetTopologySuite.Geometry|Polygon',
+        'NetTopologySuite.Geometry|MultiPoint', 'NetTopologySuite.Geometry|MultiLineString', 'NetTopologySuite.Geometry|MultiPolygon', 'NetTopologySuite.Geometry|GeometryCollection',
+        'NetTopologySuite.Geometry|GeometryType', 'NetTopologySuite.Geometry|IsEmpty', 'NetTopologySuite.Geometry|SRID', 'NetTopologySuite.Geometry|IsValid', 'NetTopologySuite.Geometry|Area',
+        'NetTopologySuite.Geometry|Length', 'NetTopologySuite.Geometry|Centroid', 'NetTopologySuite.Geometry|Bounds', 'NetTopologySuite.Geometry|Coordinates', 'NetTopologySuite.Geometry|Geometries',
+        'NetTopologySuite.Feature|Feature', 'NetTopologySuite.Feature|Split', 'NetTopologySuite.IO|Read WKT', 'NetTopologySuite.IO|Write WKT',
+        'NetTopologySuite.Operation|Buffer', 'NetTopologySuite.Operation|Intersection', 'NetTopologySuite.Operation|Union', 'NetTopologySuite.Operation|Difference',
+        'NetTopologySuite.Operation|Distance', 'NetTopologySuite.Operation|Nearest Points', 'NetTopologySuite.Operation|Intersects', 'NetTopologySuite.Operation|Contains', 'NetTopologySuite.Operation|Within',
+        'NetTopologySuite.Index|SpatialIndex', 'NetTopologySuite.Index|Query', 'NetTopologySuite.Network|Network', 'NetTopologySuite.Network|ShortestPath')
     $high = @{}; $low = @{}; $used = @{}
     foreach ($vl in Get-ChildItem (Join-Path $RepoRoot 'help') -Filter *.vl -Recurse -File) {
         $raw = [IO.File]::ReadAllText($vl.FullName)

@@ -110,14 +110,14 @@ if ($patches.Count -eq 0) { throw "No help patch matches -Patch '$Patch'" }
 
 # Every node this package contributes, by the name the patch uses, and the C# a resolved call
 # must contain. A static method compiles to `Class.Method(`; a process node to `new ClassNode(`.
-# "Split" exists twice (NTS.Geometry splits a Coordinate, NTS.Feature splits a Feature), so its
+# "Split" exists twice (NetTopologySuite.Geometry splits a Coordinate, NetTopologySuite.Feature splits a Feature), so its
 # entry accepts either class - the category is a hint in the .vl and cannot be trusted to tell
 # them apart.
 #
 # A node the patch names that is NOT in this table is itself a failure, so that adding a node
 # to the package and forgetting it here shows up the first time a patch uses it.
 $OurNodes = @{
-    # NTS.Geometry - creation
+    # NetTopologySuite.Geometry - creation
     'Coordinate'         = 'GeometryNodes\.Coordinate\('
     'CoordinateZ'        = 'GeometryNodes\.CoordinateZ\('
     'Split'              = '(GeometryNodes|FeatureNodes)\.Split\('
@@ -130,7 +130,7 @@ $OurNodes = @{
     'MultiLineString'    = 'GeometryNodes\.MultiLineString\('
     'MultiPolygon'       = 'GeometryNodes\.MultiPolygon\('
     'GeometryCollection' = 'GeometryNodes\.GeometryCollection\('
-    # NTS.Geometry - inspection
+    # NetTopologySuite.Geometry - inspection
     'GeometryType'       = 'GeometryNodes\.GeometryType\('
     'IsEmpty'            = 'GeometryNodes\.IsEmpty\('
     'SRID'               = 'GeometryNodes\.SRID\('
@@ -141,12 +141,12 @@ $OurNodes = @{
     'Bounds'             = 'GeometryNodes\.Bounds\('
     'Coordinates'        = 'GeometryNodes\.Coordinates\('
     'Geometries'         = 'GeometryNodes\.Geometries\('
-    # NTS.Feature
+    # NetTopologySuite.Feature
     'Feature'            = 'FeatureNodes\.Feature\('
-    # NTS.IO
+    # NetTopologySuite.IO
     'Read WKT'           = 'IONodes\.ReadWKT\('
     'Write WKT'          = 'IONodes\.WriteWKT\('
-    # NTS.Operation
+    # NetTopologySuite.Operation
     'Buffer'             = 'OperationNodes\.Buffer\('
     'Intersection'       = 'OperationNodes\.Intersection\('
     'Union'              = 'OperationNodes\.Union\('
@@ -156,10 +156,10 @@ $OurNodes = @{
     'Intersects'         = 'OperationNodes\.Intersects\('
     'Contains'           = 'OperationNodes\.Contains\('
     'Within'             = 'OperationNodes\.Within\('
-    # NTS.Index
+    # NetTopologySuite.Index
     'SpatialIndex'       = 'new\s+[\w\.]*SpatialIndexNode\('
     'Query'              = 'IndexNodes\.Query\('
-    # NTS.Network
+    # NetTopologySuite.Network
     'Network'            = 'new\s+[\w\.]*NetworkNode\('
     'ShortestPath'       = 'NetworkNodes\.ShortestPath\('
 }

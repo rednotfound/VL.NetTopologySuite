@@ -26,7 +26,7 @@
     Heading $d 60 40 'Use Read WKT!'
     Intro   $d 60 90 'Well-Known Text is the plain-text form of a geometry.'
     $wkt = Pad $d String '60,170,400,15' 'POINT (1 1)' 'WKT'
-    $r = Node $d 'Read WKT' 'NTS.IO' '60,220,90,19' -In 'WKT','Factory' -Out 'Result','Success'
+    $r = Node $d 'Read WKT' 'NetTopologySuite.IO' '60,220,90,19' -In 'WKT','Factory' -Out 'Result','Success'
     Link $d $wkt $r.WKT
     Link $d $r.Result (OutPad $d '60,280,300,15' 'Geometry')
     Note $d 580 220 'Break the text on purpose: Success goes False, the geometry goes empty. Never throws.'

@@ -39,7 +39,7 @@
             </p:TypeAnnotation>
           </Pad>
           <Node Bounds="60,220,90,19" Id="EtNLuQsw7Nfz7rl7Q1nOMQ">
-            <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Read WKT" />
             </p:NodeReference>
@@ -80,7 +80,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="60,430,70,19" Id="BHGbHodxxPnDW5m80MBYeh">
-            <p:NodeReference LastCategoryFullName="NTS.Feature" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Feature" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Feature" />
             </p:NodeReference>
@@ -90,7 +90,7 @@
             <Pin Id="JKgSRJEldOmx0ClkcnTpbC" Name="Result" Kind="OutputPin" />
           </Node>
           <Node Bounds="60,490,50,19" Id="BbLqOCjysZuEGmbC1cJPrs">
-            <p:NodeReference LastCategoryFullName="NTS.Feature" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Feature" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Split" />
             </p:NodeReference>
@@ -110,7 +110,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="60,610,90,19" Id="EvUa8M4Dx8IljkC05OhZXb">
-            <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Write WKT" />
             </p:NodeReference>

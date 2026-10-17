@@ -53,7 +53,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="60,260,90,19" Id="FctGB16SVX9kjJPRA6gXVp">
-            <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Read WKT" />
             </p:NodeReference>
@@ -64,7 +64,7 @@
             <Pin Id="BN718DcawZUpmLKqYYwTZr" Name="Success" Kind="OutputPin" />
           </Node>
           <Node Bounds="230,260,90,19" Id="OZVZtHWdIgvOTFj6hpGG8o">
-            <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Read WKT" />
             </p:NodeReference>
@@ -75,7 +75,7 @@
             <Pin Id="Uy1SDVqi2Mv4E6nRlsyLR4" Name="Success" Kind="OutputPin" />
           </Node>
           <Node Bounds="60,330,80,19" Id="DpZwK37Y5C2c46npopBpuE">
-            <p:NodeReference LastCategoryFullName="NTS.Operation" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Intersects" />
             </p:NodeReference>
@@ -86,7 +86,7 @@
           </Node>
           <Pad Id="EhVZPb9b9udizRGs4LeRDT" Comment="Intersects" Bounds="60,370,60,15" ShowValueBox="true" isIOBox="true" />
           <Node Bounds="245,330,70,19" Id="CPGBSKVay7FiCnBwhCRzdY">
-            <p:NodeReference LastCategoryFullName="NTS.Operation" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Contains" />
             </p:NodeReference>
@@ -97,7 +97,7 @@
           </Node>
           <Pad Id="REir1KoozOqVEXvHyMORmZ" Comment="A contains B" Bounds="245,370,60,15" ShowValueBox="true" isIOBox="true" />
           <Node Bounds="400,330,60,19" Id="TIKo13fGW1YtGBWPCRC6Ia">
-            <p:NodeReference LastCategoryFullName="NTS.Operation" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Within" />
             </p:NodeReference>
@@ -117,7 +117,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="230,430,70,19" Id="MFYZxh27LVagjZwtC2mMPC">
-            <p:NodeReference LastCategoryFullName="NTS.Operation" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Contains" />
             </p:NodeReference>

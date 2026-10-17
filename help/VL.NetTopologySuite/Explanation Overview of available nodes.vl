@@ -33,7 +33,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="PGpnAQPypIEyQxfbohQ5Re" Bounds="60,170,300,30" ShowValueBox="true" isIOBox="true" Value="NTS.Geometry - making">
+          <Pad Id="PGpnAQPypIEyQxfbohQ5Re" Bounds="60,170,400,30" ShowValueBox="true" isIOBox="true" Value="NetTopologySuite.Geometry - making">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -43,7 +43,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="60,210,80,19" Id="RxoFcIqcln1Yz6E0YD5KLb">
-            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Coordinate" />
             </p:NodeReference>
@@ -62,7 +62,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="60,245,60,19" Id="Hix6YFs7CXT3WqY6LkcWcd">
-            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Point" />
             </p:NodeReference>
@@ -81,7 +81,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="60,280,90,19" Id="UMbU5hb1DPYpQaEmjBHLeW">
-            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="LineString" />
             </p:NodeReference>
@@ -100,7 +100,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="60,315,90,19" Id="ODzWdu3xqv4AX2U2p55fxa">
-            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="LinearRing" />
             </p:NodeReference>
@@ -119,7 +119,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="60,350,70,19" Id="BDMRScI9qrxfWmKJT4KfLt">
-            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Polygon" />
             </p:NodeReference>
@@ -139,7 +139,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="60,385,140,19" Id="ARzbTof5D1DrDWgjrgJVgZ">
-            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="GeometryCollection" />
             </p:NodeReference>
@@ -158,7 +158,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="60,420,100,19" Id="EqFKI0TRIiPlA3Q1feCcOO">
-            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="MultiPolygon" />
             </p:NodeReference>
@@ -177,7 +177,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="60,455,80,19" Id="Q4CRCAlmA7sG64sc0FloV4">
-            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="MultiPoint" />
             </p:NodeReference>
@@ -196,7 +196,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="60,490,110,19" Id="I9yxxKajsa6TT4G5y3Updy">
-            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="MultiLineString" />
             </p:NodeReference>
@@ -215,7 +215,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="60,525,110,19" Id="GLGUOJ5MxSjNOwYJaopTn6">
-            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="GeometryFactory" />
             </p:NodeReference>
@@ -232,7 +232,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="C4u15ywvLabuPFCVezBy2I" Bounds="60,600,300,30" ShowValueBox="true" isIOBox="true" Value="NTS.Geometry - reading">
+          <Pad Id="C4u15ywvLabuPFCVezBy2I" Bounds="60,600,400,30" ShowValueBox="true" isIOBox="true" Value="NetTopologySuite.Geometry - reading">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -242,7 +242,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="60,640,50,19" Id="QiPHcnpICSjcCc1urYCdMo">
-            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Area" />
             </p:NodeReference>
@@ -260,7 +260,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="60,675,60,19" Id="FRIMOuZGGkZEqsgNpqcaZh">
-            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Length" />
             </p:NodeReference>
@@ -278,7 +278,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="60,710,70,19" Id="U1xSAVlwCe5SzdAQnKJwVo">
-            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Centroid" />
             </p:NodeReference>
@@ -296,7 +296,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="60,745,60,19" Id="FCqe6POPYPzMPZpQC65tPR">
-            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Bounds" />
             </p:NodeReference>
@@ -317,7 +317,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="60,780,70,19" Id="K6Bhm414C05pgVChE0xvBv">
-            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="IsValid" />
             </p:NodeReference>
@@ -337,7 +337,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="60,815,90,19" Id="MWOPsgQFGj3xxmWaovM481">
-            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Coordinates" />
             </p:NodeReference>
@@ -355,7 +355,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="60,850,110,19" Id="Qv0I4eiv7d1JgfjYmeWEqX">
-            <p:NodeReference LastCategoryFullName="NTS.Geometry" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="GeometryType" />
             </p:NodeReference>
@@ -372,7 +372,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="LsOWiW6xUNmIsnbKJXJaPG" Bounds="640,170,300,30" ShowValueBox="true" isIOBox="true" Value="NTS.IO">
+          <Pad Id="LsOWiW6xUNmIsnbKJXJaPG" Bounds="640,170,400,30" ShowValueBox="true" isIOBox="true" Value="NetTopologySuite.IO">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -382,7 +382,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="640,210,90,19" Id="TqOJf9RFHTdBn4HDd6S1Cn">
-            <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Read WKT" />
             </p:NodeReference>
@@ -402,7 +402,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="640,245,90,19" Id="LJ33CrYNlB3VmitsmIzPVU">
-            <p:NodeReference LastCategoryFullName="NTS.IO" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Write WKT" />
             </p:NodeReference>
@@ -420,7 +420,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="PDcL7jMrV2DAIiARvH2eR8" Bounds="640,320,300,30" ShowValueBox="true" isIOBox="true" Value="NTS.Operation">
+          <Pad Id="PDcL7jMrV2DAIiARvH2eR8" Bounds="640,320,400,30" ShowValueBox="true" isIOBox="true" Value="NetTopologySuite.Operation">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -430,7 +430,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="640,360,70,19" Id="DTu78i2xNajbenQ7XuCTwl">
-            <p:NodeReference LastCategoryFullName="NTS.Operation" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Buffer" />
             </p:NodeReference>
@@ -450,7 +450,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="640,395,60,19" Id="G7BCTOXPRR56d9B6G4Uknn">
-            <p:NodeReference LastCategoryFullName="NTS.Operation" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Union" />
             </p:NodeReference>
@@ -469,7 +469,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="640,430,70,19" Id="SoBM3a7F6pXYS0fFSUOam3">
-            <p:NodeReference LastCategoryFullName="NTS.Operation" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Distance" />
             </p:NodeReference>
@@ -488,7 +488,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="640,465,80,19" Id="LhAvlQjFTbGM48PEjepEdl">
-            <p:NodeReference LastCategoryFullName="NTS.Operation" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Intersects" />
             </p:NodeReference>
@@ -506,7 +506,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="F4WY3tZA5UqHlM2R2BLTS8" Bounds="640,540,300,30" ShowValueBox="true" isIOBox="true" Value="NTS.Feature">
+          <Pad Id="F4WY3tZA5UqHlM2R2BLTS8" Bounds="640,540,400,30" ShowValueBox="true" isIOBox="true" Value="NetTopologySuite.Feature">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -516,7 +516,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="640,580,70,19" Id="IhqO4ytMGzeTf9evyPE7C6">
-            <p:NodeReference LastCategoryFullName="NTS.Feature" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Feature" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Feature" />
             </p:NodeReference>
@@ -535,7 +535,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="640,615,50,19" Id="HMEpMbhuKuKOPBaJx2HZU3">
-            <p:NodeReference LastCategoryFullName="NTS.Feature" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Feature" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Split" />
             </p:NodeReference>
@@ -553,7 +553,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="TLTd298VZlPHk462d4TS0J" Bounds="640,690,300,30" ShowValueBox="true" isIOBox="true" Value="NTS.Index">
+          <Pad Id="TLTd298VZlPHk462d4TS0J" Bounds="640,690,400,30" ShowValueBox="true" isIOBox="true" Value="NetTopologySuite.Index">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -563,7 +563,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="640,730,100,19" Id="H7Wc23TqMHcsHozsvsEmcP">
-            <p:NodeReference LastCategoryFullName="NTS.Index" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Index" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="SpatialIndex" />
             </p:NodeReference>
@@ -583,7 +583,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="640,765,60,19" Id="UNdzu8keRj9c3i1W9HXJVV">
-            <p:NodeReference LastCategoryFullName="NTS.Index" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Index" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Query" />
             </p:NodeReference>
@@ -602,7 +602,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="NnPG3qt6zI11yb8mhQ7giJ" Bounds="640,840,300,30" ShowValueBox="true" isIOBox="true" Value="NTS.Network">
+          <Pad Id="NnPG3qt6zI11yb8mhQ7giJ" Bounds="640,840,400,30" ShowValueBox="true" isIOBox="true" Value="NetTopologySuite.Network">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -612,7 +612,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="640,880,70,19" Id="V5w9aUOewHAqldp0jiQy31">
-            <p:NodeReference LastCategoryFullName="NTS.Network" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Network" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="Network" />
             </p:NodeReference>
@@ -633,7 +633,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Node Bounds="640,915,90,19" Id="VlXuy9vSgdcsHmzgUeKr0f">
-            <p:NodeReference LastCategoryFullName="NTS.Network" LastDependency="VL.NetTopologySuite.vl">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Network" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="ShortestPath" />
             </p:NodeReference>
