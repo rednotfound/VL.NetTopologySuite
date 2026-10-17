@@ -165,12 +165,12 @@ The prefix comes from `[assembly: ImportAsIs(Namespace = "VL")]`.
 
 | Category | Source | How |
 |---|---|---|
-| `NTS.Geometry` | `GeometryNodes.Creation.cs` + `.Inspection.cs` | namespace `VL.NTS` + `[Name("Geometry")]` |
-| `NTS.Feature` | `FeatureNodes.cs` | `[Name("Feature")]` |
-| `NTS.Operation` | `OperationNodes.cs` | `[Name("Operation")]` |
-| `NTS.IO` | `IONodes.cs` | `[Name("IO")]` |
-| `NTS.Index` | `SpatialIndexNode.cs` + `IndexNodes.cs` | `[ProcessNode(Name = "SpatialIndex", Category = "NTS.Index")]` on the class, `[Name("Index")]` on the static `Query` holder |
-| `NTS.Network` | `Network.cs` + `NetworkNode.cs` + `NetworkNodes.cs` | `[ProcessNode(Name = "Network", Category = "NTS.Network")]` on the class, `[Name("Network")]` on the static `ShortestPath` holder. Was `NTS.Experimental.Network` until the 2026-08-28 promotion — see its own section |
+| `NetTopologySuite.Geometry` | `GeometryNodes.Creation.cs` + `.Inspection.cs` | namespace `VL.NetTopologySuite` + `[Name("Geometry")]` |
+| `NetTopologySuite.Feature` | `FeatureNodes.cs` | `[Name("Feature")]` |
+| `NetTopologySuite.Operation` | `OperationNodes.cs` | `[Name("Operation")]` |
+| `NetTopologySuite.IO` | `IONodes.cs` | `[Name("IO")]` |
+| `NetTopologySuite.Index` | `SpatialIndexNode.cs` + `IndexNodes.cs` | `[ProcessNode(Name = "SpatialIndex", Category = "NetTopologySuite.Index")]` on the class, `[Name("Index")]` on the static `Query` holder |
+| `NetTopologySuite.Network` | `Network.cs` + `NetworkNode.cs` + `NetworkNodes.cs` | `[ProcessNode(Name = "Network", Category = "NetTopologySuite.Network")]` on the class, `[Name("Network")]` on the static `ShortestPath` holder. Was `NetTopologySuite.Experimental.Network` until the 2026-08-28 promotion — see its own section |
 
 **Source files, one convention (measured 2026-10-17 against VL.CoreLib, VL.ImGui, VL.Skia,
 VL.IO.Redis, VL.OpenCV, VL.Devices.Kinect2 and vl-mapsui):** one type per file, named after the
@@ -182,16 +182,30 @@ because it is what makes *node → category → file* a two-step lookup. Until 2
 held two types and `NetworkNodes.cs` three; both were split, with no code change.
 
 Six, deliberately — `NTS.Validation` was considered and dropped, because one validity node does
-not earn a category level and §26 of the brief warns against deep nesting. `NTS.Feature` earns one
+not earn a category level and §26 of the brief warns against deep nesting. `NetTopologySuite.Feature` earns one
 because it wraps a distinct upstream package and a distinct layer of the data model, not merely a
-pair of methods. `NTS.Index` (2026-08-23) earns one with two nodes, because the criterion was never
+pair of methods. `NetTopologySuite.Index` (2026-08-23) earns one with two nodes, because the criterion was never
 the count: it is whether the category protects a distinct concept — *build an acceleration
 structure, then ask it* — that is likely to grow coherently. See its own section below.
 
-**Assembly `VL.NetTopologySuite`, root namespace `VL.NTS`.** The package is named after the library
-it wraps, which is the rule for a single-library package; only the *category* is abbreviated,
-because a patch author has to read it in a node browser and `NetTopologySuite.Geometry.Point` is
-unreadable. Both sibling repositories decouple these two names the same way.
+**Assembly `VL.NetTopologySuite`, root namespace `VL.NetTopologySuite`, top category
+`NetTopologySuite`.** Until 2026-10-17 the namespace was `VL.NTS` and the category `NTS`, chosen
+because `NetTopologySuite.Geometry.Point` read as too long in a node browser. That reasoning was
+wrong, and the maintainer found out the way a user would: they installed the package, searched the
+NodeBrowser for "NetTopologySuite" - the name they had just typed into `nuget install` - and found
+nothing. Measured the same day over the 55 VL packs installed on this machine: every pack that does
+not join an existing category names its top category after the package minus `VL.` (`Mapsui`,
+`OpenCV`, `Audio`, `Elementa`, `IO.Redis`), and not one abbreviates - `NTS` was the only one. The
+Gray Book's design guideline says the same: *the name of the main document of a library should hint
+at the category the library introduces.* There is no other lever: the NodeBrowser searches node
+names and categories, `ProcessNodeAttribute.Tags` exists for process nodes only (two of 39), and
+static methods have no tag mechanism at all. So the category carries the library's full name, like
+every neighbour - VL.Mapsui's namespace is `VL.Mapsui` and its category `Mapsui`, the same shape.
+Existing documents were not broken by the rename: a `.vl` resolves a node by name within the
+referenced package, and its `LastCategoryFullName` is a hint (negative-tested in September with
+`NTS.Wrong`). One consequence in C#: inside namespace `VL.NetTopologySuite` the bare identifier
+`NetTopologySuite` resolves to our own namespace, so the three fully qualified NTS names in code
+carry `global::`.
 
 `GeometryNodes` is one `partial` class across two files rather than two classes, so both halves land
 in one category without depending on two types being allowed to share one.
@@ -309,7 +323,7 @@ people search for.
 ## `SpatialIndex` / `Query` — the first process node
 
 Added 2026-08-23 for VL.Overworld's Tutorial 11, whose lesson is *a candidate is not a result*.
-Two nodes in a new category, `NTS.Index`, and the first stateful object in the package. Every
+Two nodes in a new category, `NetTopologySuite.Index`, and the first stateful object in the package. Every
 decision below was made before the code, and each is pinned by a test in `IndexTests`.
 
 ### Why a process node, and why a new category
@@ -320,7 +334,7 @@ once opened 17,000 TCP connections. So the tree is held, and `Indexes Built` is 
 it should reach 1 and stay, and if it climbs every frame the patch is re-creating its geometries
 every frame and the index is doing nothing.
 
-`NTS.Validation` was refused a category for holding one node; `NTS.Index` gets one for holding two.
+`NTS.Validation` was refused a category for holding one node; `NetTopologySuite.Index` gets one for holding two.
 The count was never the criterion. The criterion is whether the category protects a concept that
 is distinct from its neighbours and likely to grow coherently. Spatial indexing is neither making
 geometry nor operating on it — its model is *build an acceleration structure, then ask it* — and if
@@ -390,7 +404,7 @@ section and its tests.
 
 ---
 
-## The experimental network — and why it is `NTS.Experimental.Network`, not `NTS.Network`
+## The experimental network — and why it is `NetTopologySuite.Experimental.Network`, not `NetTopologySuite.Network`
 
 Added 2026-08-23 for VL.Overworld's Tutorial 13, *close does not mean reachable*. Two nodes,
 `BuildNetwork` (a process node) and `ShortestPath` (stateless), and one opaque handle type,
@@ -406,7 +420,7 @@ word "shortest" zero times, and `Planargraph.PlanarGraph` describes itself as a 
 are **an algorithm of ours**. Publishing an algorithm of ours under the name of a library that does
 not contain it is a scope decision, and a chapter is not enough evidence to make it.
 
-**Decided 2026-08-28: promoted to `NTS.Network`, in place** — the review below happened
+**Decided 2026-08-28: promoted to `NetTopologySuite.Network`, in place** — the review below happened
 ([NETWORK-SCOPE-PROPOSAL.md](NETWORK-SCOPE-PROPOSAL.md)): both named consumers were built and rung-4
 verified in VL.Overworld the same day (`Prompt Which door`, `Prompt Grow a town`), both wanted the
 surface unchanged, and the one pin a consumer asked for (`Max Snap Distance`) was added with the
@@ -415,7 +429,7 @@ named for the thing it holds. This package now contains exactly one algorithm of
 says so here; a second algorithm of ours wanting a home reopens the location question. The original
 reasoning, kept:
 
-Hence: the chapter was approved, a permanent public `NTS.Network` was not — then. The code lives here because
+Hence: the chapter was approved, a permanent public `NetTopologySuite.Network` was not — then. The code lives here because
 the alternatives are worse — a new package created to resolve uncertainty about where code belongs
 turns the uncertainty into a dependency, and a Dijkstra written in dataflow inside the chapter would
 bury the lesson under its own implementation. It lives under `Experimental` so nobody mistakes it for
@@ -477,7 +491,7 @@ NETWORK-SCOPE-PROPOSAL.md as its template.
 ## Where a feature lives
 
 **Decided 2026-08-22, after researching the question rather than arguing it**: the `Feature` and
-`Split` nodes moved here from VL.Mapsui, into a new `NTS.Feature` category, and this package gained
+`Split` nodes moved here from VL.Mapsui, into a new `NetTopologySuite.Feature` category, and this package gained
 its second — and only other — upstream dependency, `NetTopologySuite.Features 2.1.0`.
 
 ### The question
@@ -542,7 +556,7 @@ geospatial concept that benefits from a VL-native node?* — answers no for all 
   wrapped until asked for.
 - **Whole subsystems**: prepared geometry, `Quadtree`, `LinearReferencing`, `Triangulate`,
   `Precision.*`, most of `Operation.*` and `Algorithm.*`. (`STRtree` left this list on 2026-08-23
-  and became `NTS.Index`; its nearest-neighbour, removal and node-capacity APIs stay raw — the
+  and became `NetTopologySuite.Index`; its nearest-neighbour, removal and node-capacity APIs stay raw — the
   handle `SpatialIndex` returns *is* the NTS tree, so they are one raw .NET node away.)
 - **WKB and GeoJSON.** See [ROADMAP.md](ROADMAP.md).
 
@@ -558,7 +572,7 @@ Apply this whenever considering an addition:
 | If it answers | It belongs in |
 |---|---|
 | How do I create or manipulate geometry? | **here** |
-| How do I attach data to a geometry, or read it back? | **here** — `NTS.Feature`, see [Where a feature lives](#where-a-feature-lives) |
+| How do I attach data to a geometry, or read it back? | **here** — `NetTopologySuite.Feature`, see [Where a feature lives](#where-a-feature-lives) |
 | How do I display this geometry on a map? | `VL.Mapsui` |
 | How do I transform between coordinate reference systems? | a focused package — `VL.ProjNet` |
 | How do I read this specific geospatial dataset format? | a focused package |
@@ -584,7 +598,7 @@ Two other repositories sit beside this one under `D:\2026_Projects\`.
 ### `vl-mapsui` (`VL.Mapsui`) — composes through NTS, not through us
 
 ```text
-Coordinates → LinearRing → Polygon → Buffer → NTS Geometry → Feature [NTS.Feature]
+Coordinates → LinearRing → Polygon → Buffer → NTS Geometry → Feature [NetTopologySuite.Feature]
                                                                   │
                                                     ── package boundary ──
                                                                   │
@@ -647,7 +661,7 @@ Recorded as *never* rather than *later*, so it stops coming up:
 - **Rendering, styling, layers, maps.** A different question, and `VL.Mapsui` answers it.
 - **CRS transformation.** ProjNet's job. Nothing here will imply that setting an SRID reprojects.
 - **A `Feature` model of our own.** No `VLFeature`, ever. The neutral model this package now wraps
-  in `NTS.Feature` is `NetTopologySuite.Features.Feature` — the NTS team's, not ours — and wrapping
+  in `NetTopologySuite.Feature` is `NetTopologySuite.Features.Feature` — the NTS team's, not ours — and wrapping
   it is precisely what keeps this package from becoming the definition of the whole domain.
   Inventing a type here would do the opposite.
 - **Generalised GIS abstractions** — `IGISGeometry`, `SpatialEntity`, `GISContext`, `GISDocument`.

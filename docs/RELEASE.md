@@ -40,7 +40,7 @@ title `VL.NetTopologySuite 0.0.1-alpha` → tick **Set as a pre-release** → Pu
 The first release, a prerelease. **EARLY — not ready for real work yet:** the node
 surface may still change between prereleases.
 
-- 39 nodes in six categories — NTS.Geometry, NTS.Feature, NTS.Operation, NTS.IO, NTS.Index, NTS.Network
+- 39 nodes in six categories — NetTopologySuite.Geometry, NetTopologySuite.Feature, NetTopologySuite.Operation, NetTopologySuite.IO, NetTopologySuite.Index, NetTopologySuite.Network
 - 126 tests, 15 help patches, and F1 on every node opens one
 - Geometry from coordinates, inspection and validation, buffer / overlay / predicates / distance,
   WKT in and out, a spatial index, and a shortest path over a street network

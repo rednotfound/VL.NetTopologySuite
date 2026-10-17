@@ -16,20 +16,20 @@ one ahead of the published one. **Every version is a prerelease** (`-alpha` suff
 process and its rules are in [docs/RELEASE.md](docs/RELEASE.md): the maintainer performs the
 irreversible step, and nuget.org's 2026 policy (API keys 30 days at most, Trusted Publishing for CI,
 browser upload for manual) is written there. Never push to nuget.org without the user's explicit
-go; a publish cannot be undone.** 39 public nodes in six categories — `NTS.Network` (`Network` +
-`ShortestPath`, an algorithm of ours, promoted from `NTS.Experimental.Network` by
+go; a publish cannot be undone.** 39 public nodes in six categories — `NetTopologySuite.Network` (`Network` +
+`ShortestPath`, an algorithm of ours, promoted from `NetTopologySuite.Experimental.Network` by
 `docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 126
 tests, 15 help patches.** All fifteen were (re)written on 2026-09-24 in the community's measured style
 ([docs/HELP-PATCH-STYLE.md](docs/HELP-PATCH-STYLE.md)), every one seen in the GUI, every node opens one
 on **F1** (help flags, audited by `Test-VLPatch`), and `HowTo Find the shortest path` draws its town with
 VL.Skia through ForEach and Cache regions. The
-2026-08-14 GUI verification covered `NTS.Geometry` / `NTS.IO` / `NTS.Operation`; `NTS.Feature`
-(2026-08-22) was seen in the GUI through VL.Overworld's Tutorial 08 on 2026-08-23; **`NTS.Index`
+2026-08-14 GUI verification covered `NetTopologySuite.Geometry` / `NetTopologySuite.IO` / `NetTopologySuite.Operation`; `NetTopologySuite.Feature`
+(2026-08-22) was seen in the GUI through VL.Overworld's Tutorial 08 on 2026-08-23; **`NetTopologySuite.Index`
 (2026-08-23) was seen the same evening through Tutorial 11**, with `Indexes Built` holding at 1 over
 100,000 points. Every category has now been on a screen. `0.0.1-alpha` is on nuget.org (2026-09-26). See
 [Verification](#verification-be-precise-about-which-one-you-have).
 
-**`NTS.Index` is this package's first `[ProcessNode]`.** `SpatialIndex` holds an `STRtree` and
+**`NetTopologySuite.Index` is this package's first `[ProcessNode]`.** `SpatialIndex` holds an `STRtree` and
 rebuilds it only when the set of geometry *references* changes; `Query` returns **Candidates**, not
 results. The contract and why it is that one and not another are in
 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#spatialindex--query--the-first-process-node), and it
@@ -175,7 +175,7 @@ listed, and every link must name a file that exists, because both failures are s
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 15 help patches, 2026-09-24 |
 | `tools\Test-Install.ps1` | the **packed** package installs from `dist\feed` with its dependencies, and every help patch inside the install compiles with that install as the only repository | ✅ 2026-09-25, first pass |
-| the vvvv **NodeBrowser** | **which category a node is in** | ✅ `NTS` → Geometry, IO, Operation |
+| the vvvv **NodeBrowser** | **which category a node is in** | ✅ 2026-10-17: typing `NetTopologySuite` lists the category folder `NetTopologySuite` and the package; its nodes sit under `NetTopologySuite.Geometry` … `.Network` (was `NTS` until that day) |
 | the vvvv **GUI, running** | the patch computes the right value | ✅ 2026-08-14, vvvv 7.4; all 15 help patches 2026-09-24, reviewed by the maintainer 2026-09-25 |
 | **F1 on a node** | the node carries a High help flag in a patch vvvv has indexed | ✅ 2026-09-24, all 39 nodes; `Test-VLPatch` audits the flags |
 
@@ -268,22 +268,22 @@ vl-nettopologysuite/
 ├── src/VL.NetTopologySuite/
 │   ├── Defaults.cs                    # ⭐ the default factory and the defensive copying
 │   ├── InputSets.cs                   # the rebuild-detection rule SpatialIndex and Network share
-│   ├── GeometryNodes.Creation.cs      # NTS.Geometry - Coordinate .. GeometryCollection
-│   ├── GeometryNodes.Inspection.cs    # NTS.Geometry - Area, IsValid, Bounds, Coordinates …
-│   ├── OperationNodes.cs              # NTS.Operation - Buffer, overlay, predicates, Distance, Nearest Points
-│   ├── IONodes.cs                     # NTS.IO - Read WKT, Write WKT
-│   ├── FeatureNodes.cs                # NTS.Feature - Feature, Split
-│   ├── SpatialIndexNode.cs            # NTS.Index - SpatialIndex (process node)
-│   ├── IndexNodes.cs                  # NTS.Index - Query
-│   ├── Network.cs                     # NTS.Network - the retained handle type, and the scope sentence
-│   ├── NetworkNode.cs                 # NTS.Network - Network (process node)
-│   └── NetworkNodes.cs                # NTS.Network - ShortestPath
+│   ├── GeometryNodes.Creation.cs      # NetTopologySuite.Geometry - Coordinate .. GeometryCollection
+│   ├── GeometryNodes.Inspection.cs    # NetTopologySuite.Geometry - Area, IsValid, Bounds, Coordinates …
+│   ├── OperationNodes.cs              # NetTopologySuite.Operation - Buffer, overlay, predicates, Distance, Nearest Points
+│   ├── IONodes.cs                     # NetTopologySuite.IO - Read WKT, Write WKT
+│   ├── FeatureNodes.cs                # NetTopologySuite.Feature - Feature, Split
+│   ├── SpatialIndexNode.cs            # NetTopologySuite.Index - SpatialIndex (process node)
+│   ├── IndexNodes.cs                  # NetTopologySuite.Index - Query
+│   ├── Network.cs                     # NetTopologySuite.Network - the retained handle type, and the scope sentence
+│   ├── NetworkNode.cs                 # NetTopologySuite.Network - Network (process node)
+│   └── NetworkNodes.cs                # NetTopologySuite.Network - ShortestPath
 ├── test/VL.NetTopologySuite.Tests/    # 126 xunit tests, no network, no vvvv
 ├── help/VL.NetTopologySuite/          # 15 help patches + Help.xml (ordering and tags)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
 ├── docs/ARCHITECTURE.md               # why each node exists, what stays raw, the boundary
 ├── docs/HELP-PATCH-STYLE.md           # the community's help style, measured; help flags; the Skia recipe
-├── docs/NETWORK-SCOPE-*.md            # the review that promoted NTS.Network, and its evidence
+├── docs/NETWORK-SCOPE-*.md            # the review that promoted NetTopologySuite.Network, and its evidence
 ├── docs/ROADMAP.md                    # next / later / never
 ├── docs/RELEASE.md                    # release checklist, what each step proves, the maintainer's open decisions
 ├── docs/RULES.md                      # ⭐ carried from the siblings - read before any node
@@ -302,17 +302,17 @@ relying on two types being allowed to share one.
 category = (.NET namespace minus the "VL" prefix) + type name
 ```
 
-Namespace `VL.NTS` gives `NTS`. `[Name("X")]` renames a type **for VL only**; `[SkipCategory]` drops
-the type level entirely.
+Namespace `VL.NetTopologySuite` gives `NetTopologySuite`. `[Name("X")]` renames a type **for VL only**;
+`[SkipCategory]` drops the type level entirely.
 
 | Category | Source |
 |---|---|
-| `NTS.Geometry` | `GeometryNodes.Creation.cs` + `GeometryNodes.Inspection.cs` — `[Name("Geometry")]`, one `partial` class |
-| `NTS.Operation` | `OperationNodes.cs` — `[Name("Operation")]` |
-| `NTS.IO` | `IONodes.cs` — `[Name("IO")]` |
-| `NTS.Feature` | `FeatureNodes.cs` — `[Name("Feature")]` |
-| `NTS.Index` | `SpatialIndexNode.cs` (`[ProcessNode(Name = "SpatialIndex", Category = "NTS.Index")]`) + `IndexNodes.cs` (`[Name("Index")]`, `Query`) |
-| `NTS.Network` | `Network.cs` (the handle type) + `NetworkNode.cs` (`[ProcessNode(Name = "Network", ...)]`) + `NetworkNodes.cs` (`[Name("Network")]`, `ShortestPath`) |
+| `NetTopologySuite.Geometry` | `GeometryNodes.Creation.cs` + `GeometryNodes.Inspection.cs` — `[Name("Geometry")]`, one `partial` class |
+| `NetTopologySuite.Operation` | `OperationNodes.cs` — `[Name("Operation")]` |
+| `NetTopologySuite.IO` | `IONodes.cs` — `[Name("IO")]` |
+| `NetTopologySuite.Feature` | `FeatureNodes.cs` — `[Name("Feature")]` |
+| `NetTopologySuite.Index` | `SpatialIndexNode.cs` (`[ProcessNode(Name = "SpatialIndex", Category = "NetTopologySuite.Index")]`) + `IndexNodes.cs` (`[Name("Index")]`, `Query`) |
+| `NetTopologySuite.Network` | `Network.cs` (the handle type) + `NetworkNode.cs` (`[ProcessNode(Name = "Network", ...)]`) + `NetworkNodes.cs` (`[Name("Network")]`, `ShortestPath`) |
 
 **Finding a node's code: node → category → file.** The NodeBrowser (or a help patch's
 `LastCategoryFullName`) gives the category; the table gives the file; inside it, a node whose name
@@ -323,10 +323,22 @@ operations is `<Topic>Nodes.cs` (CoreLib: `SpreadNodes.cs`, `KeyboardNodes.cs`);
 is `<Class>.<Part>.cs` (CoreLib: `EnumerableNodes.Custom.cs`). The Gray Book itself says nothing about
 file names — only the namespace and class decide the category — so this is convention, not rule.
 
-`RootNamespace` is `VL.NTS`, deliberately decoupled from the assembly name `VL.NetTopologySuite` —
-otherwise the category would be the unreadable `NetTopologySuite.Geometry.Point`. The C# class is
-`GeometryNodes` rather than `Geometry` because a class named `Geometry` would shadow NTS's own
-`Geometry` in every signature in the assembly.
+**The top category was `NTS` until 2026-10-17, and the rename to `NetTopologySuite` was the user's own
+experience:** they installed the package, searched the NodeBrowser for "NetTopologySuite" and found
+nothing. Measured the same day over the 55 packs installed here: the category is the package name
+minus `VL.` in every pack that does not join an existing category (`Mapsui`, `OpenCV`, `Audio`,
+`IO.Redis`), and **no pack abbreviates its library's name** - `NTS` was the only one. The Gray
+Book's design guideline says it outright: *the name of the main document of a library should hint at
+the category the library introduces.* The NodeBrowser searches node names and categories only; the
+C# import offers no search tags for static nodes (`ProcessNodeAttribute.Tags` covers two of 39), so
+the category is the only way a user's search term can match. `RootNamespace` therefore equals the
+assembly name, `VL.NetTopologySuite`; inside that namespace the bare identifier `NetTopologySuite`
+resolves to *us*, so a fully qualified NTS name in code needs `global::` (two places, in
+`OperationNodes.cs` and the tests). The C# class is `GeometryNodes` rather than `Geometry` because a
+class named `Geometry` would shadow NTS's own `Geometry` in every signature in the assembly. A
+document that references the NetTopologySuite nuget *directly* also sees the library's raw nodes
+under `NetTopologySuite.Geometries.*`, one letter from our `NetTopologySuite.Geometry.*` - the same
+situation VL.Mapsui has with `Mapsui.*`, and the summary line tells them apart.
 
 ## Adding a node
 

@@ -10,8 +10,8 @@ comment; the work is deciding whether they earn a node, not writing them.
 
 ## Now — 0.0.1-alpha on nuget.org, 0.0.2-alpha in the tree
 
-39 public nodes across `NTS.Geometry`, `NTS.Feature`, `NTS.Operation`, `NTS.IO`, `NTS.Index` and
-`NTS.Network`. 126 tests. Fifteen help patches - the `Explanation` front door and fourteen `HowTo`s, ten of them written 2026-09-24 with `tools\HelpPatchGen.ps1` and every one seen in the GUI.
+39 public nodes across `NetTopologySuite.Geometry`, `NetTopologySuite.Feature`, `NetTopologySuite.Operation`, `NetTopologySuite.IO`, `NetTopologySuite.Index` and
+`NetTopologySuite.Network`. 126 tests. Fifteen help patches - the `Explanation` front door and fourteen `HowTo`s, ten of them written 2026-09-24 with `tools\HelpPatchGen.ps1` and every one seen in the GUI.
 
 **2026-09-26: released.** `0.0.1-alpha` was published by the maintainer through nuget.org's browser
 upload, installed back from nuget.org alone with both dependencies, its fifteen help patches
@@ -28,15 +28,15 @@ with VL.Mapsui and the rest of the family** (the maintainer's decision, 2026-09-
 are the maintainer's (who pushes, the description's first line, `<readme>`), then the maintainer
 pushes.
 
-**2026-08-28: the network was PROMOTED to `NTS.Network`** — `Network` (was `BuildNetwork`) and
+**2026-08-28: the network was PROMOTED to `NetTopologySuite.Network`** — `Network` (was `BuildNetwork`) and
 `ShortestPath`, with one new pin, `Max Snap Distance` — by the Network Package Scope Proposal
 ([NETWORK-SCOPE-PROPOSAL.md](NETWORK-SCOPE-PROPOSAL.md)), the review the paragraph below demanded.
 `Nearest Node` stays unbuilt: both consumers managed without it, and it is the first candidate when
 one cannot. The history, kept because the reasoning still governs what may be added:
 
 **2026-08-23: an EXPERIMENTAL network — `BuildNetwork` and `ShortestPath` — under
-`NTS.Experimental.Network`, and deliberately not under `NTS.Network`.** Built for VL.Overworld's
-Tutorial 13 (*close does not mean reachable*). The distinction from `NTS.Index` is the reason for the
+`NetTopologySuite.Experimental.Network`, and deliberately not under `NetTopologySuite.Network`.** Built for VL.Overworld's
+Tutorial 13 (*close does not mean reachable*). The distinction from `NetTopologySuite.Index` is the reason for the
 category name: NTS owns STRtree, so `SpatialIndex` exposes NetTopologySuite; NTS ships **no**
 shortest-path capability (its `PlanarGraph` is a framework for algorithm authors), so this is an
 algorithm of ours, and an algorithm of ours in a package named after a library is a scope question
@@ -69,7 +69,7 @@ on a corner. The four pieces of evidence the scope review asked for — the chap
 that emerged, the API that now looks useful, two plausible consumers — are in
 [NETWORK-SCOPE-EVIDENCE.md](NETWORK-SCOPE-EVIDENCE.md). It is evidence, not a decision.
 
-**2026-08-23: `NTS.Index` arrived — and with it the package's first `[ProcessNode]`.** `SpatialIndex`
+**2026-08-23: `NetTopologySuite.Index` arrived — and with it the package's first `[ProcessNode]`.** `SpatialIndex`
 builds an `STRtree` over a spread of geometries, once, and `Query` asks it for the geometries whose
 *bounds* intersect a search geometry's bounds. Two nodes, by decision: STRtree only (Quadtree's
 incremental-insert lifecycle is a different model and waits for a use case), no `Envelope` on any
@@ -91,7 +91,7 @@ the whole point of a process node, now visible in the output; and a `Spread<Poin
 **Seen in the GUI the same evening**, through VL.Overworld's Tutorial 11 — 100,000 points, a mouse-driven
 query polygon, `Indexes Built` **holding at 1** while the mouse moved (the lifecycle contract, observed
 live), `Candidates` ≥ `Accepted`, and the indexed and brute-force `Accepted` counts equal. Category
-`NTS.Index` appears with both nodes. 8 fps with the brute-force loop alongside; the drawing of 100k
+`NetTopologySuite.Index` appears with both nodes. 8 fps with the brute-force loop alongside; the drawing of 100k
 points is not the cost.
 
 **2026-08-22: `Nearest Points` arrived**, by exactly the rule at the top of this file: the course's
@@ -99,7 +99,7 @@ distance chapter needed to *draw* the shortest line between two geometries, not 
 `DistanceOp.NearestPoints`, coordinates copied on the way out, empty-or-missing in → nothing out.
 Seen in the GUI 2026-09-24 in `HowTo Measure distance`.
 
-**2026-08-22: `NTS.Feature` arrived** — `Feature` and `Split`, moved from VL.Mapsui with their
+**2026-08-22: `NetTopologySuite.Feature` arrived** — `Feature` and `Split`, moved from VL.Mapsui with their
 tests, plus the `NetTopologySuite.Features 2.1.0` dependency. The reasoning and the field-wide
 evidence are in [ARCHITECTURE.md](ARCHITECTURE.md#where-a-feature-lives). Seen in the GUI on
 2026-08-23 through VL.Overworld's Tutorial 08, and on 2026-09-24 in `HowTo Attach attributes to a
@@ -172,7 +172,7 @@ Ordered by how likely something is to need them.
 | **Validation detail** | `IsValid` already reports a reason and a location. NTS also offers `IsValidOp` with self-touching-ring tolerance, and `GeometryFixer` for repairing invalid geometry. `GeometryFixer` in particular would be useful and needs thought about whether silently repairing geometry is a thing a node should do. |
 | **Precision tools** | Fixed-precision models, `GeometryPrecisionReducer`. `GeometryFactory` is already the way in — a `PrecisionModel` built through raw .NET nodes plugs straight into the same pin. A dedicated node waits for someone hitting a robustness problem. |
 | **Prepared geometry** | `PreparedGeometryFactory` makes repeated predicates against one fixed geometry much faster, which is exactly the shape of a VL patch testing many points against one polygon every frame. **This one needs `[ProcessNode]`**, not a static method: it holds a prepared index that must be built once and rebuilt only when the geometry changes. Written as a static method it would rebuild the index sixty times a second, which is the same class of mistake as rule 8 in [RULES.md](RULES.md). |
-| **Spatial indexing — `Quadtree`** | `STRtree` arrived 2026-08-23 as `NTS.Index` (see Now). `Quadtree` deliberately did not: it exists for incremental insertion into a mutable index, which is a different lifecycle from "build once, query many", and no chapter, prompt or user has asked for it. Not to be added because it is on the same NTS page. |
+| **Spatial indexing — `Quadtree`** | `STRtree` arrived 2026-08-23 as `NetTopologySuite.Index` (see Now). `Quadtree` deliberately did not: it exists for incremental insertion into a mutable index, which is a different lifecycle from "build once, query many", and no chapter, prompt or user has asked for it. Not to be added because it is on the same NTS page. |
 | **Linear referencing** | `LengthIndexedLine` and friends. Useful for animating along a path, which is a plausible vvvv thing to want. |
 | **Triangulation** | Delaunay and Voronoi. Attractive for visual work, and the point where "is this geometry or is this rendering?" needs answering — the output is geometry, so probably here. |
 
@@ -188,7 +188,7 @@ Recorded as *never* so it stops being re-proposed. The reasoning is in
 | **Rendering, styling, layers, maps** | A different question. `VL.Mapsui` answers it, and this package must not know that maps exist. |
 | **CRS transformation** | ProjNet's job, and a focused `VL.ProjNet` is where it belongs. No node here will ever imply that setting an SRID reprojects anything — because it does not. |
 | **GeoJSON** | Lives in a separate NuGet package, brings a feature model that is not this package's business, and deserves its own focused package. Taking it on is the first step towards becoming a generic geospatial file-format package. |
-| **A `Feature` model of our own** | No `VLFeature`, ever. The cross-package need appeared and was answered on 2026-08-22 by wrapping `NetTopologySuite.Features.Feature` — the NTS team's neutral model — as `NTS.Feature`. Wrapping theirs is what keeps us from inventing ours. |
+| **A `Feature` model of our own** | No `VLFeature`, ever. The cross-package need appeared and was answered on 2026-08-22 by wrapping `NetTopologySuite.Features.Feature` — the NTS team's neutral model — as `NetTopologySuite.Feature`. Wrapping theirs is what keeps us from inventing ours. |
 | **Generalised GIS abstractions** | `IGISGeometry`, `IGeoObject`, `SpatialEntity`, `GISContext`, `GISDocument`. No current problem requires any of them. |
 | **File formats** | Shapefile, GeoPackage, GeoParquet, GeoTIFF, STAC. Each is its own ecosystem and its own package. |
 | **Mechanical coverage of NetTopologySuite** | Every class, method, constructor and overload as a node. That turns the node browser into an API dump. The rest of NTS stays reachable through VL's raw .NET nodes, which is a feature rather than a gap. |

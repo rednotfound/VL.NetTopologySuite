@@ -40,7 +40,7 @@ and find VL.NetTopologySuite. Start with `Explanation Overview of available node
 
 **3. Use it in your own patch.** Installing does not reference a package by itself. In your
 document: **Document menu → Dependencies → NuGets**, right-click **VL.NetTopologySuite** to
-reference it. Then double-click the canvas and type a node name — they are in the `NTS`
+reference it. Then double-click the canvas and type a node name — they are in the `NetTopologySuite`
 categories below. The smallest chain is three nodes and an IOBox:
 
 ```
@@ -99,16 +99,16 @@ a package oversells itself:
 
 What the GUI showed, category by category:
 
-- **`NTS.Geometry` / `NTS.IO` / `NTS.Operation`** (2026-08-14): `Create a point` outputs
+- **`NetTopologySuite.Geometry` / `NetTopologySuite.IO` / `NetTopologySuite.Operation`** (2026-08-14): `Create a point` outputs
   `POINT (139.7671 35.6812)`; `Create a polygon` gives a unit square with `Area` 1.00 and an empty
   validity reason; `Read and write WKT` round-trips a polygon at SRID 0; `Buffer a geometry` takes
   area 1.00 to 2.20 with a 0.25 buffer, matching 1 + 4×0.25 + ≈π×0.25², and back to 1.00 by
   intersecting with the original.
-- **`NTS.Feature`** (2026-08-23, through VL.Overworld's Tutorial 08, and 2026-09-24 in
+- **`NetTopologySuite.Feature`** (2026-08-23, through VL.Overworld's Tutorial 08, and 2026-09-24 in
   `HowTo Attach attributes to a geometry`).
-- **`NTS.Index`** (2026-08-23, through Tutorial 11): 100,000 points, a mouse-driven query polygon,
+- **`NetTopologySuite.Index`** (2026-08-23, through Tutorial 11): 100,000 points, a mouse-driven query polygon,
   `Indexes Built` holding at 1 while the mouse moved, indexed and brute-force counts equal.
-- **`NTS.Network`** (2026-08-23 through Tutorial 13; 2026-09-24 in `HowTo Find the shortest path`,
+- **`NetTopologySuite.Network`** (2026-08-23 through Tutorial 13; 2026-09-24 in `HowTo Find the shortest path`,
   which draws its town with VL.Skia): `Networks Built` stays at 1 while From and To move, `Found`
   turns False on an island, the teal path follows the streets.
 - **`[Name]` on a *method* is honoured**, so the nodes render as `Read WKT`, `Write WKT`,
@@ -131,7 +131,7 @@ Two things the tooling caught that the eye would not:
 **Thirty-nine**, in six categories. No node takes more than three inputs, except where a fourth
 is a default you will rarely touch.
 
-### `NTS.Geometry` — making geometry
+### `NetTopologySuite.Geometry` — making geometry
 
 | Node | in → out |
 |---|---|
@@ -148,7 +148,7 @@ is a default you will rarely touch.
 | `MultiPolygon` | spread of `Polygon` → `MultiPolygon` |
 | `GeometryCollection` | spread of `Geometry` → `GeometryCollection` |
 
-### `NTS.Geometry` — reading it back
+### `NetTopologySuite.Geometry` — reading it back
 
 | Node | in → out |
 |---|---|
@@ -163,7 +163,7 @@ is a default you will rarely touch.
 | `Coordinates` | `Geometry` → spread of `Coordinate` |
 | `Geometries` | `Geometry` → spread of `Geometry` |
 
-### `NTS.Feature` — attaching data to geometry
+### `NetTopologySuite.Feature` — attaching data to geometry
 
 | Node | in → out |
 |---|---|
@@ -176,15 +176,15 @@ constructible without a map engine: VL.GeoJSON writes them, VL.Mapsui draws and 
 patch can make one by hand. The reasoning and the field-wide evidence are in
 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#where-a-feature-lives).
 
-### `NTS.Operation`
+### `NetTopologySuite.Operation`
 
 `Buffer` · `Intersection` · `Union` · `Difference` · `Distance` · `Nearest Points` · `Intersects` · `Contains` · `Within`
 
-### `NTS.IO`
+### `NetTopologySuite.IO`
 
 `Read WKT` · `Write WKT`
 
-### `NTS.Index` — asking many geometries a question without asking each one
+### `NetTopologySuite.Index` — asking many geometries a question without asking each one
 
 | Node | in → out |
 |---|---|
@@ -205,7 +205,7 @@ and never looks at the geometry itself. Finish with the exact predicate you mean
 gets asked. Reasoning and the lifecycle contract in
 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#spatialindex--query--the-first-process-node).
 
-### `NTS.Network` — close does not mean reachable
+### `NetTopologySuite.Network` — close does not mean reachable
 
 | Node | in → out |
 |---|---|
@@ -213,8 +213,8 @@ gets asked. Reasoning and the lifecycle contract in
 | `ShortestPath` | `Network`, From `Point`, To `Point`, Max Snap Distance → `Path` (`LineString`), **Length**, **Found**, **From Snap Distance**, **To Snap Distance** |
 
 NetTopologySuite ships no shortest-path capability, so this is an algorithm of ours. It was built
-as `NTS.Experimental.Network` in 2026-08 for VL.Overworld's Tutorial 13 and **promoted to
-`NTS.Network` on 2026-08-28** after a scope review with two real consumers
+as `NetTopologySuite.Experimental.Network` in 2026-08 for VL.Overworld's Tutorial 13 and **promoted to
+`NetTopologySuite.Network` on 2026-08-28** after a scope review with two real consumers
 ([docs/NETWORK-SCOPE-PROPOSAL.md](docs/NETWORK-SCOPE-PROPOSAL.md)).
 
 Connectivity is **exact shared endpoints** — no tolerance, no auto-noding, a crossing is not a
