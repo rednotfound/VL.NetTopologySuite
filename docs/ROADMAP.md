@@ -141,9 +141,93 @@ One bug it caught: `Segments` had a `Float64` IOBox against an `int` pin, which 
 
 ---
 
+## What the name obliges — coverage, measured 2026-10-18
+
+The maintainer asked how much of NetTopologySuite the 39 nodes cover, because a package that takes
+the library's name owes its users the library's real capabilities. Measured by reflection over
+NetTopologySuite 2.6.0 (`deps\NetTopologySuite.2.6.0`):
+
+| denominator | size | ours | share |
+|---|---|---|---|
+| public types / public methods, whole assembly | 538 / 2,318 in 66 namespaces | ~30 members called | ~1% — and meaningless: more than half is machinery (`GeometriesGraph` 182 methods, `Mathematics` 106, `Noding` 77, `EdgeGraph`, `Planargraph`, `RTools_NTS`) no patch would ever touch |
+| the `Geometry` class — the surface a user meets first | 40 methods + 24 properties = 64 | 20 (Buffer, Contains, Difference, Distance, Intersection, Intersects, Union, Within, GetGeometryN, ToText; Area, Centroid, Coordinates, EnvelopeInternal, GeometryType, IsEmpty, IsValid, Length, NumGeometries, SRID) | **31%** |
+| user-facing capability areas (the namespaces a patch author would look for, grouped) | 24 | 10 touched, 4 complete | **42% touched** |
+
+The 24 areas and their state:
+
+| area | state |
+|---|---|
+| geometry creation (Point … GeometryCollection) | ✅ complete |
+| geometry inspection | ◐ half |
+| predicates (`Operation.Predicate` / `Relate`) | ◐ 3 of 9 |
+| overlay (`Operation.Overlay` / `OverlayNG`) | ◐ 3 of 4 |
+| distance, nearest points | ✅ |
+| buffer | ◐ the basic form; no end-cap / join parameters |
+| validity (`Operation.Valid`) | ◐ verdict, reason, location; no repair |
+| WKT (`IO`) | ✅ |
+| spatial index (`Index.*`) | ◐ STRtree of four |
+| features (separate package) | ✅ |
+| convex / concave hull, minimum bounding circle (`Algorithm`, `Algorithm.Hull`, `Algorithm.Construct`) | ❌ |
+| affine transformation (`Geometries.Utilities`) | ❌ |
+| simplification (`Simplify`) | ❌ |
+| WKB (`IO`) | ❌ |
+| GML / KML (`IO.GML2`, `IO.KML`) | ❌ |
+| linear referencing (`LinearReferencing`) | ❌ |
+| union of many (`Operation.Union`) | ❌ |
+| precision (`Precision`) | ❌ |
+| polygonize / line merge / dissolve | ❌ |
+| triangulation (`Triangulate.*`) | ❌ |
+| densify (`Densify`) | ❌ |
+| coverage (`Coverage`) | ❌ |
+| shape generators (`Shape.*`) | ❌ |
+| prepared geometry (`Geometries.Prepared`) | ❌ |
+
+**What the name means in this community:** `VL.OpenCV`, `VL.Skia`, `VL.Mapsui` are each a way *into*
+their library, not the whole of it, and ARCHITECTURE's "what stays raw" still holds — the node
+browser is not an API dump. But a user who installs a geometry package carries a mental list of what
+a geometry library does, and that list comes from Shapely and PostGIS, not from NTS's namespace
+tree. Against that list the gaps are basic, not marginal: six predicates, the fourth overlay, union
+of many, convex hull, simplify, WKB, translate/rotate/scale, a point at a fraction along a line,
+repairing an invalid geometry. So the plan below is ordered by *what a geometry user expects*, not by
+NTS's directory.
+
+### Tier 1 — the rest of `Geometry`'s own surface, one line each (15 nodes)
+
+`Touches`, `Crosses`, `Overlaps`, `Covers`, `CoveredBy`, `SymmetricDifference`, `ConvexHull`,
+`Envelope` (as a geometry), `InteriorPoint`, `IsSimple`, `IsWithinDistance`, `Reverse`, `Relate`
+(the DE-9IM string), `Boundary`, `NumPoints`. Takes the `Geometry` share from 31% to about 55%.
+`Disjoint` stays out: it is `Intersects` + `Not`, and the rule in "Adding a node" holds.
+
+### Tier 2 — the common operations that live in their own namespaces (~14 nodes)
+
+`Union (Spread)` (`UnaryUnionOp` / `CascadedPolygonUnion`), `Simplify` (Douglas-Peucker) and
+`Simplify (Topology Preserving)`, `Read WKB` / `Write WKB` (with the hex form PostGIS uses),
+`Translate` / `Rotate` / `Scale` (`AffineTransformation` — the most vvvv-shaped thing NTS has),
+`Interpolate` / `Project` / `Substring` (`LinearReferencing`: a point at a fraction along a line,
+the fraction of the nearest point, a piece of a line — animation along paths), `Densify`,
+`MakeValid` (`GeometryFixer`), `MinimumBoundingCircle`, `ConcaveHull`, `RandomPoints` (in a polygon).
+Fills 8 of the 14 empty areas.
+
+### Tier 3 — stateful or advanced
+
+`PreparedGeometry` (a process node, on `SpatialIndex`'s template), `Quadtree` / `KdTree`,
+`Polygonize`, `LineMerge`, `Delaunay` / `Voronoi`, `Coverage`, `GeometryPrecisionReducer`,
+3D distance, Hausdorff distance. Each when something asks, as the rule at the top says.
+
+**Never:** the machinery — `Noding`, `GeometriesGraph`, `EdgeGraph`, `Planargraph`, `Mathematics`,
+`RTools_NTS.Util`. See "Never" below.
+
+Tiers 1 and 2 are about 30 nodes, most of them one call plus the coordinate copy plus a help patch.
+One tier per commit, every node with tests and an F1 flag, and the help patches extended rather than
+multiplied where a node joins an existing topic (the predicates belong in `HowTo Test how geometries
+relate`, the fourth overlay in `HowTo Combine two geometries`).
+
+---
+
 ## Next
 
-In order, and each small.
+In order, and each small. **The coverage tiers above come first from 2026-10-18 on**; the
+rows below that they subsume say so.
 
 **Done 2026-08-14: the help-patch layouts.** All four were re-laid-out and each checked in the GUI.
 The rule that fixed them: **a Pad's `Comment` renders as a label to the right of the box, so an
@@ -161,14 +245,15 @@ once, and re-run the overlap check.
 | **The remaining help patches — done 2026-09-24: ten `HowTo`s, one per node group, every category covered, all seen in the GUI** | `HowTo Create a linestring`, `HowTo Inspect a geometry`, `HowTo Intersect two geometries`, `HowTo Test how geometries relate`. Append each to the right `Topic` in `Help.xml` — **do not number the files.** They were numbered `01 03 04 06` at first, and because only four of the eight existed, every gap read as a broken install. `Help.xml` is the only place ordering lives. |
 | **The cross-package example** | `Coordinates → Polygon → Buffer → Geometry → VL.Mapsui Feature → Map`, living **outside** both repositories. A patch needing two packages cannot ship inside one whose dependencies do not guarantee the other. Precedent: `vvvv-gis\examples\Example Map with data on it.vl`. |
 | **Rebuild detection in `SpatialIndex` / `Network`: reference, then value** | Measured 2026-09-24 in the shortest-path help patch: `Read WKT` makes new objects every frame, so `Read WKT → Geometries → Network` rebuilt every frame (1819 in thirty seconds) while `Read WKT ×6 → Cons → Network` stayed at 1 only because VL's collection builder keeps `Equals` items and NTS compares geometry by value. The reference-only contract in ARCHITECTURE is therefore already value-equality whenever `Cons` is upstream, and a trap whenever it is not. Candidate: keep the reference check first (free), and when references differ fall back to element-wise `EqualsExact` before rebuilding — always cheaper than the rebuild it avoids, and it makes the help patch's `Cache` region a performance choice instead of a requirement. Not done: it changes a documented contract and its 16 + 21 tests, and the user has not decided. |
-| **The remaining predicates** | `Touches`, `Crosses`, `Overlaps`, `Covers`. One line each, left out only to keep the first surface small. `Disjoint` stays out permanently — it is `Intersects` plus `Not`. |
-| **`SymmetricDifference`** | The fourth overlay operation, omitted because it is the least used of the four. |
+| **The remaining predicates** — tier 1 | `Touches`, `Crosses`, `Overlaps`, `Covers`, `CoveredBy`. One line each, left out only to keep the first surface small. `Disjoint` stays out permanently — it is `Intersects` plus `Not`. |
+| **`SymmetricDifference`** — tier 1 | The fourth overlay operation, omitted because it is the least used of the four. |
 
 ---
 
 ## Later
 
-Ordered by how likely something is to need them.
+Ordered by how likely something is to need them. Since 2026-10-18 the coverage tiers above give the
+order; these rows keep the reasoning for each item.
 
 | | |
 |---|---|

@@ -29,6 +29,14 @@ VL.Skia through ForEach and Cache regions. The
 100,000 points. Every category has now been on a screen. `0.0.1-alpha` is on nuget.org (2026-09-26). See
 [Verification](#verification-be-precise-about-which-one-you-have).
 
+**Coverage, measured 2026-10-18:** the 39 nodes wrap 20 of the 64 members of NTS's `Geometry` class
+(31%) and touch 10 of 24 user-facing capability areas; 14 areas have no node. The maintainer's rule:
+a package that takes the library's name owes its users what a geometry library is expected to do.
+[docs/ROADMAP.md](docs/ROADMAP.md#what-the-name-obliges--coverage-measured-2026-10-18) orders the
+gap in three tiers by user expectation (tier 1: the rest of `Geometry`'s own surface, 15 one-line
+nodes; tier 2: union of many, simplify, WKB, affine transforms, linear referencing, MakeValid …);
+that is the next work, one tier per commit, every node with tests and an F1 flag.
+
 **`NetTopologySuite.Index` is this package's first `[ProcessNode]`.** `SpatialIndex` holds an `STRtree` and
 rebuilds it only when the set of geometry *references* changes; `Query` returns **Candidates**, not
 results. The contract and why it is that one and not another are in

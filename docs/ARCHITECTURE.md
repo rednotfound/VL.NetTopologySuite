@@ -563,6 +563,16 @@ geospatial concept that benefits from a VL-native node?* — answers no for all 
 NetTopologySuite is large. Wrapping all of it would turn the node browser into an API dump, which is
 the failure mode the brief's §28 names and which no user benefits from.
 
+**But the name obliges something, measured 2026-10-18.** The 39 nodes call about 30 of NTS 2.6.0's
+2,318 public methods, which is the meaningless number; the meaningful ones are **20 of the 64
+members of `Geometry`** (31%) and **10 of 24 user-facing capability areas touched, 4 complete**.
+The list at the top of this section — `IsSimple`, `Reverse`, `Boundary`, `InteriorPoint`, `Relate`,
+the remaining predicates, simplification, linear referencing, affine transformation — is exactly
+what a Shapely or PostGIS user expects a geometry package to have, so "until asked for" has been
+asked for: [ROADMAP.md](ROADMAP.md#what-the-name-obliges--coverage-measured-2026-10-18) orders
+them in three tiers by user expectation. What stays raw after that is the machinery (`Noding`,
+`GeometriesGraph`, `Planargraph`, `Mathematics`) and the configuration objects behind pins.
+
 ---
 
 ## The package boundary
