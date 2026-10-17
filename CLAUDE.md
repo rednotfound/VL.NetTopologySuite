@@ -267,10 +267,17 @@ vl-nettopologysuite/
 ├── VL.NetTopologySuite.vl / .nuspec   # the package. .vl is hand-edited, never regenerated
 ├── src/VL.NetTopologySuite/
 │   ├── Defaults.cs                    # ⭐ the default factory and the defensive copying
+│   ├── InputSets.cs                   # the rebuild-detection rule SpatialIndex and Network share
 │   ├── GeometryNodes.Creation.cs      # NTS.Geometry - Coordinate .. GeometryCollection
 │   ├── GeometryNodes.Inspection.cs    # NTS.Geometry - Area, IsValid, Bounds, Coordinates …
-│   ├── OperationNodes.cs              # NTS.Operation - Buffer, overlay, predicates
-│   └── IONodes.cs                     # NTS.IO - Read WKT, Write WKT
+│   ├── OperationNodes.cs              # NTS.Operation - Buffer, overlay, predicates, Distance, Nearest Points
+│   ├── IONodes.cs                     # NTS.IO - Read WKT, Write WKT
+│   ├── FeatureNodes.cs                # NTS.Feature - Feature, Split
+│   ├── SpatialIndexNode.cs            # NTS.Index - SpatialIndex (process node)
+│   ├── IndexNodes.cs                  # NTS.Index - Query
+│   ├── Network.cs                     # NTS.Network - the retained handle type, and the scope sentence
+│   ├── NetworkNode.cs                 # NTS.Network - Network (process node)
+│   └── NetworkNodes.cs                # NTS.Network - ShortestPath
 ├── test/VL.NetTopologySuite.Tests/    # 126 xunit tests, no network, no vvvv
 ├── help/VL.NetTopologySuite/          # 15 help patches + Help.xml (ordering and tags)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
@@ -300,9 +307,21 @@ the type level entirely.
 
 | Category | Source |
 |---|---|
-| `NTS.Geometry` | `GeometryNodes.*.cs` — `[Name("Geometry")]` |
+| `NTS.Geometry` | `GeometryNodes.Creation.cs` + `GeometryNodes.Inspection.cs` — `[Name("Geometry")]`, one `partial` class |
 | `NTS.Operation` | `OperationNodes.cs` — `[Name("Operation")]` |
 | `NTS.IO` | `IONodes.cs` — `[Name("IO")]` |
+| `NTS.Feature` | `FeatureNodes.cs` — `[Name("Feature")]` |
+| `NTS.Index` | `SpatialIndexNode.cs` (`[ProcessNode(Name = "SpatialIndex", Category = "NTS.Index")]`) + `IndexNodes.cs` (`[Name("Index")]`, `Query`) |
+| `NTS.Network` | `Network.cs` (the handle type) + `NetworkNode.cs` (`[ProcessNode(Name = "Network", ...)]`) + `NetworkNodes.cs` (`[Name("Network")]`, `ShortestPath`) |
+
+**Finding a node's code: node → category → file.** The NodeBrowser (or a help patch's
+`LastCategoryFullName`) gives the category; the table gives the file; inside it, a node whose name
+has a space is `[Name("Read WKT")]` on a method, otherwise the method is named like the node.
+**Source files follow what vvvv's own libraries do** (VL.CoreLib, VL.ImGui, VL.Skia, VL.IO.Redis and
+vl-mapsui, measured 2026-10-17): one type per file named after the type; a static class of
+operations is `<Topic>Nodes.cs` (CoreLib: `SpreadNodes.cs`, `KeyboardNodes.cs`); a split of one class
+is `<Class>.<Part>.cs` (CoreLib: `EnumerableNodes.Custom.cs`). The Gray Book itself says nothing about
+file names — only the namespace and class decide the category — so this is convention, not rule.
 
 `RootNamespace` is `VL.NTS`, deliberately decoupled from the assembly name `VL.NetTopologySuite` —
 otherwise the category would be the unreadable `NetTopologySuite.Geometry.Point`. The C# class is

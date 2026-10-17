@@ -169,10 +169,19 @@ The prefix comes from `[assembly: ImportAsIs(Namespace = "VL")]`.
 | `NTS.Feature` | `FeatureNodes.cs` | `[Name("Feature")]` |
 | `NTS.Operation` | `OperationNodes.cs` | `[Name("Operation")]` |
 | `NTS.IO` | `IONodes.cs` | `[Name("IO")]` |
-| `NTS.Index` | `IndexNodes.cs` | `[ProcessNode(Name = "SpatialIndex", Category = "NTS.Index")]` on the class, `[Name("Index")]` on the static `Query` holder |
-| `NTS.Experimental.Network` | `NetworkNodes.cs` | namespace `VL.NTS.Experimental` + `[Name("Network")]`; **experimental by name, on purpose** — see its own section |
+| `NTS.Index` | `SpatialIndexNode.cs` + `IndexNodes.cs` | `[ProcessNode(Name = "SpatialIndex", Category = "NTS.Index")]` on the class, `[Name("Index")]` on the static `Query` holder |
+| `NTS.Network` | `Network.cs` + `NetworkNode.cs` + `NetworkNodes.cs` | `[ProcessNode(Name = "Network", Category = "NTS.Network")]` on the class, `[Name("Network")]` on the static `ShortestPath` holder. Was `NTS.Experimental.Network` until the 2026-08-28 promotion — see its own section |
 
-Five, deliberately — `NTS.Validation` was considered and dropped, because one validity node does
+**Source files, one convention (measured 2026-10-17 against VL.CoreLib, VL.ImGui, VL.Skia,
+VL.IO.Redis, VL.OpenCV, VL.Devices.Kinect2 and vl-mapsui):** one type per file, named after the
+type; a static class of operations is `<Topic>Nodes.cs`, which is CoreLib's own `SpreadNodes.cs`,
+`ArrayNodes.cs`, `KeyboardNodes.cs`; a class split across files is `<Class>.<Part>.cs`, CoreLib's
+`EnumerableNodes.Custom.cs`. The Gray Book sets no file-naming rule — the namespace and the class
+decide the category, the file name decides nothing — so this is the community's habit, kept here
+because it is what makes *node → category → file* a two-step lookup. Until 2026-10-17 `IndexNodes.cs`
+held two types and `NetworkNodes.cs` three; both were split, with no code change.
+
+Six, deliberately — `NTS.Validation` was considered and dropped, because one validity node does
 not earn a category level and §26 of the brief warns against deep nesting. `NTS.Feature` earns one
 because it wraps a distinct upstream package and a distinct layer of the data model, not merely a
 pair of methods. `NTS.Index` (2026-08-23) earns one with two nodes, because the criterion was never
