@@ -43,14 +43,21 @@ results. The contract and why it is that one and not another are in
 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#spatialindex--query--the-first-process-node), and it
 is the template for the next stateful node (prepared geometry, when a chapter needs it).
 
-Two sibling repositories sit beside this one and are **references, not dependencies**:
+**This package is the centre of the family, and references nothing of ours.** The siblings depend
+on it, never the other way:
 
-- `D:\2026_Projects\vl-mapsui` (`VL.Mapsui`) — consumes NTS geometry. Composes through
-  NetTopologySuite, not through this package. Neither references the other.
-- `D:\2026_Projects\vvvv-gis` (`VL.GIS`) — an earlier package that already ships ~40 NTS nodes,
-  published as `0.2.0-alpha`. **Deliberately not a constraint here.** The folder is no longer on
-  disk (checked 2026-09-24); what it taught is carried in `docs/RULES.md` and `docs/AUDIT.md`. See
+- `D:\2026_Projects\vl-mapsui` (`VL.Mapsui`) — draws NTS geometry on a map. Depends on this package
+  (so its help patches open working).
+- `D:\2026_Projects\vl-geojson` (`VL.NetTopologySuite.GeoJSON`, `VL.GeoJSON` until 2026-10-18) —
+  `Read GeoJSON` / `Write GeoJSON`, in this package's `NetTopologySuite.IO` category. Depends on
+  this package's **0.0.3-alpha** for `GetAttribute`, so that release gates its first one.
+- `D:\2026_Projects\vl-overworld` (`VL.Overworld`) — the course; declares all three.
+- `VL.GIS` (`rednotfound/vvvv-gis`, local clone gone) — the retired predecessor. History only; what
+  it taught is carried in `docs/RULES.md` and `docs/AUDIT.md`. See
   [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#vvvv-gis-vlgis--a-reference-not-a-constraint).
+
+**Memory for the whole family lives here** (`~\.claude\projects\D--2026-Projects-vl-nettopologysuite\memory`);
+the other three repositories' memory folders are junctions onto it since 2026-10-18.
 
 **Only this repository's `CLAUDE.md` loads automatically.** The siblings have their own rules; read
 theirs before touching them, and do not assume a rule written there applies here unless it has been
