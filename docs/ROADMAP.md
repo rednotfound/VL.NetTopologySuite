@@ -8,17 +8,24 @@ comment; the work is deciding whether they earn a node, not writing them.
 
 ---
 
-## Now — 0.0.3-alpha on nuget.org, 0.0.4-alpha in the tree
+## Now — 0.0.4-alpha on nuget.org, 0.0.5-alpha in the tree
+
+**2026-10-18, evening: `0.0.4-alpha` released** - the tooltip rewrite alone, one change per release,
+and a fourth walk through the process at the maintainer's suggestion, for practice. Browser upload
+by the maintainer; install-back from nuget.org alone green (the first run lost one patch to a
+one-off Stride assembly-processor error in the export step, which did not reproduce - see
+RELEASE.md). The tree is at `0.0.5-alpha`, which is where tier 1 of the coverage plan lands.
+
+## Before that: 0.0.3-alpha on nuget.org, 0.0.4-alpha in the tree
 
 **2026-10-18: `0.0.3-alpha` released** - `GetAttribute`, and the version VL.NetTopologySuite.GeoJSON
 depends on, so that package can now publish its first. Browser upload by the maintainer, installed
-back from nuget.org alone. The tree is at `0.0.4-alpha`, which is where tier 1 of the coverage plan
-lands.
+back from nuget.org alone. The tree moved to `0.0.4-alpha`.
 
 **2026-10-18, in the tree for `0.0.4-alpha`: tooltips.** Every public `///` rewritten to what a hover
 can carry (one-line summary, a sentence or two of remarks, a line per pin); the rationale moved to
 `//` comments. `NodeDocsTests` holds it — 104 findings before, none after; 134 tests. CLAUDE.md,
-"Node documentation is a tooltip". `0.0.3-alpha` on nuget.org still shows the old essays.
+"Node documentation is a tooltip". `0.0.3-alpha` on nuget.org shows the old essays; `0.0.4-alpha` shows the short ones.
 
 ## Before that: 0.0.2-alpha on nuget.org, 0.0.3-alpha in the tree
 

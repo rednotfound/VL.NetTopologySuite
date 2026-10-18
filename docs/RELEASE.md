@@ -312,6 +312,23 @@ green. The nupkg was repacked after the release notes were written - a pack made
 nuspec edit carries the old notes, so **pack after the notes, then verify the notes inside the
 nupkg, then tag**. Working version `0.0.4-alpha`.
 
+## `0.0.4-alpha` — 2026-10-18, evening
+
+The tooltip rewrite alone (no node changed). Released before tier 1 at the maintainer's own
+suggestion - "主要我们经验确实不足" - because one change per release and a fourth walk through the
+process were both worth more than saving a version number. Gate green at `a9ca72d`; notes written
+first, then packed, then the nupkg opened and its nuspec and XML checked (`GetAttribute`'s hover is
+the short one) before the tag. Browser upload; the email came within minutes.
+
+**The install-back failed once, and it was not the package.** The first
+`Test-Install -FromNuGetOrg -Version 0.0.4-alpha` run reported 14 of 15 patches, `HowTo Create a
+polygon` failing in the *export* step with `Stride.Core.targets(108,5): error : Failed to run
+assembly processor` - that is Stride's post-build tool, which runs after the C# was generated and
+every node had resolved. The same bytes had compiled 15 of 15 from the local feed minutes earlier,
+and a second run from nuget.org passed 15 of 15 with the signature check. So: an export-step error
+that names Stride is a rerun first, and a package problem only if it repeats. Working version
+`0.0.5-alpha`; tier 1 lands there.
+
 ## Updating a vvvv that already has the previous version
 
 `nuget install VL.NetTopologySuite -pre` again, in vvvv's command line; the nugets folder then
