@@ -2,7 +2,7 @@
 
 **NetTopologySuite made natural inside [vvvv gamma](https://vvvv.org).** Not another GIS framework.
 
-> **Status: `0.0.2-alpha` on nuget.org since 2026-10-17 — a prerelease, early, and it works.**
+> **Status: `0.0.3-alpha` on nuget.org since 2026-10-18 — a prerelease, early, and it works.**
 > 39 nodes in six categories, 126 tests, 15 help patches, every node opens one on **F1**. Every
 > category has been seen running in vvvv gamma 7.4, all fifteen help patches were reviewed by hand
 > in the editor, and the published package was installed back from nuget.org alone, its fifteen help
@@ -311,7 +311,7 @@ to the repository's help folder, so a patch saved in vvvv is the one git sees.
 
 To use the working tree instead of the published package, point vvvv at the staged folder:
 `vvvv.exe MyPatch.vl --package-repositories <repo>\dist;<repo>\deps`. The working version is
-always one ahead of the published one (`0.0.3-alpha` while `0.0.2-alpha` is on nuget.org), so the
+always one ahead of the published one (`0.0.4-alpha` while `0.0.3-alpha` is on nuget.org), so the
 two can never be mistaken for each other in a NuGet cache.
 
 ---

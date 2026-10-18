@@ -8,7 +8,14 @@ comment; the work is deciding whether they earn a node, not writing them.
 
 ---
 
-## Now — 0.0.2-alpha on nuget.org, 0.0.3-alpha in the tree
+## Now — 0.0.3-alpha on nuget.org, 0.0.4-alpha in the tree
+
+**2026-10-18: `0.0.3-alpha` released** - `GetAttribute`, and the version VL.NetTopologySuite.GeoJSON
+depends on, so that package can now publish its first. Browser upload by the maintainer, installed
+back from nuget.org alone. The tree is at `0.0.4-alpha`, which is where tier 1 of the coverage plan
+lands.
+
+## Before that: 0.0.2-alpha on nuget.org, 0.0.3-alpha in the tree
 
 **2026-10-17: `0.0.2-alpha` released** the same day the category rename was made - browser upload by
 the maintainer, nuget.org validated it in about ten minutes, installed back from nuget.org alone.

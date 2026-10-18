@@ -303,6 +303,15 @@ front of this release. The steps are the same list as for the first release: rew
 tree to `0.0.3-alpha` the same day. VL.Mapsui's dependency `VL.NetTopologySuite 0.0.1-alpha` is
 a floor, so it needs no change.
 
+## `0.0.3-alpha` — 2026-10-18
+
+`GetAttribute` and the family dependency direction. Released the same day it was ready because
+VL.NetTopologySuite.GeoJSON's nuspec names this version as its floor and could not publish before
+it. Browser upload again; validated within minutes; `Test-Install -FromNuGetOrg -Version 0.0.3-alpha`
+green. The nupkg was repacked after the release notes were written - a pack made before the last
+nuspec edit carries the old notes, so **pack after the notes, then verify the notes inside the
+nupkg, then tag**. Working version `0.0.4-alpha`.
+
 ## Updating a vvvv that already has the previous version
 
 `nuget install VL.NetTopologySuite -pre` again, in vvvv's command line; the nugets folder then
