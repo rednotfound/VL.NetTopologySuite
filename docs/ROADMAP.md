@@ -15,6 +15,11 @@ depends on, so that package can now publish its first. Browser upload by the mai
 back from nuget.org alone. The tree is at `0.0.4-alpha`, which is where tier 1 of the coverage plan
 lands.
 
+**2026-10-18, in the tree for `0.0.4-alpha`: tooltips.** Every public `///` rewritten to what a hover
+can carry (one-line summary, a sentence or two of remarks, a line per pin); the rationale moved to
+`//` comments. `NodeDocsTests` holds it — 104 findings before, none after; 134 tests. CLAUDE.md,
+"Node documentation is a tooltip". `0.0.3-alpha` on nuget.org still shows the old essays.
+
 ## Before that: 0.0.2-alpha on nuget.org, 0.0.3-alpha in the tree
 
 **2026-10-17: `0.0.2-alpha` released** the same day the category rename was made - browser upload by

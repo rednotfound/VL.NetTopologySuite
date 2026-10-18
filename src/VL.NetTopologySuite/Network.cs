@@ -18,12 +18,16 @@ using VL.Core.Import;
 // If a change would stop that sentence being true, stop and discuss.
 namespace VL.NetTopologySuite;
 
+//
+// The /// text below is what vvvv shows on hover - user-facing, short, one sentence per line. Opaque
+// on purpose: the node and edge records inside are an implementation detail while the lesson is
+// being validated, not public VL types.
+
 /// <summary>
-/// A retained network: nodes at LineString endpoints, one undirected edge per LineString.
+/// A network built by the Network node: nodes at line endpoints, one two-way edge per line.
 /// </summary>
 /// <remarks>
-/// Opaque on purpose. The node and edge records inside are an implementation detail while the
-/// lesson is being validated, not public VL types.
+/// Connect it to ShortestPath.
 /// </remarks>
 public sealed class Network
 {

@@ -19,7 +19,7 @@ irreversible step, and nuget.org's 2026 policy (API keys 30 days at most, Truste
 browser upload for manual) is written there. Never push to nuget.org without the user's explicit
 go; a publish cannot be undone.** 40 public nodes in six categories (all published as of `0.0.3-alpha`) — `NetTopologySuite.Network` (`Network` +
 `ShortestPath`, an algorithm of ours, promoted from `NetTopologySuite.Experimental.Network` by
-`docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 133
+`docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 134
 tests, 15 help patches.** All fifteen were (re)written on 2026-09-24 in the community's measured style
 ([docs/HELP-PATCH-STYLE.md](docs/HELP-PATCH-STYLE.md)), every one seen in the GUI, every node opens one
 on **F1** (help flags, audited by `Test-VLPatch`), and `HowTo Find the shortest path` draws its town with
@@ -186,7 +186,7 @@ listed, and every link must name a file that exists, because both failures are s
 
 | | proves | state |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ 133 tests, ~300 ms, no network |
+| `dotnet test` | the arithmetic is right | ✅ 134 tests, ~300 ms, no network |
 | `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 16 documents |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 15 help patches, 2026-09-24 |
@@ -294,7 +294,7 @@ vl-nettopologysuite/
 │   ├── Network.cs                     # NetTopologySuite.Network - the retained handle type, and the scope sentence
 │   ├── NetworkNode.cs                 # NetTopologySuite.Network - Network (process node)
 │   └── NetworkNodes.cs                # NetTopologySuite.Network - ShortestPath
-├── test/VL.NetTopologySuite.Tests/    # 133 xunit tests, no network, no vvvv
+├── test/VL.NetTopologySuite.Tests/    # 134 xunit tests, no network, no vvvv
 ├── help/VL.NetTopologySuite/          # 15 help patches + Help.xml (ordering and tags)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
 ├── docs/ARCHITECTURE.md               # why each node exists, what stays raw, the boundary
@@ -354,7 +354,32 @@ resolves to *us*, so a fully qualified NTS name in code needs `global::` (two pl
 class named `Geometry` would shadow NTS's own `Geometry` in every signature in the assembly. A
 document that references the NetTopologySuite nuget *directly* also sees the library's raw nodes
 under `NetTopologySuite.Geometries.*`, one letter from our `NetTopologySuite.Geometry.*` - the same
-situation VL.Mapsui has with `Mapsui.*`, and the summary line tells them apart.
+situation VL.Mapsui has with `Mapsui.*`, and the category is what tells them apart (every summary
+here also ended "Uses NetTopologySuite." until 2026-10-18; that line went with the tooltip rewrite
+below, because a tooltip is not the place for it).
+
+## Node documentation is a tooltip
+
+**Every `///` on a public member is shown to the user** — on hover in the patch and in the
+NodeBrowser (The Gray Book, *writing-nodes*: summary "a one-liner", remarks "usage instructions,
+warnings", param/returns "short info"). Until 2026-10-18 the family wrote design rationale there:
+this package's remarks had a median of 432 characters (max 2,028, `SpatialIndex`), and a hover on
+`GetAttribute` showed a 1,500-character essay. Seen on that hover: `<see cref>` renders as
+**nothing**, `<para>`s run together without a space, and **a line break in the source is a line
+break on screen**.
+
+So: `<summary>` one line, present tense ("Makes a point at a coordinate."); `<remarks>` one or two
+sentences a user needs — units, a warning; `<param>` / `<returns>` one short line per pin; plain
+text, no `<c>`/`<b>`/`<see>`, one sentence per source line. **The reasoning moves to `//` comments
+above the `///` block**, where it stays next to the code and never reaches a tooltip — every
+measured fact that used to be in a `<remarks>` is still there. vvvv's own CoreLib measures summary
+median 68 characters, remarks median 50. Internal members (`Defaults`, `InputSets`) keep their long
+`///`: nobody hovers them.
+
+`NodeDocsTests` enforces it on the built XML for every public member (summary 200, remarks 300,
+pins 200 characters; no `see`/`para`/`list`/`code`; no break inside a sentence). It went red with
+**104 findings** on the old docs, and green after. The same file is in VL.NetTopologySuite.GeoJSON
+and VL.Mapsui, copied verbatim with only the anchor type changed.
 
 ## Adding a node
 

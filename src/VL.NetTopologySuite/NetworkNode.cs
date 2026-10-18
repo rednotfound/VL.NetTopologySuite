@@ -7,24 +7,34 @@ using VL.Core.Import;
 // embodies it. One type per file, as vvvv's own libraries do (measured 2026-10-17).
 namespace VL.NetTopologySuite;
 
+//
+// The /// text below is what vvvv shows on hover and in the NodeBrowser - user-facing, short, one
+// sentence per line (a line break in the source is a line break in the tooltip). The reasoning
+// lives here.
+//
+// Category NetTopologySuite.Network. A process node: the network is built once and held.
+//
+// Connectivity is explicit and exact. Two LineStrings are connected when they share an endpoint
+// with identical coordinates. Not "close": no tolerance. Not "crossing": a line over another line in
+// XY is a bridge or an overpass until the data says otherwise, so crossings are not junctions. Not
+// "passing through": only a LineString's first and last coordinates are nodes; its interior
+// vertices are shape. If a junction is meant where lines cross, node the linework first (Union does
+// it - and that step is a claim about the world, not a geometric fact).
+//
+// Rebuilt only when the set of LineString references changes - same contract as SpatialIndex, same
+// words: count, or any position holding a different object. Mutating a line in place is unsupported
+// and undetectable. Closing a bridge is removing its line from the collection: a new collection, one
+// rebuild, Networks Built ticks up. That is the honest shape of "the topology changed".
+//
+// LineStrings become edges; each part of a MultiLineString becomes an edge; nulls, empties and
+// anything else are skipped. Edge Count tells how many survived.
+
 /// <summary>
-/// Builds a <see cref="Network"/> from LineStrings, once, and holds it.
-/// Category <c>NetTopologySuite.Network</c>.
+/// Builds a network from lines, once, and holds it.
 /// </summary>
 /// <remarks>
-/// <para><b>Connectivity is explicit and exact.</b> Two LineStrings are connected when they share an
-/// endpoint with identical coordinates. Not "close": no tolerance. Not "crossing": a line over
-/// another line in XY is a bridge or an overpass until the data says otherwise, so crossings are not
-/// junctions. Not "passing through": only a LineString's first and last coordinates are nodes; its
-/// interior vertices are shape. If a junction is meant where lines cross, node the linework first
-/// (<c>Union</c> does it — and that step is a claim about the world, not a geometric fact).</para>
-/// <para><b>Rebuilt only when the set of LineString references changes</b> — same contract as
-/// <c>SpatialIndex</c>, same words: count, or any position holding a different object. Mutating a
-/// line in place is unsupported and undetectable. Closing a bridge is removing its line from the
-/// collection: a new collection, one rebuild, <c>Networks Built</c> ticks up. That is the honest
-/// shape of "the topology changed".</para>
-/// <para>LineStrings become edges; each part of a MultiLineString becomes an edge; nulls, empties
-/// and anything else are skipped. <c>Edge Count</c> tells you how many survived.</para>
+/// Lines connect only where their endpoints are exactly equal; lines that cross are not connected.
+/// It rebuilds when a different set of lines arrives, so build the lines once rather than every frame.
 /// </remarks>
 [ProcessNode(Name = "Network", Category = "NetTopologySuite.Network")]
 public class NetworkNode
@@ -36,10 +46,14 @@ public class NetworkNode
 
     internal int NetworksBuilt { get; private set; }
 
-    /// <param name="lineStrings">The linework. Endpoints that coincide exactly are one node.</param>
+    /// <summary>
+    /// Builds the network when the lines change.
+    /// </summary>
+    /// <param name="lineStrings">The lines. Endpoints that coincide exactly are one node.</param>
     /// <param name="nodeCount">Distinct endpoints.</param>
-    /// <param name="edgeCount">LineStrings (and MultiLineString parts) that became edges.</param>
-    /// <param name="networksBuilt">How many times this node has built a network. Should stay at 1 until the topology changes.</param>
+    /// <param name="edgeCount">Lines (and MultiLineString parts) that became edges.</param>
+    /// <param name="networksBuilt">How many times this node has built a network. Should stay at 1 until the lines change.</param>
+    /// <returns>The network, for ShortestPath.</returns>
     public Network? Update(
         IEnumerable<Geometry?>? lineStrings,
         out int nodeCount,

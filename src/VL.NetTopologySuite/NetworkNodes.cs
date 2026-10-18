@@ -7,33 +7,45 @@ using VL.Core.Import;
 // embodies it. One type per file, as vvvv's own libraries do (measured 2026-10-17).
 namespace VL.NetTopologySuite;
 
-/// <summary>Asking a network. Category <c>NetTopologySuite.Network</c>.</summary>
+//
+// The /// text below is what vvvv shows on hover and in the NodeBrowser - user-facing, short, one
+// sentence per line (a line break in the source is a line break in the tooltip). The reasoning
+// lives here.
+
+/// <summary>Asks a network for routes.</summary>
 [Name("Network")]
 public static class NetworkNodes
 {
+    // Dijkstra over edge lengths.
+    //
+    // Snapping is visible, never silent. From and To snap to the nearest network NODE and the two
+    // snap distances say how far that was. On a marked place they are 0; off the network they tell
+    // the patch the route did not start where it clicked.
+    //
+    // Found = false is an answer. No route between the two nodes - the bridge is closed, the other
+    // bank is an island - gives an empty path, length 0 and Found false, never an exception and
+    // never a silent straight line.
+    //
+    // The path keeps each edge's original shape, reversed where the route walks an edge backwards,
+    // so a curved street stays curved. The graph decides which edges; the geometry decides what the
+    // path looks like. Length is the sum of the edge lengths, in the network's own coordinate units.
+    //
+    // From and To on the same node: found, empty path, length 0.
+    //
+    // Max Snap Distance bounds the query, not the connectivity. If either snap distance exceeds it,
+    // the answer is not found - empty path, length 0 - and the snap distances are still reported,
+    // because a refusal that cannot be measured would break the rule above. The default is infinity:
+    // unbounded snapping, the behaviour every existing chapter was built against. Edges still connect
+    // only by exact shared endpoints; this is not tolerance snapping.
+
     /// <summary>
-    /// The shortest route through the network between two points, as the original edge geometry
-    /// joined end to end. Uses Dijkstra over edge lengths.
+    /// Finds the shortest route through the network between two points.
     /// </summary>
     /// <remarks>
-    /// <para><b>Snapping is visible, never silent.</b> From and To snap to the nearest network NODE
-    /// and the two snap distances say how far that was. On a marked place they are 0; off the
-    /// network they tell you the route did not start where you clicked.</para>
-    /// <para><b>Found = false is an answer.</b> No route between the two nodes — the bridge is closed,
-    /// the other bank is an island — gives an empty path, length 0 and <c>Found</c> false, never an
-    /// exception and never a silent straight line.</para>
-    /// <para>The path keeps each edge's original shape, reversed where the route walks an edge
-    /// backwards, so a curved street stays curved. The graph decides which edges; the geometry
-    /// decides what the path looks like. Length is the sum of the edge lengths, in the network's
-    /// own coordinate units.</para>
-    /// <para>From and To on the same node: found, empty path, length 0.</para>
-    /// <para><b>Max Snap Distance bounds the query, not the connectivity.</b> If either snap distance
-    /// exceeds it, the answer is not found — empty path, length 0 — and the snap distances are still
-    /// reported, because a refusal you cannot measure would break the rule above. The default is
-    /// infinity: unbounded snapping, the behaviour every existing chapter was built against. Edges
-    /// still connect only by exact shared endpoints; this is not tolerance snapping.</para>
+    /// From and To snap to the nearest network node; the snap distances show how far.
+    /// The path follows the original shape of each line, so a curved street stays curved.
     /// </remarks>
-    /// <param name="network">From <c>Network</c>.</param>
+    /// <param name="network">From Network.</param>
     /// <param name="from">Where the route starts. Snapped to the nearest node.</param>
     /// <param name="to">Where the route ends. Snapped to the nearest node.</param>
     /// <param name="length">Length of the route along the network, in coordinate units. 0 when not found.</param>
@@ -41,6 +53,7 @@ public static class NetworkNodes
     /// <param name="fromSnapDistance">How far From moved to reach its node.</param>
     /// <param name="toSnapDistance">How far To moved to reach its node.</param>
     /// <param name="maxSnapDistance">Farthest either end may snap. Beyond it: not found, snap still reported.</param>
+    /// <returns>The route as one line. Empty when not found.</returns>
     public static LineString ShortestPath(
         Network? network,
         Point? from,

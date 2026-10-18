@@ -4,53 +4,63 @@ using VL.Core.Import;
 
 namespace VL.NetTopologySuite;
 
+// The /// text below is what vvvv shows on hover and in the NodeBrowser - user-facing, short, one
+// sentence per line (a line break in the source is a line break in the tooltip). The reasoning
+// lives here.
+//
+// Category NetTopologySuite.IO. WKT - Well-Known Text - is here because it belongs to
+// NetTopologySuite's own IO namespace and because it is what makes the rest of the package usable:
+// it is how a geometry gets into a patch without wiring twenty coordinate nodes, how a help patch
+// shows a shape in one IOBox, and how a result gets checked against a value from another tool.
+//
+// WKB and GeoJSON are deliberately not here. WKB is a reasonable next step. GeoJSON is not: it
+// lives in a separate NuGet package (NetTopologySuite.IO.GeoJSON), it brings a feature model that
+// is not this package's business, and taking it on is the first step towards the generic geospatial
+// file-format package this one is explicitly not trying to be. It has its own package,
+// VL.NetTopologySuite.GeoJSON, whose Read GeoJSON and Write GeoJSON join this category.
+//
+// [Name] is used on the methods here rather than relying on how VL splits a PascalCase name,
+// because ReadWKT would otherwise be shown as something like "Read W K T". NameAttribute is legal
+// on a method - its AttributeUsage is All, read out of VL.Core's metadata - and the GUI confirms
+// the label (see CLAUDE.md).
+
 /// <summary>
-/// Reading and writing geometry as text. Category <c>NetTopologySuite.IO</c>.
+/// Reads and writes geometry as Well-Known Text.
 /// </summary>
-/// <remarks>
-/// <para>WKT — Well-Known Text — is here because it belongs to NetTopologySuite's own IO namespace
-/// and because it is what makes the rest of the package usable: it is how a geometry gets into a
-/// patch without wiring twenty coordinate nodes, how a help patch shows a shape in one IOBox, and
-/// how a result gets checked against a value from another tool.</para>
-/// <para><b>WKB and GeoJSON are deliberately not here.</b> WKB is a reasonable next step. GeoJSON is not: it lives in a separate NuGet package
-/// (<c>NetTopologySuite.IO.GeoJSON</c>), it brings a feature model that is not this package's
-/// business, and taking it on is the first step towards the generic geospatial file-format package
-/// this one is explicitly not trying to be. It has its own package, VL.NetTopologySuite.GeoJSON,
-/// whose <c>Read GeoJSON</c> and <c>Write GeoJSON</c> join this category.</para>
-/// <para><c>[Name]</c> is used on the methods here rather than relying on how VL splits a
-/// PascalCase name, because <c>ReadWKT</c> would otherwise be shown as something like
-/// "Read W K T". Verified that <c>NameAttribute</c> is legal on a method — its
-/// <c>AttributeUsage</c> is <c>All</c>, read out of <c>VL.Core</c>'s metadata. <b>Only the GUI
-/// proves a node's label</b>, so this is confirmed as far as the compiler goes and no further.</para>
-/// </remarks>
 [Name("IO")]
 public static class IONodes
 {
+    // Examples: POINT (13.4 52.5), LINESTRING (0 0, 1 1, 2 0), POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))
+    // - note the doubled brackets, which a polygon needs because its outer ring is one of a list.
+    //
+    // Failure is a pin, not an exception. Half-typed text is the normal state of an IOBox somebody
+    // is editing, and a node that throws sixty times a second while they type is not a diagnostic.
+    // Success is false and Result is an empty geometry until the text parses.
+    //
+    // The SRID comes from the Factory pin - 0 when it is unconnected, matching every creation node.
+    // An SRID=4326;POINT (...) prefix in the text overrides it. This takes a deliberate correction:
+    // left alone, NTS's reader stamps -1 on everything regardless of the factory it was built from
+    // (measured), so a patch would see two different numbers for "unset" depending on whether a
+    // geometry was typed or built.
+    //
+    // An unclosed polygon ring is accepted and closed (WKTReader.FixStructure), the same way the
+    // LinearRing node closes one, so POLYGON ((0 0, 1 0, 1 1, 0 1)) parses rather than failing on a
+    // technicality.
+    //
+    // Z is read when present (POINT Z (1 2 3)). Reading the same unchanged string every frame does
+    // re-parse it every frame - cheap for a handful of coordinates, worth latching with an S+H or a
+    // Cache region for anything large.
+
     /// <summary>
-    /// Parse a geometry from Well-Known Text. Reports failure instead of throwing.
-    /// Uses NetTopologySuite.
+    /// Parses a geometry from Well-Known Text, such as POINT (13.4 52.5).
     /// </summary>
     /// <remarks>
-    /// <para>Examples: <c>POINT (13.4 52.5)</c>, <c>LINESTRING (0 0, 1 1, 2 0)</c>,
-    /// <c>POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))</c> — note the doubled brackets, which a polygon needs
-    /// because its outer ring is one of a list. Rings must be closed, repeating the first
-    /// coordinate.</para>
-    /// <para><b>Failure is a pin, not an exception.</b> Half-typed text is the normal state of an
-    /// IOBox somebody is editing, and a node that throws sixty times a second while they type is
-    /// not a diagnostic. <c>Success</c> is false and <c>Result</c> is an empty geometry until the
-    /// text parses.</para>
-    /// <para>The SRID comes from the <c>Factory</c> pin — 0 when it is unconnected, matching every
-    /// creation node. An <c>SRID=4326;POINT (...)</c> prefix in the text overrides it. This takes a
-    /// deliberate correction: left alone, NTS's reader stamps <b>-1</b> on everything regardless of
-    /// the factory it was built from (measured), so a patch would see two different numbers for
-    /// "unset" depending on whether a geometry was typed or built.</para>
-    /// <para><b>An unclosed polygon ring is accepted and closed</b>, the same way the
-    /// <c>LinearRing</c> node closes one, so <c>POLYGON ((0 0, 1 0, 1 1, 0 1))</c> parses rather
-    /// than failing on a technicality.</para>
-    /// <para>Z is read when present (<c>POINT Z (1 2 3)</c>). Reading the same unchanged string every
-    /// frame does re-parse it every frame — cheap for a handful of coordinates, worth latching with
-    /// a <c>S+H</c> for anything large.</para>
+    /// A polygon needs doubled brackets: POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0)). An unclosed ring is closed for you.
+    /// The text is parsed every frame, so put a large one in a Cache region.
     /// </remarks>
+    /// <param name="wkt">The text to parse.</param>
+    /// <param name="factory">Sets the SRID, 0 when unconnected. An SRID=4326; prefix in the text wins.</param>
+    /// <param name="success">False until the text parses; the result is then an empty geometry.</param>
     [Name("Read WKT")]
     public static Geometry ReadWKT(
         [Pin(Name = "WKT")] string? wkt,
@@ -82,21 +92,26 @@ public static class IONodes
         }
     }
 
+    // The round trip through Read WKT preserves coordinates and geometry type. It does NOT preserve
+    // SRID, and there is no pin to make it: WKTWriter in NTS 2.6 has no way to emit one (checked
+    // against the type's own members, not assumed), and plain WKT has nowhere to put it. A geometry
+    // written and read back carries whatever SRID the reader's Factory says - so if the SRID
+    // matters, it travels beside the text, not inside it.
+    //
+    // Z is dropped unless Include Z is on. NTS's writer defaults to two dimensions and discards Z
+    // silently (measured) - a Point built from a CoordinateZ writes as POINT (1 2), with the
+    // elevation simply gone. That is a real way to lose data on the way out of a patch, so it is a
+    // pin rather than a default nobody looks at. With it on, the output is POINT Z(1 2 3), which NTS
+    // reads back and most other tools do too.
+
     /// <summary>
-    /// Write a geometry as Well-Known Text. Uses NetTopologySuite.
+    /// Writes a geometry as Well-Known Text.
     /// </summary>
     /// <remarks>
-    /// <para>The round trip through <c>Read WKT</c> preserves coordinates and geometry type. It does
-    /// <b>not</b> preserve SRID, and there is no pin to make it: <c>WKTWriter</c> in NTS 2.6 has no
-    /// way to emit one (checked against the type's own members, not assumed), and plain WKT has
-    /// nowhere to put it. A geometry written and read back carries whatever SRID the reader's
-    /// <c>Factory</c> says — so if the SRID matters, it travels beside the text, not inside it.</para>
-    /// <para><b>Z is dropped unless <c>Include Z</c> is on.</b> NTS's writer defaults to two
-    /// dimensions and discards Z silently (measured) — a Point built from a <c>CoordinateZ</c>
-    /// writes as <c>POINT (1 2)</c>, with the elevation simply gone. That is a real way to lose data
-    /// on the way out of a patch, so it is a pin rather than a default nobody looks at. With it on,
-    /// the output is <c>POINT Z(1 2 3)</c>, which NTS reads back and most other tools do too.</para>
+    /// The SRID is not written, because WKT has no place for it.
     /// </remarks>
+    /// <param name="geometry">The geometry to write.</param>
+    /// <param name="includeZ">Writes the elevation too. Off, Z is dropped.</param>
     [Name("Write WKT")]
     public static string WriteWKT(Geometry? geometry, bool includeZ = false)
     {

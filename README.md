@@ -3,7 +3,7 @@
 **NetTopologySuite made natural inside [vvvv gamma](https://vvvv.org).** Not another GIS framework.
 
 > **Status: `0.0.3-alpha` on nuget.org since 2026-10-18 — a prerelease, early, and it works.**
-> 39 nodes in six categories, 126 tests, 15 help patches, every node opens one on **F1**. Every
+> 40 nodes in six categories, 134 tests, 15 help patches, every node opens one on **F1**. Every
 > category has been seen running in vvvv gamma 7.4, all fifteen help patches were reviewed by hand
 > in the editor, and the published package was installed back from nuget.org alone, its fifteen help
 > patches compiled from that install and one of them run in vvvv from it. The table below says
@@ -90,8 +90,8 @@ a package oversells itself:
 
 | | proves | run |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ **126 tests**, ~300 ms, no network |
-| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, labels do not collide, every node has an F1 flag | ✅ 16 documents, 39 of 39 nodes flagged |
+| `dotnet test` | the arithmetic is right | ✅ **134 tests**, ~300 ms, no network |
+| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, labels do not collide, every node has an F1 flag | ✅ 16 documents, 40 of 40 nodes flagged |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved** — an unresolved one has its links dropped and vanishes from the generated C#, so the script reads the C# | ✅ all 15 help patches |
 | `tools\Test-Install.ps1` | the **packed** package installs from a feed with its dependencies, and every help patch inside it compiles with that install as the only package repository | ✅ 2026-09-25 |
