@@ -24,7 +24,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="T8ThLP9zBfOIXdBqfQ9waj" Bounds="60,95,480,82" ShowValueBox="true" isIOBox="true" Value="A Feature is a geometry with a Dictionary of attributes. It is NetTopologySuite's own type - the one VL.GeoJSON reads and VL.Mapsui draws, so all three packages share it without referencing each other.">
+          <Pad Id="T8ThLP9zBfOIXdBqfQ9waj" Bounds="60,95,480,82" ShowValueBox="true" isIOBox="true" Value="A Feature is a geometry with a Dictionary of attributes. It is NetTopologySuite's own type - the one VL.NetTopologySuite.GeoJSON reads and VL.Mapsui draws, both building on this package.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -116,7 +116,7 @@
             <Pin Id="VFcTg1TbRgJJHnFPPqBXXL" Name="Success" Kind="OutputPin" />
           </Node>
           <Pad Id="O9lIuAkNn6wosc2zP16uDY" Comment="Success" Bounds="300,465,35,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="VWfGTbZhEdEU3SbVgee8Jm" Comment="Value" Bounds="200,505,150,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="VWfGTbZhEdEU3SbVgee8Jm" Comment="Value" Bounds="200,505,150,25" ShowValueBox="true" isIOBox="true" />
           <Pad Id="NgAsqqpTMY0HrSuxb76iFd" Bounds="580,440,320,60" ShowValueBox="true" isIOBox="true" Value="&lt; GetAttribute takes one by name. Type a name the Feature does not have: Success goes false, nothing throws.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
