@@ -29,9 +29,9 @@
     </description>
     <summary>NetTopologySuite geometry as composable nodes for vvvv gamma.</summary>
     <releaseNotes>
-      0.0.4-alpha - In development, not published. Tooltips rewritten to be short: every node now
-      shows a one-line summary, a sentence or two of usage and a line per pin on hover, instead of
-      design notes.
+      0.0.4-alpha (2026-10-18) - Tooltips rewritten to be short: every node now shows a one-line
+      summary, a sentence or two of usage and a line per pin on hover, instead of design notes.
+      No node changed. Same 40 nodes as 0.0.3-alpha.
 
       0.0.3-alpha (2026-10-18) - Adds GetAttribute (NetTopologySuite.Feature): one
       attribute by name, with Success instead of an exception. VL.NetTopologySuite.GeoJSON (formerly
