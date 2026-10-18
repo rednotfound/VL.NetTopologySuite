@@ -130,7 +130,7 @@ Two things the tooling caught that the eye would not:
 
 ## The nodes
 
-**Thirty-nine**, in six categories. No node takes more than three inputs, except where a fourth
+**Forty**, in six categories. No node takes more than three inputs, except where a fourth
 is a default you will rarely touch.
 
 ### `NetTopologySuite.Geometry` — making geometry
@@ -171,6 +171,7 @@ is a default you will rarely touch.
 |---|---|
 | `Feature` | `Geometry`, Dictionary of attributes → `Feature` |
 | `Split` | `Feature` → `Geometry`, Dictionary of attributes |
+| `GetAttribute` | `Feature`, name → value, **Success** *(never throws; a missing or null attribute is Success false)* |
 
 The type is `NetTopologySuite.Features.Feature` — the NTS team's own neutral model, not a wrapper
 of ours. These two moved here from VL.Mapsui on 2026-08-22, because a feature has to be

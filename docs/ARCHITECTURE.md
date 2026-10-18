@@ -201,9 +201,13 @@ at the category the library introduces.* There is no other lever: the NodeBrowse
 names and categories, `ProcessNodeAttribute.Tags` exists for process nodes only (two of 39), and
 static methods have no tag mechanism at all. So the category carries the library's full name, like
 every neighbour - VL.Mapsui's namespace is `VL.Mapsui` and its category `Mapsui`, the same shape.
-Existing documents were not broken by the rename: a `.vl` resolves a node by name within the
-referenced package, and its `LastCategoryFullName` is a hint (negative-tested in September with
-`NTS.Wrong`). One consequence in C#: inside namespace `VL.NetTopologySuite` the bare identifier
+Existing documents were *mostly* not broken by the rename: a `.vl` resolves a node by name within
+the referenced package, and its `LastCategoryFullName` is a hint (negative-tested in September with
+`NTS.Wrong`). **But a node that carries a hard `<CategoryReference Kind="Category" Name="NTS">`
+is enforced by `vvvvc`**, and VL.Overworld's Tutorial 1.1 failed with `Not found: Point` on exactly
+that on 2026-10-18 - so a category rename is a breaking change for any consumer whose patches were
+written with the category pinned, and the `0.0.2-alpha` release notes' "patches keep working" was
+true only of the hint form. This package's own help patches pin no category of ours. One consequence in C#: inside namespace `VL.NetTopologySuite` the bare identifier
 `NetTopologySuite` resolves to our own namespace, so the three fully qualified NTS names in code
 carry `global::`.
 

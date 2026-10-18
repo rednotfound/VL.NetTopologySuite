@@ -29,7 +29,9 @@
     </description>
     <summary>NetTopologySuite geometry as composable nodes for vvvv gamma.</summary>
     <releaseNotes>
-      0.0.3-alpha - In development, not published.
+      0.0.3-alpha - In development, not published. Adds GetAttribute (NetTopologySuite.Feature): one
+      attribute by name, with Success instead of an exception. VL.NetTopologySuite.GeoJSON (formerly
+      VL.GeoJSON) depends on this version.
 
       0.0.2-alpha (2026-10-17) - The nodes now live under NetTopologySuite.Geometry, .Operation, .IO,
       .Feature, .Index and .Network instead of NTS.*, so searching the NodeBrowser for the package's

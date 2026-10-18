@@ -290,7 +290,10 @@ whole gate ran green on 2026-10-17 after the rename, and the NodeBrowser showed 
 **Why soon:** every day `0.0.1-alpha` is the latest, a new user searches for the package's name
 and finds nothing, and every patch they save writes `NTS.*` category hints that will read as stale
 afterwards. Nothing in `0.0.2-alpha` is half done, and a prerelease is allowed to move. The rename
-breaks no existing patch.
+breaks no patch that references our nodes by name with the category as a `LastCategoryFullName`
+hint - **but it does break a node with a hard `<CategoryReference Name="NTS">`**, which `vvvvc`
+enforces; VL.Overworld's Tutorial 1.1 failed that way on 2026-10-18 and was repointed. Found after
+the release notes said "keep working"; recorded here rather than rewritten there.
 
 **How:** way A again (browser upload) - it is known to work and takes ten minutes; Trusted
 Publishing (way C) is worth setting up for the family, but as its own task, not as a gate in
