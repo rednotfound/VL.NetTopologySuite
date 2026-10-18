@@ -18,7 +18,7 @@ namespace VL.NetTopologySuite;
 /// them: Mapsui converts into its own <c>GeometryFeature</c> at its provider boundary, exactly as
 /// VL.Mapsui's <c>FeatureLayer</c> does.</para>
 /// <para><b>A feature has to be constructible without a map engine</b>, which is why these
-/// nodes live here and not in a map package: VL.GeoJSON writes them, VL.Mapsui draws
+/// nodes live here and not in a map package: VL.NetTopologySuite.GeoJSON reads and writes them, VL.Mapsui draws
 /// and picks them, and a patch can make one by hand — multiple producers and consumers, so the
 /// shared type belongs below all of them. That is also how the NTS team packages it upstream:
 /// <c>NetTopologySuite.Features</c> is their own companion package, sitting directly on the
@@ -74,9 +74,9 @@ public static class FeatureNodes
     /// <para>An empty dictionary rather than nothing when a feature has no attributes: absence
     /// would have to be checked before every lookup, and there is nothing to distinguish — a
     /// feature with no attributes and a feature with an empty table say the same thing. An
-    /// attribute whose stored value is null is dropped for the same reason VL.GeoJSON's
-    /// <c>GetProperty</c> reports one as absent: a Dictionary slot holding null answers every
-    /// question worse than no slot at all.</para>
+    /// attribute whose stored value is null is dropped for the same reason <see cref="GetAttribute"/>
+    /// reports one as absent: a Dictionary slot holding null answers every question worse than no
+    /// slot at all.</para>
     /// </remarks>
     public static void Split(
         NtsFeature? feature,

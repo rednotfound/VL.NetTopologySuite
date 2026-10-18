@@ -77,7 +77,9 @@ VL.NetTopologySuite
 other packages, such as VL.Mapsui
 ```
 
-Neither package depends on the other. They share the library, not each other.
+This package depends on nothing of ours. VL.Mapsui and VL.NetTopologySuite.GeoJSON depend on it —
+so that their help patches, which open features with `Split` and `GetAttribute`, open working — and
+never on each other.
 
 ---
 
@@ -172,8 +174,8 @@ is a default you will rarely touch.
 
 The type is `NetTopologySuite.Features.Feature` — the NTS team's own neutral model, not a wrapper
 of ours. These two moved here from VL.Mapsui on 2026-08-22, because a feature has to be
-constructible without a map engine: VL.GeoJSON writes them, VL.Mapsui draws and picks them, and a
-patch can make one by hand. The reasoning and the field-wide evidence are in
+constructible without a map engine: VL.NetTopologySuite.GeoJSON reads and writes them, VL.Mapsui
+draws and picks them, and a patch can make one by hand. The reasoning and the field-wide evidence are in
 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#where-a-feature-lives).
 
 ### `NetTopologySuite.Operation`

@@ -8,8 +8,10 @@ every help patch had been reviewed by hand, and the fake install passed for the 
 A push to nuget.org cannot be undone — a version can be unlisted, never deleted — so the order below
 is: prove locally, then push by hand, then automate for the *second* release.
 
-Order across the sibling repositories (from vl-overworld's plan): **VL.NetTopologySuite and
-VL.GeoJSON first**, then VL.Mapsui, then VL.Overworld. This package gates the chain.
+Order across the sibling repositories (from vl-overworld's plan): **VL.NetTopologySuite first**,
+then VL.NetTopologySuite.GeoJSON (formerly VL.GeoJSON, renamed 2026-10-18; it needs this
+package's 0.0.3-alpha for `GetAttribute`) and VL.Mapsui, then VL.Overworld. This package gates the
+chain.
 
 ---
 

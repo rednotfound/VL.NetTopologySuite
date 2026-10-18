@@ -15,7 +15,8 @@ namespace VL.NetTopologySuite;
 /// <para><b>WKB and GeoJSON are deliberately not here.</b> WKB is a reasonable next step. GeoJSON is not: it lives in a separate NuGet package
 /// (<c>NetTopologySuite.IO.GeoJSON</c>), it brings a feature model that is not this package's
 /// business, and taking it on is the first step towards the generic geospatial file-format package
-/// this one is explicitly not trying to be. It deserves its own package.</para>
+/// this one is explicitly not trying to be. It has its own package, VL.NetTopologySuite.GeoJSON,
+/// whose <c>Read GeoJSON</c> and <c>Write GeoJSON</c> join this category.</para>
 /// <para><c>[Name]</c> is used on the methods here rather than relying on how VL splits a
 /// PascalCase name, because <c>ReadWKT</c> would otherwise be shown as something like
 /// "Read W K T". Verified that <c>NameAttribute</c> is legal on a method — its
