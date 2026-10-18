@@ -553,6 +553,26 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
+          <Node Bounds="640,650,80,19" Id="I1eKA6p0D3kcbKDG4Bk3pL">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Feature" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="GetAttribute" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="RvZpJDnrrTQa3CgdrQ46ac" Name="Feature" Kind="InputPin" />
+            <Pin Id="TS4J1rd56oTx2VVUkLtIOJ" Name="Name" Kind="InputPin" />
+            <Pin Id="UjbzmF3uJy9p0sbyWpxGUN" Name="Result" Kind="OutputPin" />
+            <Pin Id="OkFxUP4Zsl6jWnM0gUzwps" Name="Success" Kind="OutputPin" />
+          </Node>
+          <Pad Id="VVQIN30Oidroa7XMRkTJOQ" Bounds="830,652,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; One attribute by name, with Success instead of an error.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
           <Pad Id="TLTd298VZlPHk462d4TS0J" Bounds="640,690,400,30" ShowValueBox="true" isIOBox="true" Value="NetTopologySuite.Index">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />

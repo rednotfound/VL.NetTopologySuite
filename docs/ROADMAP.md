@@ -14,6 +14,13 @@ comment; the work is deciding whether they earn a node, not writing them.
 the maintainer, nuget.org validated it in about ten minutes, installed back from nuget.org alone.
 The nodes are under `NetTopologySuite.*` for every new install; the tree is at `0.0.3-alpha`.
 
+**2026-10-18, in the tree for `0.0.3-alpha`: `GetAttribute`**, the 40th node, in
+`NetTopologySuite.Feature` — moved from VL.GeoJSON's `GetProperty` when that package became
+VL.NetTopologySuite.GeoJSON and took a dependency on this one (ARCHITECTURE, "What the decision
+costs"). 133 tests, negative-tested (drop the `Exists` guard and the missing-name test goes red);
+High F1 flag in `HowTo Attach attributes to a geometry`. **VL.NetTopologySuite.GeoJSON cannot be
+published before a VL.NetTopologySuite carrying this node is.**
+
 ## The day before: 0.0.1-alpha on nuget.org, 0.0.2-alpha in the tree
 
 39 public nodes across `NetTopologySuite.Geometry`, `NetTopologySuite.Feature`, `NetTopologySuite.Operation`, `NetTopologySuite.IO`, `NetTopologySuite.Index` and

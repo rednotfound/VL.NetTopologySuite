@@ -94,4 +94,44 @@ public static class FeatureNodes
 
         attributes = builder.ToImmutable();
     }
+
+    /// <summary>
+    /// One attribute of a feature, by name. Reports whether it was there instead of throwing.
+    /// Uses NetTopologySuite.Features.
+    /// </summary>
+    /// <remarks>
+    /// <para><b><c>Success</c> is the whole point of this node.</b> NTS's
+    /// <c>IAttributesTable</c> indexer <b>throws <c>ArgumentException</c></b> for a name it does not
+    /// have (measured) — and a node that throws sixty times a second while somebody types a name
+    /// into an IOBox is not a diagnostic, it is a broken patch. So a missing name is reported, not
+    /// raised, and the result is nothing.</para>
+    /// <para>vvvv's own convention rather than an invention here: <c>VL.Xml</c>'s
+    /// <c>GetAttributeValue</c>, <c>GetValue</c> and <c>XPathGetValue</c> all take an input plus a
+    /// name and return a value plus <c>Success</c>. A <c>Get…</c> node carries a <c>Success</c> pin
+    /// and never throws.</para>
+    /// <para>Use <see cref="Split"/> for <i>all</i> the attributes and this for <i>one</i>; the XML
+    /// library ships the same pair, <c>XElement (Split)</c> beside <c>GetAttributeValue</c>. The
+    /// result is an <c>Object</c> because an attribute genuinely can be anything — a feature read
+    /// by VL.NetTopologySuite.GeoJSON carries String, Int64, Float64 or Boolean — and which one is
+    /// a fact about the data rather than about the node.</para>
+    /// <para><b>An attribute whose stored value is null reports <c>Success</c> false</b>, the same
+    /// as one that is absent, for the reason <see cref="Split"/> drops it: a patch cannot act on a
+    /// null differently from a missing value.</para>
+    /// </remarks>
+    public static object? GetAttribute(NtsFeature? feature, string? name, out bool success)
+    {
+        // Exists() first, deliberately: the indexer is what throws, and asking before reading is
+        // the only way to answer "is it there?" without catching an exception per frame.
+        if (feature?.Attributes is { } table &&
+            !string.IsNullOrEmpty(name) &&
+            table.Exists(name) &&
+            table[name] is { } value)
+        {
+            success = true;
+            return value;
+        }
+
+        success = false;
+        return null;
+    }
 }

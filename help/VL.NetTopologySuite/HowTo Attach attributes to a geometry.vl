@@ -15,7 +15,7 @@
       </p:NodeReference>
       <Patch Id="KzCUrHuyUKgiFoI75oDFcK">
         <Canvas Id="HwmJ05ls1mDCkfjIp9o0HO" CanvasType="Group">
-          <Pad Id="H6Yv5AuIQusu1AZP117i4K" Bounds="60,40,360,41" ShowValueBox="true" isIOBox="true" Value="Use Feature and Split!">
+          <Pad Id="H6Yv5AuIQusu1AZP117i4K" Bounds="60,40,480,41" ShowValueBox="true" isIOBox="true" Value="Use Feature, Split and GetAttribute!">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -99,6 +99,33 @@
             <Pin Id="IuhhLU9Ane6RPnjCO7qSc5" Name="Geometry" Kind="OutputPin" />
             <Pin Id="JhYlNHa3e9uT0o6bhHJugv" Name="Attributes" Kind="OutputPin" />
           </Node>
+          <Pad Id="PMBjmfC7eSGU7Maq0wQIuG" Comment="Name" Bounds="285,435,80,15" ShowValueBox="true" isIOBox="true" Value="name">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="200,465,80,19" Id="JdtFHufji1hGpEaVidWs6F">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Feature" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="GetAttribute" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="LrT3D973H9aYM28XryfeRP" Name="Feature" Kind="InputPin" />
+            <Pin Id="DGGCLtrOajlzzj2eDQfayz" Name="Name" Kind="InputPin" />
+            <Pin Id="S5ctiwzsxha6gZQcc7m7dF" Name="Result" Kind="OutputPin" />
+            <Pin Id="VFcTg1TbRgJJHnFPPqBXXL" Name="Success" Kind="OutputPin" />
+          </Node>
+          <Pad Id="O9lIuAkNn6wosc2zP16uDY" Comment="Success" Bounds="300,465,35,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="VWfGTbZhEdEU3SbVgee8Jm" Comment="Value" Bounds="200,505,150,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="NgAsqqpTMY0HrSuxb76iFd" Bounds="580,440,320,60" ShowValueBox="true" isIOBox="true" Value="&lt; GetAttribute takes one by name. Type a name the Feature does not have: Success goes false, nothing throws.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
           <Pad Id="PeooMkfxv8h2NoXPCvTlRW" Comment="Attributes" Bounds="157,540,249,58" ShowValueBox="true" isIOBox="true" />
           <Pad Id="Fd5G5e3tWGLlZDHF9ZBPjm" Bounds="580,537,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Split opens the Feature up again. Its geometry is the same Geometry as everywhere else: Area, Buffer and the rest take it straight from here.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
@@ -135,6 +162,10 @@
         <Link Id="T0RL7vInA5Xi9qmOz3Lb32" Ids="JhYlNHa3e9uT0o6bhHJugv,PeooMkfxv8h2NoXPCvTlRW" />
         <Link Id="CFi8hz7JJYen3rrMevixtc" Ids="IuhhLU9Ane6RPnjCO7qSc5,UAy16eB4etN2RLvL60qbaw" />
         <Link Id="BoXJprejx82cDg4oRENXTH" Ids="V3MaMjCx1Q92ETjBpcjw5b,UQQZed1MOcgFWkQqzHunMB" />
+        <Link Id="PcBti4qMahLTBA1Cq88G0W" Ids="JKgSRJEldOmx0ClkcnTpbC,LrT3D973H9aYM28XryfeRP" />
+        <Link Id="BszB7989mXG2kw35QKykAc" Ids="PMBjmfC7eSGU7Maq0wQIuG,DGGCLtrOajlzzj2eDQfayz" />
+        <Link Id="RZcGGIWvKdzyu1ott2i3MZ" Ids="S5ctiwzsxha6gZQcc7m7dF,VWfGTbZhEdEU3SbVgee8Jm" />
+        <Link Id="V16mDAUc9cn2WM4fMKrEtR" Ids="VFcTg1TbRgJJHnFPPqBXXL,O9lIuAkNn6wosc2zP16uDY" />
       </Patch>
     </Node>
   </Patch>

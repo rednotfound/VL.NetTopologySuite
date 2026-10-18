@@ -374,7 +374,7 @@ if (-not $Path) {
         'NetTopologySuite.Geometry|MultiPoint', 'NetTopologySuite.Geometry|MultiLineString', 'NetTopologySuite.Geometry|MultiPolygon', 'NetTopologySuite.Geometry|GeometryCollection',
         'NetTopologySuite.Geometry|GeometryType', 'NetTopologySuite.Geometry|IsEmpty', 'NetTopologySuite.Geometry|SRID', 'NetTopologySuite.Geometry|IsValid', 'NetTopologySuite.Geometry|Area',
         'NetTopologySuite.Geometry|Length', 'NetTopologySuite.Geometry|Centroid', 'NetTopologySuite.Geometry|Bounds', 'NetTopologySuite.Geometry|Coordinates', 'NetTopologySuite.Geometry|Geometries',
-        'NetTopologySuite.Feature|Feature', 'NetTopologySuite.Feature|Split', 'NetTopologySuite.IO|Read WKT', 'NetTopologySuite.IO|Write WKT',
+        'NetTopologySuite.Feature|Feature', 'NetTopologySuite.Feature|Split', 'NetTopologySuite.Feature|GetAttribute', 'NetTopologySuite.IO|Read WKT', 'NetTopologySuite.IO|Write WKT',
         'NetTopologySuite.Operation|Buffer', 'NetTopologySuite.Operation|Intersection', 'NetTopologySuite.Operation|Union', 'NetTopologySuite.Operation|Difference',
         'NetTopologySuite.Operation|Distance', 'NetTopologySuite.Operation|Nearest Points', 'NetTopologySuite.Operation|Intersects', 'NetTopologySuite.Operation|Contains', 'NetTopologySuite.Operation|Within',
         'NetTopologySuite.Index|SpatialIndex', 'NetTopologySuite.Index|Query', 'NetTopologySuite.Network|Network', 'NetTopologySuite.Network|ShortestPath')

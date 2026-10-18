@@ -534,10 +534,24 @@ the reader is effectively the sole producer. Here, hand-construction is itself a
   section below for the revised wording.
 - VL.Mapsui keeps a private six-line helper to build features internally; internal plumbing is not
   a node surface.
-- VL.GeoJSON's read-side `Split` and `GetProperty` **stay where they are for now** — consolidating
-  them here would give VL.GeoJSON a dependency on this package, which changes the family's
-  "compose through NTS types, reference nobody" architecture and is a separate decision, not a
-  rider on this one.
+- VL.GeoJSON's read-side `Split` and `GetProperty` **stayed where they were at first** —
+  consolidating them here would give VL.GeoJSON a dependency on this package, which was a separate
+  decision, not a rider on this one.
+
+**That separate decision was taken on 2026-10-18.** Two `Split`s on the same `Feature` type, in two
+packages, with different outputs, had no precedent among the 47 packs shipped with vvvv 7.4 — the
+shipped packs repeat a node name only across *different* backends (`Serialize` in each
+`VL.Serialization.*`). And "reference nobody" was already untrue: the published VL.Mapsui depends
+on this package, so that its help patches open working. So:
+
+- **`GetAttribute` moved here**, renamed from VL.GeoJSON's `GetProperty` to this package's own
+  word for the table. It answers "one attribute by name" for a feature from *any* producer, with
+  `Success` instead of the `ArgumentException` NTS's indexer throws.
+- VL.GeoJSON becomes **VL.NetTopologySuite.GeoJSON**, depends on this package, drops its own
+  `Split (Feature)` and `GetProperty`, and keeps only `Read GeoJSON` / `Write GeoJSON`. The
+  dependency points one way — format package to geometry package, as `VL.Stride.TextureFX` →
+  `VL.Stride` and `VL.IO.TUIO` → `VL.IO.OSC` do — and this package still references nothing of
+  ours.
 
 ---
 

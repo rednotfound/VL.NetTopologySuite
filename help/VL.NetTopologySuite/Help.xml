@@ -32,7 +32,7 @@
 		<VLDocument link="HowTo Measure distance.vl" tags="distance,nearest,nearestpoints,closest,gap,measure,operation,units" />
 	</Topic>
 	<Topic title="Features">
-		<VLDocument link="HowTo Attach attributes to a geometry.vl" tags="feature,attributes,properties,dictionary,split,geojson,mapsui,ntsfeature" />
+		<VLDocument link="HowTo Attach attributes to a geometry.vl" tags="feature,attributes,properties,dictionary,split,getattribute,attribute,property,geojson,mapsui,ntsfeature" />
 	</Topic>
 	<Topic title="Many geometries">
 		<VLDocument link="HowTo Query many geometries fast.vl" tags="index,spatialindex,strtree,query,candidates,fast,many,performance,envelope,processnode" />

@@ -16,7 +16,7 @@ working version is now `0.0.3-alpha`**, always one ahead of the published one. *
 process and its rules are in [docs/RELEASE.md](docs/RELEASE.md): the maintainer performs the
 irreversible step, and nuget.org's 2026 policy (API keys 30 days at most, Trusted Publishing for CI,
 browser upload for manual) is written there. Never push to nuget.org without the user's explicit
-go; a publish cannot be undone.** 39 public nodes in six categories — `NetTopologySuite.Network` (`Network` +
+go; a publish cannot be undone.** 40 public nodes in six categories (39 published; `GetAttribute` added 2026-10-18) — `NetTopologySuite.Network` (`Network` +
 `ShortestPath`, an algorithm of ours, promoted from `NetTopologySuite.Experimental.Network` by
 `docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 126
 tests, 15 help patches.** All fifteen were (re)written on 2026-09-24 in the community's measured style
@@ -178,14 +178,14 @@ listed, and every link must name a file that exists, because both failures are s
 
 | | proves | state |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ 126 tests, ~300 ms, no network |
+| `dotnet test` | the arithmetic is right | ✅ 133 tests, ~300 ms, no network |
 | `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 16 documents |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 15 help patches, 2026-09-24 |
 | `tools\Test-Install.ps1` | the **packed** package installs from `dist\feed` with its dependencies, and every help patch inside the install compiles with that install as the only repository | ✅ 2026-09-25, first pass |
 | the vvvv **NodeBrowser** | **which category a node is in** | ✅ 2026-10-17: typing `NetTopologySuite` lists the category folder `NetTopologySuite` and the package; its nodes sit under `NetTopologySuite.Geometry` … `.Network` (was `NTS` until that day) |
 | the vvvv **GUI, running** | the patch computes the right value | ✅ 2026-08-14, vvvv 7.4; all 15 help patches 2026-09-24, reviewed by the maintainer 2026-09-25 |
-| **F1 on a node** | the node carries a High help flag in a patch vvvv has indexed | ✅ 2026-09-24, all 39 nodes; `Test-VLPatch` audits the flags |
+| **F1 on a node** | the node carries a High help flag in a patch vvvv has indexed | ✅ 2026-09-24, all 39 nodes then; `GetAttribute` (2026-10-18) is flagged but F1 not yet pressed; `Test-VLPatch` audits the flags |
 
 **The last three rows are three different claims, and this is where a false proof lives.** Learned
 here, at the cost of nearly writing down a wrong conclusion:
@@ -280,13 +280,13 @@ vl-nettopologysuite/
 │   ├── GeometryNodes.Inspection.cs    # NetTopologySuite.Geometry - Area, IsValid, Bounds, Coordinates …
 │   ├── OperationNodes.cs              # NetTopologySuite.Operation - Buffer, overlay, predicates, Distance, Nearest Points
 │   ├── IONodes.cs                     # NetTopologySuite.IO - Read WKT, Write WKT
-│   ├── FeatureNodes.cs                # NetTopologySuite.Feature - Feature, Split
+│   ├── FeatureNodes.cs                # NetTopologySuite.Feature - Feature, Split, GetAttribute
 │   ├── SpatialIndexNode.cs            # NetTopologySuite.Index - SpatialIndex (process node)
 │   ├── IndexNodes.cs                  # NetTopologySuite.Index - Query
 │   ├── Network.cs                     # NetTopologySuite.Network - the retained handle type, and the scope sentence
 │   ├── NetworkNode.cs                 # NetTopologySuite.Network - Network (process node)
 │   └── NetworkNodes.cs                # NetTopologySuite.Network - ShortestPath
-├── test/VL.NetTopologySuite.Tests/    # 126 xunit tests, no network, no vvvv
+├── test/VL.NetTopologySuite.Tests/    # 133 xunit tests, no network, no vvvv
 ├── help/VL.NetTopologySuite/          # 15 help patches + Help.xml (ordering and tags)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
 ├── docs/ARCHITECTURE.md               # why each node exists, what stays raw, the boundary

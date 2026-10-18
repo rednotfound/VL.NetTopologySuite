@@ -143,6 +143,7 @@ $OurNodes = @{
     'Geometries'         = 'GeometryNodes\.Geometries\('
     # NetTopologySuite.Feature
     'Feature'            = 'FeatureNodes\.Feature\('
+    'GetAttribute'       = 'FeatureNodes\.GetAttribute\('
     # NetTopologySuite.IO
     'Read WKT'           = 'IONodes\.ReadWKT\('
     'Write WKT'          = 'IONodes\.WriteWKT\('
