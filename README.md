@@ -51,6 +51,28 @@ From there, `Read WKT` turns any text into geometry, `Buffer` grows it, `Area` m
 `HowTo Buffer a geometry` shows the four wired together. Coordinates go X first: longitude, then
 latitude.
 
+**4. Updating to a newer version.** Releases are frequent while the package is alpha. Run the same
+command again:
+
+```
+nuget install VL.NetTopologySuite -pre
+```
+
+The nugets folder then holds both versions, and vvvv uses the newest one it finds the next time it
+starts — so close and reopen vvvv, then check **Document menu → Dependencies → NuGets**, which
+shows the version actually loaded. Two things to know:
+
+- **Within about 30 minutes of a release the command can silently do nothing**: NuGet caches each
+  package's version list for 30 minutes, so a list fetched before the release still says the old
+  version is the latest, and the install reports it as already present. Either wait, or ask for the
+  version by name, `nuget install VL.NetTopologySuite -version 0.0.4-alpha`, or delete the one
+  cache file `list_vl.nettopologysuite_index.dat` under `%LOCALAPPDATA%\NuGet\v3-cache` — it is
+  only a cache. (Measured on 2026-10-17, an hour after a release.)
+- **What changed between versions** is in the release notes on the
+  [nuget.org page](https://www.nuget.org/packages/VL.NetTopologySuite) and in
+  [the tags on GitHub](https://github.com/rednotfound/VL.NetTopologySuite/tags). Node names and
+  categories have been stable since `0.0.2-alpha`; before that, the nodes lived under `NTS.*`.
+
 ---
 
 ## The mental model
