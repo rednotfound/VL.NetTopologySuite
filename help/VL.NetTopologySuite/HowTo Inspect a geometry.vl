@@ -282,6 +282,25 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
+          <Node Bounds="261,880,70,19" Id="N5u3egFaEqf8WjIZz329KL">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Outlines" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="MoDZIF10htoGlaNcxeHmnW" Name="Geometry" Kind="InputPin" />
+            <Pin Id="JzjFMjVLZCDlhdTVb1hTuU" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="UmYBvJDyuETzJiF8wpFcOg" Comment="Outlines" Bounds="261,920,200,60" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="D6kMxjiUtfrZIRlGFodu54" Bounds="580,960,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Outlines: every ring and line as its own spread of coordinates, holes separately - two here. The drawing nodes want exactly this.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
         </Canvas>
         <Patch Id="RPUybcGdfRC1BIbiHVndoh" Name="Create" />
         <Patch Id="BXUytzEaMEIHMIlmFTaepV" Name="Update" />
@@ -321,6 +340,8 @@
         <Link Id="A4fQ3Q5QLTwPPrzKMscKi5" Ids="AY28YyZEeolSqhzOcWHojq,OizSmyIIG9YFwm6dfe84HW" />
         <Link Id="Vo4fBM3AfhalA8AOuVDvIz" Ids="SXpBLx1fEGoXzr675rh6wp,TzH6EwZQ4Vh59MGHk2I23h" />
         <Link Id="OTWOAtvMY21M2T4llBfjjO" Ids="OLrP8AySH4CEJWG9w2sW2B,CXiMfFP3GOXuAPnBcUrmV7" />
+        <Link Id="Pftflv92yoOzrQRJhHnwhG" Ids="AY28YyZEeolSqhzOcWHojq,MoDZIF10htoGlaNcxeHmnW" />
+        <Link Id="TwdtvTdkbDgdk9uR7Yx2Wo" Ids="JzjFMjVLZCDlhdTVb1hTuU,UmYBvJDyuETzJiF8wpFcOg" />
       </Patch>
     </Node>
   </Patch>

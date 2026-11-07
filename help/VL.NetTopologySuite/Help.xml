@@ -20,7 +20,7 @@
 		<VLDocument link="HowTo Work with Z.vl" tags="z,3d,height,coordinatez,split,includez,wkt,ordinate,nan" />
 	</Topic>
 	<Topic title="Looking at geometry">
-		<VLDocument link="HowTo Inspect a geometry.vl" tags="inspect,geometrytype,isempty,srid,area,length,centroid,bounds,envelope,numpoints,issimple,interiorpoint,boundary,readers,geometry" />
+		<VLDocument link="HowTo Inspect a geometry.vl" tags="inspect,geometrytype,isempty,srid,area,length,centroid,bounds,envelope,numpoints,issimple,interiorpoint,boundary,outlines,rings,readers,geometry" />
 	</Topic>
 	<Topic title="Text in, geometry out">
 		<VLDocument link="HowTo Read and write WKT.vl" tags="wkt,wellknowntext,read,write,parse,text,srid,io,roundtrip" />

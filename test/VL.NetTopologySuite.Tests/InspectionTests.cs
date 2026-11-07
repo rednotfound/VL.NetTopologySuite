@@ -251,6 +251,41 @@ public class InspectionTests
     }
 
     [Fact]
+    public void Outlines_gives_each_ring_and_line_separately_and_copies()
+    {
+        var shell = GeometryNodes.LinearRing(
+            [GeometryNodes.Coordinate(0, 0), GeometryNodes.Coordinate(4, 0), GeometryNodes.Coordinate(4, 3), GeometryNodes.Coordinate(0, 3)]);
+        var hole = GeometryNodes.LinearRing(
+            [GeometryNodes.Coordinate(1, 1), GeometryNodes.Coordinate(2, 1), GeometryNodes.Coordinate(2, 2), GeometryNodes.Coordinate(1, 2)]);
+        var withHole = GeometryNodes.Polygon(shell, [hole]);
+
+        var outlines = GeometryNodes.Outlines(withHole);
+        Assert.Equal(2, outlines.Count);
+        Assert.Equal(5, outlines[0].Count);   // shell, closed
+        Assert.Equal(5, outlines[1].Count);   // hole, closed
+        Assert.Equal(4, outlines[0][1].X);
+        Assert.Equal(1, outlines[1][0].X);
+
+        var two = GeometryNodes.MultiPolygon([MutationTests.UnitSquare(), withHole]);
+        Assert.Equal(3, GeometryNodes.Outlines(two).Count);
+
+        var line = GeometryNodes.LineString([GeometryNodes.Coordinate(0, 0), GeometryNodes.Coordinate(1, 1), GeometryNodes.Coordinate(2, 0)]);
+        Assert.Single(GeometryNodes.Outlines(line));
+        Assert.Equal(3, GeometryNodes.Outlines(line)[0].Count);
+
+        var point = GeometryNodes.Point(GeometryNodes.Coordinate(7, 8));
+        Assert.Single(GeometryNodes.Outlines(point));
+        Assert.Equal(7, GeometryNodes.Outlines(point)[0][0].X);
+
+        Assert.Empty(GeometryNodes.Outlines(null));
+        Assert.Empty(GeometryNodes.Outlines(GeometryNodes.Point()));
+
+        // Copies: writing to an outline must not move the polygon.
+        outlines[0][0].X = 99;
+        Assert.Equal(0, GeometryNodes.Coordinates(withHole)[0].X);
+    }
+
+    [Fact]
     public void IsSimple_is_false_for_a_self_crossing_line_that_is_still_valid()
     {
         var bowtie = GeometryNodes.LineString(

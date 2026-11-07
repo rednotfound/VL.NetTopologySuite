@@ -275,6 +275,51 @@ public static partial class GeometryNodes
         return parts;
     }
 
+    // Every ring and line as its own list, which is what drawing needs: a polygon's shell and each
+    // hole separately (Coordinates concatenates them, and a polyline through that concatenation
+    // draws a stray segment from the shell into the hole - seen in the first GeometryViewer probe,
+    // 2026-11-07, which is why this node exists), each part of a collection, a point as a list of
+    // one. Copies, like Coordinates. Boundary gives the same rings as a geometry; this gives them as
+    // coordinates ready for Skia's AddPoly or Stride's line nodes. Empty parts contribute nothing.
+
+    /// <summary>
+    /// Returns every ring and line of the geometry as its own spread of coordinates.
+    /// </summary>
+    /// <remarks>
+    /// A polygon gives its outer ring and then each hole; a collection gives the outlines of every part; a point gives one coordinate.
+    /// Ready for drawing, one polyline per spread.
+    /// </remarks>
+    public static IReadOnlyList<IReadOnlyList<Coordinate>> Outlines(Geometry? geometry)
+    {
+        var outlines = new List<IReadOnlyList<Coordinate>>();
+        CollectOutlines(geometry, outlines);
+        return outlines;
+    }
+
+    static void CollectOutlines(Geometry? geometry, List<IReadOnlyList<Coordinate>> into)
+    {
+        switch (geometry)
+        {
+            case null:
+                return;
+            case Polygon polygon:
+                if (polygon.IsEmpty)
+                    return;
+                into.Add(Defaults.CopyOf(polygon.ExteriorRing.Coordinates));
+                for (var i = 0; i < polygon.NumInteriorRings; i++)
+                    into.Add(Defaults.CopyOf(polygon.GetInteriorRingN(i).Coordinates));
+                return;
+            case GeometryCollection collection:
+                for (var i = 0; i < collection.NumGeometries; i++)
+                    CollectOutlines(collection.GetGeometryN(i), into);
+                return;
+            default:
+                if (!geometry.IsEmpty)
+                    into.Add(Defaults.CopyOf(geometry.Coordinates));
+                return;
+        }
+    }
+
     // One dimension down: a polygon's boundary is its rings as lines (the outline to draw or to
     // measure, holes included), a line's boundary is its two end points, a closed ring's and a
     // point's are empty. The usual way to get a polygon's outline as something a line operation
