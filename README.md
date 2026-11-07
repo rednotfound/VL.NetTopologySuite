@@ -3,7 +3,7 @@
 **NetTopologySuite made natural inside [vvvv gamma](https://vvvv.org).** Not another GIS framework.
 
 > **Status: `0.0.4-alpha` on nuget.org since 2026-10-18 — a prerelease, early, and it works.**
-> 60 nodes in six categories, 175 tests, 18 help patches, every node opens one on **F1**. Every
+> 60 nodes in six categories, 183 tests, 18 help patches, every node opens one on **F1**. Every
 > category has been seen running in vvvv gamma 7.4, all sixteen help patches have been seen running
 > in the editor (fifteen of them reviewed by hand by the maintainer), and the published package was
 > installed back from nuget.org alone, its help patches compiled from that install and one of them
@@ -122,7 +122,7 @@ a package oversells itself:
 
 | | proves | run |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ **175 tests**, ~400 ms, no network |
+| `dotnet test` | the arithmetic is right | ✅ **183 tests**, ~400 ms, no network |
 | `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, labels do not collide, every node has an F1 flag | ✅ 20 documents, 60 of 60 nodes flagged |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved** — an unresolved one has its links dropped and vanishes from the generated C#, so the script reads the C# | ✅ all 16 help patches |
@@ -212,15 +212,17 @@ is a default you will rarely touch.
 | `GetAttribute` | `Feature`, name → value, **Success** *(never throws; a missing or null attribute is Success false)* |
 | `Attributes (Join)` | **Keys**, **Values** (two `Spread<String>`), Infer Types → Dictionary of attributes *(two Spread IOBoxes side by side are a table; "28" is stored as an integer, "true" as a boolean, the rest as text)* |
 | `Attributes (Split)` | Dictionary of attributes → **Keys**, **Values** *(the table again, sorted by name; values keep their types)* |
-| `Feature (FromRecord)` | **your own record** → `Feature`, **Success**, **Status** *(its one Geometry field is the shape, every other field an attribute under the name the patch shows; no Geometry field, or two: Success false, Status says what it has)* |
-| `Record (FromFeature)` | `Feature`, **Template** (a value of your record type) → the record, **Success**, **Status** *(the Geometry field takes the shape, each other field its attribute; a missing one keeps the template's value, Status names it)* |
+| `Feature (FromRecord)` | **your own record**, Geometry Field → `Feature`, **Success**, **Status** *(one Geometry field is the shape, every other field an attribute under the name the patch shows; a record with several Geometry fields names the shape in Geometry Field and the others travel as attributes; unnamed, or no Geometry field at all: Success false, Status lists what it has)* |
+| `Record (FromFeature)` | `Feature`, **Template** (a value of your record type), Geometry Field → the record, **Success**, **Status** *(the chosen Geometry field takes the shape, each other field its attribute; a missing one keeps the template's value, Status names it)* |
 
 **Your own record is the feature** (branch `record-bridge`, 2026-11-07). A GIS feature is a row of
 a table with a geometry column, and the columns are defined before the rows; in vvvv "define
 first, then fill" is a Record. Define `Station` once with `Geometry`, `Name`, `Platforms` and
-`Terminal` - exactly one field of type Geometry is the rule - and every station is an instance of
-it, a `Spread<Station>` is the dataset, and the two nodes above are the bridge to the `Feature`
-that GeoJSON writes and Mapsui draws. `HowTo Use your own record as a feature` shows the round
+`Terminal`, and every station is an instance of it, a `Spread<Station>` is the dataset, and the two
+nodes above are the door to the `Feature` that GeoJSON writes and Mapsui draws. A record may hold
+more than one Geometry - a building's outline and its entrance - because one geometry per feature
+is the rule of the exchange formats and the map, not of how data is kept; which field is the shape
+is chosen at the door, on the `Geometry Field` pin, and the others ride along as attributes. `HowTo Use your own record as a feature` shows the round
 trip, and `HowTo Build a feature three ways` puts the three paths side by side - one `Add` per
 attribute, the table, the record: the same shape of patch, geometry, the attributes, one node to
 put them together, one to take them apart - where only the middle differs.

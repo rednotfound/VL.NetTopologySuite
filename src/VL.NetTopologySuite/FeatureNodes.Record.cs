@@ -17,22 +17,33 @@ namespace VL.NetTopologySuite;
 // The /// text below is what vvvv shows on hover - short, one sentence per line. The reasoning
 // lives here.
 //
-// ── The user's record IS the feature ──────────────────────────────────────────────────────────
+// ── The user's record IS the feature; the door picks the geometry ─────────────────────────────
 //
-// Branch record-bridge, 2026-11-07. The maintainer's definition, in two steps the same night:
+// Branch record-bridge, 2026-11-07. The maintainer's definition, in three steps the same night:
 // first "a GIS feature is a row of a table whose columns are defined first - in vvvv a Record",
-// then "the record itself is the feature: it must hold one Geometry field, exactly one, and the
-// rest is whatever describes it". So a record such as
-//     Station { Geometry: Geometry, Name: String, Platforms: Integer32, Terminal: Boolean }
-// is a feature, a Spread<Station> is a dataset, and these two nodes are the bridge to the NTS
-// Feature that GeoJSON writes and Mapsui draws. The Dictionary and Attributes (Join)/(Split) on
-// main stay as the schema-less layer underneath.
+// then "the record itself is the feature: one Geometry field, the rest is whatever describes it",
+// and last, after a longer think: "one geometry per feature is GeoJSON's rule, a rule of the
+// exchange format, not of how data is kept. A feature in any other system can carry more - its
+// outline, its entrance, its centre, its bounding box - and WHICH one to draw or compute with is
+// a choice made at that moment". Measured against the field: PostGIS tables and GDAL/OGR (since
+// 1.11) hold any number of geometry columns; GeoPackage, Shapefile, GeoJSON, Mapsui's
+// GeometryFeature and NTS's own Feature hold exactly one; QGIS loading a PostGIS table asks which
+// column. Storage allows many, every exchange and drawing layer takes one, and the selection is
+// made once at the door.
 //
-// The rule is the maintainer's and it is written on the node: EXACTLY ONE field of type Geometry.
-// None, or two, and Status says which fields the record has, Success is false and nothing is
-// guessed. vl-mapsui's ToFeatures (2026-08-15) picked the geometry by type too, and the
-// maintainer removed it (2026-09-25) because that choice was a convention nobody could see; what
-// changed is not the mechanism but that the rule is now theirs, stated, and loud when broken.
+// So: a record such as
+//     Station  { Geometry: Geometry, Name: String, Platforms: Integer32, Terminal: Boolean }
+//     Building { Outline: Polygon, Entrance: Point, Name: String }
+// is a feature, a Spread of it a dataset, and these two nodes are the door to the NTS Feature
+// that GeoJSON writes and Mapsui draws (vl-mapsui's FeatureLayer converts an NTS Feature to a
+// GeometryFeature with its one Geometry; Pick hands an NTS Feature back). The rule "one geometry"
+// lives on the door, not on the record: with one Geometry field the choice is made; with several,
+// `Geometry Field` names the one, and an unnamed choice is refused with the candidates listed,
+// never guessed. vl-mapsui's ToFeatures (2026-08-15) picked the geometry by type and the
+// maintainer removed it (2026-09-25) because that was a convention nobody could see; here the
+// choice is a pin. The fields not chosen go into the attribute table as Geometry values, so
+// nothing is lost and Record (FromFeature) with the same pin puts them back. The Dictionary and
+// Attributes (Join)/(Split) on main stay as the schema-less layer underneath.
 //
 // Two more constraints paid for in vl-mapsui's NOTES.md:
 // - A patched record is read through VL, never through System.Reflection. Inside the editor a
@@ -45,7 +56,8 @@ namespace VL.NetTopologySuite;
 //   built-in Serialize all take the user's record that way and reflect inside.
 //
 // IsManaged properties (system generated) are skipped. The reader per type is cached: a thousand
-// records are the same shape.
+// records are the same shape. `Geometry Field` is the last parameter so that it is optional in
+// C# (the out parameters are required) - in the patch it is the second input pin either way.
 //
 // Record (FromFeature) fills a TEMPLATE instance - the type argument has to come from somewhere,
 // and a template also supplies the defaults for fields the feature does not carry. Each field is
@@ -58,18 +70,19 @@ namespace VL.NetTopologySuite;
 public static partial class FeatureNodes
 {
     /// <summary>
-    /// Makes a feature from your own record: its one Geometry field is the shape, every other field an attribute.
+    /// Makes a feature from your own record: one Geometry field is the shape, every other field an attribute.
     /// </summary>
     /// <remarks>
-    /// Define a record once (right-click the canvas, Record) with exactly one field of type Geometry and the fields a feature of that kind has.
-    /// Without a Geometry field, or with two, nothing is guessed: Success is false and Status says what the record has.
+    /// Define a record once (right-click the canvas, Record) with a field of type Geometry and the fields a feature of that kind has.
+    /// With several Geometry fields, Geometry Field names the shape and the others travel as attributes; unnamed, Success is false and Status lists them.
     /// </remarks>
     /// <param name="record">A value of your record type. Unconnected gives an empty feature.</param>
-    /// <param name="success">True when the record has exactly one Geometry field.</param>
+    /// <param name="success">True when one Geometry field was chosen.</param>
     /// <param name="status">What was read, or why nothing was.</param>
+    /// <param name="geometryField">Which field is the shape. Leave empty when the record has one Geometry field.</param>
     /// <returns>The feature.</returns>
     [Name("Feature (FromRecord)")]
-    public static NtsFeature FeatureFromRecord<T>(T? record, out bool success, out string status)
+    public static NtsFeature FeatureFromRecord<T>(T? record, out bool success, out string status, string geometryField = "")
     {
         if (record is null)
         {
@@ -79,39 +92,40 @@ public static partial class FeatureNodes
         }
 
         var reader = RecordReader.For(record, typeof(T));
-        if (reader.Problem is { } problem)
+        if (!reader.TryPick(geometryField, out var shape, out var problem))
         {
             success = false;
             status = problem;
             return Feature(null, null);
         }
 
-        var geometry = reader.Geometry!.Read(record) as Geometry;
+        var geometry = shape.Read(record) as Geometry;
         var builder = ImmutableDictionary.CreateBuilder<string, object>();
-        foreach (var property in reader.Attributes)
+        foreach (var property in reader.AttributesBeside(shape))
             if (property.Read(record) is { } value)
                 builder[property.Name] = value;
 
         success = true;
-        status = $"{builder.Count} attributes and the geometry from {reader.TypeName}"
-            + (geometry is null ? " (the Geometry field is empty)" : "");
+        status = $"{reader.TypeName}: {shape.Name} is the shape, {builder.Count} attributes"
+            + (geometry is null ? $" ({shape.Name} is empty)" : "");
         return Feature(geometry, builder.ToImmutable());
     }
 
     /// <summary>
-    /// Fills your own record from a feature: the Geometry field takes the shape, each other field the attribute of the same name.
+    /// Fills your own record from a feature: one Geometry field takes the shape, each other field the attribute of the same name.
     /// </summary>
     /// <remarks>
     /// Template is a value of your record type, usually its Create node; fields the feature does not have keep the template's value.
-    /// Success is false when the record has no single Geometry field, a field was missing, or a value could not be converted; Status says which.
+    /// With several Geometry fields, Geometry Field names the one that takes the shape; Success is false when a field was missing or not converted.
     /// </remarks>
     /// <param name="feature">The feature to read.</param>
     /// <param name="template">A value of your record type: gives the type and the defaults.</param>
     /// <param name="success">True when every field was filled.</param>
     /// <param name="status">Which fields were filled, and which were not.</param>
+    /// <param name="geometryField">Which field takes the shape. Leave empty when the record has one Geometry field.</param>
     /// <returns>The record with the feature's shape and attributes.</returns>
     [Name("Record (FromFeature)")]
-    public static T RecordFromFeature<T>(NtsFeature? feature, T template, out bool success, out string status)
+    public static T RecordFromFeature<T>(NtsFeature? feature, T template, out bool success, out string status, string geometryField = "")
     {
         if (template is null)
         {
@@ -121,7 +135,7 @@ public static partial class FeatureNodes
         }
 
         var reader = RecordReader.For(template, typeof(T));
-        if (reader.Problem is { } problem)
+        if (!reader.TryPick(geometryField, out var shape, out var problem))
         {
             success = false;
             status = problem;
@@ -135,16 +149,16 @@ public static partial class FeatureNodes
 
         if (feature?.Geometry is { } geometry)
         {
-            current = reader.Geometry!.Write(current, geometry);
-            filled.Add(reader.Geometry.Name);
+            current = shape.Write(current, geometry);
+            filled.Add(shape.Name);
         }
         else
         {
-            missing.Add(reader.Geometry!.Name);
+            missing.Add(shape.Name);
         }
 
         var table = feature?.Attributes;
-        foreach (var property in reader.Attributes)
+        foreach (var property in reader.AttributesBeside(shape))
         {
             if (table is null || !table.Exists(property.Name) || table[property.Name] is not { } raw)
             {
@@ -170,7 +184,8 @@ public static partial class FeatureNodes
     }
 
     // Int64 -> Int32, Int32 -> Float64, text -> anything IConvertible: the conversions a GeoJSON
-    // or CSV round trip needs. Anything already of the field's type passes untouched.
+    // or CSV round trip needs. Anything already of the field's type passes untouched - which is
+    // how a Geometry kept as an attribute gets back into its Geometry field.
     static bool TryConvert(object raw, Type target, out object? value)
     {
         if (target.IsInstanceOfType(raw))
@@ -192,8 +207,8 @@ public static partial class FeatureNodes
     }
 
     /// <summary>
-    /// How to read and write the fields of one record type, worked out once per type: which field
-    /// is the geometry, which are attributes, or why the record is not a feature.
+    /// How to read and write the fields of one record type, worked out once per type: which fields
+    /// are geometries, and how to pick the one that is the shape.
     /// </summary>
     sealed class RecordReader
     {
@@ -201,11 +216,8 @@ public static partial class FeatureNodes
 
         public string TypeName { get; private init; } = "";
         public RecordProperty[] Properties { get; private init; } = Array.Empty<RecordProperty>();
-        /// <summary>The one field of type Geometry, or null when Problem says why there is none.</summary>
-        public RecordProperty? Geometry { get; private init; }
-        public RecordProperty[] Attributes { get; private init; } = Array.Empty<RecordProperty>();
-        /// <summary>Why this record is not a feature, or null if it is.</summary>
-        public string? Problem { get; private init; }
+        /// <summary>The fields of type Geometry (or a subtype), in the record's order.</summary>
+        public RecordProperty[] Geometries { get; private init; } = Array.Empty<RecordProperty>();
 
         public sealed record RecordProperty(string Name, Type Type, Func<object, object?> Read, Func<object, object?, object> Write);
 
@@ -218,31 +230,71 @@ public static partial class FeatureNodes
             return Readers.GetOrAdd(value.GetType(), static type => Build(type.Name, PropertiesOf(type)));
         }
 
-        // Exactly one Geometry field: the maintainer's rule, and the message names what the record
-        // has instead, because "no geometry" alone is a guess, not a diagnosis.
-        static RecordReader Build(string typeName, RecordProperty[] properties)
+        static RecordReader Build(string typeName, RecordProperty[] properties) => new()
         {
-            var geometries = properties.Where(p => typeof(Geometry).IsAssignableFrom(p.Type)).ToArray();
-            if (geometries.Length == 1)
-                return new RecordReader
-                {
-                    TypeName = typeName,
-                    Properties = properties,
-                    Geometry = geometries[0],
-                    Attributes = properties.Where(p => !ReferenceEquals(p, geometries[0])).ToArray(),
-                };
+            TypeName = typeName,
+            Properties = properties,
+            Geometries = properties.Where(p => typeof(Geometry).IsAssignableFrom(p.Type)).ToArray(),
+        };
 
-            var has = properties.Length == 0
-                ? "it has no fields at all"
-                : "it has " + string.Join(", ", properties.Select(p => $"{p.Name}: {p.Type.Name}"));
-            return new RecordReader
+        /// <summary>Every field except the one that is the shape - the other geometries included.</summary>
+        public IEnumerable<RecordProperty> AttributesBeside(RecordProperty shape)
+            => Properties.Where(p => !ReferenceEquals(p, shape));
+
+        // The door's rule. One Geometry field: that one. Several: the named one, and no name is a
+        // refusal that lists the candidates - a guess here is the convention nobody could see that
+        // vl-mapsui's ToFeatures was removed for. The message names what the record has instead,
+        // because "no geometry" alone is a guess, not a diagnosis.
+        public bool TryPick(string? geometryField, out RecordProperty shape, out string problem)
+        {
+            var wanted = geometryField?.Trim() ?? "";
+            var candidates = string.Join(", ", Geometries.Select(g => g.Name));
+
+            if (wanted.Length > 0)
             {
-                TypeName = typeName,
-                Properties = properties,
-                Problem = geometries.Length == 0
-                    ? $"{typeName} is not a feature: it needs one field of type Geometry, and {has}"
-                    : $"{typeName} is not a feature: it has {geometries.Length} fields of type Geometry ({string.Join(", ", geometries.Select(g => g.Name))}), a feature has exactly one",
-            };
+                var named = Properties.FirstOrDefault(p => p.Name == wanted)
+                    ?? Properties.FirstOrDefault(p => string.Equals(p.Name, wanted, StringComparison.OrdinalIgnoreCase));
+                if (named is null)
+                {
+                    shape = null!;
+                    problem = Geometries.Length == 0
+                        ? $"{TypeName} has no field named {wanted}, and no field of type Geometry at all"
+                        : $"{TypeName} has no field named {wanted}; its Geometry fields are {candidates}";
+                    return false;
+                }
+                if (!typeof(Geometry).IsAssignableFrom(named.Type))
+                {
+                    shape = null!;
+                    problem = Geometries.Length == 0
+                        ? $"{TypeName}: {named.Name} is a {named.Type.Name}, not a Geometry, and the record has no field of type Geometry at all"
+                        : $"{TypeName}: {named.Name} is a {named.Type.Name}, not a Geometry; its Geometry fields are {candidates}";
+                    return false;
+                }
+                shape = named;
+                problem = "";
+                return true;
+            }
+
+            if (Geometries.Length == 1)
+            {
+                shape = Geometries[0];
+                problem = "";
+                return true;
+            }
+
+            shape = null!;
+            if (Geometries.Length == 0)
+            {
+                var has = Properties.Length == 0
+                    ? "it has no fields at all"
+                    : "it has " + string.Join(", ", Properties.Select(p => $"{p.Name}: {p.Type.Name}"));
+                problem = $"{TypeName} is not a feature: it needs a field of type Geometry, and {has}";
+            }
+            else
+            {
+                problem = $"{TypeName} has {Geometries.Length} fields of type Geometry ({candidates}): name the shape in Geometry Field";
+            }
+            return false;
         }
 
         static RecordProperty[] PropertiesOf(IVLTypeInfo type) => type.Properties

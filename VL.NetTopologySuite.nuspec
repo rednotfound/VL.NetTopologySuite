@@ -35,7 +35,8 @@
       NumPoints, Outlines (NetTopologySuite.Geometry); Attributes (Join) and Attributes (Split)
       (NetTopologySuite.Feature): two Spread IOBoxes, names and values, are a table of attributes,
       with 28 read as an integer and true as a boolean; Feature (FromRecord) and Record (FromFeature):
-      your own record is the feature - one field of type Geometry, every other field an attribute.
+      your own record is the feature - a field of type Geometry is the shape (several: name one in
+      Geometry Field), every other field an attribute.
       60 nodes. New help patches HowTo Wrap points in a hull, HowTo Use your own record as a
       feature and HowTo Build a feature three ways; six patches extended. A Geometry now draws itself in the editor the way a GIS draws it:
       hover a Geometry pin or make an IOBox of one and you see filled polygons with their holes,

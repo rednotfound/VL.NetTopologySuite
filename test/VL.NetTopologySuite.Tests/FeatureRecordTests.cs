@@ -10,8 +10,8 @@ using Xunit;
 namespace VL.NetTopologySuite.Tests;
 
 /// <summary>
-/// The record bridge: a user's own record, holding one Geometry field, is a feature - and comes
-/// back out of one.
+/// The record bridge: a user's own record, holding one or more Geometry fields, is a feature - the
+/// door picks which field is the shape - and comes back out of one.
 /// </summary>
 /// <remarks>
 /// A patched record cannot be built without the vvvv runtime (AppHost is null here), so the IVLObject
@@ -43,7 +43,7 @@ public class FeatureRecordTests
         Assert.Equal(true, attributes["Is Terminal"]);   // "Is Terminal" is OriginalName, Is_Terminal the C# name
         Assert.Equal(3, attributes.Count);
         Assert.False(attributes.ContainsKey("Geometry"));
-        Assert.Equal("3 attributes and the geometry from Station", status);
+        Assert.Equal("Station: Geometry is the shape, 3 attributes", status);
     }
 
     [Fact]
@@ -53,17 +53,70 @@ public class FeatureRecordTests
 
         Assert.False(success);
         Assert.Equal(0, feature.Attributes.Count);
-        Assert.Equal("NoGeometry is not a feature: it needs one field of type Geometry, and it has Name: String, Platforms: Int32", status);
+        Assert.Equal("NoGeometry is not a feature: it needs a field of type Geometry, and it has Name: String, Platforms: Int32", status);
     }
 
     [Fact]
-    public void A_record_with_two_Geometry_fields_is_ambiguous_and_nothing_is_guessed()
+    public void A_record_with_two_Geometry_fields_and_no_name_is_refused_with_the_candidates_listed()
     {
         var feature = FeatureNodes.FeatureFromRecord(new TwoGeometries(), out var success, out var status);
 
         Assert.False(success);
         Assert.Equal(0, feature.Attributes.Count);
-        Assert.Equal("TwoGeometries is not a feature: it has 2 fields of type Geometry (Shape, Outline), a feature has exactly one", status);
+        Assert.Equal("TwoGeometries has 2 fields of type Geometry (Shape, Outline): name the shape in Geometry Field", status);
+    }
+
+    [Fact]
+    public void Geometry_Field_names_the_shape_and_the_other_geometries_become_attributes()
+    {
+        var building = new Building(Tokyo().Buffer(0.001), Ueno(), "Marunouchi");
+
+        var feature = FeatureNodes.FeatureFromRecord(building, out var success, out var status, "Entrance");
+
+        Assert.True(success);
+        Assert.Equal(Ueno(), feature.Geometry);
+        Assert.Equal(building.State.Outline, feature.Attributes["Outline"]);
+        Assert.Equal("Marunouchi", feature.Attributes["Name"]);
+        Assert.Equal(2, feature.Attributes.Count);
+        Assert.Equal("Building: Entrance is the shape, 2 attributes", status);
+    }
+
+    [Fact]
+    public void Geometry_Field_is_matched_ignoring_case_and_surrounding_spaces()
+    {
+        var feature = FeatureNodes.FeatureFromRecord(new Building(Tokyo().Buffer(0.001), Ueno(), "x"), out var success, out _, " outline ");
+
+        Assert.True(success);
+        Assert.IsType<Polygon>(feature.Geometry);
+        Assert.Equal(Ueno(), feature.Attributes["Entrance"]);
+    }
+
+    [Fact]
+    public void Geometry_Field_naming_a_field_the_record_does_not_have_is_refused_with_the_candidates()
+    {
+        var feature = FeatureNodes.FeatureFromRecord(new Building(null, null, "x"), out var success, out var status, "Centre");
+
+        Assert.False(success);
+        Assert.Equal(0, feature.Attributes.Count);
+        Assert.Equal("Building has no field named Centre; its Geometry fields are Outline, Entrance", status);
+    }
+
+    [Fact]
+    public void Geometry_Field_naming_a_field_that_is_not_a_geometry_is_refused()
+    {
+        FeatureNodes.FeatureFromRecord(new Building(null, null, "x"), out var success, out var status, "Name");
+
+        Assert.False(success);
+        Assert.Equal("Building: Name is a String, not a Geometry; its Geometry fields are Outline, Entrance", status);
+    }
+
+    [Fact]
+    public void Geometry_Field_also_works_on_a_record_with_one_Geometry_field()
+    {
+        var feature = FeatureNodes.FeatureFromRecord(new Station(Tokyo(), "Tokyo Station", 28, true), out var success, out _, "Geometry");
+
+        Assert.True(success);
+        Assert.Equal(Tokyo(), feature.Geometry);
     }
 
     [Fact]
@@ -84,7 +137,7 @@ public class FeatureRecordTests
 
         Assert.True(success);
         Assert.Null(feature.Geometry);
-        Assert.EndsWith("(the Geometry field is empty)", status);
+        Assert.EndsWith("(Geometry is empty)", status);
     }
 
     [Fact]
@@ -198,6 +251,46 @@ public class FeatureRecordTests
     }
 
     [Fact]
+    public void A_template_with_two_Geometry_fields_needs_Geometry_Field_too()
+    {
+        var feature = FeatureNodes.Feature(Ueno(), Attributes(("Name", "x")));
+        var template = new Building(null, null, "");
+
+        var record = FeatureNodes.RecordFromFeature(feature, template, out var success, out var status);
+
+        Assert.False(success);
+        Assert.Same(template, record);
+        Assert.Equal("Building has 2 fields of type Geometry (Outline, Entrance): name the shape in Geometry Field", status);
+    }
+
+    [Fact]
+    public void Geometry_Field_puts_the_shape_in_the_named_field_and_the_other_geometries_come_from_the_attributes()
+    {
+        var outline = Tokyo().Buffer(0.001);
+        var feature = FeatureNodes.Feature(Ueno(), Attributes(("Outline", outline), ("Name", "Marunouchi")));
+
+        var record = FeatureNodes.RecordFromFeature(feature, new Building(null, null, ""), out var success, out var status, "Entrance");
+
+        Assert.True(success);
+        Assert.Equal(Ueno(), record.State.Entrance);
+        Assert.Equal(outline, record.State.Outline);
+        Assert.Equal("Marunouchi", record.State.Name);
+        Assert.Equal("3 of 3 fields filled from Building", status);
+    }
+
+    [Fact]
+    public void Record_undoes_Feature_with_two_geometries()
+    {
+        var original = new Building(Tokyo().Buffer(0.001), Ueno(), "Marunouchi");
+
+        var feature = FeatureNodes.FeatureFromRecord(original, out _, out _, "Outline");
+        var back = FeatureNodes.RecordFromFeature(feature, new Building(null, null, ""), out var success, out _, "Outline");
+
+        Assert.True(success);
+        Assert.Equal(original.State, back.State);
+    }
+
+    [Fact]
     public void Record_undoes_Feature()
     {
         var original = new Station(Tokyo(), "Tokyo Station", 28, true);
@@ -290,7 +383,35 @@ public class FeatureRecordTests
         public object ReadProperty(string key) => throw new NotSupportedException();
     }
 
-    /// <summary>A record with two Geometry fields: ambiguous, not a feature.</summary>
+    /// <summary>
+    /// A record with two Geometry fields and a name, editor-shaped like Station: a building with
+    /// its outline and its entrance. Which one is the shape is the door's choice.
+    /// </summary>
+    sealed class Building : IVLObject
+    {
+        public (Geometry? Outline, Point? Entrance, string Name) State { get; }
+
+        public Building(Geometry? outline, Point? entrance, string name) => State = (outline, entrance, name);
+
+        Building With((Geometry? Outline, Point? Entrance, string Name) state) => new(state.Outline, state.Entrance, state.Name);
+
+        public object __State => State;
+        public uint Identity => 4;
+        public IVLTypeInfo Type => new FakeType("Building", typeof(Building),
+            new FakeProperty("Outline", "Outline", typeof(Geometry), o => ((Building)o).State.Outline,
+                (o, v) => ((Building)o).With(((Building)o).State with { Outline = (Geometry?)v })),
+            new FakeProperty("Entrance", "Entrance", typeof(Point), o => ((Building)o).State.Entrance,
+                (o, v) => ((Building)o).With(((Building)o).State with { Entrance = (Point?)v })),
+            new FakeProperty("Name", "Name", typeof(string), o => ((Building)o).State.Name,
+                (o, v) => ((Building)o).With(((Building)o).State with { Name = (string)v! })));
+        public ServiceRegistry Services => throw new NotSupportedException();
+        public AppHost AppHost => throw new NotSupportedException();
+        public NodeContext Context => throw new NotSupportedException();
+        public IVLObject With(IReadOnlyDictionary<string, object> values) => throw new NotSupportedException();
+        public object ReadProperty(string key) => throw new NotSupportedException();
+    }
+
+    /// <summary>A record with two Geometry fields and nothing else, both empty: the refusal message's subject.</summary>
     sealed class TwoGeometries : IVLObject
     {
         public object __State => 0;

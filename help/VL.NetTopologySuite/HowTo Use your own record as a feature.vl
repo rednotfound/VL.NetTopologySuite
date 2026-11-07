@@ -104,7 +104,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="DHfgniQN6DujdFB8xObClg" Bounds="60,95,540,60" ShowValueBox="true" isIOBox="true" Value="Your own record is the feature: one field of type Geometry, and whatever else describes it. That is the schema - every feature is one row of it, a Spread of the record is the table. The Station record is at the bottom of this patch; right-click it to see its fields.">
+          <Pad Id="DHfgniQN6DujdFB8xObClg" Bounds="60,95,540,60" ShowValueBox="true" isIOBox="true" Value="Your own record is the feature: a field of type Geometry, and whatever else describes it. That is the schema - every feature is one row of it, a Spread of the record is the table. The Station record is at the bottom of this patch; right-click it to see its fields.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -170,7 +170,7 @@
           <Pad Id="Dsh49c306tBg2uAkIuNWTk" Comment="Success" Bounds="220,330,35,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="FXoEKknZ23P5dtJo7i8Jny" Comment="Status" Bounds="330,330,380,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="QDSlSSGkZGKWmDVi6sEgbD" Comment="Feature" Bounds="940,300,220,290" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="Sr8puJgN3euHeg9kWpM2Re" Bounds="600,260,320,60" ShowValueBox="true" isIOBox="true" Value="&lt; Exactly one Geometry field is the rule. No such field, or two: Success goes false and Status says what the record has instead.">
+          <Pad Id="Sr8puJgN3euHeg9kWpM2Re" Bounds="600,260,320,60" ShowValueBox="true" isIOBox="true" Value="&lt; One Geometry field: that is the shape. Several? Name one in Geometry Field; unnamed, Success goes false and Status lists them.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>

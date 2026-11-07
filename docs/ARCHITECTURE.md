@@ -587,13 +587,19 @@ fields, look at GeoJSON", and whether there was a table-like way in. Surveyed th
 
 ### The record is the feature — `Feature (FromRecord)` and `Record (FromFeature)`
 
-The maintainer's framing, in two steps the same night: "任何的 GIS 的 feature 是带着 geometry 的这么一
+The maintainer's framing, in three steps the same night: "任何的 GIS 的 feature 是带着 geometry 的这么一
 张表格，schema 是定义的" - a feature is a row of a table with a geometry column, and the columns are
 defined before the rows; then "feature 本身就是 record … 必须至少放一个 geometry 的定义在里面，而且只有
-一个" - the record itself is the feature, holding exactly one Geometry field and whatever else
-describes it. QGIS, Shapefile and GeoPackage all work that way at the *layer*; NTS and GeoJSON carry
-no schema, so the Dictionary is the right type at their level and the schema has to come from the
-patch. In vvvv the thing you define once and then fill is a Record: `Station` with
+一个" - the record itself is the feature, holding a Geometry field and whatever else describes it;
+and last, after a longer think, that "only one" is GeoJSON's rule - the rule of an exchange format -
+and not how data is kept: "一个 Feature 在任何其他的系统里面，它可以带更多的 Geometry … Bounding Box 是一
+个，入口是一个，中心点是一个 … 应该拿哪个 Geometry 出来做，是一个需要选择的事情". Measured the same
+night: PostGIS tables and GDAL/OGR (since 1.11) hold any number of geometry columns; GeoPackage,
+Shapefile, ArcGIS feature classes, GeoJSON, KML, Mapsui's `GeometryFeature` and NTS's own `Feature`
+hold exactly one; QGIS loading a PostGIS table asks which column. Storage allows many, every exchange
+and drawing layer takes one, and the choice is made once, at the door. QGIS, Shapefile and
+GeoPackage all carry a schema at the *layer*; NTS and GeoJSON carry none, so the Dictionary is the
+right type at their level and the schema has to come from the patch. In vvvv the thing you define once and then fill is a Record: `Station` with
 `Geometry: Geometry`, `Name: String`, `Platforms: Integer32`, `Terminal: Boolean`, each field with
 the IOBox of its type, and a `Spread<Station>` as the dataset. The two nodes are the bridge to the
 NTS `Feature` that GeoJSON writes and Mapsui draws.
@@ -602,14 +608,19 @@ vl-mapsui built this bridge once before (`ToFeatures<T>`, 2026-08-15) and remove
 maintainer's request (2026-09-25); its NOTES.md carries the measurements, and three of them are
 constraints here:
 
-1. **Exactly one field of type Geometry, and the rule is written on the node.** `ToFeatures` chose
-   the geometry by property type too, and the objection then was that the choice was a convention
-   nobody could see until a Status complained. What changed is not the mechanism but whose rule it
-   is: the maintainer's, stated in the tooltip and the help patch, and loud when broken - no
-   Geometry field, or two, and `Success` is false while `Status` lists what the record has
-   (`Station is not a feature: it has 2 fields of type Geometry (Shape, Outline), a feature has
-   exactly one`). Nothing is guessed. An intermediate version with the geometry as its own pin
-   was built and seen the same evening and replaced by this one at the maintainer's request.
+1. **One geometry per feature is the door's rule, and the door asks which.** `ToFeatures` chose
+   the geometry by property type, and the objection then was that the choice was a convention
+   nobody could see until a Status complained. Here the choice is a pin: with one Geometry field
+   it is made; with several, `Geometry Field` names the shape (exact name first, then ignoring
+   case, spaces trimmed), and an unnamed choice is refused with the candidates listed
+   (`Building has 2 fields of type Geometry (Outline, Entrance): name the shape in Geometry Field`),
+   a wrong name with what the record has instead. Nothing is guessed. The fields not chosen go into
+   the attribute table as Geometry values, so nothing is lost: `Record (FromFeature)` with the same
+   pin puts the shape back into the named field and the other geometries back from the attributes,
+   and the round trip is the identity (tested). What GeoJSON makes of a Geometry-valued property
+   is that package's decision. Two earlier cuts were built and seen the same evening: the geometry
+   as its own pin, then "exactly one Geometry field, two is a refusal" - the second was the
+   GeoJSON rule applied to the record, and the maintainer's longer think moved it to the door.
 2. **A patched record is read through VL, never through `System.Reflection`.** In the editor a
    record's public CLR surface is `__State, Context, Identity, __Program__` - the values live
    inside `__State` and only `IVLObject.Type.Properties` sees them. `vvvvc`'s export emits real
@@ -634,7 +645,7 @@ shaped like the editor's record (vl-mapsui's, with `WithValue` added).
 **Seen 2026-11-07** in `HowTo Use your own record as a feature`, a record defined in the patch with
 its Geometry slot declared the way vl-mapsui's proven `Landmark` declares it (`NonSerializedAttribute`
 on the slot, `NetTopologySuite` as a dependency of the patch): `Feature (FromRecord)` reports
-`3 attributes and the geometry from Station`, the Feature IOBox draws the pin and lists
+`Station: Geometry is the shape, 3 attributes`, the Feature IOBox draws the pin and lists
 `Name "Tokyo Station"`, `Platforms 28`, `Terminal TRUE`; `Record (FromFeature)` reports
 `4 of 4 fields filled from Station`, both Success true; the generated C# reads
 `FeatureFromRecord<Station_R>(record: …)`. The record's own IOBox shows only its type name - the

@@ -58,15 +58,23 @@ stay as the schema-less path.
 
 **2026-11-07, night, branch `record-bridge`: built and seen, twice.** First with the geometry as
 its own pin; then, at the maintainer's request the same night ("feature 本身就是 record … 只有一个
-geometry"), the record IS the feature: exactly one Geometry field, the rest attributes, the rule on
+geometry"), the record IS the feature: a Geometry field is the shape, the rest attributes, the rule on
 the node and loud when broken. `Feature (FromRecord)` and `Record (FromFeature)` (ARCHITECTURE,
-"The record is the feature"), 15 tests against an editor-shaped double, `HowTo Use your own record
-as a feature` with a `Station` record defined in the patch - `3 attributes and the geometry from
-Station`, `4 of 4 fields filled`, both Success true, generated C# shows
+"The record is the feature"), 23 tests against an editor-shaped double, `HowTo Use your own record
+as a feature` with a `Station` record defined in the patch - `Station: Geometry is the shape, 3
+attributes`, `4 of 4 fields filled`, both Success true, generated C# shows
 `FeatureFromRecord<Station_R>`. The pad-typed-as-feature idea was dropped the same night (a pad can
 already be typed `Feature` or `Station`; an interface would save one node and cost a layer -
 ARCHITECTURE). `HowTo Build a feature three ways` (patch 18) mirrors the `Add` chain, the table and the
 record column by column, at the maintainer's request that neither be harder to remember.
+**Later the same night the maintainer moved the one-geometry rule from the record to the door:**
+a feature in storage may carry several geometries (outline, entrance, centre; PostGIS and OGR do),
+only the exchange formats and the map take one, so `Geometry Field` on both nodes names the shape,
+several-and-unnamed is refused with the candidates, and the other geometries ride as attributes
+(ARCHITECTURE, point 1 of "The record is the feature"). Feature stays in this package: NTS ships
+`NetTopologySuite.Features` itself, VL.Mapsui's FeatureLayer and Pick and the GeoJSON package all
+take the NTS `Feature`, so it is the currency between the three; the `NetTopologySuite.Feature`
+category keeps it apart, and a split into its own package later would not rename a node.
 Left for the maintainer: a walk through the three feature patches in vvvv, then merge or not,
 then `0.0.5-alpha`. On the front door as one note line, not node rows: a generic node
 with nothing connected has no type argument and `vvvvc` reports it as unresolved. Not on `main`: the maintainer opened the branch to see how far the

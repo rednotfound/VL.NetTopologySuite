@@ -144,6 +144,7 @@ Two more, learned while verifying:
 | **A Spread IOBox is an editable table** | XML: a Pad typed `Spread` of `String` with `<p:Value><Item>…</Item></p:Value>`; two of them side by side are the attribute table `Attributes (Join)` reads. Readouts of a `Spread<T>` output list items, of an `IReadOnlyList<T>` show a type name |
 | **A patched record has two runtime shapes** | in the editor its values live in `__State` and only `IVLObject.Type.Properties` sees them; `vvvvc`'s export emits public fields, so the generated C# cannot catch a node that reflects with `System.Reflection` (vl-mapsui, 2026-08-15). The record bridge reads through `IVLObject`, keys by `OriginalName`, writes with `IVLPropertyInfo.WithValue`; the test double hides its fields the way the editor does |
 | A generic `T` method is a node | `FeatureFromRecord<T>(T, out bool, out string)` compiles to `FeatureFromRecord<Station_R>(…)` in the generated C#, the type argument taken from the link. **Unconnected it does not resolve at all** - `vvvvc` reports `did not resolve`, and the front door had to carry the two as a note instead of node rows. Measured 2026-11-07 |
+| **One geometry per feature is the door's rule, not the record's** | measured 2026-11-07 at the maintainer's prompt: PostGIS tables and GDAL/OGR hold any number of geometry columns; GeoPackage, Shapefile, GeoJSON, Mapsui's `GeometryFeature` and NTS's `Feature` hold one; QGIS asks which column when a table is loaded. So a record may hold several Geometry fields and `Feature (FromRecord)` / `Record (FromFeature)` carry a `Geometry Field` pin naming the shape (one field: automatic; several and unnamed: refused with the candidates listed, never guessed). The fields not chosen travel as Geometry-valued attributes, so the round trip loses nothing |
 | `SlotId="…"` is not an `Id` | the validator's `Id="` regex counted a record's `SlotId` attributes as duplicate IDs the first time a help patch defined a record; now `(?<![A-Za-z])Id="` |
 | A `[Name("Attributes (Join)")]` on a method | renders as the node `Attributes (Join)`: the parenthesised version is part of the plain name string, as `Vector (Join)` is in every shipped `.vl`; `[return: Pin(Name = "Attributes")]` names the output pin. Both confirmed by `vvvvc` resolving the link (2026-11-07) |
 
@@ -200,7 +201,7 @@ the geometry". A new patch gets that column from the start.
 
 | | proves | state |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ 175 tests, ~400 ms, no network |
+| `dotnet test` | the arithmetic is right | ✅ 183 tests, ~400 ms, no network |
 | `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 20 documents (incl. the HDE companion) |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 16 help patches, 2026-11-07 |
@@ -305,13 +306,13 @@ vl-nettopologysuite/
 │   ├── OperationNodes.cs              # NetTopologySuite.Operation - Buffer, ConvexHull, Reverse, four overlays, eight predicates + Relate, Distance, Nearest Points, IsWithinDistance
 │   ├── IONodes.cs                     # NetTopologySuite.IO - Read WKT, Write WKT
 │   ├── FeatureNodes.cs                # NetTopologySuite.Feature - Feature, Split, GetAttribute, Attributes (Join), Attributes (Split)
-│   ├── FeatureNodes.Record.cs         # NetTopologySuite.Feature - Feature (FromRecord), Record (FromFeature): the user's record IS the feature (one Geometry field), read through IVLObject
+│   ├── FeatureNodes.Record.cs         # NetTopologySuite.Feature - Feature (FromRecord), Record (FromFeature): the user's record IS the feature; the door picks WHICH Geometry field (Geometry Field pin), read through IVLObject
 │   ├── SpatialIndexNode.cs            # NetTopologySuite.Index - SpatialIndex (process node)
 │   ├── IndexNodes.cs                  # NetTopologySuite.Index - Query
 │   ├── Network.cs                     # NetTopologySuite.Network - the retained handle type, and the scope sentence
 │   ├── NetworkNode.cs                 # NetTopologySuite.Network - Network (process node)
 │   └── NetworkNodes.cs                # NetTopologySuite.Network - ShortestPath
-├── test/VL.NetTopologySuite.Tests/    # 175 xunit tests, no network, no vvvv
+├── test/VL.NetTopologySuite.Tests/    # 183 xunit tests, no network, no vvvv
 ├── help/VL.NetTopologySuite/          # 16 help patches + Help.xml (ordering and tags)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
 ├── docs/ARCHITECTURE.md               # why each node exists, what stays raw, the boundary
