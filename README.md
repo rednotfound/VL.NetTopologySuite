@@ -304,7 +304,10 @@ usually spoken, and the most common bug in this domain.
 ## Help patches
 
 Sixteen, in `help\VL.NetTopologySuite\`, in the order the Help Browser shows them. Press **F1** on
-any node of this package to open the one that teaches it.
+any node of this package to open the one that teaches it. Since 2026-11-07 every patch also *shows*
+the geometry it talks about, drawn in IOBoxes beside the nodes: the four overlays of two squares
+side by side, A and B of the predicates in one picture, the buffered shape next to the original,
+the town and the path, the feature with its attribute table.
 
 | Topic | Patch |
 |---|---|

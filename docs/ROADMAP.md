@@ -23,7 +23,14 @@ Geometry pin or an IOBox of one shows it the way a GIS would: filled polygons wi
 stroked lines, point markers, a map pin for a lone point; a Feature shows its geometry with the
 attribute table under it. `Outlines` (node 56, three outputs) came out of it. Seen in a probe:
 polygon with hole, multipolygon, line, point, multipoint, mixed collection, lon/lat polygon, a
-feature with two attributes.
+feature with two attributes. **Then every help patch got a column of drawn IOBoxes** (the
+maintainer: now that the editor can draw, the patches should show what they talk about): the
+overlays side by side, A and B in one picture for the predicates and the distance, the gap as a
+line, the town and the path, the feature with its table, a three-item gallery on the front door. One thing the captures showed that the drawn boxes cannot fix: a readout of `Geometries`' or
+`Outlines`' output prints `System.Collections.Generic.List`1[...]`, because an `IReadOnlyList` is
+not a VL `Spread` to the editor's viewers, while `Query`'s result lists its items. Returning
+`Spread<T>` from those nodes (VL.Core's own type) would give them the same list view - a small,
+separate change, noted here rather than slipped in.
 
 **2026-10-18, evening: `0.0.4-alpha` released** - the tooltip rewrite alone, one change per release,
 and a fourth walk through the process at the maintainer's suggestion, for practice. Browser upload

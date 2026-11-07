@@ -185,6 +185,10 @@ other documents already link to.
 So: a new patch gets a `HowTo ...` name and is appended to the right `Topic` in `Help.xml`. Scaffold it with `tools\HelpPatchGen.ps1` (intro box at 60,60 900 wide, dataflow below, 440-wide notes beside or under it - the shape all fifteen share), then compile it and READ the C#: a wrong pin name does not fail the compile, it makes that input read `default(...)`. After the GUI check the `.vl` is the truth and the scaffolding script is thrown away.
 `tools\Test-VLPatch.ps1` enforces the pairing in both directions — every patch on disk must be
 listed, and every link must name a file that exists, because both failures are silent.
+**Every patch shows its geometry** (2026-11-07): a column of drawn Geometry IOBoxes at `x = 940`,
+180 × 120, one per geometry that matters, and `A and B` together through `Cons` →
+`GeometryCollection` where the patch is about two; recipe in `docs/HELP-PATCH-STYLE.md`, "Showing
+the geometry". A new patch gets that column from the start.
 
 ## Verification — be precise about which one you have
 
@@ -198,7 +202,7 @@ listed, and every link must name a file that exists, because both failures are s
 | the vvvv **NodeBrowser** | **which category a node is in** | ✅ 2026-10-17: typing `NetTopologySuite` lists the category folder `NetTopologySuite` and the package; its nodes sit under `NetTopologySuite.Geometry` … `.Network` (was `NTS` until that day) |
 | the vvvv **GUI, running** | the patch computes the right value | ✅ 2026-08-14, vvvv 7.4; all 15 help patches 2026-09-24, reviewed by the maintainer 2026-09-25; the six tier-1 patches 2026-11-07 |
 | **F1 on a node** | the node carries a High help flag in a patch vvvv has indexed | ✅ 2026-09-24, all 39 nodes then; the 17 since (`GetAttribute`, tier 1, `Outlines`) are flagged and audited by `Test-VLPatch`, F1 not yet pressed on them |
-| **a Geometry IOBox draws** | the HDE companion registered its viewers in the editor | ✅ 2026-11-07, probe with polygon-with-hole, line, point, lon/lat polygon, all drawn (and the Y flip and the hole artefact caught on the way) |
+| **a Geometry IOBox draws** | the HDE companion registered its viewers in the editor | ✅ 2026-11-07, probes with polygon-with-hole, multipolygon, line, point, multipoint, mixed collection, lon/lat polygon, a feature with attributes, all drawn GIS-style; then every help patch got a column of drawn IOBoxes (`x = 940`) and all 16 were captured again |
 
 **The last three rows are three different claims, and this is where a false proof lives.** Learned
 here, at the cost of nearly writing down a wrong conclusion:

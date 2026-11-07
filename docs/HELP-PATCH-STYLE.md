@@ -80,6 +80,25 @@ package** — `dist\VL.NetTopologySuite\help\` when launched with `--package-rep
 Sources: [Providing Help](https://thegraybook.vvvv.org/reference/extending/providing-help.html),
 [Finding Help](https://thegraybook.vvvv.org/reference/hde/findinghelp.html).
 
+## Showing the geometry — a drawn IOBox
+
+Since 2026-11-07 the editor draws a Geometry wherever one is shown (`VL.NetTopologySuite.HDE.vl`,
+see ARCHITECTURE "Drawing without a renderer"): an IOBox of a Geometry is a picture - polygons
+filled with their holes cut out, lines stroked, points as pins or markers - and a Feature IOBox is
+the picture with the attribute table under it. **Every help patch therefore shows the geometry it
+talks about**, in a column of drawn IOBoxes right of the notes: `x = 940`, 180 × 120, one per
+geometry that matters, labelled with what it is (`A`, `Union`, `Buffered`, `Path`), rows aligned
+with the node that makes it. A patch about two geometries also shows them *together*: `Cons` →
+`GeometryCollection` → an IOBox labelled `A and B` (Combine, Relate, Measure distance), and
+Measure distance draws the gap itself as a `LineString` through the two nearest points. The
+Explanation front door has a gallery of three (point, line, polygon with hole) at `x = 1300`.
+
+The box is an ordinary readout Pad with a `Comment` and no `Value`, linked from the node's output;
+vvvv types it from the link. Nothing else is needed - no Renderer, no Skia nodes - which is why
+this column replaced none of the existing notes and moved none of the maintainer's layout: it was
+appended beside it. The Skia recipe below is still the way to draw *in the patch's own window*,
+which the shortest-path patch does to animate; for *seeing a value*, the IOBox is enough.
+
 ## Drawing the result with VL.Skia
 
 A help patch may use VL.Skia even though this package does not depend on it: VL.Skia ships inside
