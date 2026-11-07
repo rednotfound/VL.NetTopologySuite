@@ -584,7 +584,7 @@
             <Pin Id="Rnz5cZp71JlBYvK4mMkHtw" Name="Infer Types" Kind="InputPin" />
             <Pin Id="FD8xWctmuaBlbjyAZgr8ut" Name="Attributes" Kind="OutputPin" />
           </Node>
-          <Pad Id="V9q8aY9DSQxa3QT1RLcrxH" Bounds="830,687,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; Two columns, names and values, become attributes. 28 reads as an integer.">
+          <Pad Id="V9q8aY9DSQxa3QT1RLcrxH" Bounds="830,687,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; Two columns, names and values, become attributes. 28 becomes an integer.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
