@@ -17,12 +17,20 @@ namespace VL.NetTopologySuite;
 // even though NTS coordinate STORAGE is writable - see Defaults for where that distinction bites
 // and what this package does about it.
 //
-// Nine nodes, not the twenty NTS could support. What is missing is missing on purpose:
-// SymmetricDifference, Touches, Crosses, Overlaps, Covers, ConvexHull and Simplify are all one
-// method each - they arrive when something needs them rather than because they exist. Nearest
-// Points arrived exactly that way: a consumer needed to draw the shortest line, not merely number
-// it. Disjoint is deliberately absent: it is Intersects with a Not after it, and a node a patch can
-// already build from two nodes is a help patch, not a node.
+// Nineteen nodes. The first nine were the smallest surface a chain of operations needs; the other
+// ten (SymmetricDifference, ConvexHull, Reverse, IsWithinDistance, Touches, Crosses, Overlaps,
+// Covers, CoveredBy, Relate) are tier 1 of the coverage plan in docs/ROADMAP.md, added 2026-11-07
+// under the maintainer's rule that a package carrying the library's name owes its users what a
+// geometry library is expected to do - every one of them is one line of NTS's Geometry class.
+// Nearest Points arrived earlier and differently: a consumer needed to draw the shortest line, not
+// merely number it. Disjoint is still deliberately absent: it is Intersects with a Not after it,
+// and a node a patch can already build from two nodes is a help patch, not a node.
+//
+// Geometry-in, geometry-out nodes hand back what NTS builds and do not copy whole geometries. Some
+// NTS results share Coordinate objects with their input (ConvexHull's ring is made of the input's
+// own coordinate instances); that is safe here because every node that hands coordinates OUT
+// (Coordinates, Nearest Points, IsValid) copies them, so no patch can write through. The same
+// precedent as Geometries, which returns the collection's own parts.
 
 /// <summary>
 /// Spatial operations: geometry in, geometry out.
@@ -61,6 +69,35 @@ public static class OperationNodes
     public static Geometry? Buffer(Geometry? geometry, double distance = 0, int segments = 8)
         => geometry?.Buffer(distance, segments);
 
+    // The smallest convex polygon around everything in the geometry - the rubber band. The usual
+    // way to get an outline around a spread of points: MultiPoint -> ConvexHull. Degenerate input
+    // degrades gracefully: two points give a LineString, one point a Point, empty stays empty.
+    // Tier 1, 2026-11-07.
+
+    /// <summary>
+    /// Returns the smallest convex polygon that wraps the whole geometry.
+    /// </summary>
+    /// <remarks>
+    /// A rubber band around a spread of points: MultiPoint, then ConvexHull.
+    /// Collinear points give a line and a single point gives a point.
+    /// </remarks>
+    public static Geometry? ConvexHull(Geometry? geometry)
+        => geometry?.ConvexHull();
+
+    // Same geometry, coordinates in the opposite order. A direction matters for a LineString
+    // (animation along it, a one-way street) and for a ring's orientation; NTS's result is a new
+    // geometry with a copied, reversed sequence - measured in 2.6: the input is untouched.
+    // Tier 1, 2026-11-07.
+
+    /// <summary>
+    /// Returns the same geometry with its coordinates in the opposite order.
+    /// </summary>
+    /// <remarks>
+    /// A line runs the other way; a polygon's rings flip orientation. The input is not changed.
+    /// </remarks>
+    public static Geometry? Reverse(Geometry? geometry)
+        => geometry?.Reverse();
+
     // Empty if they do not overlap - not an error. The result can be a collection even when both
     // inputs were single polygons, because an overlap can fall into several separate pieces.
     //
@@ -98,6 +135,21 @@ public static class OperationNodes
     /// </remarks>
     public static Geometry? Difference(Geometry? a, Geometry? b)
         => a is null ? null : b is null ? a : a.Difference(b);
+
+    // The fourth overlay, and the least used, which is why it came last (tier 1, 2026-11-07). The
+    // parts of A and B that are not shared: Union minus Intersection. Symmetric, unlike Difference.
+    // NTS 2.6 names it SymmetricDifference too (JTS's symDifference is the abbreviation; checked
+    // against the type, which has no SymDifference). Nulls follow Union: a missing side leaves the
+    // other side whole, since nothing was shared.
+
+    /// <summary>
+    /// Returns the parts of A and B that they do not share.
+    /// </summary>
+    /// <remarks>
+    /// Union minus Intersection. The order of A and B does not matter.
+    /// </remarks>
+    public static Geometry? SymmetricDifference(Geometry? a, Geometry? b)
+        => a is null ? b : b is null ? a : a.SymmetricDifference(b);
 
     // ── Measurement between two ───────────────────────────────────────────────
 
@@ -154,6 +206,23 @@ public static class OperationNodes
         onB = points[1].Copy();
     }
 
+    // Distance followed by a comparison, but NTS can answer it without computing the full distance
+    // - it stops as soon as any pair of parts is close enough - so on large geometries this is the
+    // cheaper question. Same units caveat as Distance. Tier 1, 2026-11-07.
+
+    /// <summary>
+    /// Tells whether two geometries come within a distance of each other.
+    /// </summary>
+    /// <remarks>
+    /// The distance is in the geometries' coordinate units: degrees on longitude and latitude, not metres.
+    /// Faster than Distance followed by a comparison on large geometries.
+    /// </remarks>
+    /// <param name="a">The first geometry.</param>
+    /// <param name="b">The second geometry.</param>
+    /// <param name="distance">How close counts, in coordinate units.</param>
+    public static bool IsWithinDistance(Geometry? a, Geometry? b, double distance = 0)
+        => a is not null && b is not null && a.IsWithinDistance(b, distance);
+
     // ── Predicates ────────────────────────────────────────────────────────────
 
     // The broadest of the predicates and usually the one to reach for first, since it is also the
@@ -169,8 +238,7 @@ public static class OperationNodes
         => a is not null && b is not null && a.Intersects(b);
 
     // The exact rule has an edge case worth knowing: a geometry lying entirely ON A's boundary is
-    // not contained by it. Covers is the version without that exception, and is reachable through
-    // VL's raw .NET nodes.
+    // not contained by it. Covers is the version without that exception, below.
 
     /// <summary>
     /// Tells whether B lies entirely inside A.
@@ -193,4 +261,85 @@ public static class OperationNodes
     /// </remarks>
     public static bool Within(Geometry? a, Geometry? b)
         => a is not null && b is not null && a.Within(b);
+
+    // The remaining named predicates, tier 1 (2026-11-07). Each is one DE-9IM pattern with a name
+    // the OGC Simple Features spec gave it; Relate below is the pattern itself, for the questions
+    // that have no name. They are all false when either input is missing, like the three above.
+
+    // Boundaries meet, interiors do not: two parcels sharing a fence, a road ending at a junction.
+
+    /// <summary>
+    /// Tells whether two geometries meet only at their edges.
+    /// </summary>
+    /// <remarks>
+    /// True for a shared boundary with no overlap of interiors, such as two parcels along a fence.
+    /// </remarks>
+    public static bool Touches(Geometry? a, Geometry? b)
+        => a is not null && b is not null && a.Touches(b);
+
+    // Defined only between different dimensions (a line and a polygon, two lines, a point and a
+    // line): the line goes in and comes out again. Two polygons never cross - they overlap.
+
+    /// <summary>
+    /// Tells whether a line passes through a geometry and out the other side.
+    /// </summary>
+    /// <remarks>
+    /// Meant for a line against a polygon, or two lines. Two polygons never cross; use Overlaps.
+    /// </remarks>
+    public static bool Crosses(Geometry? a, Geometry? b)
+        => a is not null && b is not null && a.Crosses(b);
+
+    // Same dimension, partial overlap, neither inside the other. Two polygons that share some area
+    // but not all of it; two lines that run together for a stretch.
+
+    /// <summary>
+    /// Tells whether two geometries of the same kind share some of their area but not all.
+    /// </summary>
+    /// <remarks>
+    /// False when one lies entirely inside the other, and false when they only touch.
+    /// </remarks>
+    public static bool Overlaps(Geometry? a, Geometry? b)
+        => a is not null && b is not null && a.Overlaps(b);
+
+    // Contains without the boundary exception: a geometry lying on A's edge IS covered by A. This is
+    // the question most people mean when they say "inside", and it is the one with no surprises on
+    // edges, so prefer it over Contains unless the exception is wanted.
+
+    /// <summary>
+    /// Tells whether no point of B lies outside A.
+    /// </summary>
+    /// <remarks>
+    /// Like Contains, but a geometry lying on A's boundary counts as covered.
+    /// </remarks>
+    public static bool Covers(Geometry? a, Geometry? b)
+        => a is not null && b is not null && a.Covers(b);
+
+    // Covers with the inputs the other way round, for the same reason Within exists beside Contains.
+
+    /// <summary>
+    /// Tells whether no point of A lies outside B.
+    /// </summary>
+    /// <remarks>
+    /// Covers with the inputs the other way round.
+    /// </remarks>
+    public static bool CoveredBy(Geometry? a, Geometry? b)
+        => a is not null && b is not null && a.CoveredBy(b);
+
+    // The DE-9IM intersection matrix as its nine-character string, for the relationship questions
+    // that have no named predicate. Each character says what the intersection of one part of A
+    // (interior, boundary, exterior) with one part of B has: F for nothing, 0 for points, 1 for
+    // lines, 2 for areas. Two overlapping squares give "212101212". A pattern test against this
+    // string with wildcards (NTS's IntersectionMatrix.Matches) is left raw: the five named
+    // predicates above cover nearly every question a patch asks, and VL has string nodes for the
+    // rest.
+
+    /// <summary>
+    /// Returns how two geometries relate as the nine-character DE-9IM string.
+    /// </summary>
+    /// <remarks>
+    /// Interior, boundary and exterior of A against those of B: F for no contact, 0 for points, 1 for lines, 2 for areas.
+    /// Two overlapping squares give 212101212. Empty when an input is missing.
+    /// </remarks>
+    public static string Relate(Geometry? a, Geometry? b)
+        => a is null || b is null ? "" : a.Relate(b).ToString();
 }

@@ -177,4 +177,102 @@ public class InspectionTests
         Assert.True(GeometryNodes.IsEmpty(GeometryNodes.Point()));
         Assert.False(GeometryNodes.IsEmpty(MutationTests.UnitSquare()));
     }
+
+    // ── Tier 1: the rest of Geometry's own surface (2026-11-07) ───────────────
+
+    [Fact]
+    public void Envelope_is_the_bounding_box_as_a_geometry_and_degrades_for_flat_input()
+    {
+        var triangle = GeometryNodes.Polygon(GeometryNodes.LinearRing(
+            [GeometryNodes.Coordinate(0, 0), GeometryNodes.Coordinate(2, 0), GeometryNodes.Coordinate(1, 1)]));
+
+        var box = GeometryNodes.Envelope(triangle);
+        Assert.Equal("Polygon", GeometryNodes.GeometryType(box));
+        Assert.Equal(2.0, GeometryNodes.Area(box), 12);
+        GeometryNodes.Bounds(triangle, out var minX, out var minY, out var maxX, out var maxY);
+        GeometryNodes.Bounds(box, out var bMinX, out var bMinY, out var bMaxX, out var bMaxY);
+        Assert.Equal((minX, minY, maxX, maxY), (bMinX, bMinY, bMaxX, bMaxY));
+
+        Assert.Equal("Point", GeometryNodes.GeometryType(GeometryNodes.Envelope(GeometryNodes.Point(GeometryNodes.Coordinate(3, 4)))));
+        var flat = GeometryNodes.LineString([GeometryNodes.Coordinate(0, 0), GeometryNodes.Coordinate(5, 0)]);
+        Assert.Equal("LineString", GeometryNodes.GeometryType(GeometryNodes.Envelope(flat)));
+        Assert.True(GeometryNodes.IsEmpty(GeometryNodes.Envelope(null)));
+    }
+
+    [Fact]
+    public void InteriorPoint_lies_on_the_shape_where_the_centroid_may_not()
+    {
+        // A U: the centroid falls in the gap, the interior point does not.
+        var u = GeometryNodes.Polygon(GeometryNodes.LinearRing(
+        [
+            GeometryNodes.Coordinate(0, 0), GeometryNodes.Coordinate(3, 0), GeometryNodes.Coordinate(3, 3),
+            GeometryNodes.Coordinate(2, 3), GeometryNodes.Coordinate(2, 1), GeometryNodes.Coordinate(1, 1),
+            GeometryNodes.Coordinate(1, 3), GeometryNodes.Coordinate(0, 3),
+        ]));
+
+        Assert.False(OperationNodes.Covers(u, GeometryNodes.Centroid(u)));
+        Assert.True(OperationNodes.Covers(u, GeometryNodes.InteriorPoint(u)));
+        Assert.True(GeometryNodes.IsEmpty(GeometryNodes.InteriorPoint(null)));
+        Assert.True(GeometryNodes.IsEmpty(GeometryNodes.InteriorPoint(GeometryNodes.Point())));
+    }
+
+    [Fact]
+    public void InteriorPoint_of_a_point_does_not_share_the_input_coordinate()
+    {
+        // Measured 2026-11-07 against the expectation that NTS would reuse the input's Coordinate
+        // instance for a Point: it does not, so the node copies nothing. This is what tells us if
+        // that changes - then the node needs Defaults.CopyOf like IsValid's location.
+        var point = GeometryNodes.Point(GeometryNodes.Coordinate(1, 2));
+        Assert.NotSame(point.Coordinate, point.InteriorPoint.Coordinate);
+
+        var ours = GeometryNodes.InteriorPoint(point);
+        Assert.NotSame(point.Coordinate, ours.Coordinate);
+        Assert.Equal(1, ours.X);
+        Assert.Equal(2, ours.Y);
+        ours.Coordinate.X = 99;
+        Assert.Equal(1, point.X);
+    }
+
+    [Fact]
+    public void Boundary_is_one_dimension_down()
+    {
+        var square = MutationTests.UnitSquare();
+        var outline = GeometryNodes.Boundary(square);
+        Assert.Equal(4.0, GeometryNodes.Length(outline), 12);
+        Assert.Equal(0.0, GeometryNodes.Area(outline), 12);
+
+        var line = GeometryNodes.LineString([GeometryNodes.Coordinate(0, 0), GeometryNodes.Coordinate(2, 0)]);
+        var ends = GeometryNodes.Boundary(line);
+        Assert.Equal("MultiPoint", GeometryNodes.GeometryType(ends));
+        Assert.Equal(2, GeometryNodes.NumPoints(ends));
+
+        Assert.True(GeometryNodes.IsEmpty(GeometryNodes.Boundary(GeometryNodes.Point(GeometryNodes.Coordinate(1, 1)))));
+        Assert.True(GeometryNodes.IsEmpty(GeometryNodes.Boundary(null)));
+    }
+
+    [Fact]
+    public void IsSimple_is_false_for_a_self_crossing_line_that_is_still_valid()
+    {
+        var bowtie = GeometryNodes.LineString(
+        [
+            GeometryNodes.Coordinate(0, 0), GeometryNodes.Coordinate(1, 1),
+            GeometryNodes.Coordinate(1, 0), GeometryNodes.Coordinate(0, 1),
+        ]);
+
+        Assert.True(GeometryNodes.IsValid(bowtie, out _, out _));
+        Assert.False(GeometryNodes.IsSimple(bowtie));
+        Assert.True(GeometryNodes.IsSimple(MutationTests.UnitSquare()));
+        Assert.True(GeometryNodes.IsSimple(null));
+        Assert.True(GeometryNodes.IsSimple(GeometryNodes.Point()));
+    }
+
+    [Fact]
+    public void NumPoints_counts_the_ring_closing_coordinate()
+    {
+        Assert.Equal(5, GeometryNodes.NumPoints(MutationTests.UnitSquare()));
+        Assert.Equal(5, GeometryNodes.Coordinates(MutationTests.UnitSquare()).Count);
+        Assert.Equal(1, GeometryNodes.NumPoints(GeometryNodes.Point(GeometryNodes.Coordinate(1, 1))));
+        Assert.Equal(0, GeometryNodes.NumPoints(GeometryNodes.Point()));
+        Assert.Equal(0, GeometryNodes.NumPoints(null));
+    }
 }

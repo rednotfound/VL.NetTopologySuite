@@ -1,3 +1,4 @@
+using System.Linq;
 using VL.NetTopologySuite;
 using Xunit;
 
@@ -215,6 +216,178 @@ public class OperationTests
         Assert.False(OperationNodes.Intersects(square, null));
         Assert.False(OperationNodes.Contains(square, null));
         Assert.False(OperationNodes.Within(square, null));
+
+        // Tier 1 (2026-11-07): the same contract for the ten added nodes.
+        Assert.Null(OperationNodes.ConvexHull(null));
+        Assert.Null(OperationNodes.Reverse(null));
+        Assert.Same(square, OperationNodes.SymmetricDifference(square, null));
+        Assert.Same(square, OperationNodes.SymmetricDifference(null, square));
+        Assert.False(OperationNodes.IsWithinDistance(square, null, 100));
+        Assert.False(OperationNodes.Touches(square, null));
+        Assert.False(OperationNodes.Crosses(null, square));
+        Assert.False(OperationNodes.Overlaps(square, null));
+        Assert.False(OperationNodes.Covers(square, null));
+        Assert.False(OperationNodes.CoveredBy(null, square));
+        Assert.Equal("", OperationNodes.Relate(square, null));
+    }
+
+    // ── Tier 1: the rest of Geometry's own surface (2026-11-07) ───────────────
+
+    [Fact]
+    public void Touches_is_true_for_a_shared_edge_and_false_for_an_overlap()
+    {
+        var square = MutationTests.UnitSquare();
+        var neighbour = Square(1, 0, 1);   // shares the edge x = 1
+        var overlapping = Square(0.5, 0, 1);
+
+        Assert.True(OperationNodes.Touches(square, neighbour));
+        Assert.False(OperationNodes.Touches(square, overlapping));
+        // Touching is not overlapping, and not containing either.
+        Assert.False(OperationNodes.Overlaps(square, neighbour));
+        Assert.False(OperationNodes.Contains(square, neighbour));
+    }
+
+    [Fact]
+    public void Crosses_is_for_a_line_through_a_polygon_and_never_for_two_polygons()
+    {
+        var square = MutationTests.UnitSquare();
+        var through = GeometryNodes.LineString(
+            [GeometryNodes.Coordinate(-1, 0.5), GeometryNodes.Coordinate(2, 0.5)]);
+        var inside = GeometryNodes.LineString(
+            [GeometryNodes.Coordinate(0.2, 0.5), GeometryNodes.Coordinate(0.8, 0.5)]);
+
+        Assert.True(OperationNodes.Crosses(through, square));
+        Assert.True(OperationNodes.Crosses(square, through));
+        Assert.False(OperationNodes.Crosses(inside, square));
+        Assert.False(OperationNodes.Crosses(square, Square(0.5, 0, 1)));
+    }
+
+    [Fact]
+    public void Overlaps_needs_a_partial_overlap_of_the_same_kind()
+    {
+        var square = MutationTests.UnitSquare();
+
+        Assert.True(OperationNodes.Overlaps(square, Square(0.5, 0.5, 1)));
+        Assert.False(OperationNodes.Overlaps(square, Square(0.25, 0.25, 0.5)));   // inside: Contains, not Overlaps
+        Assert.False(OperationNodes.Overlaps(square, Square(1, 0, 1)));           // touching only
+        Assert.False(OperationNodes.Overlaps(square, square));                    // equal
+    }
+
+    [Fact]
+    public void Covers_includes_the_boundary_that_Contains_excludes()
+    {
+        var square = MutationTests.UnitSquare();
+        var edge = GeometryNodes.LineString(
+            [GeometryNodes.Coordinate(0, 0), GeometryNodes.Coordinate(1, 0)]);
+
+        Assert.False(OperationNodes.Contains(square, edge));
+        Assert.True(OperationNodes.Covers(square, edge));
+        Assert.True(OperationNodes.CoveredBy(edge, square));
+        Assert.False(OperationNodes.Covers(edge, square));
+        // And on an ordinary inside case the four agree.
+        var inner = Square(0.25, 0.25, 0.5);
+        Assert.True(OperationNodes.Covers(square, inner));
+        Assert.True(OperationNodes.CoveredBy(inner, square));
+        Assert.True(OperationNodes.Contains(square, inner));
+    }
+
+    [Fact]
+    public void Relate_gives_the_nine_character_DE9IM_string()
+    {
+        var square = MutationTests.UnitSquare();
+
+        Assert.Equal("212101212", OperationNodes.Relate(square, Square(0.5, 0.5, 1)));   // overlap
+        Assert.Equal("FF2F11212", OperationNodes.Relate(square, Square(1, 0, 1)));       // shared edge
+        Assert.Equal("FF2FF1212", OperationNodes.Relate(square, Square(5, 5, 1)));       // apart
+    }
+
+    [Fact]
+    public void IsWithinDistance_agrees_with_Distance()
+    {
+        var square = MutationTests.UnitSquare();
+        var far = Square(3, 0, 1);   // gap of 2
+
+        Assert.Equal(2.0, OperationNodes.Distance(square, far), 12);
+        Assert.True(OperationNodes.IsWithinDistance(square, far, 2.0));
+        Assert.True(OperationNodes.IsWithinDistance(square, far, 2.5));
+        Assert.False(OperationNodes.IsWithinDistance(square, far, 1.9));
+        Assert.True(OperationNodes.IsWithinDistance(square, Square(0.5, 0.5, 1), 0));
+    }
+
+    [Fact]
+    public void SymmetricDifference_is_union_minus_intersection_and_is_symmetric()
+    {
+        var a = MutationTests.UnitSquare();
+        var b = Square(0.5, 0, 1);   // overlap 0.5
+
+        var ab = OperationNodes.SymmetricDifference(a, b);
+        var ba = OperationNodes.SymmetricDifference(b, a);
+
+        Assert.Equal(1.0, GeometryNodes.Area(ab), 12);   // 1 + 1 - 2 * 0.5
+        Assert.Equal(GeometryNodes.Area(ab), GeometryNodes.Area(ba), 12);
+        Assert.False(OperationNodes.Intersects(ab, GeometryNodes.Point(GeometryNodes.Coordinate(0.75, 0.5))));
+        Assert.Equal(
+            GeometryNodes.Area(OperationNodes.Union(a, b)) - GeometryNodes.Area(OperationNodes.Intersection(a, b)),
+            GeometryNodes.Area(ab), 12);
+    }
+
+    [Fact]
+    public void ConvexHull_wraps_a_concave_shape_and_a_spread_of_points()
+    {
+        // An L: area 3, hull area 3.5.
+        var l = GeometryNodes.Polygon(GeometryNodes.LinearRing(
+        [
+            GeometryNodes.Coordinate(0, 0), GeometryNodes.Coordinate(2, 0), GeometryNodes.Coordinate(2, 1),
+            GeometryNodes.Coordinate(1, 1), GeometryNodes.Coordinate(1, 2), GeometryNodes.Coordinate(0, 2),
+        ]));
+        var hull = OperationNodes.ConvexHull(l);
+
+        Assert.Equal(3.5, GeometryNodes.Area(hull), 12);
+        Assert.True(OperationNodes.Covers(hull, l));
+
+        var points = GeometryNodes.MultiPoint(
+        [
+            GeometryNodes.Point(GeometryNodes.Coordinate(0, 0)), GeometryNodes.Point(GeometryNodes.Coordinate(1, 0)),
+            GeometryNodes.Point(GeometryNodes.Coordinate(0, 1)), GeometryNodes.Point(GeometryNodes.Coordinate(0.2, 0.2)),
+        ]);
+        Assert.Equal("Polygon", GeometryNodes.GeometryType(OperationNodes.ConvexHull(points)));
+        Assert.Equal(0.5, GeometryNodes.Area(OperationNodes.ConvexHull(points)), 12);
+    }
+
+    [Fact]
+    public void ConvexHull_shares_coordinate_instances_with_its_input_which_is_why_readers_copy()
+    {
+        // The measurement behind the comment at the top of OperationNodes.cs: NTS builds the hull
+        // ring from the input's own Coordinate objects. Harmless here because Coordinates copies on
+        // the way out; this test is what tells us if NTS ever changes that.
+        var points = GeometryNodes.MultiPoint(
+        [
+            GeometryNodes.Point(GeometryNodes.Coordinate(0, 0)), GeometryNodes.Point(GeometryNodes.Coordinate(1, 0)),
+            GeometryNodes.Point(GeometryNodes.Coordinate(0, 1)),
+        ]);
+        var hull = OperationNodes.ConvexHull(points)!;
+
+        var shared = hull.Coordinates.Any(h => points.Coordinates.Any(p => ReferenceEquals(p, h)));
+        Assert.True(shared);
+        // And the package's own reader still hands out copies.
+        var copies = GeometryNodes.Coordinates(hull);
+        Assert.DoesNotContain(copies, c => points.Coordinates.Any(p => ReferenceEquals(p, c)));
+    }
+
+    [Fact]
+    public void Reverse_reverses_the_coordinate_order_and_leaves_the_input_alone()
+    {
+        var line = GeometryNodes.LineString(
+            [GeometryNodes.Coordinate(0, 0), GeometryNodes.Coordinate(1, 0), GeometryNodes.Coordinate(2, 1)]);
+        var reversed = OperationNodes.Reverse(line);
+
+        var forward = GeometryNodes.Coordinates(line);
+        var backward = GeometryNodes.Coordinates(reversed);
+        Assert.Equal(forward.Count, backward.Count);
+        for (var i = 0; i < forward.Count; i++)
+            Assert.Equal(forward[i], backward[forward.Count - 1 - i]);
+        Assert.Equal(0, GeometryNodes.Coordinates(line)[0].X);   // the input did not move
+        Assert.Equal(GeometryNodes.Length(line), GeometryNodes.Length(reversed), 12);
     }
 
     // ── The chain the package exists for ──────────────────────────────────────

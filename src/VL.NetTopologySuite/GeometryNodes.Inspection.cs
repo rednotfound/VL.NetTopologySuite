@@ -107,6 +107,21 @@ public static partial class GeometryNodes
         return false;
     }
 
+    // Simple is a different question from valid: a LineString that crosses itself is perfectly
+    // valid (lines have no rule against it) but not simple, and it is the one that trips up buffer
+    // and overlay results and the Network node. A polygon's validity already implies simplicity, so
+    // this matters for lines and multipoints (a repeated point is not simple). Null and empty are
+    // simple. Tier 1, 2026-11-07.
+
+    /// <summary>
+    /// Tells whether the geometry has no self-intersections.
+    /// </summary>
+    /// <remarks>
+    /// A line that crosses itself is valid but not simple. Nothing and empty count as simple.
+    /// </remarks>
+    [Name("IsSimple")]
+    public static bool IsSimple(Geometry? geometry) => geometry?.IsSimple ?? true;
+
     // ── Measurements ──────────────────────────────────────────────────────────
 
     // The units follow the coordinates, and nothing warns otherwise. On longitude and latitude the
@@ -149,9 +164,26 @@ public static partial class GeometryNodes
     public static Point Centroid(Geometry? geometry)
         => geometry is null ? Defaults.Factory.CreatePoint() : geometry.Centroid;
 
+    // The node for "a point somewhere ON this shape", which Centroid is not: a U-shaped polygon's
+    // centroid sits in the gap, its interior point sits in the U. NTS picks a point guaranteed to be
+    // in the interior (polygon), on the line (lines), or one of the points (multipoint). The result
+    // is a fresh Point with its own Coordinate, even for a Point input - measured in 2.6 against
+    // the expectation that it would share the input's instance (it does not; the test asserts the
+    // measurement so a change in NTS shows up), so nothing needs copying here, as with Centroid.
+    // Tier 1, 2026-11-07.
+
+    /// <summary>
+    /// Returns a point that is guaranteed to lie on the geometry.
+    /// </summary>
+    /// <remarks>
+    /// Use this for a label position where Centroid could fall outside the shape, as it does for a U or a crescent.
+    /// </remarks>
+    public static Point InteriorPoint(Geometry? geometry)
+        => geometry is null ? Defaults.Factory.CreatePoint() : geometry.InteriorPoint;
+
     // Four floats rather than NTS's Envelope type, because a patch can connect numbers to anything
     // and cannot open an Envelope at all. NTS's own Geometry.Envelope is a third thing again - a
-    // rectangular Polygon - which is reachable through VL's raw .NET nodes.
+    // rectangular Polygon - which is the Envelope node below.
 
     /// <summary>
     /// Returns the geometry's bounding box as four numbers.
@@ -176,7 +208,33 @@ public static partial class GeometryNodes
         maxY = envelope.MaxY;
     }
 
+    // The same box as Bounds, but as a geometry - so it can go straight into Intersects, Buffer,
+    // Write WKT or a map layer without four numbers being reassembled first. NTS degrades it:
+    // a point's envelope is a Point, a horizontal or vertical line's is a LineString, anything with
+    // area is a rectangular Polygon. Built fresh by NTS, no shared coordinates. Tier 1, 2026-11-07.
+
+    /// <summary>
+    /// Returns the geometry's bounding box as a rectangle polygon.
+    /// </summary>
+    /// <remarks>
+    /// The same box Bounds gives as numbers. A point's box is a point and a flat line's is a line.
+    /// </remarks>
+    public static Geometry Envelope(Geometry? geometry)
+        => geometry is null ? Defaults.Factory.CreatePolygon() : geometry.Envelope;
+
     // ── Taking it apart ───────────────────────────────────────────────────────
+
+    // The count behind Coordinates, without building the spread: cheap enough to show in an IOBox
+    // every frame over a large geometry. Counts the ring-closing repeat, as the ring holds it, so a
+    // square is 5. Tier 1, 2026-11-07.
+
+    /// <summary>
+    /// Returns how many coordinates the geometry holds.
+    /// </summary>
+    /// <remarks>
+    /// A closed ring counts its repeated first coordinate, so a square is 5.
+    /// </remarks>
+    public static int NumPoints(Geometry? geometry) => geometry?.NumPoints ?? 0;
 
     // Copies, deliberately. NTS's own Geometry.Coordinates hands out LIVE references into the
     // geometry's storage - measured, and writing to one moves the geometry - which would let a
@@ -216,4 +274,19 @@ public static partial class GeometryNodes
             parts.Add(geometry.GetGeometryN(i));
         return parts;
     }
+
+    // One dimension down: a polygon's boundary is its rings as lines (the outline to draw or to
+    // measure, holes included), a line's boundary is its two end points, a closed ring's and a
+    // point's are empty. The usual way to get a polygon's outline as something a line operation
+    // can take. For a polygon NTS returns the polygon's own ring objects, as Geometries returns a
+    // collection's own parts - the precedent in this file. Tier 1, 2026-11-07.
+
+    /// <summary>
+    /// Returns the geometry's outline, one dimension down.
+    /// </summary>
+    /// <remarks>
+    /// A polygon gives its rings as lines, holes included. A line gives its two end points. A point gives nothing.
+    /// </remarks>
+    public static Geometry Boundary(Geometry? geometry)
+        => geometry is null ? Defaults.Factory.CreateGeometryCollection() : geometry.Boundary;
 }
