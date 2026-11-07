@@ -116,6 +116,8 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
+          <Pad Id="OEW9cuF21ClUG26xJ8EANP" Comment="Points" Bounds="940,220,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="Qy9OGv9rNWByh92i1ka46Q" Comment="Hull" Bounds="940,360,180,120" ShowValueBox="true" isIOBox="true" />
         </Canvas>
         <Patch Id="B0KNQ8AUWTrsdEdS9EtQdi" Name="Create" />
         <Patch Id="REibPYhH0P52RnJI4auaw8" Name="Update" />
@@ -131,6 +133,8 @@
         <Link Id="L3a588VP68VL8qViOFUS3v" Ids="Skh4fiWeuBhMx4YVxSkHfg,Sub7mMFVEHoRxpTPDvP7TC" />
         <Link Id="RUfP9lU3hvNxVblOsoCUb4" Ids="BX5wZDtdy6C0kTFpYp5jLa,BjANH6cbFYUI0OR3BbcLs6" />
         <Link Id="JXmHCVcnAvHlVimxXUgxs9" Ids="A5Oc7wqNqyWOKrJo6pKtIp,CZlmFcSsr277L492Pypz8g" />
+        <Link Id="PqcyUabX1ILd6F4LgwNfep" Ids="HtknoBSUi7Jpj35pnjLRqS,OEW9cuF21ClUG26xJ8EANP" />
+        <Link Id="MRbAi2vwvc0XfXN5KwdCrM" Ids="BX5wZDtdy6C0kTFpYp5jLa,Qy9OGv9rNWByh92i1ka46Q" />
       </Patch>
     </Node>
   </Patch>

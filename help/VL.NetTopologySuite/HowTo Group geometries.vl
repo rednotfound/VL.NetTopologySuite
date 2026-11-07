@@ -178,6 +178,7 @@
             <Pin Id="SJTCQwdT0tXB9ma0u2I8bg" Name="Result" Kind="OutputPin" />
           </Node>
           <Pad Id="OJQ7FNrKR4vlaPTJAEa1Fx" Comment="WKT" Bounds="60,670,460,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="TDsV7SKimmv3j2FWs1X5r6" Comment="Collection" Bounds="940,370,180,120" ShowValueBox="true" isIOBox="true" />
         </Canvas>
         <Patch Id="Sq586EIMcQYS0AADVW60lb" Name="Create" />
         <Patch Id="AY5qHbehxWBW3Dowky7szg" Name="Update" />
@@ -202,6 +203,7 @@
         <Link Id="A2KqiW5YjLAmha7wnRttIA" Ids="VIc5g82Psbfu36d5IASHwB,KI1ZMFYwYQN08q2ejyC3qe" />
         <Link Id="Jyc5srruRbPz1lnnxy32V3" Ids="RW3FoCIFKgMCbptbal3eHf,SJs6psPikuEwxBHSL0ddmQ" />
         <Link Id="VvQSN9Zyw4rHh9Z1PTcNob" Ids="SJTCQwdT0tXB9ma0u2I8bg,OJQ7FNrKR4vlaPTJAEa1Fx" />
+        <Link Id="QzLm7cetmOfMdS1cYFXrqm" Ids="RW3FoCIFKgMCbptbal3eHf,TDsV7SKimmv3j2FWs1X5r6" />
       </Patch>
     </Node>
   </Patch>

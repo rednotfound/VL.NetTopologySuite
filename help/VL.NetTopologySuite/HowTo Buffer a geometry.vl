@@ -165,6 +165,9 @@
             <Pin Id="QXBKJ8yXabwXDjl61ds1f8" Name="Result" Kind="OutputPin" />
           </Node>
           <Pad Id="UpZ4AHx4i4TUH18F8QIkhY" Comment="WKT" Bounds="60,630,460,54" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="I0N9a7Mwvi9HtVqxPZDzUY" Comment="Input" Bounds="940,220,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="HNcRnPgxxkTob8CvJoSni9" Comment="Buffered" Bounds="940,370,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="Rrp52t2UF0s0GiEXUxqLaC" Comment="Intersection" Bounds="940,520,180,120" ShowValueBox="true" isIOBox="true" />
         </Canvas>
         <Patch Id="NBi4r1Gg1GzxVuLVSjFRyS" Name="Create" />
         <Patch Id="TCyHkNr9gTEvU7OfV5UiwM" Name="Update" />
@@ -186,6 +189,9 @@
         <Link Id="DNqU7jBeYS0H30itZY7CjS" Ids="L09i48AwUE3NtVFeXFmQn6,IhGkrpRrVzP4SQsgNkfwLV" />
         <Link Id="Kg2wyFHK5pU7GAF6DJfx3H" Ids="ShVM7FfJ1J7Cev3P5AQoBJ,H2oW3DifkfSbEbExhh3DeF" />
         <Link Id="O20VLcFlUuB0USKXZZDjGH" Ids="QXBKJ8yXabwXDjl61ds1f8,UpZ4AHx4i4TUH18F8QIkhY" />
+        <Link Id="CrKBe8cTYHRY1peyg13msH" Ids="LkK7l896wHKAFtk3Fc0P3e,I0N9a7Mwvi9HtVqxPZDzUY" />
+        <Link Id="RCMRN56JvULEAzMWhJ0UKd" Ids="ShVM7FfJ1J7Cev3P5AQoBJ,HNcRnPgxxkTob8CvJoSni9" />
+        <Link Id="JGVPbYLluUlVSmpQVxLDQX" Ids="CZs98kZFsWaS6LJoy4qzy6,Rrp52t2UF0s0GiEXUxqLaC" />
       </Patch>
     </Node>
   </Patch>

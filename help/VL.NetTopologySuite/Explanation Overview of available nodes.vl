@@ -677,7 +677,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="PLosEUYbNoy31VeN2SJo6y" Bounds="60,930,300,30" ShowValueBox="true" isIOBox="true" Value="Not here, on purpose">
+          <Pad Id="PLosEUYbNoy31VeN2SJo6y" Bounds="60,1120,300,30" ShowValueBox="true" isIOBox="true" Value="Not here, on purpose">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -686,7 +686,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="OzMvtiP0mKvVoJ1znWpy4o" Bounds="60,970,520,110" ShowValueBox="true" isIOBox="true" Value="A map: VL.Mapsui draws NTS geometry, this package does not know maps exist.&#xD;&#xA;Reprojection: an SRID is a label, it never moves a coordinate.&#xD;&#xA;Disjoint, Count, ForEach: build them from nodes you already have.&#xD;&#xA;The rest of NetTopologySuite: reachable through vvvv's raw .NET nodes.&#xD;&#xA;Units follow the coordinates. Mixing SRIDs never throws - it quietly answers wrong.">
+          <Pad Id="OzMvtiP0mKvVoJ1znWpy4o" Bounds="60,1160,520,110" ShowValueBox="true" isIOBox="true" Value="A map: VL.Mapsui draws NTS geometry, this package does not know maps exist.&#xD;&#xA;Reprojection: an SRID is a label, it never moves a coordinate.&#xD;&#xA;Disjoint, Count, ForEach: build them from nodes you already have.&#xD;&#xA;The rest of NetTopologySuite: reachable through vvvv's raw .NET nodes.&#xD;&#xA;Units follow the coordinates. Mixing SRIDs never throws - it quietly answers wrong.">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -785,6 +785,63 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
+          <Pad Id="PMSMMRnqKLRDiiXCWoBVDS" Bounds="1300,170,300,80" ShowValueBox="true" isIOBox="true" Value="&lt; What a geometry looks like. Hover any Geometry pin, or make an IOBox of one, and the editor draws it - polygons filled, holes cut out, points as pins.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="Q2b0kmaaQm6lKzOQBiVFmt" Comment="Point" Bounds="1300,270,300,15" ShowValueBox="true" isIOBox="true" Value="POINT (1 1)">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="1300,300,90,19" Id="GtoWIO8Tmz9uLSm67IduJf">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Read WKT" />
+            </p:NodeReference>
+            <Pin Id="CXqPvZ0Wz2XC6uu8IM2f1d" Name="WKT" Kind="InputPin" />
+            <Pin Id="FBBF15UojrPM6DIm3P75ZR" Name="Factory" Kind="InputPin" />
+            <Pin Id="Ln43qdHV8r3kdrvAL156Ra" Name="Result" Kind="OutputPin" />
+            <Pin Id="SNVe76FzvnlFpfYmJ2eAot" Name="Success" Kind="OutputPin" />
+          </Node>
+          <Pad Id="AVgDRKxmgxiGdmJFErivhE" Comment="Point" Bounds="1300,335,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="FZH570tPjL7SIEipsW2ls1" Comment="Line" Bounds="1300,485,300,15" ShowValueBox="true" isIOBox="true" Value="LINESTRING (0 0, 1 1, 2 0, 3 1)">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="1300,515,90,19" Id="R2QNOW34VzRde8QFRQ1QOO">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Read WKT" />
+            </p:NodeReference>
+            <Pin Id="JflTeY7k31PLTL64hDB5fs" Name="WKT" Kind="InputPin" />
+            <Pin Id="J1XjzPDJe6eEO5EX7Jb7O8" Name="Factory" Kind="InputPin" />
+            <Pin Id="MKLvrJsL3mjRmkYj38q8pT" Name="Result" Kind="OutputPin" />
+            <Pin Id="AyLy6tRlU3r9tsPYSC570z" Name="Success" Kind="OutputPin" />
+          </Node>
+          <Pad Id="MlluaijfMoGOUKqgZB2Zlf" Comment="Line" Bounds="1300,550,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="KrEJ8agwEps14B6HAI6t6k" Comment="Polygon with hole" Bounds="1300,700,300,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0 0, 4 0, 4 3, 0 3, 0 0), (1 1, 2 1, 2 2, 1 2, 1 1))">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="1300,730,90,19" Id="Mq112aTmgFDDKFgs9CkNGa">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Read WKT" />
+            </p:NodeReference>
+            <Pin Id="Unap4Zn1D4z78yyiWJrwoS" Name="WKT" Kind="InputPin" />
+            <Pin Id="CLA8tQ2PSIaFaN2YGLPtHj" Name="Factory" Kind="InputPin" />
+            <Pin Id="UAnRE5uGEeU0ZSa8MVnQfC" Name="Result" Kind="OutputPin" />
+            <Pin Id="QE4gnNl2uPkFT4cdGSN99Y" Name="Success" Kind="OutputPin" />
+          </Node>
+          <Pad Id="T72yRcDhuodtNrrLknED5W" Comment="Polygon with hole" Bounds="1300,765,180,120" ShowValueBox="true" isIOBox="true" />
         </Canvas>
         <Patch Id="QOXrUnHDAbnOxiNgCfIC4c" Name="Create" />
         <Patch Id="LshNVEcTy7TgmBOYa4DXLq" Name="Update" />
@@ -793,6 +850,12 @@
           <Fragment Id="C47KEDw5f4t9Cdu7WWXXgK" Patch="LshNVEcTy7TgmBOYa4DXLq" Enabled="true" />
         </ProcessDefinition>
 
+        <Link Id="Ed5KSNgAoUb2TKrMw3UihS" Ids="Q2b0kmaaQm6lKzOQBiVFmt,CXqPvZ0Wz2XC6uu8IM2f1d" />
+        <Link Id="LjWLw5L3ENqXFqTTcHbpoy" Ids="Ln43qdHV8r3kdrvAL156Ra,AVgDRKxmgxiGdmJFErivhE" />
+        <Link Id="Is8cQlvdCaHjycHrtcAJgX" Ids="FZH570tPjL7SIEipsW2ls1,JflTeY7k31PLTL64hDB5fs" />
+        <Link Id="BKCxEKCwJj3R5bI3iXRJji" Ids="MKLvrJsL3mjRmkYj38q8pT,MlluaijfMoGOUKqgZB2Zlf" />
+        <Link Id="FNwydoXSjEiZP8rTPN0430" Ids="KrEJ8agwEps14B6HAI6t6k,Unap4Zn1D4z78yyiWJrwoS" />
+        <Link Id="RtHio25nTW6ZeikJu9GNxs" Ids="UAnRE5uGEeU0ZSa8MVnQfC,T72yRcDhuodtNrrLknED5W" />
       </Patch>
     </Node>
   </Patch>

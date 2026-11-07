@@ -189,6 +189,18 @@
             <Pin Id="B6OcrdoMscxUgk8JlrLwdL" Name="Result" Kind="OutputPin" />
           </Node>
           <Pad Id="HtBMidNy8DwRg1Nrppb5rr" Comment="Line intersects?" Bounds="402,710,60,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="QSbCajaCIxb2J0d32kGm9Y" Comment="Search" Bounds="940,600,180,120" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="1240,750,140,19" Id="HKyIjGNeY2XwuE8VMO17Wi">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="GeometryCollection" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="AUzygmoE70Bobud5duk268" Name="Geometries" Kind="InputPin" />
+            <Pin Id="RBPVi3HVbgG1NwitC8Qkhw" Name="Factory" Kind="InputPin" />
+            <Pin Id="LG4dzpy0SqjqX6852jgqjV" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="GFrqPTnKoQaFYCR28xZ60l" Comment="Candidates" Bounds="940,740,180,120" ShowValueBox="true" isIOBox="true" />
         </Canvas>
         <Patch Id="CMa1XXEGnZne2LXczuPNQl" Name="Create" />
         <Patch Id="OP5U5hs0D4zWQ0D50r0rXh" Name="Update" />
@@ -215,6 +227,9 @@
         <Link Id="LFcKgIxawD0NdkYbahOCBk" Ids="PUcAkk2J046PRKILoZvRzR,LHVuJtpuRvLRY7eLUVJ5QV" />
         <Link Id="OuXdVxDb86UFUfsKFnDz3p" Ids="KiYD0l7mYYUH2bXx1mF0dp,EarU1k9AhNAPVKGTNKG4Pu" />
         <Link Id="B7dy7HjtFLGuyBX7xdGtY2" Ids="B6OcrdoMscxUgk8JlrLwdL,HtBMidNy8DwRg1Nrppb5rr" />
+        <Link Id="Ob3RiJfCs1ZsJeqstipNIX" Ids="PUcAkk2J046PRKILoZvRzR,QSbCajaCIxb2J0d32kGm9Y" />
+        <Link Id="AsgukCbadAhNIUOueIY1cF" Ids="FtOvgcfaWVxOLT3AfWFQBD,AUzygmoE70Bobud5duk268" />
+        <Link Id="F34c9wEqUTo6sKlXgWZo2Z" Ids="LG4dzpy0SqjqX6852jgqjV,GFrqPTnKoQaFYCR28xZ60l" />
       </Patch>
     </Node>
   </Patch>

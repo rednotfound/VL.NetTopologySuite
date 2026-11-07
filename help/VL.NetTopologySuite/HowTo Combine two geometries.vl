@@ -191,6 +191,33 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
+          <Pad Id="UKYKvzMbCLbdlKgqAv4xfe" Comment="A" Bounds="940,160,150,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="ACo1xgrrSVBGt0pLfRovdr" Comment="B" Bounds="1180,160,150,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="UirI4Le5DLUF3Wo4GTPzGZ" Comment="Union" Bounds="940,300,150,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="OUECaJ5KdyEkGxIUhUl7d0" Comment="Intersection" Bounds="1180,300,150,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="UhJHeQO7r4lJSxnQPEqigN" Comment="Difference" Bounds="940,440,150,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="DHRvqGWbgDMSLuOhxA0mvV" Comment="SymmetricDifference" Bounds="1180,440,150,120" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="1180,590,45,19" Id="RkkYPyfddDLg4bBkdz3hbo">
+            <p:NodeReference LastCategoryFullName="Collections.Spread" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Cons" />
+              <CategoryReference Kind="RecordType" Name="Spread" NeedsToBeDirectParent="true" />
+            </p:NodeReference>
+            <Pin Id="QdNO65pxOqCbs97RF9t524" Name="Input" Kind="InputPin" />
+            <Pin Id="OYTI6a8zO9E1VkPib18ct2" Name="Input 2" Kind="InputPin" />
+            <Pin Id="IrGRNbls8AJ1kDZ0IeQNtU" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="1180,625,140,19" Id="TxIqNhj8B5PnnyGsaKg6V6">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="GeometryCollection" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="D9YCGRmXds1cAPhIxwvxt9" Name="Geometries" Kind="InputPin" />
+            <Pin Id="CayIRX7MCXDfH4uOh4XZ84" Name="Factory" Kind="InputPin" />
+            <Pin Id="CW0m79MU02oYTeCMjmnwUC" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="TfOcnOmyZgMJGSWxK0iTnu" Comment="A and B" Bounds="940,580,180,120" ShowValueBox="true" isIOBox="true" />
         </Canvas>
         <Patch Id="ChqhvedAlqfvIf6tSK1WVx" Name="Create" />
         <Patch Id="D4dtW8GpBJ3R9iCX3NX1Vv" Name="Update" />
@@ -218,6 +245,16 @@
         <Link Id="PTOlyNeeeER9gMCBIzOb8d" Ids="SGmaov0TEoBbSqq2u2HCIq,TzbDaGOqytfCtbGfoPccy5" />
         <Link Id="Bmcl8WMJSnekO2wpEHv0yc" Ids="PKhzZSi6TmkOS9vHTAdQ3F,FdLBP70qjzjPh0FIhhkBmW" />
         <Link Id="VnfFEIo73qx1W4u2h8TSg9" Ids="UC8tqt1C70x9EXeK7CEILo,Gki7yVB6IxoOfOPl50vAeR" />
+        <Link Id="EEwd2d0BsnZW4Aws1OjFcV" Ids="UZ9NvF8IwDeTthgqdkSsFK,UKYKvzMbCLbdlKgqAv4xfe" />
+        <Link Id="KsggrrffBDknK8ZMmgDsMA" Ids="SGmaov0TEoBbSqq2u2HCIq,ACo1xgrrSVBGt0pLfRovdr" />
+        <Link Id="Ezt5lIJnpKw1onuaDZBDGu" Ids="KA5WsaXSWH4P3buZEPRXRt,UirI4Le5DLUF3Wo4GTPzGZ" />
+        <Link Id="FXQtMhkcGlByJn4z5wugo9" Ids="EqmGx2eurpik342m1g3CQG,OUECaJ5KdyEkGxIUhUl7d0" />
+        <Link Id="OeLwn1AtQ6EFOTAdfHQ7zt" Ids="U9Yxt8bqE3k8TTqejK1bGZ,UhJHeQO7r4lJSxnQPEqigN" />
+        <Link Id="RO3IePNdVZSVbvB6Wnr9tE" Ids="PKhzZSi6TmkOS9vHTAdQ3F,DHRvqGWbgDMSLuOhxA0mvV" />
+        <Link Id="CoblyFtOdCcnR0xYXw9s1n" Ids="UZ9NvF8IwDeTthgqdkSsFK,QdNO65pxOqCbs97RF9t524" />
+        <Link Id="GB3NRKwEKQLiXJfIfHUNRN" Ids="SGmaov0TEoBbSqq2u2HCIq,OYTI6a8zO9E1VkPib18ct2" />
+        <Link Id="HMuqqorS7DjY7hE6QILmKm" Ids="IrGRNbls8AJ1kDZ0IeQNtU,D9YCGRmXds1cAPhIxwvxt9" />
+        <Link Id="QTbVLqyvTJ09v8uXtLzZ89" Ids="CW0m79MU02oYTeCMjmnwUC,TfOcnOmyZgMJGSWxK0iTnu" />
       </Patch>
     </Node>
   </Patch>

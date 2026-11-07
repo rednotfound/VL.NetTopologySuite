@@ -219,6 +219,36 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
+          <Node Bounds="1180,270,45,19" Id="Kr455Dj1uCUjj1OC163N3l">
+            <p:NodeReference LastCategoryFullName="Collections.Spread" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Cons" />
+              <CategoryReference Kind="RecordType" Name="Spread" NeedsToBeDirectParent="true" />
+            </p:NodeReference>
+            <Pin Id="Ce7Gn0jgzCXulu91oxneOp" Name="Input" Kind="InputPin" />
+            <Pin Id="Rs3RtTNtccFA2bYEYIcV02" Name="Input 2" Kind="InputPin" />
+            <Pin Id="KyB9XtK2Mb9dzZddNSrkAL" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="1180,305,140,19" Id="MpSS99M89LRENI3sfqpqTw">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="GeometryCollection" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="Hyb2JooUZror25fbmmbRT0" Name="Geometries" Kind="InputPin" />
+            <Pin Id="Evac2iX7mP3Xt6s9GlnjbX" Name="Factory" Kind="InputPin" />
+            <Pin Id="Tku7Sr3k2GqVU6dkMHAJWT" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="SEWaJy35y11ADSW6qgkdj3" Comment="A and B" Bounds="940,260,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="MGQBsbXBSCezJTajFX6vUn" Bounds="940,390,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; B inside A, drawn. Edit B and watch the picture and the answers change together.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
         </Canvas>
         <Patch Id="ODHSMvGymz9NpSt6Dq94Yf" Name="Create" />
         <Patch Id="Uw8Q6Hdb5CJv1b6XXd69ql" Name="Update" />
@@ -258,6 +288,10 @@
         <Link Id="GWkiF1arfaKos7M2BETfiV" Ids="Eb4NcL85MXGklS3RsB48Ok,BWLn0Ve8KoKYjWMjS52Wbu" />
         <Link Id="V2Rxns77k4PKRoFSxH0AaV" Ids="T4f8Q8yKTSXf6jBBcxMwfr,UvHXbNtEq1VX0vXFtvzk6z" />
         <Link Id="IcRRnBvKrmaKq7voA6aLA8" Ids="I5lCyyZynIYwX6EXyNWHba,GuNRCDFIpF26LPt2ymHmwI" />
+        <Link Id="FeJK2JgGojV5aeuqj1fiKc" Ids="Eb4NcL85MXGklS3RsB48Ok,Ce7Gn0jgzCXulu91oxneOp" />
+        <Link Id="Ek56zHOY5QTh5ffwBaKFvZ" Ids="T4f8Q8yKTSXf6jBBcxMwfr,Rs3RtTNtccFA2bYEYIcV02" />
+        <Link Id="GelnwFI5JhT0tafHbfUgAX" Ids="KyB9XtK2Mb9dzZddNSrkAL,Hyb2JooUZror25fbmmbRT0" />
+        <Link Id="MQF1O8wns2ftoDv2REglmV" Ids="Tku7Sr3k2GqVU6dkMHAJWT,SEWaJy35y11ADSW6qgkdj3" />
       </Patch>
     </Node>
   </Patch>

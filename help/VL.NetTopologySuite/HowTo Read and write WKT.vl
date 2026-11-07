@@ -127,6 +127,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
+          <Pad Id="VWJ3WKxeAT1aFqx7t34DCs" Comment="Geometry" Bounds="1000,220,180,120" ShowValueBox="true" isIOBox="true" />
         </Canvas>
         <Patch Id="BVYSzGOauoUPBoxhGVuC3l" Name="Create" />
         <Patch Id="RKxjr5X4fIvX4526zqp5ar" Name="Update" />
@@ -144,6 +145,7 @@
         <Link Id="GFKAKeyrbIeGx9wcptnCIq" Ids="Rfzx2tclNRz4fm5NRZRoVS,JK8auEo5ECQO5lzZaaJo3g" />
         <Link Id="R66waHLlu0UjF9sCzSi9Jg" Ids="Q8y5IhzojDdx6KYJT2wUkB,Gc9PJWpfOR6SkXXQ0uVhcz" />
         <Link Id="OWcb4HU8ESN8mXvJelgJtv" Ids="InDbfZDjSddncSR4oFxiS8,MFYUcxMgykJFFt0PU03qIj" />
+        <Link Id="OQ9fGb6EeYWvhjYkXeczGL" Ids="Q8y5IhzojDdx6KYJT2wUkB,VWJ3WKxeAT1aFqx7t34DCs" />
       </Patch>
     </Node>
   </Patch>

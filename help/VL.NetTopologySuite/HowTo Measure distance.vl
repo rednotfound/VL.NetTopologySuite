@@ -180,6 +180,57 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
+          <Node Bounds="1180,270,45,19" Id="QDNnkK7MmWi9ONfdeAXpUh">
+            <p:NodeReference LastCategoryFullName="Collections.Spread" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Cons" />
+              <CategoryReference Kind="RecordType" Name="Spread" NeedsToBeDirectParent="true" />
+            </p:NodeReference>
+            <Pin Id="KbrK8cdvpiVPqHbrhGRxGy" Name="Input" Kind="InputPin" />
+            <Pin Id="LHHWzKBiVSDY0FtQszwcll" Name="Input 2" Kind="InputPin" />
+            <Pin Id="JyC6BSlpRmXiXQy4Exx26X" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="1180,305,140,19" Id="HgT7WC2USUHQ7J34zPIglo">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="GeometryCollection" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="QYuzUE7UeYupNJEGYzBoa2" Name="Geometries" Kind="InputPin" />
+            <Pin Id="EPpc2DgK3isGOEVEi7PchE" Name="Factory" Kind="InputPin" />
+            <Pin Id="DaOSV1HaBJiLKjBug6k86m" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="IYOuVXdSPjpByv9TVOhYOG" Comment="A and B" Bounds="940,260,180,120" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="1180,430,45,19" Id="JlfAAJrmjQem3idBMdc447">
+            <p:NodeReference LastCategoryFullName="Collections.Spread" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Cons" />
+              <CategoryReference Kind="RecordType" Name="Spread" NeedsToBeDirectParent="true" />
+            </p:NodeReference>
+            <Pin Id="R1DePOtEz8XTnukLdiGAlI" Name="Input" Kind="InputPin" />
+            <Pin Id="LH0dR3FNT8uf7XOFzSp5l6" Name="Input 2" Kind="InputPin" />
+            <Pin Id="DCeZMK3lvRoyRFlwzQnMR8" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="1180,465,90,19" Id="MtF5JNZd3BdbLiMPlIOJE2">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="LineString" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="NQHwM89Ntt9062Nu3r9phh" Name="Coordinates" Kind="InputPin" />
+            <Pin Id="T1VQjQvuAnZowKD3Axf8sb" Name="Factory" Kind="InputPin" />
+            <Pin Id="I1T4krDpNfulaUCFoV71Il" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="IZndQjqPg9YPJEQWqv1ntK" Comment="Nearest" Bounds="940,420,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="FyHwDjpcj5A58sNCBngMpc" Bounds="940,550,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; The gap drawn: a line from the nearest point on A to the nearest point on B.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
         </Canvas>
         <Patch Id="Iz8uAwb464cNncQUuMLYsy" Name="Create" />
         <Patch Id="Fz4STYtVsHc8YSL3Y8hOl3" Name="Update" />
@@ -204,6 +255,14 @@
         <Link Id="OX3TEJ8orE0uu8aFMtvV1o" Ids="OEZhfDbjkC2bjHhQQZQT0P,EJGVcd4WoJwiJ8O9i1FFqr" />
         <Link Id="IU4I3KW7q56YqmmTYkasLQ" Ids="CwipcsImR2ZOFbFAoC0q7V,NNUlLQkD7z9METL8rWo9Xx" />
         <Link Id="Nh9wRAXK0PyuPP2IEVzfdf" Ids="AV4xpfa08CD87TFrZAkfBp,MD9cPJLSbeP0JIBx0XgODg" />
+        <Link Id="AsPV1JvwHiyzXD4n3jpINo" Ids="V76TcUlwrPLoREGHsyWGtn,KbrK8cdvpiVPqHbrhGRxGy" />
+        <Link Id="DxFe8PDTkMYD1TvXjZO31g" Ids="OEZhfDbjkC2bjHhQQZQT0P,LHHWzKBiVSDY0FtQszwcll" />
+        <Link Id="GHq33am42LcftpdMNTKnub" Ids="JyC6BSlpRmXiXQy4Exx26X,QYuzUE7UeYupNJEGYzBoa2" />
+        <Link Id="T2Ts7XAlTvoxpaWk2yHtCh" Ids="DaOSV1HaBJiLKjBug6k86m,IYOuVXdSPjpByv9TVOhYOG" />
+        <Link Id="PbPojZSjRTSIAdiqqyP4VZ" Ids="Ka1gQ9wzn5Iywt6Te75rjA,R1DePOtEz8XTnukLdiGAlI" />
+        <Link Id="FLdMQBc9nu2OXuSafQVLB4" Ids="I8DCBWRk0mrR2U2FqlkkY7,LH0dR3FNT8uf7XOFzSp5l6" />
+        <Link Id="UC4NJO7Ki2AlmriJel8YE2" Ids="DCeZMK3lvRoyRFlwzQnMR8,NQHwM89Ntt9062Nu3r9phh" />
+        <Link Id="Npu7cPgi0s3oFiqfoIjoL2" Ids="I1T4krDpNfulaUCFoV71Il,IZndQjqPg9YPJEQWqv1ntK" />
       </Patch>
     </Node>
   </Patch>

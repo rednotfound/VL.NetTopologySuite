@@ -146,6 +146,16 @@
             <Pin Id="V3MaMjCx1Q92ETjBpcjw5b" Name="Result" Kind="OutputPin" />
           </Node>
           <Pad Id="UQQZed1MOcgFWkQqzHunMB" Comment="Geometry" Bounds="60,650,312,25" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="RbZGXy3Wo9ucymP3zMfVWh" Comment="Feature" Bounds="940,430,220,230" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="UvnUZXkjoGv7r2vNVh3Pnn" Bounds="940,670,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; A Feature draws its geometry and lists its attributes.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
         </Canvas>
         <Patch Id="LvahuOZMoqzxlQESwF7eYW" Name="Create" />
         <Patch Id="KCzE1eT4SpVSbOKBrqSZ6J" Name="Update" />
@@ -166,6 +176,7 @@
         <Link Id="BszB7989mXG2kw35QKykAc" Ids="PMBjmfC7eSGU7Maq0wQIuG,DGGCLtrOajlzzj2eDQfayz" />
         <Link Id="RZcGGIWvKdzyu1ott2i3MZ" Ids="S5ctiwzsxha6gZQcc7m7dF,VWfGTbZhEdEU3SbVgee8Jm" />
         <Link Id="V16mDAUc9cn2WM4fMKrEtR" Ids="VFcTg1TbRgJJHnFPPqBXXL,O9lIuAkNn6wosc2zP16uDY" />
+        <Link Id="CrTIJnG04d347RukLl16Iw" Ids="JKgSRJEldOmx0ClkcnTpbC,RbZGXy3Wo9ucymP3zMfVWh" />
       </Patch>
     </Node>
   </Patch>

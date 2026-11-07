@@ -758,6 +758,18 @@
           </Pad>
           <Pad Id="GkdmnAl1oqQOczGfZ65UYe" Comment="From Snap Distance" Bounds="123,980,35,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="IagBPGnKo51LrLwEC2fKmb" Comment="To Snap Distance" Bounds="144,960,35,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="Qj7R5nsPJXgDCfzuNZmHKX" Comment="Town" Bounds="940,310,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="U1EV6pjopwl8fKA2RsT2IJ" Comment="Path" Bounds="940,870,180,120" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="1180,320,140,19" Id="BRz2WvGDC6ejvE8TXK2DMd">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="GeometryCollection" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="FFHIUYNWXZIpHUO7SoN9WS" Name="Geometries" Kind="InputPin" />
+            <Pin Id="RJvLyTv2lQybrlIVFpUgwG" Name="Factory" Kind="InputPin" />
+            <Pin Id="CDAGPWiwmxJ2mUryMhfMA6" Name="Result" Kind="OutputPin" />
+          </Node>
         </Canvas>
         <Patch Id="Mzd9YWOw3Koy0lQxIaIYXV" Name="Create" />
         <Patch Id="Ao2eA3iJPKh9saomi2V0zQ" Name="Update" />
@@ -767,7 +779,7 @@
         </ProcessDefinition>
         <Link Id="C7quaGzOzPpMEWkvKqVpRx" Ids="RiA1yvcmb3cTKbvPRERtG5,SIM7lG4xFtf2NYOKYEAxsD" />
         <Link Id="FUFyIFFnpAA4gXUR5Rk18O" Ids="SIM7lG4xFtf2NYOKYEAxsD,Kchynch6zY1V7FQ8XZx99c" />
-        <Link Id="KziaWQ0Ii9XqY0TxIO5YEv" Ids="EqI9Q0tzNAm3TxxF1Biwt8,VroYeLezzigmILeEjRaxz3" />
+        
         <Link Id="G41utGPa3aUtwBHOXwTiFa" Ids="EKDR5iNExAxwIel8ejOsMW,OIVjLaWKDIeTG4CTuw4GfE" />
         <Link Id="IE8tDezm8fr9EFollCPb0D" Ids="BvElYw1TRNSxGoPDS4z5uj,TIrFIv3uHcy1d1mN2nIgL1" />
         <Link Id="PR3zKGoLDSFmLNL09gOEpe" Ids="AywDRqxg784pC33z8ABIpe,QisOQP9NWiKdlPbFxDm2se" />
@@ -841,6 +853,10 @@
         <Link Id="F3ofe1dzDO5NplLryypjfy" Ids="SuBkAQ6AKkdQoBmlLsfBRd,IagBPGnKo51LrLwEC2fKmb" />
         <Link Id="PttLbhjaQ8olnTRwX6XB4r" Ids="VqrRVUH1elNx8oXr5FAeWk,SiHXrgEpH3XzeFVQ7ToouC" />
         <Link Id="Ej63YE7aFU9cENUDJLMk9H" Ids="MDSKeX4Jdf24085UqRJEO6,L2H8CCvWOpdVzyNtrKNl1x" />
+        <Link Id="KziaWQ0Ii9XqY0TxIO5YEv" Ids="EqI9Q0tzNAm3TxxF1Biwt8,VroYeLezzigmILeEjRaxz3" />
+        <Link Id="D7X614oI9oPry5O6n1fDaw" Ids="L8XSm0gVLyXdnP0AOXjhDk,U1EV6pjopwl8fKA2RsT2IJ" />
+        <Link Id="F2DjMVp8S2EAU0gGyjIRKv" Ids="OIVjLaWKDIeTG4CTuw4GfE,FFHIUYNWXZIpHUO7SoN9WS" />
+        <Link Id="JG9ljytjLDtrz20wzzH2T3" Ids="CDAGPWiwmxJ2mUryMhfMA6,Qj7R5nsPJXgDCfzuNZmHKX" />
       </Patch>
     </Node>
   </Patch>

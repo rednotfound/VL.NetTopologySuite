@@ -293,8 +293,7 @@
             <Pin Id="SZT4rT8s9yroHard94vc06" Name="Lines" Kind="OutputPin" />
             <Pin Id="Bl41OYFLBIeDjP5Itm49i4" Name="Points" Kind="OutputPin" />
           </Node>
-          <Pad Id="UmYBvJDyuETzJiF8wpFcOg" Comment="Outlines" Bounds="261,920,200,60" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="D6kMxjiUtfrZIRlGFodu54" Bounds="580,960,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Outlines: every ring and line as its own spread of coordinates, holes separately - two here. The drawing nodes want exactly this.">
+          <Pad Id="D6kMxjiUtfrZIRlGFodu54" Bounds="580,960,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Outlines: every ring and line as its own spread of coordinates, holes separately - two rings here. The drawing nodes want exactly this.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -303,6 +302,10 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
+          <Pad Id="AHWmF5c11anQE3ipbMsjNu" Comment="Geometry" Bounds="940,220,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="PB45DZwxaIU8WupXYI0Nha" Comment="InteriorPoint" Bounds="940,740,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="DsYHY0PlImxtes9SmFrNV9" Comment="Boundary" Bounds="940,880,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="Mmli5buE39QJGKhzQsN6Zg" Comment="Envelope" Bounds="940,1020,180,120" ShowValueBox="true" isIOBox="true" />
         </Canvas>
         <Patch Id="RPUybcGdfRC1BIbiHVndoh" Name="Create" />
         <Patch Id="BXUytzEaMEIHMIlmFTaepV" Name="Update" />
@@ -343,7 +346,10 @@
         <Link Id="Vo4fBM3AfhalA8AOuVDvIz" Ids="SXpBLx1fEGoXzr675rh6wp,TzH6EwZQ4Vh59MGHk2I23h" />
         <Link Id="OTWOAtvMY21M2T4llBfjjO" Ids="OLrP8AySH4CEJWG9w2sW2B,CXiMfFP3GOXuAPnBcUrmV7" />
         <Link Id="Pftflv92yoOzrQRJhHnwhG" Ids="AY28YyZEeolSqhzOcWHojq,MoDZIF10htoGlaNcxeHmnW" />
-        <Link Id="TwdtvTdkbDgdk9uR7Yx2Wo" Ids="JzjFMjVLZCDlhdTVb1hTuU,UmYBvJDyuETzJiF8wpFcOg" />
+        <Link Id="JnJNTY1UxpDvrFfTiznN7s" Ids="AY28YyZEeolSqhzOcWHojq,AHWmF5c11anQE3ipbMsjNu" />
+        <Link Id="FFYxv46PFLjsrDzHuFNMd6" Ids="IDekJ2DGgzQDpCspkJVZ8J,PB45DZwxaIU8WupXYI0Nha" />
+        <Link Id="Afd00SVnLmSlq7dUTRiEf5" Ids="MRtJyzMVDjz6YWNTSEG9cw,DsYHY0PlImxtes9SmFrNV9" />
+        <Link Id="AQJ6boPuGg4qVIQ5hEdFjm" Ids="SXpBLx1fEGoXzr675rh6wp,Mmli5buE39QJGKhzQsN6Zg" />
       </Patch>
     </Node>
   </Patch>

@@ -189,6 +189,8 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
+          <Pad Id="DyPw229Kx6SPTKxNHRgF3U" Comment="Line" Bounds="940,380,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="AzCk0Dh5aYd0HXzBLP7GWC" Comment="Reversed" Bounds="940,540,180,120" ShowValueBox="true" isIOBox="true" />
         </Canvas>
         <Patch Id="Q3jZDfuMzyTBc8lVmu7g3X" Name="Create" />
         <Patch Id="KEcjum7NbcfIDKelEvq2sG" Name="Update" />
@@ -213,6 +215,8 @@
         <Link Id="KO1UpcdmTDcS6Kfr2pddV5" Ids="OE0XD0qxEuIMcaElHHNhOm,KG5atdm2UeYf1wGDLYrDB2" />
         <Link Id="Bg8VH321wAD0avAMOm5OlF" Ids="OWMpuLPfjvxDvlx2518koV,M7Qb7M7O8cd1I2PCYidh2V" />
         <Link Id="AZFLMiR1rH8gpDqICX0LOw" Ids="VKeZqOnof4NFGGN767SBWk,RfbOcM7oMSKpNwpaNB3VmD" />
+        <Link Id="DYNoWyKPSlM65wAh1jkJkC" Ids="OE0XD0qxEuIMcaElHHNhOm,DyPw229Kx6SPTKxNHRgF3U" />
+        <Link Id="Uga6cOSct75SzvcagEgRuM" Ids="OWMpuLPfjvxDvlx2518koV,AzCk0Dh5aYd0HXzBLP7GWC" />
       </Patch>
     </Node>
   </Patch>
