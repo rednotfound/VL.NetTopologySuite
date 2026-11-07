@@ -1,0 +1,542 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document xmlns:p="property" xmlns:r="reflection" Id="VFjthUkURmsPh23brtzTJS" LanguageVersion="2025.7.4" Version="0.128">
+  <NugetDependency Id="Sqtogw2eOMo0LAiKzgAOn2" Location="VL.CoreLib" Version="2025.7.4" />
+  <Patch Id="SpPGnhDoW1wHLw9ydWq48W">
+    <Canvas Id="HQZH4SUYlCZZMeL3MkuafP" DefaultCategory="Main" BordersChecked="false" CanvasType="FullCategory" />
+    <!--
+
+    ************************ Application ************************
+
+-->
+    <Node Name="Application" Bounds="100,100" Id="ORpled0UfOiXvtiHbtGlF0">
+      <p:NodeReference>
+        <Choice Kind="ContainerDefinition" Name="Process" />
+        <CategoryReference Kind="Category" Name="Primitive" />
+      </p:NodeReference>
+      <Patch Id="JR8crIX284GJeFeqVllJJ3">
+        <Canvas Id="NZP1i3n0PocsTbYwz4pxMQ" CanvasType="Group">
+          <Node Name="Station" Bounds="1220,1010" Id="VyrfrTElKTh2B9dQ5NuzZl">
+            <p:NodeReference LastCategoryFullName="Primitive" LastDependency="Builtin">
+              <Choice Kind="RecordDefinition" Name="Record" />
+            </p:NodeReference>
+            <Patch Id="OPcExHOK1niP7HrhcMGWrq">
+              <Canvas Id="Q2BQXXOpN6VoJwnkGj8zJP" CanvasType="Group">
+              <Pad Id="CzmV5Mv824CkYeyHA6aZx1" SlotId="LOvVwSV0bH377WBtEOM8PH" Bounds="100,210" />
+              <Pad Id="UuIVb2YrNUSPPde0mKgccD" SlotId="CX8cIJXBgLuZavJBi5J3MB" Bounds="300,210" />
+              <Pad Id="HTLxZxlTNpp9PbwDjN9rA3" SlotId="R1GJ98aD3GtxatzPsr9xSq" Bounds="500,210" />
+              <Pad Id="JuAQ835AkZ9uOUcvbtiU3s" SlotId="QEyYM2pFUpr5imA52rBj0K" Bounds="700,210" />
+              <ControlPoint Id="HQNR6J4tNtx1wKAabaS6zB" Bounds="100,180" />
+              <ControlPoint Id="CZhhNefKiEEygV9u6fUx1O" Bounds="100,240" />
+              <ControlPoint Id="BybS9SLUfkiddDyfRVvtC3" Bounds="300,180" />
+              <ControlPoint Id="V5yBGVa5PfGrGvRm50rglB" Bounds="300,240" />
+              <ControlPoint Id="SZXa2YYi7lInyohpOEnBCY" Bounds="500,180" />
+              <ControlPoint Id="TYquzgwmrGQ6q9bEk9BlST" Bounds="500,240" />
+              <ControlPoint Id="V4lCijZNyLFhBB36emaNPr" Bounds="700,180" />
+              <ControlPoint Id="UmlDRMQXVu0sxOU60YVFw5" Bounds="700,240" />
+              </Canvas>
+              <ProcessDefinition Id="G9OXn63apaWyPW7MNB4mMi" IsHidden="true">
+                <Fragment Id="HQUwSg8md8BRAhKhIvCTsT" Patch="BDyqVjgako4W0SROjXmN03" Enabled="true" />
+                <Fragment Id="R0VwOjptXCbalpqXFFevG3" Patch="SMf9xMpkFgr79CmQ8JdOnc" Enabled="true" />
+              </ProcessDefinition>
+              <Slot Id="LOvVwSV0bH377WBtEOM8PH" Name="Geometry">
+                <p:Attributes>
+                  <AttributeData>
+                    <p:TypeReference LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+                      <Choice Kind="TypeFlag" Name="NonSerializedAttribute" />
+                    </p:TypeReference>
+                  </AttributeData>
+                </p:Attributes>
+                <p:TypeAnnotation p:Type="TypeReference">
+                  <Choice Kind="TypeFlag" Name="Geometry" />
+                </p:TypeAnnotation>
+              </Slot>
+              <Slot Id="CX8cIJXBgLuZavJBi5J3MB" Name="Name">
+                <p:TypeAnnotation p:Type="TypeReference">
+                  <Choice Kind="TypeFlag" Name="String" />
+                </p:TypeAnnotation>
+              </Slot>
+              <Slot Id="R1GJ98aD3GtxatzPsr9xSq" Name="Platforms">
+                <p:TypeAnnotation p:Type="TypeReference">
+                  <Choice Kind="TypeFlag" Name="Integer32" />
+                </p:TypeAnnotation>
+              </Slot>
+              <Slot Id="QEyYM2pFUpr5imA52rBj0K" Name="Terminal">
+                <p:TypeAnnotation p:Type="TypeReference">
+                  <Choice Kind="TypeFlag" Name="Boolean" />
+                </p:TypeAnnotation>
+              </Slot>
+              <Link Id="Ns3u4xorxl61FfSh6KhgIu" Ids="CUSMLAzxhBfBplOOQH04eH,HQNR6J4tNtx1wKAabaS6zB" IsHidden="true" />
+              <Link Id="JsSgipOwLxCj5kKtANmLqW" Ids="HQNR6J4tNtx1wKAabaS6zB,CzmV5Mv824CkYeyHA6aZx1" />
+              <Link Id="D7BuLvFrURtOZxoSpZVVfC" Ids="CzmV5Mv824CkYeyHA6aZx1,CZhhNefKiEEygV9u6fUx1O" />
+              <Link Id="HO6GZ2NKxvodcLUCy9tlaZ" Ids="CZhhNefKiEEygV9u6fUx1O,RdsUZdBsiEblCHlynVcYoE" IsHidden="true" />
+              <Link Id="OJjweUWOI5MH8oK0EQv1Kt" Ids="NVN8wfKypuHTMNRqW0X6wr,BybS9SLUfkiddDyfRVvtC3" IsHidden="true" />
+              <Link Id="A8JfbiSHwHHUtrm1bOJ20j" Ids="BybS9SLUfkiddDyfRVvtC3,UuIVb2YrNUSPPde0mKgccD" />
+              <Link Id="DhOcWO1QQspCLnBwqySXlb" Ids="UuIVb2YrNUSPPde0mKgccD,V5yBGVa5PfGrGvRm50rglB" />
+              <Link Id="ERkcRAErBxwvk7hn14rw6l" Ids="V5yBGVa5PfGrGvRm50rglB,TgVo1qThxw1TkGCxvJ93SD" IsHidden="true" />
+              <Link Id="AoOdmxqyTJ7vLysGMr3SG5" Ids="D2iRWW8Z2JDlO5hWpZV6YI,SZXa2YYi7lInyohpOEnBCY" IsHidden="true" />
+              <Link Id="IvToxxiic0t9ub7FWnQ3kV" Ids="SZXa2YYi7lInyohpOEnBCY,HTLxZxlTNpp9PbwDjN9rA3" />
+              <Link Id="F379faqAMXVEudJb1NzND9" Ids="HTLxZxlTNpp9PbwDjN9rA3,TYquzgwmrGQ6q9bEk9BlST" />
+              <Link Id="MDMkWrlPzX2pfqpXxWYRYW" Ids="TYquzgwmrGQ6q9bEk9BlST,FHISu6Hsce3fU1JDH9AeVG" IsHidden="true" />
+              <Link Id="HHT52iHjGHEfpVLTW57hjA" Ids="O9gPxyF4NiSb3Za8QgAvxE,V4lCijZNyLFhBB36emaNPr" IsHidden="true" />
+              <Link Id="H2SGTFeDT6S70qJT5WGaX7" Ids="V4lCijZNyLFhBB36emaNPr,JuAQ835AkZ9uOUcvbtiU3s" />
+              <Link Id="MvSdyzmXPC1R2LHIXakkLd" Ids="JuAQ835AkZ9uOUcvbtiU3s,UmlDRMQXVu0sxOU60YVFw5" />
+              <Link Id="TKZekXZNO5NpxFM5OF2jy4" Ids="UmlDRMQXVu0sxOU60YVFw5,PV2278DEbtShXKcoMt06K0" IsHidden="true" />
+              <Patch Id="BDyqVjgako4W0SROjXmN03" Name="Create">
+                <Pin Id="CUSMLAzxhBfBplOOQH04eH" Name="Geometry" Kind="InputPin" />
+                <Pin Id="NVN8wfKypuHTMNRqW0X6wr" Name="Name" Kind="InputPin" />
+                <Pin Id="D2iRWW8Z2JDlO5hWpZV6YI" Name="Platforms" Kind="InputPin" />
+                <Pin Id="O9gPxyF4NiSb3Za8QgAvxE" Name="Terminal" Kind="InputPin" />
+              </Patch>
+              <Patch Id="SMf9xMpkFgr79CmQ8JdOnc" Name="Split">
+                <Pin Id="RdsUZdBsiEblCHlynVcYoE" Name="Geometry" Kind="OutputPin" />
+                <Pin Id="TgVo1qThxw1TkGCxvJ93SD" Name="Name" Kind="OutputPin" />
+                <Pin Id="FHISu6Hsce3fU1JDH9AeVG" Name="Platforms" Kind="OutputPin" />
+                <Pin Id="PV2278DEbtShXKcoMt06K0" Name="Terminal" Kind="OutputPin" />
+              </Patch>
+            </Patch>
+          </Node>
+          <Pad Id="J268hFri2Rj7BsN7Fi9rTB" Bounds="60,40,900,41" ShowValueBox="true" isIOBox="true" Value="Build a feature three ways: Add, a table, or your own record!">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">20</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="OoBe3p55vLC7Kd4nISmAEW" Bounds="60,95,1700,40" ShowValueBox="true" isIOBox="true" Value="All three columns end in the same Feature, and the shape of the patch is the same: geometry, the attributes, one node that puts them together, one node that takes them apart. Only the middle differs. Left: one Add per attribute. Middle: a table, no schema. Right: a schema - a record that is the feature.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="EskcvLXDIXwTe877cBRbo6" Bounds="60,140,500,20" ShowValueBox="true" isIOBox="true" Value="Add: one node per attribute">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">12</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="QNkNRCehdVwyGsQ6hmiyBa" Comment="Geometry" Bounds="60,170,300,15" ShowValueBox="true" isIOBox="true" Value="POINT (139.7671 35.6812)">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="60,220,90,19" Id="DgG8ES1A2YlftWFOKl2YoA">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Read WKT" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="JlzxjV3Xb6fsWUlyeRPaS8" Name="WKT" Kind="InputPin" />
+            <Pin Id="B0JR0sF5nTbwoiLGfviumP" Name="Factory" Kind="InputPin" />
+            <Pin Id="HQ8uwDOC9qwA2Uee2F9cwi" Name="Result" Kind="OutputPin" />
+            <Pin Id="LUmBDtBUNkUx03tMkxIFGj" Name="Success" Kind="OutputPin" />
+          </Node>
+          <Pad Id="CTjwyq0k2H3yEJw0PQILUm" Comment="Key" Bounds="260,225,90,15" ShowValueBox="true" isIOBox="true" Value="name">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="Be4yx1lX8Tce6COYVulEpo" Comment="Value" Bounds="390,225,90,15" ShowValueBox="true" isIOBox="true" Value="Tokyo Station">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="530,230,53,19" Id="AYg5Ug5YYDskUjguF5yo4v">
+            <p:NodeReference LastCategoryFullName="Collections.Dictionary" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <CategoryReference Kind="RecordType" Name="Dictionary" />
+              <Choice Kind="OperationCallFlag" Name="Add" />
+            </p:NodeReference>
+            <Pin Id="JQJF6zryco9PFuQaEB2vdL" Name="Input" Kind="StateInputPin" />
+            <Pin Id="D5iel0G169aJaBSQ09PaTF" Name="Key" Kind="InputPin" />
+            <Pin Id="HYAaTn1xFTSDepzFTKc8h4" Name="Value" Kind="InputPin" />
+            <Pin Id="Facd2zDLS9XgZMfZrMfgYW" Name="Output" Kind="StateOutputPin" />
+          </Node>
+          <Pad Id="FltIA8EbtmIPu45XnK2iYl" Comment="Key" Bounds="260,270,90,15" ShowValueBox="true" isIOBox="true" Value="platforms">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="D1hdK2GlOCx5XgWVzCutVQ" Comment="Value" Bounds="390,270,90,15" ShowValueBox="true" isIOBox="true" Value="28">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Integer32" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="530,275,53,19" Id="MJ5zJJA0W3oZz7B59ZeMkB">
+            <p:NodeReference LastCategoryFullName="Collections.Dictionary" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <CategoryReference Kind="RecordType" Name="Dictionary" />
+              <Choice Kind="OperationCallFlag" Name="Add" />
+            </p:NodeReference>
+            <Pin Id="G7wv6JNZR40jrveo5zEB4W" Name="Input" Kind="StateInputPin" />
+            <Pin Id="QJVAF2WfzaDKJiEGcNwUQP" Name="Key" Kind="InputPin" />
+            <Pin Id="PIz8vkyvIKlmzWsij1GBtg" Name="Value" Kind="InputPin" />
+            <Pin Id="AyvQNEXrm0rCxPFXL1GSdV" Name="Output" Kind="StateOutputPin" />
+          </Node>
+          <Pad Id="VBySrjg5U6wu55PdKDo5Ej" Comment="Key" Bounds="260,315,90,15" ShowValueBox="true" isIOBox="true" Value="opened">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="Dq56eUDiGyq39ElTt4kNqP" Comment="Value" Bounds="390,315,90,15" ShowValueBox="true" isIOBox="true" Value="1914">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Integer32" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="530,320,53,19" Id="EXOQPyuwGwqgAXbxjWCEMe">
+            <p:NodeReference LastCategoryFullName="Collections.Dictionary" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <CategoryReference Kind="RecordType" Name="Dictionary" />
+              <Choice Kind="OperationCallFlag" Name="Add" />
+            </p:NodeReference>
+            <Pin Id="SS2iqYZwOUWLus0hduuABC" Name="Input" Kind="StateInputPin" />
+            <Pin Id="B6hS5uTaSms7ePoGSnNs6v" Name="Key" Kind="InputPin" />
+            <Pin Id="HrsS3Q8XNZorfgq4OlXDtR" Name="Value" Kind="InputPin" />
+            <Pin Id="E1BOA4RGpuNYHv6nQHaWDs" Name="Output" Kind="StateOutputPin" />
+          </Node>
+          <Pad Id="F0rWQDMOoAfffphuw96Lyo" Comment="Key" Bounds="260,360,90,15" ShowValueBox="true" isIOBox="true" Value="terminal">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="GJbuMT9ESpY7SsuwRO8z1Z" Comment="Value" Bounds="390,360,90,15" ShowValueBox="true" isIOBox="true" Value="True">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Boolean" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="530,365,53,19" Id="RK4R1zn3hxhodSIn8zB6N8">
+            <p:NodeReference LastCategoryFullName="Collections.Dictionary" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <CategoryReference Kind="RecordType" Name="Dictionary" />
+              <Choice Kind="OperationCallFlag" Name="Add" />
+            </p:NodeReference>
+            <Pin Id="ESsR0y9OXVe6Qy9ZKw1c28" Name="Input" Kind="StateInputPin" />
+            <Pin Id="BJIPsWq6AdBZGN958wtOL1" Name="Key" Kind="InputPin" />
+            <Pin Id="AVDXzkA1Yh3TJ4AxNw7NsY" Name="Value" Kind="InputPin" />
+            <Pin Id="VXxEyKNqsGw8jB1rd8qrZr" Name="Output" Kind="StateOutputPin" />
+          </Node>
+          <Node Bounds="60,420,70,19" Id="ABcuR89DxZ1SOQXcABUroj">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Feature" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Feature" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="JhtZjmVOpUdkVFageRNqRb" Name="Geometry" Kind="InputPin" />
+            <Pin Id="FJTdLmDWoy97d76dNAtUW4" Name="Attributes" Kind="InputPin" />
+            <Pin Id="VLc6mgepx0ZK6CaBrKalpU" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="MqO5ZouHuZEeKFcmdQFGSq" Comment="Feature" Bounds="60,450,220,290" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="GP4NPzElOhm45blJUtxdXD" Bounds="390,450,250,120" ShowValueBox="true" isIOBox="true" Value="&lt; vvvv's own Dictionary, one Add per pair, each value with its own IOBox and type. The shortest to learn, the longest to patch. The attributes are a Dictionary.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="60,760,50,19" Id="POuatks6bPskxf67SPeg5u">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Feature" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Split" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="Q9qiI3UVdLF2EIMNfZYG4h" Name="Feature" Kind="InputPin" />
+            <Pin Id="FybPLgEnEg8lOMAQaRGG4T" Name="Geometry" Kind="OutputPin" />
+            <Pin Id="KzWr2culQ4LgdxEtKU4xJk" Name="Attributes" Kind="OutputPin" />
+          </Node>
+          <Pad Id="Ftln1JP1ft1xinwYm7mBD5" Comment="Attributes" Bounds="160,830,249,200" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="Q084mYZCchmF25SvzYm8xN" Bounds="390,760,250,60" ShowValueBox="true" isIOBox="true" Value="&lt; Split gives the Dictionary back; TryGetValue, Remove and ForEach work on it.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="IduYs6kUSHerk60XUWhSIj" Bounds="640,140,500,20" ShowValueBox="true" isIOBox="true" Value="A table: names and values, no schema">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">12</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="JjLekhzFzj6sZLxRRMecEb" Comment="Geometry" Bounds="640,170,300,15" ShowValueBox="true" isIOBox="true" Value="POINT (139.7671 35.6812)">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="640,220,90,19" Id="LCo6MFE5l9oNO6Wmyzn8Ie">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Read WKT" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="Rupr74sL9XMKkEACGkV3xp" Name="WKT" Kind="InputPin" />
+            <Pin Id="BL1ztgWiHSc45b2hLeLwpM" Name="Factory" Kind="InputPin" />
+            <Pin Id="JKJaMPz6ekNctEcO0KSwHp" Name="Result" Kind="OutputPin" />
+            <Pin Id="RkwxyfUvZ0S1mY71sTiDOB" Name="Success" Kind="OutputPin" />
+          </Node>
+          <Pad Id="PPgWVFXGbFSQIS1YxKtyPL" Comment="Keys" Bounds="840,225,120,80" ShowValueBox="true" isIOBox="true">
+            <p:TypeAnnotation LastCategoryFullName="Collections" LastDependency="VL.Collections.vl">
+              <Choice Kind="TypeFlag" Name="Spread" />
+              <p:TypeArguments>
+                <TypeReference LastCategoryFullName="Primitive" LastDependency="CoreLibBasics.vl">
+                  <Choice Kind="TypeFlag" Name="String" />
+                </TypeReference>
+              </p:TypeArguments>
+            </p:TypeAnnotation>
+            <p:Value>
+              <Item>name</Item>
+              <Item>platforms</Item>
+              <Item>opened</Item>
+              <Item>terminal</Item>
+            </p:Value>
+          </Pad>
+          <Pad Id="OUoSHbIhAkyhDatkyxL58a" Comment="Values" Bounds="1000,225,160,80" ShowValueBox="true" isIOBox="true">
+            <p:TypeAnnotation LastCategoryFullName="Collections" LastDependency="VL.Collections.vl">
+              <Choice Kind="TypeFlag" Name="Spread" />
+              <p:TypeArguments>
+                <TypeReference LastCategoryFullName="Primitive" LastDependency="CoreLibBasics.vl">
+                  <Choice Kind="TypeFlag" Name="String" />
+                </TypeReference>
+              </p:TypeArguments>
+            </p:TypeAnnotation>
+            <p:Value>
+              <Item>Tokyo Station</Item>
+              <Item>28</Item>
+              <Item>1914</Item>
+              <Item>true</Item>
+            </p:Value>
+          </Pad>
+          <Node Bounds="840,330,110,19" Id="ClIRHPdx28uhsEYk5lOLzK">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Feature" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Attributes (Join)" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="TektehhWJi1bXILu48ebxU" Name="Keys" Kind="InputPin" />
+            <Pin Id="V3Hiul8GRo3DK0nsYqNlG8" Name="Values" Kind="InputPin" />
+            <Pin Id="SJndeXRPizh6E99pXWi5iR" Name="Infer Types" Kind="InputPin" />
+            <Pin Id="MAJLDv35OmpoDGjIC2WRvb" Name="Attributes" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="640,420,70,19" Id="FiGLAlxGjpJsoPsgUmSKCb">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Feature" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Feature" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="Sau3hhpjZNZAlFxJO9qlte" Name="Geometry" Kind="InputPin" />
+            <Pin Id="R3Y4boETAPlu0QQVfzABAs" Name="Attributes" Kind="InputPin" />
+            <Pin Id="BVISLIypioWsaOI9JPOqp5" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="A8Hnc6tZ3ZgqmcnPrTqfy9" Comment="Feature" Bounds="640,450,220,290" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="KHHQL5wAurXhwchvei12po" Bounds="970,450,250,120" ShowValueBox="true" isIOBox="true" Value="&lt; Two Spread IOBoxes are the table; Attributes (Join) reads 28 as an integer and true as a boolean. Any names, any number of rows, decided while you patch. The attributes are the same Dictionary.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="640,760,50,19" Id="UV9WgYwthPFtY077DmxzAq">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Feature" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Split" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="Og0mlkEleeq3J4PKIGce3c" Name="Feature" Kind="InputPin" />
+            <Pin Id="Mogt6ZglM18s03aDRqaDhe" Name="Geometry" Kind="OutputPin" />
+            <Pin Id="CswOkY0WWCG36iDAyYiJIp" Name="Attributes" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="740,790,110,19" Id="EZYRmh6LBet2KfKn32TqL6">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Feature" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Attributes (Split)" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="LML0kFcgKEnUdZuSbWsAVy" Name="Attributes" Kind="InputPin" />
+            <Pin Id="CI5ybzUVBYPHG3zUdrkCUc" Name="Keys" Kind="OutputPin" />
+            <Pin Id="TgmGuFKLfXJLX9v8Bt2NSN" Name="Values" Kind="OutputPin" />
+          </Node>
+          <Pad Id="B0huyxFPX1J59TKmMKAv5N" Comment="Keys" Bounds="740,830,120,80" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="Ud5cCTxcYzCyoc0gfWZPlR" Comment="Values" Bounds="900,830,160,140" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="PpG6ZKKr345Ck2qi07sFOQ" Bounds="970,760,250,60" ShowValueBox="true" isIOBox="true" Value="&lt; Split gives the Dictionary back; Attributes (Split) lays it out as the two columns again.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="OjNiI3wasfSv5V59z0SwcL" Bounds="1220,140,500,20" ShowValueBox="true" isIOBox="true" Value="A record: your own Station, with a schema">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">12</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="FrZKVfplIIR1tZeRwgNe6n" Comment="Geometry" Bounds="1220,170,300,15" ShowValueBox="true" isIOBox="true" Value="POINT (139.7671 35.6812)">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="1220,220,90,19" Id="I4dYW27H0nhA0KviT6nPME">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Read WKT" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="D0mGdyY1YGVlW1D7Brwl6b" Name="WKT" Kind="InputPin" />
+            <Pin Id="QJr99O7zAVZFeZdkZdpNFF" Name="Factory" Kind="InputPin" />
+            <Pin Id="KNJMdyQDGaRbwdFjDFRibL" Name="Result" Kind="OutputPin" />
+            <Pin Id="JtXFxccjyF4x7EWzfXUdLM" Name="Success" Kind="OutputPin" />
+          </Node>
+          <Pad Id="OpPja873wUjMd4Fari9UYt" Comment="Name" Bounds="1420,225,150,15" ShowValueBox="true" isIOBox="true" Value="Tokyo Station">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="BqtOS2Rs0DL7eDsCmc8MQA" Comment="Platforms" Bounds="1420,260,60,15" ShowValueBox="true" isIOBox="true" Value="28">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Integer32" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="FAvovzH9zLl8jTvFoDbLnz" Comment="Terminal" Bounds="1580,260,60,15" ShowValueBox="true" isIOBox="true" Value="True">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Boolean" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="1420,330,110,19" Id="GbW6QvpgCWHtRFPIENZ9oy">
+            <p:NodeReference LastCategoryFullName="Main.Station" LastDependency="HowTo Build a feature three ways.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <CategoryReference Kind="RecordType" Name="Station" />
+              <Choice Kind="OperationCallFlag" Name="Create" />
+            </p:NodeReference>
+            <Pin Id="AcntXmQRiOGrvfeBe3ua1o" Name="Geometry" Kind="InputPin" />
+            <Pin Id="B6Nr85P4FYAVmIuclGtZoO" Name="Name" Kind="InputPin" />
+            <Pin Id="AhmMHYOX4K7b59xoc4lLwW" Name="Platforms" Kind="InputPin" />
+            <Pin Id="UBbZa4z4rPf2mD3J0c4LPW" Name="Terminal" Kind="InputPin" />
+            <Pin Id="SXRCyBD8QtVvVcD0cOe5qU" Name="Output" Kind="StateOutputPin" />
+          </Node>
+          <Node Bounds="1220,420,130,19" Id="MCu84fq3lftwR3NksxJoBK">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Feature" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Feature (FromRecord)" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="GQ5i3EY18pbTAeU6Vvqv5e" Name="Record" Kind="InputPin" />
+            <Pin Id="Csqny4EpE4zUrw3P9QpmY3" Name="Result" Kind="OutputPin" />
+            <Pin Id="PpxkVrd788lyiwPKQmuULA" Name="Success" Kind="OutputPin" />
+            <Pin Id="MAYADoQ8DUJ0opBzPlxjIe" Name="Status" Kind="OutputPin" />
+          </Node>
+          <Pad Id="F66zg7ghEhEc3FDuQxcKgK" Comment="Feature" Bounds="1220,450,220,290" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="F2rbQD6I1G7njM6qfCJRzl" Bounds="1550,450,250,120" ShowValueBox="true" isIOBox="true" Value="&lt; The Station record (bottom of the patch) is the feature: one Geometry field, the rest its attributes, each with its type. Define it once; a Spread of Station is a whole dataset. Feature (FromRecord) is the door to GeoJSON and Mapsui.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="1420,735,110,19" Id="JoOmoqIBsSJlw7Uy61sWRo">
+            <p:NodeReference LastCategoryFullName="Main.Station" LastDependency="HowTo Build a feature three ways.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <CategoryReference Kind="RecordType" Name="Station" />
+              <Choice Kind="OperationCallFlag" Name="Create" />
+            </p:NodeReference>
+            <Pin Id="IGpx5211gP428clSrKNGli" Name="Geometry" Kind="InputPin" />
+            <Pin Id="IOLnQzz3QWoWVelg7MPBYA" Name="Name" Kind="InputPin" />
+            <Pin Id="LF8yDwSu5dmdJygRtIuAdL" Name="Platforms" Kind="InputPin" />
+            <Pin Id="M6l63GfWhSzP825TjbldhR" Name="Terminal" Kind="InputPin" />
+            <Pin Id="IrCGXhd0jgZXxwBiDWJBiR" Name="Output" Kind="StateOutputPin" />
+          </Node>
+          <Node Bounds="1220,790,130,19" Id="TEygEu1bG33qwOo6TS7vcg">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Feature" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Record (FromFeature)" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="Q8NMjeG7dxseF9OCXjQeL5" Name="Feature" Kind="InputPin" />
+            <Pin Id="FgzUDLboUFLbY1n9P6og5B" Name="Template" Kind="InputPin" />
+            <Pin Id="Rd5w33eDx0Xj9n9K5aRrqG" Name="Result" Kind="OutputPin" />
+            <Pin Id="EIH3cGMiS5tADZdmzb5zAF" Name="Success" Kind="OutputPin" />
+            <Pin Id="T3RipTyUj4baUYNkms2gHV" Name="Status" Kind="OutputPin" />
+          </Node>
+          <Pad Id="OVUxxFfDahWA5BkLme6yPZ" Comment="Status" Bounds="1380,790,300,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="FUfsKwuV8lChnkouEiXpuM" Comment="Station" Bounds="1220,830,300,140" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="ITpk288q8s33c4FvpSPmEL" Bounds="1580,830,220,70" ShowValueBox="true" isIOBox="true" Value="&lt; Record (FromFeature) fills a Station from any feature, field by field - the way back.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+        </Canvas>
+        <Patch Id="G2UalAeMo7XULPDfyLK2bJ" Name="Create" />
+        <Patch Id="MwfMrYKBlWCc9ftgyzD29r" Name="Update" />
+        <ProcessDefinition Id="FeZ0YncxkyIVjDJdDVvvns">
+          <Fragment Id="EnbtIUhgQZmTRJxOICkeHk" Patch="G2UalAeMo7XULPDfyLK2bJ" Enabled="true" />
+          <Fragment Id="UxxsyLFGoefClpoYYAtO6d" Patch="MwfMrYKBlWCc9ftgyzD29r" Enabled="true" />
+        </ProcessDefinition>
+        <Link Id="JadYQARYPIe1yMCS4EPNSF" Ids="QNkNRCehdVwyGsQ6hmiyBa,JlzxjV3Xb6fsWUlyeRPaS8" />
+        <Link Id="JTFlnkprDaNZkUXdptM3pX" Ids="CTjwyq0k2H3yEJw0PQILUm,D5iel0G169aJaBSQ09PaTF" />
+        <Link Id="Iw2Cx9EkQ4JqI7RbEFStax" Ids="Be4yx1lX8Tce6COYVulEpo,HYAaTn1xFTSDepzFTKc8h4" />
+        <Link Id="UN9JrDBLrRFyTBl0PijVjT" Ids="FltIA8EbtmIPu45XnK2iYl,QJVAF2WfzaDKJiEGcNwUQP" />
+        <Link Id="VpZlFZTdBWfO4tBL7GVJVM" Ids="D1hdK2GlOCx5XgWVzCutVQ,PIz8vkyvIKlmzWsij1GBtg" />
+        <Link Id="C4Q6QAL0nkJJXZxYZ9u5YP" Ids="Facd2zDLS9XgZMfZrMfgYW,G7wv6JNZR40jrveo5zEB4W" />
+        <Link Id="LOylSc9a78yR0GE2xKw29L" Ids="VBySrjg5U6wu55PdKDo5Ej,B6hS5uTaSms7ePoGSnNs6v" />
+        <Link Id="LuPxy9rsLRpKtkI2pAuWSu" Ids="Dq56eUDiGyq39ElTt4kNqP,HrsS3Q8XNZorfgq4OlXDtR" />
+        <Link Id="NoLOgTz9LE4nlGoIKQ1czn" Ids="AyvQNEXrm0rCxPFXL1GSdV,SS2iqYZwOUWLus0hduuABC" />
+        <Link Id="BsKD6pW3Qm0iOCu25trKnK" Ids="F0rWQDMOoAfffphuw96Lyo,BJIPsWq6AdBZGN958wtOL1" />
+        <Link Id="Dv0hrH5XQBnpfiq1J1KQiJ" Ids="GJbuMT9ESpY7SsuwRO8z1Z,AVDXzkA1Yh3TJ4AxNw7NsY" />
+        <Link Id="Fzxv2GpWpnFQkcKoO1zG12" Ids="E1BOA4RGpuNYHv6nQHaWDs,ESsR0y9OXVe6Qy9ZKw1c28" />
+        <Link Id="QPFiX4LqrXK1yMuOUtpem9" Ids="HQ8uwDOC9qwA2Uee2F9cwi,JhtZjmVOpUdkVFageRNqRb" />
+        <Link Id="TLmpdNSSDZsrPXIP60OPKI" Ids="VXxEyKNqsGw8jB1rd8qrZr,FJTdLmDWoy97d76dNAtUW4" />
+        <Link Id="DFmzeMYAoIu7hqcAMXvxqD" Ids="VLc6mgepx0ZK6CaBrKalpU,MqO5ZouHuZEeKFcmdQFGSq" />
+        <Link Id="RuauoFoVE1ETkZsVZMPG0C" Ids="VLc6mgepx0ZK6CaBrKalpU,Q9qiI3UVdLF2EIMNfZYG4h" />
+        <Link Id="JeO7Uy76Pd77xxxhrDTSE4" Ids="KzWr2culQ4LgdxEtKU4xJk,Ftln1JP1ft1xinwYm7mBD5" />
+        <Link Id="LPXDCQb0aiXCbRvBCHGznh" Ids="JjLekhzFzj6sZLxRRMecEb,Rupr74sL9XMKkEACGkV3xp" />
+        <Link Id="Ix2T6N5ZJ2S5JPApTfDnXg" Ids="PPgWVFXGbFSQIS1YxKtyPL,TektehhWJi1bXILu48ebxU" />
+        <Link Id="TzwtCMU0UbgYy2KFpFVEIb" Ids="OUoSHbIhAkyhDatkyxL58a,V3Hiul8GRo3DK0nsYqNlG8" />
+        <Link Id="K1SvYFOryeC1ue1Wz0Nlv5" Ids="JKJaMPz6ekNctEcO0KSwHp,Sau3hhpjZNZAlFxJO9qlte" />
+        <Link Id="IjxQBJE24YlXOq0d6QGQXz" Ids="MAJLDv35OmpoDGjIC2WRvb,R3Y4boETAPlu0QQVfzABAs" />
+        <Link Id="T0aaVZkcUjZnQCq4hDGJSt" Ids="BVISLIypioWsaOI9JPOqp5,A8Hnc6tZ3ZgqmcnPrTqfy9" />
+        <Link Id="OhFPYhc9PnI4XuVYxLnFLF" Ids="BVISLIypioWsaOI9JPOqp5,Og0mlkEleeq3J4PKIGce3c" />
+        <Link Id="HfyZUMPh75CkbpZu8GnfcJ" Ids="CswOkY0WWCG36iDAyYiJIp,LML0kFcgKEnUdZuSbWsAVy" />
+        <Link Id="EmHwp5hQoaKQFi9kchkWVa" Ids="CI5ybzUVBYPHG3zUdrkCUc,B0huyxFPX1J59TKmMKAv5N" />
+        <Link Id="DpXqRHedqSL4hBUxVXIRfc" Ids="TgmGuFKLfXJLX9v8Bt2NSN,Ud5cCTxcYzCyoc0gfWZPlR" />
+        <Link Id="NXyIQjC0Kk6LKTqKJIzvxo" Ids="FrZKVfplIIR1tZeRwgNe6n,D0mGdyY1YGVlW1D7Brwl6b" />
+        <Link Id="CuGdsdJZbqdDZOgW1kp1cO" Ids="KNJMdyQDGaRbwdFjDFRibL,AcntXmQRiOGrvfeBe3ua1o" />
+        <Link Id="Nq9sREg0qDHseRBagVzBQH" Ids="OpPja873wUjMd4Fari9UYt,B6Nr85P4FYAVmIuclGtZoO" />
+        <Link Id="Qy1nTgLQDRWMdFunMdpEL8" Ids="BqtOS2Rs0DL7eDsCmc8MQA,AhmMHYOX4K7b59xoc4lLwW" />
+        <Link Id="OSA3aG8RqamqxvbtXVqfGy" Ids="FAvovzH9zLl8jTvFoDbLnz,UBbZa4z4rPf2mD3J0c4LPW" />
+        <Link Id="QJESxAcsx7lgf0BgRmRmwa" Ids="SXRCyBD8QtVvVcD0cOe5qU,GQ5i3EY18pbTAeU6Vvqv5e" />
+        <Link Id="JLbBTK3FTWRmPgG05Kjk8S" Ids="Csqny4EpE4zUrw3P9QpmY3,F66zg7ghEhEc3FDuQxcKgK" />
+        <Link Id="OlJCGno6iER0qtRW4HjTZ4" Ids="Csqny4EpE4zUrw3P9QpmY3,Q8NMjeG7dxseF9OCXjQeL5" />
+        <Link Id="SPq6wjXnARr3MjQTNmkphg" Ids="IrCGXhd0jgZXxwBiDWJBiR,FgzUDLboUFLbY1n9P6og5B" />
+        <Link Id="ElGY9ooGW4dC7NS8oS7pmR" Ids="T3RipTyUj4baUYNkms2gHV,OVUxxFfDahWA5BkLme6yPZ" />
+        <Link Id="H3yriocF2VonMmJ6YbigwF" Ids="Rd5w33eDx0Xj9n9K5aRrqG,FUfsKwuV8lChnkouEiXpuM" />
+      </Patch>
+    </Node>
+  </Patch>
+  <NugetDependency Id="O3X64LipdTen5HbLNO0mYU" Location="NetTopologySuite" Version="2.6.0" />
+  <NugetDependency Id="MP0msZIVf6L987F5XdVfn5" Location="VL.NetTopologySuite" Version="0.0.0" />
+</Document>

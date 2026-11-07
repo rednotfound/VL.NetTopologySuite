@@ -63,8 +63,12 @@ the node and loud when broken. `Feature (FromRecord)` and `Record (FromFeature)`
 "The record is the feature"), 15 tests against an editor-shaped double, `HowTo Use your own record
 as a feature` with a `Station` record defined in the patch - `3 attributes and the geometry from
 Station`, `4 of 4 fields filled`, both Success true, generated C# shows
-`FeatureFromRecord<Station_R>`. Next the maintainer wants a pad typed as feature that any such
-record fits (a `.vl` interface; half measured in vl-mapsui, the other half needs a probe). On the front door as one note line, not node rows: a generic node
+`FeatureFromRecord<Station_R>`. The pad-typed-as-feature idea was dropped the same night (a pad can
+already be typed `Feature` or `Station`; an interface would save one node and cost a layer -
+ARCHITECTURE). `HowTo Build a feature three ways` (patch 18) mirrors the `Add` chain, the table and the
+record column by column, at the maintainer's request that neither be harder to remember.
+Left for the maintainer: a walk through the three feature patches in vvvv, then merge or not,
+then `0.0.5-alpha`. On the front door as one note line, not node rows: a generic node
 with nothing connected has no type argument and `vvvvc` reports it as unresolved. Not on `main`: the maintainer opened the branch to see how far the
 idea goes, and merging is their call.
 

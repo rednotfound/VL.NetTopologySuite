@@ -201,7 +201,7 @@ the geometry". A new patch gets that column from the start.
 | | proves | state |
 |---|---|---|
 | `dotnet test` | the arithmetic is right | ✅ 175 tests, ~400 ms, no network |
-| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 18 documents (incl. the HDE companion) |
+| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 20 documents (incl. the HDE companion) |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 16 help patches, 2026-11-07 |
 | `tools\Test-Install.ps1` | the **packed** package installs from `dist\feed` with its dependencies, and every help patch inside the install compiles with that install as the only repository | ✅ 2026-09-25, first pass |

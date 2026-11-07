@@ -640,12 +640,21 @@ on the slot, `NetTopologySuite` as a dependency of the patch): `Feature (FromRec
 `FeatureFromRecord<Station_R>(record: …)`. The record's own IOBox shows only its type name - the
 editor's object viewer for a patched record, not ours to change.
 
-**Next step the maintainer sketched, not built:** a pad *typed as feature* that accepts any such
-record - in VL that is an interface declared in our `.vl` (the `ITooltip` pattern in VL.HDE: an
-interface whose `Split` yields a Geometry, which a record's own `Split` satisfies). vl-mapsui
-measured half of it: a `.vl` interface cannot be a C# pin type, so the C# nodes above would sit
-behind a patched node. The other half - how loosely a record's `Split` matches such an interface -
-needs a probe before anything is designed on it.
+**The two paths are meant to look alike** - the maintainer's requirement, so that neither is
+harder to remember: `HowTo Build a feature three ways` mirrors them column by column - one `Add` per
+attribute (the maintainer asked for the original way to stay in the comparison), the table, the
+record: geometry, the attributes, one node to assemble (`Feature` with the `Add` chain or with
+`Attributes (Join)`, or `Feature (FromRecord)`), one node to take apart (`Split`, with
+`Attributes (Split)` for the table, or `Record (FromFeature)`), the same drawn Feature box in all
+three. Only the middle differs.
+
+**A pad typed as feature that accepts any such record** was sketched and dropped (2026-11-07,
+late): a pad can already be typed `Feature` (the NTS type the package brings) or the user's own
+`Station`; the only thing an interface in our `.vl` would add is skipping the one
+`Feature (FromRecord)` node, and vl-mapsui measured that a `.vl` interface cannot be a C# pin
+type, so every C# node taking a feature - here, in VL.Mapsui, in the GeoJSON package - would need
+a patched wrapper doing the same conversion inside. One node saved, a whole layer added. The
+explicit node is the door, the way VL.Skia has you convert into its types before drawing.
 
 **Open, for the maintainer:** whether this goes to `main` for `0.0.5-alpha` or waits; whether
 `Spread<Record>` → `Spread<Feature>` deserves its own node or stays a `ForEach` (vl-mapsui measured

@@ -3,7 +3,7 @@
 **NetTopologySuite made natural inside [vvvv gamma](https://vvvv.org).** Not another GIS framework.
 
 > **Status: `0.0.4-alpha` on nuget.org since 2026-10-18 — a prerelease, early, and it works.**
-> 60 nodes in six categories, 175 tests, 17 help patches, every node opens one on **F1**. Every
+> 60 nodes in six categories, 175 tests, 18 help patches, every node opens one on **F1**. Every
 > category has been seen running in vvvv gamma 7.4, all sixteen help patches have been seen running
 > in the editor (fifteen of them reviewed by hand by the maintainer), and the published package was
 > installed back from nuget.org alone, its help patches compiled from that install and one of them
@@ -123,7 +123,7 @@ a package oversells itself:
 | | proves | run |
 |---|---|---|
 | `dotnet test` | the arithmetic is right | ✅ **175 tests**, ~400 ms, no network |
-| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, labels do not collide, every node has an F1 flag | ✅ 19 documents, 60 of 60 nodes flagged |
+| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, labels do not collide, every node has an F1 flag | ✅ 20 documents, 60 of 60 nodes flagged |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved** — an unresolved one has its links dropped and vanishes from the generated C#, so the script reads the C# | ✅ all 16 help patches |
 | `tools\Test-Install.ps1` | the **packed** package installs from a feed with its dependencies, and every help patch inside it compiles with that install as the only package repository | ✅ 2026-09-25 |
@@ -221,7 +221,9 @@ first, then fill" is a Record. Define `Station` once with `Geometry`, `Name`, `P
 `Terminal` - exactly one field of type Geometry is the rule - and every station is an instance of
 it, a `Spread<Station>` is the dataset, and the two nodes above are the bridge to the `Feature`
 that GeoJSON writes and Mapsui draws. `HowTo Use your own record as a feature` shows the round
-trip.
+trip, and `HowTo Build a feature three ways` puts the three paths side by side - one `Add` per
+attribute, the table, the record: the same shape of patch, geometry, the attributes, one node to
+put them together, one to take them apart - where only the middle differs.
 
 The attributes are vvvv's own Dictionary, so `Add`, `Remove`, `TryGetValue`, `Keys`, `Values` and a
 `ForEach` over the pairs work on them, and the GeoJSON reader's features carry the same type. The
