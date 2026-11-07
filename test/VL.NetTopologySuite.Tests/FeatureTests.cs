@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Immutable;
+using System.Globalization;
+using System.Linq;
 using Xunit;
 
 namespace VL.NetTopologySuite.Tests;
@@ -218,14 +221,14 @@ public class FeatureTests
     }
 
     [Fact]
-    public void Split_lists_the_rows_sorted_by_name_as_text()
+    public void Split_lists_the_rows_sorted_by_name_with_their_types()
     {
         FeatureNodes.AttributesSplit(
             Attributes(("terminal", true), ("name", "Tokyo Station"), ("platforms", 28), ("height", 3.5)),
             out var keys, out var values);
 
         Assert.Equal(new[] { "height", "name", "platforms", "terminal" }, keys);
-        Assert.Equal(new[] { "3.5", "Tokyo Station", "28", "True" }, values);
+        Assert.Equal(new object[] { 3.5, "Tokyo Station", 28, true }, values);
     }
 
     [Fact]
@@ -243,7 +246,8 @@ public class FeatureTests
         var original = Attributes(("name", "Tokyo Station"), ("platforms", 28), ("terminal", true), ("height", 3.5));
 
         FeatureNodes.AttributesSplit(original, out var keys, out var values);
-        var back = FeatureNodes.AttributesJoin(keys, values);
+        var text = values.Select(v => Convert.ToString(v, CultureInfo.InvariantCulture)!).ToArray();
+        var back = FeatureNodes.AttributesJoin(keys, text);
 
         Assert.Equal(original, back);
     }

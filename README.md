@@ -13,8 +13,7 @@
 > **Since 2026-11-07 a Geometry draws itself in the editor**, the way a GIS draws it: hover any
 > Geometry pin, or make an IOBox of one, and you see a polygon filled semi-transparently with its
 > holes cut out, a line stroked, points as markers and a lone point as a map pin, instead of an
-> object listing; a Feature shows its geometry with every attribute listed under it, and an IOBox
-> of attributes lists every row. No Renderer in
+> object listing; a Feature shows its geometry with every attribute listed under it. No Renderer in
 > the patch. It comes from `VL.NetTopologySuite.HDE.vl`, an
 > editor-only companion that registers viewers with vvvv the way VL.Stride and VL.Fuse do; see
 > [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#drawing-without-a-renderer--the-hde-companion). The table below says
@@ -212,7 +211,7 @@ is a default you will rarely touch.
 | `Split` | `Feature` → `Geometry`, Dictionary of attributes |
 | `GetAttribute` | `Feature`, name → value, **Success** *(never throws; a missing or null attribute is Success false)* |
 | `Attributes (Join)` | **Keys**, **Values** (two `Spread<String>`), Infer Types → Dictionary of attributes *(two Spread IOBoxes side by side are a table; "28" is stored as an integer, "true" as a boolean, the rest as text)* |
-| `Attributes (Split)` | Dictionary of attributes → **Keys**, **Values** *(the table again, sorted by name, values as text)* |
+| `Attributes (Split)` | Dictionary of attributes → **Keys**, **Values** *(the table again, sorted by name; values keep their types)* |
 
 The attributes are vvvv's own Dictionary, so `Add`, `Remove`, `TryGetValue`, `Keys`, `Values` and a
 `ForEach` over the pairs work on them, and the GeoJSON reader's features carry the same type. The

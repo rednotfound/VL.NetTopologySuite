@@ -96,10 +96,11 @@ Explanation front door has a gallery of three (point, line, polygon with hole) a
 The box is an ordinary readout Pad with a `Comment` and no `Value`, linked from the node's output;
 vvvv types it from the link. **A dictionary readout needs room**: at 58 or 100 pixels high the
 editor collapses a `Dictionary<String, Object>` to its type name, at 249 × 200 it lists the rows -
-measured 2026-11-07 on `HowTo Attach attributes`. Since that evening the package's own
-`AttributesViewer` lists *every* row there; before it the editor's viewer listed three (the
-`TooltipNumberOfItemsOfCollection` setting) and an ellipsis. A Feature IOBox lists every attribute
-under its drawing, so give it 220 × 290 for a point with four attributes.
+measured 2026-11-07 on `HowTo Attach attributes`; it lists `TooltipNumberOfItemsOfCollection` rows
+(the editor's setting, 3) and an ellipsis, which is the editor's own grid and stays. A Feature
+IOBox lists every attribute under its drawing, so give it 220 × 290 for a point with four
+attributes. The same size rule holds for a `Spread<Object>` readout (`Attributes (Split)`'s Values):
+at 80 high it shows `Spread<Object> [4]`, at 140 it lists the items with their types.
 
 **A table in a patch is two Spread IOBoxes** (`HowTo Attach attributes`, 2026-11-07): a Pad typed
 `Spread` of `String` (`LastCategoryFullName="Collections" LastDependency="VL.Collections.vl"`, type

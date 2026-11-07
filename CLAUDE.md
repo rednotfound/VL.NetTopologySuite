@@ -140,7 +140,7 @@ Two more, learned while verifying:
 | An `int` pin needs an `Integer32` IOBox | a `Float64` one fails the compile with `Float64 is no Integer32!`. Cost one round on `HowTo Buffer a geometry.vl`'s `Segments` pin |
 | **A Pad's `Comment` renders as a label to the RIGHT of the box** | so an IOBox occupies far more width than its `Bounds` says, and every label collision in the first help patches came from ignoring it. Give each Pad its own row, or ~200px of clear space to its right |
 | Skia `AddPoly`'s `Close` pin defaults to **True** | from SkiaSharp's `AddPoly(points, close = true)`; a polyline drawn through it needs `DefaultValue="False"` on the pin or every street closes into a zigzag. Cost one GUI round on `HowTo Find the shortest path` (2026-09-25); recipe in `docs/HELP-PATCH-STYLE.md` |
-| **A collection readout stops at 3 rows and prints `...`** | the editor setting `TooltipNumberOfItemsOfCollection` (user `settings.xml`, default 3), read by the editor's `DictionaryViewer` and sequence viewers. The maintainer saw a four-attribute feature list three. Our own viewers list every row (2026-11-07) |
+| **A collection readout stops at 3 rows and prints `...`** | the editor setting `TooltipNumberOfItemsOfCollection` (user `settings.xml`, default 3), read by the editor's `DictionaryViewer` and sequence viewers. The maintainer saw a four-attribute feature list three. The Feature viewer lists every row itself (2026-11-07); a bare Dictionary IOBox keeps the editor's grid and its cap |
 | **A Spread IOBox is an editable table** | XML: a Pad typed `Spread` of `String` with `<p:Value><Item>…</Item></p:Value>`; two of them side by side are the attribute table `Attributes (Join)` reads. Readouts of a `Spread<T>` output list items, of an `IReadOnlyList<T>` show a type name |
 | A `[Name("Attributes (Join)")]` on a method | renders as the node `Attributes (Join)`: the parenthesised version is part of the plain name string, as `Vector (Join)` is in every shipped `.vl`; `[return: Pin(Name = "Attributes")]` names the output pin. Both confirmed by `vvvvc` resolving the link (2026-11-07) |
 
@@ -393,7 +393,7 @@ The rules that matter when touching it:
   document with Geometry IOBoxes in vvvv and look. The probe used is a scratch file, never
   committed; `tools\HelpPatchGen.ps1` makes one in ten lines. Read `Documents\vvvv\gamma\vvvv_*.log`
   for the `.HDE.vl -> package-cache` line and any error.
-- **Four viewers.** `GeometryViewer` for every Geometry: `Outlines` sorts it into Rings, Lines and
+- **Three viewers.** `GeometryViewer` for every Geometry: `Outlines` sorts it into Rings, Lines and
   Points; all rings are folded into ONE path by a ForEach **accumulator** (a Top border point linked
   to a Bottom one with `IsFeedback="true"`, the pattern of VL.Skia's `HowTo Compose PathEffects`),
   `SetFillType` EvenOdd cuts the holes, one `DrawPath` fills at 0.25 alpha and one strokes; lines
@@ -406,14 +406,15 @@ The rules that matter when touching it:
   feature gets the pin - calling `GeometryViewer` directly drew nothing for the Tokyo Station point,
   which the maintainer found in `HowTo Attach attributes`), and **every attribute as a row of its
   own**: `Attributes (Split)` → ForEach → `Row` of the key in a `FixedWidthWidget`, a
-  `VerticalLineWidget`, the value (two `TextWidget (SingleLine)`, the editor's own row shape) →
-  `Column`, under the geometry in one `Column`. Not the editor's `DictionaryViewer`: that one takes
-  `TooltipNumberOfItemsOfCollection` rows (3 by default) and prints `...` for the rest, which the
-  maintainer found on a four-attribute feature. `AttributesViewer` registers the same rows for a
-  bare `Dictionary<String, Object>` - **measured 2026-11-07: a package may register a viewer for a
-  CoreLib generic instantiation, and it then wins for every IOBox of that type on the machine**,
-  which is deliberate here (that type is what `Split` and `Attributes (Join)` hand out) and is the
-  one editor-wide effect this package has. Colours are
+  `VerticalLineWidget`, and the value through the editor's `AdaptiveViewer` (so a boolean is a
+  checkbox, as in the editor's own grid) → `Column`, under the geometry in one `Column`. Not the
+  editor's `DictionaryViewer`: that one takes `TooltipNumberOfItemsOfCollection` rows (3 by
+  default) and prints `...` for the rest, which the maintainer found on a four-attribute feature.
+  **Measured and then taken out the same day:** a package may register a viewer for a CoreLib
+  generic instantiation (`Dictionary<String, Object>`), and it then wins for every IOBox of that
+  type on the machine. It worked; the maintainer rejected it because the editor's grid draws typed
+  cells and a geometry package should not replace it machine-wide. This package registers viewers
+  for its own types only. Colours are
   Leaflet's defaults (`#3388ff`). **Y is negated**
   before `Vector (Join)`: geometry is y-up, Skia is y-down, and the first probe drew a rising line
   as falling. The maintainer's review of the first probe set the style: *a point is a pin on a map,

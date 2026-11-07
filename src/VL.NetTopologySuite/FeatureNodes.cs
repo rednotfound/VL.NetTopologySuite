@@ -182,10 +182,12 @@ public static class FeatureNodes
     //
     // Split sorts by name: a VL Dictionary is an ImmutableDictionary, whose enumeration order is
     // the hash trie's rather than the order rows were added in - the readout that prompted this
-    // listed terminal, name, platforms. Sorted is at least predictable. Values come out as text,
-    // the inverse of Join's input, so Join after Split with inference on gives the same table.
-    // Spread rather than IReadOnlyList on the outputs because an IOBox lists a Spread's items and
-    // shows an IReadOnlyList as a type name (measured 2026-11-07 on Geometries).
+    // listed terminal, name, platforms. Sorted is at least predictable. Values keep their types
+    // (Spread<Object>): the first cut handed them out as text and the maintainer objected at once -
+    // "everything becomes a string", and a JSON writer tells true from "true". A text column is
+    // what Join reads, not what Split owes. Spread rather than IReadOnlyList on the outputs because
+    // an IOBox lists a Spread's items and shows an IReadOnlyList as a type name (measured
+    // 2026-11-07 on Geometries).
 
     /// <summary>
     /// Builds attributes from a column of names and a column of values, like a table.
@@ -251,23 +253,22 @@ public static class FeatureNodes
     /// Takes attributes apart into a column of names and a column of values, sorted by name.
     /// </summary>
     /// <remarks>
-    /// Values come out as text.
-    /// Use TryGetValue or GetAttribute for a value with its type.
+    /// Values keep their types: an integer stays an integer, a boolean a boolean.
     /// </remarks>
     /// <param name="attributes">The attributes, from Split or Attributes (Join).</param>
     /// <param name="keys">The names, one per row.</param>
-    /// <param name="values">The values as text, one per row.</param>
+    /// <param name="values">The values, one per row, each as whatever type it was stored as.</param>
     [Name("Attributes (Split)")]
     public static void AttributesSplit(
         ImmutableDictionary<string, object>? attributes,
         out Spread<string> keys,
-        out Spread<string> values)
+        out Spread<object> values)
     {
         var rows = attributes is null
             ? Array.Empty<KeyValuePair<string, object>>()
             : attributes.OrderBy(pair => pair.Key, StringComparer.Ordinal).ToArray();
 
         keys = Spread.Create(rows.Select(pair => pair.Key).ToArray());
-        values = Spread.Create(rows.Select(pair => Convert.ToString(pair.Value, CultureInfo.InvariantCulture) ?? "").ToArray());
+        values = Spread.Create(rows.Select(pair => pair.Value).ToArray());
     }
 }

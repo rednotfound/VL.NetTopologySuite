@@ -577,9 +577,15 @@ fields, look at GeoJSON", and whether there was a table-like way in. Surveyed th
   index and infers types the way a CSV import does (integer, float, boolean, else text; invariant
   culture; only text that starts like a number is tried as one, so `NaN` stays text; `Infer Types`
   off keeps everything text). `Attributes (Split)` is the inverse, sorted by name because an
-  `ImmutableDictionary` enumerates in hash order (the readout listed terminal, name, platforms), and
-  returns `Spread<String>` because a `Spread` readout lists its items where an `IReadOnlyList` shows
-  a type name.
+  `ImmutableDictionary` enumerates in hash order (the readout listed terminal, name, platforms); its
+  values keep their types (`Spread<Object>` - the first cut returned text and the maintainer
+  objected: a JSON writer tells `true` from `"true"`), and it returns `Spread` because a `Spread`
+  readout lists its items where an `IReadOnlyList` shows a type name.
+- **Where this leads** (the maintainer, the same evening): a GIS feature is a row of a table whose
+  columns are defined first, and in vvvv "define first, then fill" is a Record. The schema-level
+  design - a record per feature type, `Spread<Record>` as the dataset, generic bridge nodes to and
+  from NTS `Feature` through VL's `IVLObject` reflection - is being explored on a branch; the
+  Dictionary stays as the schema-less layer underneath.
 - **Not done, on purpose:** a JSON-text input (`{"name": "Tokyo Station", "platforms": 28}`)
   belongs to VL.NetTopologySuite.GeoJSON, whose `Read GeoJSON` already converts properties; a typed
   record per feature is a schema, which is the layer's business, not the feature's.
@@ -615,12 +621,15 @@ every row: `Attributes (Split)` into a ForEach whose body is the editor's own ro
 `DictionaryViewer` was tried first and is not used, because it takes `TooltipNumberOfItemsOfCollection`
 rows - a user setting, 3 by default - and prints `...` for the rest; the maintainer saw a
 four-attribute feature list three and called it disappointing, and a feature's attributes are the
-one thing a GIS always shows in full. `AttributesViewer` registers the same rows for a bare
-`Dictionary<String, Object>`, the type `Split` and `Attributes (Join)` hand out. That registration
-is the one editor-wide effect this package has: measured 2026-11-07, a package may register a
-viewer for a CoreLib generic instantiation, and the editor then uses it for every IOBox of that
-type, in any patch. Deliberate - the viewer shows the same rows the editor's would, all of them -
-and easy to take out if it ever collides with another package's. Colours are Leaflet's defaults (`#3388ff`, fill opacity about 0.2), the look
+one thing a GIS always shows in full. The value cell goes through the editor's `AdaptiveViewer`,
+so a boolean is a checkbox and a number a number, as in the editor's own grid; the first cut drew
+text cells and the maintainer rejected it. An `AttributesViewer` for a bare
+`Dictionary<String, Object>` was registered, seen working, and taken out the same evening: it
+proved that a package may register a viewer for a CoreLib generic instantiation and that the
+editor then uses it for every IOBox of that type in any patch - and that is exactly why it is
+gone. The editor's grid is the better viewer for a dictionary, and a geometry package has no
+business replacing it machine-wide. This package registers viewers for its own types only.
+Colours are Leaflet's defaults (`#3388ff`, fill opacity about 0.2), the look
 most people know from web maps. The editor picks the viewer registered for the most specific
 type.
 

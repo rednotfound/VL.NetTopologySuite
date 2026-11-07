@@ -160,7 +160,7 @@
             <Pin Id="QE3DcS8178gseKjbB8ISiM" Name="Values" Kind="OutputPin" />
           </Node>
           <Pad Id="M7i4svnSDwqDvt3bhpSnJT" Comment="Keys" Bounds="200,600,120,80" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="LNFZ2d8XZDii8kPs5Yu9Q3" Comment="Values" Bounds="360,600,160,80" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="LNFZ2d8XZDii8kPs5Yu9Q3" Comment="Values" Bounds="360,600,160,140" ShowValueBox="true" isIOBox="true" />
           <Pad Id="Fd5G5e3tWGLlZDHF9ZBPjm" Bounds="600,560,320,100" ShowValueBox="true" isIOBox="true" Value="&lt; Split opens the Feature up again: the same Geometry as everywhere else, and the attributes as a Dictionary. Attributes (Split) lays them out as two columns again, sorted by name.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
