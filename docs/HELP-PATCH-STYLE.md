@@ -94,7 +94,10 @@ Measure distance draws the gap itself as a `LineString` through the two nearest 
 Explanation front door has a gallery of three (point, line, polygon with hole) at `x = 1300`.
 
 The box is an ordinary readout Pad with a `Comment` and no `Value`, linked from the node's output;
-vvvv types it from the link. Nothing else is needed - no Renderer, no Skia nodes - which is why
+vvvv types it from the link. **A dictionary readout needs room**: at 58 or 100 pixels high the
+editor collapses a `Dictionary<String, Object>` to its type name, at 249 × 200 it lists the rows
+(three, then an ellipsis) - measured 2026-11-07 on `HowTo Attach attributes`, with and without a
+viewer registered for that type; the size decided, the viewer changed nothing. Nothing else is needed - no Renderer, no Skia nodes - which is why
 this column replaced none of the existing notes and moved none of the maintainer's layout: it was
 appended beside it. The Skia recipe below is still the way to draw *in the patch's own window*,
 which the shortest-path patch does to animate; for *seeing a value*, the IOBox is enough.
