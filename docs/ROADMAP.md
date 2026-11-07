@@ -19,9 +19,11 @@ all six seen in the GUI computing the values their notes name. `Geometry` covera
 **2026-11-07, later: a Geometry draws itself in the editor.** `VL.NetTopologySuite.HDE.vl` registers
 `GeometryViewer` and `PointViewer` with vvvv's viewer registry (the mechanism behind VL.Fuse's drawn
 IOBoxes, measured in the install; ARCHITECTURE "Drawing without a renderer"), so a tooltip on a
-Geometry pin or an IOBox of one shows the outline. `Outlines` (node 56) came out of it. Seen in a
-probe: polygon with hole, line, point, lon/lat polygon. Left for later: markers for points inside a
-collection, a `Feature` viewer with the attribute table, a `Coordinate` viewer.
+Geometry pin or an IOBox of one shows it the way a GIS would: filled polygons with holes cut out,
+stroked lines, point markers, a map pin for a lone point. `Outlines` (node 56, three outputs) came
+out of it. Seen in a probe: polygon with hole, multipolygon, line, point, multipoint, mixed
+collection, lon/lat polygon. Left for later: a `Feature` viewer with the attribute table, a
+`Coordinate` viewer.
 
 **2026-10-18, evening: `0.0.4-alpha` released** - the tooltip rewrite alone, one change per release,
 and a fourth walk through the process at the maintainer's suggestion, for practice. Browser upload

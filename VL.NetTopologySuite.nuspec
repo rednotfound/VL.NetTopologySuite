@@ -33,8 +33,9 @@
       Touches, Crosses, Overlaps, Covers, CoveredBy, Relate, IsWithinDistance, SymmetricDifference,
       ConvexHull, Reverse (NetTopologySuite.Operation); Envelope, InteriorPoint, Boundary, IsSimple,
       NumPoints, Outlines (NetTopologySuite.Geometry). 56 nodes. New help patch HowTo Wrap points in a
-      hull; five patches extended. A Geometry now draws itself in the editor: hover a Geometry pin or
-      make an IOBox of one and you see the outline (VL.NetTopologySuite.HDE.vl, editor only).
+      hull; five patches extended. A Geometry now draws itself in the editor the way a GIS draws it:
+      hover a Geometry pin or make an IOBox of one and you see filled polygons with their holes,
+      lines, point markers, a map pin for a point (VL.NetTopologySuite.HDE.vl, editor only).
 
       0.0.4-alpha (2026-10-18) - Tooltips rewritten to be short: every node now shows a one-line
       summary, a sentence or two of usage and a line per pin on hover, instead of design notes.

@@ -10,9 +10,10 @@
 > run in vvvv from it. The fifteen tier-1 nodes of 2026-11-07 and the drawn previews below are in
 > the tree for `0.0.5-alpha`, not yet on nuget.org.
 >
-> **Since 2026-11-07 a Geometry draws itself in the editor**: hover any Geometry pin, or make an
-> IOBox of one, and you see the outline (a polygon with its holes, a line, a dot for a point) instead
-> of an object listing. No Renderer in the patch. It comes from `VL.NetTopologySuite.HDE.vl`, an
+> **Since 2026-11-07 a Geometry draws itself in the editor**, the way a GIS draws it: hover any
+> Geometry pin, or make an IOBox of one, and you see a polygon filled semi-transparently with its
+> holes cut out, a line stroked, points as markers and a lone point as a map pin, instead of an
+> object listing. No Renderer in the patch. It comes from `VL.NetTopologySuite.HDE.vl`, an
 > editor-only companion that registers viewers with vvvv the way VL.Stride and VL.Fuse do; see
 > [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#drawing-without-a-renderer--the-hde-companion). The table below says
 > exactly what has been shown; the release process and its rules are in
@@ -199,7 +200,7 @@ is a default you will rarely touch.
 | `InteriorPoint` | `Geometry` → `Point` *(always on the shape, where `Centroid` may not be)* |
 | `Envelope` | `Geometry` → `Geometry` *(the bounding box as a rectangle polygon; `Bounds` gives the numbers)* |
 | `Boundary` | `Geometry` → `Geometry` *(a polygon's rings as lines, a line's two end points)* |
-| `Outlines` | `Geometry` → spread of spread of `Coordinate` *(every ring and line separately, holes included: one polyline each, ready to draw)* |
+| `Outlines` | `Geometry` → **Rings**, **Lines**, **Points** *(every polygon ring, every linestring and every point as coordinates, collections flattened: what a drawing needs, sorted)* |
 
 ### `NetTopologySuite.Feature` — attaching data to geometry
 
