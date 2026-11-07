@@ -399,8 +399,11 @@ The rules that matter when touching it:
   `PointViewer` for a lone Point draws a map pin (head, tip, white eye) inside an invisible
   `Rectangle` frame, so the pin is a marker in the box and not the box; the editor picks the viewer
   registered for the most specific type. `FeatureViewer` for a Feature: `Split`, the geometry through
-  a `GeometryViewer` instance, the attributes through the editor's `DictionaryViewer` (its generic
-  `ObjectViewer` shows a dictionary collapsed to its type name), both in a `Column`. Colours are
+  the editor's `AdaptiveViewer` (which dispatches by the geometry's *runtime* type, so a Point
+  feature gets the pin - calling `GeometryViewer` directly drew nothing for the Tokyo Station point,
+  which the maintainer found in `HowTo Attach attributes`), the attributes through the editor's
+  `DictionaryViewer` (its generic `ObjectViewer` shows a dictionary collapsed to its type name),
+  both in a `Column`. Colours are
   Leaflet's defaults (`#3388ff`). **Y is negated**
   before `Vector (Join)`: geometry is y-up, Skia is y-down, and the first probe drew a rising line
   as falling. The maintainer's review of the first probe set the style: *a point is a pin on a map,

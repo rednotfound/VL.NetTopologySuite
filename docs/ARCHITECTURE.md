@@ -584,7 +584,8 @@ stroked; points in a collection are circle markers sized at 2% of the bounds; Y 
 throughout (geometry is y-up, Skia y-down); the editor's own `LayerViewer` fits the result into
 the widget, so a lon/lat polygon of 0.01 degrees and a metre-grid polygon of 4,000 fill the box
 alike. `PointViewer` for a lone `Point` draws a map pin inside an invisible frame. `FeatureViewer`
-shows a feature the way a GIS does on a click: the geometry drawn, the attribute table under it
+shows a feature the way a GIS does on a click: the geometry drawn through the editor's
+`AdaptiveViewer` (dispatch by runtime type, so a point feature gets the pin), the attribute table under it
 (the editor's own `DictionaryViewer`, which lists the rows where its generic `ObjectViewer` only
 named the type). Colours are Leaflet's defaults (`#3388ff`, fill opacity about 0.2), the look
 most people know from web maps. The editor picks the viewer registered for the most specific
