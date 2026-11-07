@@ -56,11 +56,15 @@ and Success), generic over the user's record through VL's `IVLObject` / `IVLType
 to be measured with a probe before anything is designed on it. Dictionary and `Attributes (Join)`
 stay as the schema-less path.
 
-**2026-11-07, night, branch `record-bridge`: built and seen.** `Feature (FromRecord)` and
-`Record (FromFeature)` (ARCHITECTURE, "A record as the schema"), 11 tests against an editor-shaped
-double, `HowTo Use your own record as a feature` with a `Station` record defined in the patch -
-Feature box lists the three typed fields, `3 of 3 fields filled`, Success true, generated C# shows
-`FeatureFromRecord<Station_R>`. On the front door as one note line, not node rows: a generic node
+**2026-11-07, night, branch `record-bridge`: built and seen, twice.** First with the geometry as
+its own pin; then, at the maintainer's request the same night ("feature 本身就是 record … 只有一个
+geometry"), the record IS the feature: exactly one Geometry field, the rest attributes, the rule on
+the node and loud when broken. `Feature (FromRecord)` and `Record (FromFeature)` (ARCHITECTURE,
+"The record is the feature"), 15 tests against an editor-shaped double, `HowTo Use your own record
+as a feature` with a `Station` record defined in the patch - `3 attributes and the geometry from
+Station`, `4 of 4 fields filled`, both Success true, generated C# shows
+`FeatureFromRecord<Station_R>`. Next the maintainer wants a pad typed as feature that any such
+record fits (a `.vl` interface; half measured in vl-mapsui, the other half needs a probe). On the front door as one note line, not node rows: a generic node
 with nothing connected has no type argument and `vvvvc` reports it as unresolved. Not on `main`: the maintainer opened the branch to see how far the
 idea goes, and merging is their call.
 

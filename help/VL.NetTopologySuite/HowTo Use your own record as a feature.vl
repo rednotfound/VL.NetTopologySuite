@@ -1,80 +1,101 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" xmlns:r="reflection" Id="NMb3sPUY2We5kW50dAcggE" LanguageVersion="2025.7.4" Version="0.128">
-  <NugetDependency Id="VCkcwER41fd8Bv1jHqdgfC" Location="VL.CoreLib" Version="2025.7.4" />
-  <Patch Id="BZEFYcSjsMevU3X06z8U17">
-    <Canvas Id="KSirAZtDGFBG8K9Ex1FghW" DefaultCategory="Main" BordersChecked="false" CanvasType="FullCategory" />
+<Document xmlns:p="property" xmlns:r="reflection" Id="Sjl3BHzOstcE9GSwqhlGpI" LanguageVersion="2025.7.4" Version="0.128">
+  <NugetDependency Id="LLiuiTV9DUdZMzoltI0Rqr" Location="VL.CoreLib" Version="2025.7.4" />
+  <Patch Id="M2k9O8cFmMi5NRWOXBSLEH">
+    <Canvas Id="RMmG9pDLlPuuypRf7y6SNY" DefaultCategory="Main" BordersChecked="false" CanvasType="FullCategory" />
     <!--
 
     ************************ Application ************************
 
 -->
-    <Node Name="Application" Bounds="100,100" Id="RPlLEtoRvGA1EuqRR581yg">
+    <Node Name="Application" Bounds="100,100" Id="TB4iYNUttgGj7Dii49hFuy">
       <p:NodeReference>
         <Choice Kind="ContainerDefinition" Name="Process" />
         <CategoryReference Kind="Category" Name="Primitive" />
       </p:NodeReference>
-      <Patch Id="LMBdaOdixMZNWOqotANQDq">
-        <Canvas Id="LIKivd1RJkL9Os2lI3zdtp" CanvasType="Group">
-          <Node Name="Station" Bounds="60,640" Id="UDBUElTesBnxSrHfL4zjHg">
+      <Patch Id="J7UC04Yuxo5G1TnjQwjVtl">
+        <Canvas Id="VbjrITpbqP9jmaAk7RmCmb" CanvasType="Group">
+          <Node Name="Station" Bounds="60,640" Id="V8VRRcCmM4ntn3fWk8bgY7">
             <p:NodeReference LastCategoryFullName="Primitive" LastDependency="Builtin">
               <Choice Kind="RecordDefinition" Name="Record" />
             </p:NodeReference>
-            <Patch Id="N3JWcJV1oRg39oyBgpqFIT">
-              <Canvas Id="NWs9uS0Uvm0b4hVwGRuzX2" CanvasType="Group">
-              <Pad Id="MXlcjLQuiQjuITMci449AO" SlotId="IZZgZOaHrYt6UX3G4SRAXc" Bounds="100,210" />
-              <Pad Id="EhBpmTijLusRsYGrsmfW7o" SlotId="OtTfrwWv5orcYBxvMM2Ai6" Bounds="300,210" />
-              <Pad Id="GrwvfgBe2xFJDuGmsZYhKN" SlotId="M8Mn2cM56Fchg2aA16S3Cv" Bounds="500,210" />
-              <ControlPoint Id="QWkQb24GX4fvZ8860y8A6D" Bounds="100,180" />
-              <ControlPoint Id="Fu2HjYmvVomOOoAIWWDmRV" Bounds="100,240" />
-              <ControlPoint Id="S0FXWIImr5Y5J60GhjTM6X" Bounds="300,180" />
-              <ControlPoint Id="VNFnCJ7Rx9K8acG3iBTCq5" Bounds="300,240" />
-              <ControlPoint Id="HzbkwstnhQIq5Ch9fqwQld" Bounds="500,180" />
-              <ControlPoint Id="BlugoytG0PkJor582Ukq0I" Bounds="500,240" />
+            <Patch Id="UdiEHfNt5Dk0b3YlvTVD6I">
+              <Canvas Id="G5oo5G60ykQsypYZDAgxtb" CanvasType="Group">
+              <Pad Id="F661A0RNixgP2ukIHVXpXf" SlotId="DptO6339lbPVLfIPlp6BF5" Bounds="100,210" />
+              <Pad Id="Fzqaf28Ywl2w2BVUVU4wWH" SlotId="CFXrGPftaym4ozdCXTH6lz" Bounds="300,210" />
+              <Pad Id="S3t9ZsUBJwSu5cW5oz1OZf" SlotId="RvPj7FiRsSij6sivO6TBvO" Bounds="500,210" />
+              <Pad Id="S1SQqyIB68rZkMxYJJyic3" SlotId="Ne8YWN6oXbewU6VN8enzwl" Bounds="700,210" />
+              <ControlPoint Id="TM9NOm5Z5mvKIhKFlMAXTR" Bounds="100,180" />
+              <ControlPoint Id="OZuUemhAELAM0sqcXYXySt" Bounds="100,240" />
+              <ControlPoint Id="NufSJM04EoUDsCRe97SwbY" Bounds="300,180" />
+              <ControlPoint Id="POA5tKq3EhPFJTjbtrddOt" Bounds="300,240" />
+              <ControlPoint Id="CY7xd9NvLBuedDNwfyt1Og" Bounds="500,180" />
+              <ControlPoint Id="NrJgiV7OUklg3V1Z8r1XXs" Bounds="500,240" />
+              <ControlPoint Id="ODI7zaXBFydkv7XOHUs98q" Bounds="700,180" />
+              <ControlPoint Id="H5tJZ0U2xGNkvrQFsEckOh" Bounds="700,240" />
               </Canvas>
-              <ProcessDefinition Id="TClyDIWBFvjLsxW7wl2CGb" IsHidden="true">
-                <Fragment Id="JmiUTKqbeLCjCUrnV3Du4A" Patch="RZ9jXzWOnFpN0dHGxYPe2Y" Enabled="true" />
-                <Fragment Id="QbGR6MRnZJE4Ds9xAJnmF5" Patch="RLrvmRinG4YkX4fyaXxuAI" Enabled="true" />
+              <ProcessDefinition Id="TmA4MbdgymGUIPhmZ3JVAh" IsHidden="true">
+                <Fragment Id="NlTPyuolMpFq7uL5JTTTqU" Patch="DzrYstKQxZVUyny1Bz4At4" Enabled="true" />
+                <Fragment Id="FCdncvy2lBCBdI9QQsieOy" Patch="TwGsyzrCNEAF5dSq4qC0ja" Enabled="true" />
               </ProcessDefinition>
-              <Slot Id="IZZgZOaHrYt6UX3G4SRAXc" Name="Name">
+              <Slot Id="DptO6339lbPVLfIPlp6BF5" Name="Geometry">
+                <p:Attributes>
+                  <AttributeData>
+                    <p:TypeReference LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+                      <Choice Kind="TypeFlag" Name="NonSerializedAttribute" />
+                    </p:TypeReference>
+                  </AttributeData>
+                </p:Attributes>
+                <p:TypeAnnotation p:Type="TypeReference">
+                  <Choice Kind="TypeFlag" Name="Geometry" />
+                </p:TypeAnnotation>
+              </Slot>
+              <Slot Id="CFXrGPftaym4ozdCXTH6lz" Name="Name">
                 <p:TypeAnnotation p:Type="TypeReference">
                   <Choice Kind="TypeFlag" Name="String" />
                 </p:TypeAnnotation>
               </Slot>
-              <Slot Id="OtTfrwWv5orcYBxvMM2Ai6" Name="Platforms">
+              <Slot Id="RvPj7FiRsSij6sivO6TBvO" Name="Platforms">
                 <p:TypeAnnotation p:Type="TypeReference">
                   <Choice Kind="TypeFlag" Name="Integer32" />
                 </p:TypeAnnotation>
               </Slot>
-              <Slot Id="M8Mn2cM56Fchg2aA16S3Cv" Name="Terminal">
+              <Slot Id="Ne8YWN6oXbewU6VN8enzwl" Name="Terminal">
                 <p:TypeAnnotation p:Type="TypeReference">
                   <Choice Kind="TypeFlag" Name="Boolean" />
                 </p:TypeAnnotation>
               </Slot>
-              <Link Id="EGSNX2p4gPv4F6IoIZIxH5" Ids="PcGq7wbe7bkaaByO7pQMiW,QWkQb24GX4fvZ8860y8A6D" IsHidden="true" />
-              <Link Id="LBvuK9ugB5Xt2CX1VToitu" Ids="QWkQb24GX4fvZ8860y8A6D,MXlcjLQuiQjuITMci449AO" />
-              <Link Id="DdqZSBXZGfkeMgHa4871FV" Ids="MXlcjLQuiQjuITMci449AO,Fu2HjYmvVomOOoAIWWDmRV" />
-              <Link Id="MggTdqeFjf1Cn4dqiNrqGT" Ids="Fu2HjYmvVomOOoAIWWDmRV,S7wgIQelQ3FHYCTjHEUY19" IsHidden="true" />
-              <Link Id="Fp7NzE4oVdvW0iyezzsLay" Ids="SbMb5FJsSZSAQj6ANJ7azo,S0FXWIImr5Y5J60GhjTM6X" IsHidden="true" />
-              <Link Id="JCHgI6GYD2zVAJI6Y3j4Cb" Ids="S0FXWIImr5Y5J60GhjTM6X,EhBpmTijLusRsYGrsmfW7o" />
-              <Link Id="AkVryezhHy3I49BvOIHMeN" Ids="EhBpmTijLusRsYGrsmfW7o,VNFnCJ7Rx9K8acG3iBTCq5" />
-              <Link Id="GOFCigeQHYcTK5rxaWhCnh" Ids="VNFnCJ7Rx9K8acG3iBTCq5,NbANQ5XYyeAtv0K7WiuqZx" IsHidden="true" />
-              <Link Id="MC3iKCrHV5uY7ArLA1sTcz" Ids="L9hOkvJV2iHZvcOSAj6z8O,HzbkwstnhQIq5Ch9fqwQld" IsHidden="true" />
-              <Link Id="QmGSrmiC2omt991F23GRSa" Ids="HzbkwstnhQIq5Ch9fqwQld,GrwvfgBe2xFJDuGmsZYhKN" />
-              <Link Id="BW4N8VWcTAUMBlg4akX6s9" Ids="GrwvfgBe2xFJDuGmsZYhKN,BlugoytG0PkJor582Ukq0I" />
-              <Link Id="FtpmxyBSPhgO3mxj9nbRG9" Ids="BlugoytG0PkJor582Ukq0I,UwVsquf5mWgXJgZU7gimhe" IsHidden="true" />
-              <Patch Id="RZ9jXzWOnFpN0dHGxYPe2Y" Name="Create">
-                <Pin Id="PcGq7wbe7bkaaByO7pQMiW" Name="Name" Kind="InputPin" />
-                <Pin Id="SbMb5FJsSZSAQj6ANJ7azo" Name="Platforms" Kind="InputPin" />
-                <Pin Id="L9hOkvJV2iHZvcOSAj6z8O" Name="Terminal" Kind="InputPin" />
+              <Link Id="P4IIVRC7MS7pSZPyVRY3LW" Ids="NgGl10gk8hwqZnVbQefuQa,TM9NOm5Z5mvKIhKFlMAXTR" IsHidden="true" />
+              <Link Id="RTTnkfH4eTMIuHTlGTWxWA" Ids="TM9NOm5Z5mvKIhKFlMAXTR,F661A0RNixgP2ukIHVXpXf" />
+              <Link Id="Ktu5WRyjSutvBEJfl9bMIg" Ids="F661A0RNixgP2ukIHVXpXf,OZuUemhAELAM0sqcXYXySt" />
+              <Link Id="J9ZbdOkrdBS0rNxWF7HnIQ" Ids="OZuUemhAELAM0sqcXYXySt,N7AbVh5mljuUQzb02lkCXw" IsHidden="true" />
+              <Link Id="SUTfIjWGsEK8f7MUIXK3De" Ids="NMmtttpP7dFlQmn6HxZPuV,NufSJM04EoUDsCRe97SwbY" IsHidden="true" />
+              <Link Id="DhK1kvMfOLGKofJ1kCzzE2" Ids="NufSJM04EoUDsCRe97SwbY,Fzqaf28Ywl2w2BVUVU4wWH" />
+              <Link Id="EDuhsLesjwct5oPZvGM7gv" Ids="Fzqaf28Ywl2w2BVUVU4wWH,POA5tKq3EhPFJTjbtrddOt" />
+              <Link Id="H7njVNaFk6cfSRkjTPMsTu" Ids="POA5tKq3EhPFJTjbtrddOt,KgJeYHG9d5kw1UT2J7l7vN" IsHidden="true" />
+              <Link Id="IYC7w72FM6G8sOxTVXzdWe" Ids="R4Cnk9DGwJh8MhPewFACt0,CY7xd9NvLBuedDNwfyt1Og" IsHidden="true" />
+              <Link Id="MBXxWPapUQMDS6qS5DRO7p" Ids="CY7xd9NvLBuedDNwfyt1Og,S3t9ZsUBJwSu5cW5oz1OZf" />
+              <Link Id="K1jRUhyc8sL2rnN0LH6zJu" Ids="S3t9ZsUBJwSu5cW5oz1OZf,NrJgiV7OUklg3V1Z8r1XXs" />
+              <Link Id="GtOmCQKnwLGEscKWQay5kF" Ids="NrJgiV7OUklg3V1Z8r1XXs,DJXCoLZKUKtICTxAhdYyck" IsHidden="true" />
+              <Link Id="GHC5GQkpPoKU7ZidFOLAaD" Ids="ERbDA2K5kh2BQEpTN7dhIQ,ODI7zaXBFydkv7XOHUs98q" IsHidden="true" />
+              <Link Id="QIuALG0yI6HeI0JgTkCt1H" Ids="ODI7zaXBFydkv7XOHUs98q,S1SQqyIB68rZkMxYJJyic3" />
+              <Link Id="QDjHeg6I07L4tlPofU24UM" Ids="S1SQqyIB68rZkMxYJJyic3,H5tJZ0U2xGNkvrQFsEckOh" />
+              <Link Id="SyGhVhxY2LBswiSquPlYF5" Ids="H5tJZ0U2xGNkvrQFsEckOh,LHFoBPniVXHYbd12lmyFCb" IsHidden="true" />
+              <Patch Id="DzrYstKQxZVUyny1Bz4At4" Name="Create">
+                <Pin Id="NgGl10gk8hwqZnVbQefuQa" Name="Geometry" Kind="InputPin" />
+                <Pin Id="NMmtttpP7dFlQmn6HxZPuV" Name="Name" Kind="InputPin" />
+                <Pin Id="R4Cnk9DGwJh8MhPewFACt0" Name="Platforms" Kind="InputPin" />
+                <Pin Id="ERbDA2K5kh2BQEpTN7dhIQ" Name="Terminal" Kind="InputPin" />
               </Patch>
-              <Patch Id="RLrvmRinG4YkX4fyaXxuAI" Name="Split">
-                <Pin Id="S7wgIQelQ3FHYCTjHEUY19" Name="Name" Kind="OutputPin" />
-                <Pin Id="NbANQ5XYyeAtv0K7WiuqZx" Name="Platforms" Kind="OutputPin" />
-                <Pin Id="UwVsquf5mWgXJgZU7gimhe" Name="Terminal" Kind="OutputPin" />
+              <Patch Id="TwGsyzrCNEAF5dSq4qC0ja" Name="Split">
+                <Pin Id="N7AbVh5mljuUQzb02lkCXw" Name="Geometry" Kind="OutputPin" />
+                <Pin Id="KgJeYHG9d5kw1UT2J7l7vN" Name="Name" Kind="OutputPin" />
+                <Pin Id="DJXCoLZKUKtICTxAhdYyck" Name="Platforms" Kind="OutputPin" />
+                <Pin Id="LHFoBPniVXHYbd12lmyFCb" Name="Terminal" Kind="OutputPin" />
               </Patch>
             </Patch>
           </Node>
-          <Pad Id="ThoPz69oxMUKNTSd0NBR1g" Bounds="60,40,800,41" ShowValueBox="true" isIOBox="true" Value="Use Feature (FromRecord) and Record (FromFeature)!">
+          <Pad Id="Fi4u1YsKTrN6OB7NymE1OS" Bounds="60,40,800,41" ShowValueBox="true" isIOBox="true" Value="Use Feature (FromRecord) and Record (FromFeature)!">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -83,7 +104,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="JtBcg4r3iFUrbBA24ZqOVi" Bounds="60,95,540,60" ShowValueBox="true" isIOBox="true" Value="Define a record once, with the fields a feature of that kind has. That is the schema: every feature is one row of it, and a Spread of the record is the table. The Station record is at the bottom of this patch - right-click it to see its fields.">
+          <Pad Id="DHfgniQN6DujdFB8xObClg" Bounds="60,95,540,60" ShowValueBox="true" isIOBox="true" Value="Your own record is the feature: one field of type Geometry, and whatever else describes it. That is the schema - every feature is one row of it, a Spread of the record is the table. The Station record is at the bottom of this patch; right-click it to see its fields.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -92,62 +113,64 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="PirrZgZ9tVWtUkEW2xIxJ3" Comment="Geometry" Bounds="60,170,300,15" ShowValueBox="true" isIOBox="true" Value="POINT (139.7671 35.6812)">
+          <Pad Id="Ee0NTuazktuynBfUEP45Ku" Comment="Geometry" Bounds="60,170,300,15" ShowValueBox="true" isIOBox="true" Value="POINT (139.7671 35.6812)">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="60,220,90,19" Id="Sf1CKLsmdIuGrFtUq3rmzd">
+          <Node Bounds="60,220,90,19" Id="AKEOgPqsNRR501FL8QdINc">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Read WKT" />
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
-            <Pin Id="BkD3n1QJTzUzwMy0Arujdm" Name="WKT" Kind="InputPin" />
-            <Pin Id="T1oMCND0izGaoF6XqxVCXC" Name="Factory" Kind="InputPin" />
-            <Pin Id="QCEN8h7EOwhZodQf0lfBhi" Name="Result" Kind="OutputPin" />
-            <Pin Id="VYRTKjnRr1DhUD8sxj9vAi" Name="Success" Kind="OutputPin" />
+            <Pin Id="SsouMAfkPG1yOOdfMTaL4g" Name="WKT" Kind="InputPin" />
+            <Pin Id="O9r3ADMpRAczI4i69BAO4n" Name="Factory" Kind="InputPin" />
+            <Pin Id="Qd9vO6LGf7Iu8HGU9NOITC" Name="Result" Kind="OutputPin" />
+            <Pin Id="CkxfppZF1UnEJRryg267cO" Name="Success" Kind="OutputPin" />
           </Node>
-          <Pad Id="H0v0MPT5VaAax5ndwTHPNM" Comment="Name" Bounds="440,170,150,15" ShowValueBox="true" isIOBox="true" Value="Tokyo Station">
+          <Pad Id="GcB7P187aAwCN5VlgiAPvr" Comment="Name" Bounds="440,170,150,15" ShowValueBox="true" isIOBox="true" Value="Tokyo Station">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="SjUluW44X4jVw8OHJ6rdqb" Comment="Platforms" Bounds="440,205,60,15" ShowValueBox="true" isIOBox="true" Value="28">
+          <Pad Id="UQyYDCHJxOEwSkxiSDqbBu" Comment="Platforms" Bounds="440,205,60,15" ShowValueBox="true" isIOBox="true" Value="28">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Integer32" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="QLP8Bq2zJkaIByO6QY6irt" Comment="Terminal" Bounds="600,205,60,15" ShowValueBox="true" isIOBox="true" Value="True">
+          <Pad Id="CW8CatdlXIRvAgw3CZqCqy" Comment="Terminal" Bounds="600,205,60,15" ShowValueBox="true" isIOBox="true" Value="True">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Boolean" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="440,260,110,19" Id="MYogf2iFTh4NFmK3rhsXJk">
+          <Node Bounds="440,260,110,19" Id="DpBYH8xBeUcUOLygMp4R9d">
             <p:NodeReference LastCategoryFullName="Main.Station" LastDependency="HowTo Use your own record as a feature.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <CategoryReference Kind="RecordType" Name="Station" />
               <Choice Kind="OperationCallFlag" Name="Create" />
             </p:NodeReference>
-            <Pin Id="How026Pm3C0aTCgVoa39bo" Name="Name" Kind="InputPin" />
-            <Pin Id="CieHG3jG5Ik6wMKWuknI4l" Name="Platforms" Kind="InputPin" />
-            <Pin Id="Gj3mJEMSajfn6ZTDOQuDSE" Name="Terminal" Kind="InputPin" />
-            <Pin Id="Bp1Q0WWj6RxfAgdwGMFdVO" Name="Output" Kind="StateOutputPin" />
+            <Pin Id="BTUOXrATowpGh4fCIgRUsZ" Name="Geometry" Kind="InputPin" />
+            <Pin Id="S5wABK1Ba572AErDVBddMv" Name="Name" Kind="InputPin" />
+            <Pin Id="IxFROxUmiyT5J4fOuGDmY1" Name="Platforms" Kind="InputPin" />
+            <Pin Id="FGgkt4S9QDtobPA9r7wvcz" Name="Terminal" Kind="InputPin" />
+            <Pin Id="UuCM1GviNmP0Iw5a8cJbZb" Name="Output" Kind="StateOutputPin" />
           </Node>
-          <Node Bounds="60,330,130,19" Id="SDjSJtQyCMdqAxgV2N5J0Z">
+          <Node Bounds="60,330,130,19" Id="UNdgNkX5WslBlamDnhWZoe">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Feature" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Feature (FromRecord)" />
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
-            <Pin Id="SQcqvLQuLZPZAyagftHzNV" Name="Geometry" Kind="InputPin" />
-            <Pin Id="AH9wbmZxTs9X0hk89Zbaaf" Name="Record" Kind="InputPin" />
-            <Pin Id="Jofjj5VfzZUZWfCdhLUpBh" Name="Result" Kind="OutputPin" />
-            <Pin Id="UjjG81NJDU53Zy1itkdROp" Name="Status" Kind="OutputPin" />
+            <Pin Id="BAlzuT7go6suWxy3GwKsDd" Name="Record" Kind="InputPin" />
+            <Pin Id="S4eeC0ODHLBKi3dBhgVGms" Name="Result" Kind="OutputPin" />
+            <Pin Id="Re4EBwTYunhrzVLmdrBNaQ" Name="Success" Kind="OutputPin" />
+            <Pin Id="Tnbo9Bz1TNyLHQoc8h8iWj" Name="Status" Kind="OutputPin" />
           </Node>
-          <Pad Id="PNtP6vsMpZ9JdFh7Dtqfyi" Comment="Status" Bounds="220,330,300,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="Oc66VEloROWxSzZIeQDuHb" Comment="Feature" Bounds="940,300,220,290" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="RgD3LPj5TW4VuzamEkI3xV" Bounds="600,260,320,60" ShowValueBox="true" isIOBox="true" Value="&lt; The record is the schema: its field names are the attribute names, with their types. The Feature box lists them.">
+          <Pad Id="Dsh49c306tBg2uAkIuNWTk" Comment="Success" Bounds="220,330,35,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="FXoEKknZ23P5dtJo7i8Jny" Comment="Status" Bounds="330,330,380,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="QDSlSSGkZGKWmDVi6sEgbD" Comment="Feature" Bounds="940,300,220,290" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="Sr8puJgN3euHeg9kWpM2Re" Bounds="600,260,320,60" ShowValueBox="true" isIOBox="true" Value="&lt; Exactly one Geometry field is the rule. No such field, or two: Success goes false and Status says what the record has instead.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -156,34 +179,34 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="220,390,110,19" Id="OAI23hPyu5R17Py6Y9LTpy">
+          <Node Bounds="220,390,110,19" Id="BOcP99lNKntl0yS40iwlkJ">
             <p:NodeReference LastCategoryFullName="Main.Station" LastDependency="HowTo Use your own record as a feature.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <CategoryReference Kind="RecordType" Name="Station" />
               <Choice Kind="OperationCallFlag" Name="Create" />
             </p:NodeReference>
-            <Pin Id="LgHAMxDAfMtmjM0iF7cEgU" Name="Name" Kind="InputPin" />
-            <Pin Id="GFe1EIf7oowbnjVNj4Wrmn" Name="Platforms" Kind="InputPin" />
-            <Pin Id="OVKnSIyRcLk8YcTje5havn" Name="Terminal" Kind="InputPin" />
-            <Pin Id="TYXCzN5kYNVjCCnW7erflU" Name="Output" Kind="StateOutputPin" />
+            <Pin Id="FgnfXfloRFi83xQKF1xswL" Name="Geometry" Kind="InputPin" />
+            <Pin Id="V6BEGr9XWpzOvZ7smGgEu1" Name="Name" Kind="InputPin" />
+            <Pin Id="HK0H3q4KxQzvmR1L4kg83X" Name="Platforms" Kind="InputPin" />
+            <Pin Id="Gc7kJFPxUwFHFF4Rc4x45r" Name="Terminal" Kind="InputPin" />
+            <Pin Id="DyB9ZDUZoZPpfPzwMo7HPg" Name="Output" Kind="StateOutputPin" />
           </Node>
-          <Node Bounds="60,430,130,19" Id="NCJkfwUdMshsdyLXAvBVn2">
+          <Node Bounds="60,430,130,19" Id="KnHhtrdcVDcET0XVhoICvu">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Feature" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Record (FromFeature)" />
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
-            <Pin Id="O020HS3HZsSGV49STrCYFF" Name="Feature" Kind="InputPin" />
-            <Pin Id="JACPMQWXgs34Wb6qI45cTP" Name="Template" Kind="InputPin" />
-            <Pin Id="C4cOjdPrTTkR6Z2VZiafWP" Name="Result" Kind="OutputPin" />
-            <Pin Id="LM60hUBW3u4fGPjqpPIpb9" Name="Geometry" Kind="OutputPin" />
-            <Pin Id="O2SbWAR6TfeMnNARJxAen5" Name="Success" Kind="OutputPin" />
-            <Pin Id="M3N4NLaQq9k7kgzG6UZEcJ" Name="Status" Kind="OutputPin" />
+            <Pin Id="Qeo74321LJUodwE3T5vNc8" Name="Feature" Kind="InputPin" />
+            <Pin Id="IVEs71SVrj3dWhEWHh68ap" Name="Template" Kind="InputPin" />
+            <Pin Id="DaHdnHRlQVCH7KQIPQ3VbJ" Name="Result" Kind="OutputPin" />
+            <Pin Id="UTeTR186Fdq0Yz1Ad3MLme" Name="Success" Kind="OutputPin" />
+            <Pin Id="VfTiOLtAMZ4m7wR1vofou8" Name="Status" Kind="OutputPin" />
           </Node>
-          <Pad Id="QhkIceZvZcVpkKCaUKXAoB" Comment="Success" Bounds="220,430,35,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="N8ga3hkuiJmFXhSuuFQnUI" Comment="Status" Bounds="330,430,380,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="JkOer2iU8D5eGLcKC3r5Q7" Comment="Station" Bounds="60,480,300,140" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="EZ4kdImYhR2ra44DXJfDz6" Bounds="600,480,320,100" ShowValueBox="true" isIOBox="true" Value="&lt; Record (FromFeature) fills a template - a Station with default values - field by field from any feature: this one, or one read from GeoJSON. A field the feature does not have keeps the template's value, and Status says so.">
+          <Pad Id="Pl5dUOfKwRTldu3iFAfFS9" Comment="Success" Bounds="220,430,35,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="FATIOenzfiUSvzXTVmFY2m" Comment="Status" Bounds="330,430,380,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="HvmaNPQi1x863Dj124HNyR" Comment="Station" Bounds="60,480,300,140" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="FCE4Ex3tSXRdBTvVE4ZAxC" Bounds="600,480,320,100" ShowValueBox="true" isIOBox="true" Value="&lt; Record (FromFeature) fills a template Station from any feature - this one, or one read from GeoJSON. The Geometry field takes the shape, the others their attribute; a missing one keeps the template's value, and Status says so.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -192,7 +215,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="LfpQtPvsHkduKXMoka9Fzi" Bounds="940,600,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; A Feature draws its geometry and lists every attribute, sorted by name.">
+          <Pad Id="IRkQvxWdxkwYHkFTlF867S" Bounds="940,600,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; A Feature draws its geometry and lists every attribute, sorted by name.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -202,27 +225,29 @@
             </p:ValueBoxSettings>
           </Pad>
         </Canvas>
-        <Patch Id="NoMCT6zE8iPdefPE3bmN9h" Name="Create" />
-        <Patch Id="SDHbYb2vFXEJwjtHQlPmFC" Name="Update" />
-        <ProcessDefinition Id="DmHiB59DmijAZOQsTt7Cln">
-          <Fragment Id="RiLJ5GkFjKlqNy6yDd3dRv" Patch="NoMCT6zE8iPdefPE3bmN9h" Enabled="true" />
-          <Fragment Id="SEQl4cYVWi4n6iI0yKq7Iv" Patch="SDHbYb2vFXEJwjtHQlPmFC" Enabled="true" />
+        <Patch Id="CuOD7j03fgtTv5aXklI5z4" Name="Create" />
+        <Patch Id="VvY0tEondYPjTCbJrMDGg1" Name="Update" />
+        <ProcessDefinition Id="GkniSwJWJcTVCKDsBuQq04">
+          <Fragment Id="AxjCFkuRAtnZtC8Rmtc9SZ" Patch="CuOD7j03fgtTv5aXklI5z4" Enabled="true" />
+          <Fragment Id="F10QV6SmwKnJpJNHMyROmC" Patch="VvY0tEondYPjTCbJrMDGg1" Enabled="true" />
         </ProcessDefinition>
-        <Link Id="CNl1RO7jEjJ80eWa3NyyyT" Ids="PirrZgZ9tVWtUkEW2xIxJ3,BkD3n1QJTzUzwMy0Arujdm" />
-        <Link Id="IA18CMvBaeuVc93XWizOvd" Ids="H0v0MPT5VaAax5ndwTHPNM,How026Pm3C0aTCgVoa39bo" />
-        <Link Id="QdLOZeT3fk2WNQ1SGqD4VD" Ids="SjUluW44X4jVw8OHJ6rdqb,CieHG3jG5Ik6wMKWuknI4l" />
-        <Link Id="Ru7fLZuISVPIF8rYMhf2Ev" Ids="QLP8Bq2zJkaIByO6QY6irt,Gj3mJEMSajfn6ZTDOQuDSE" />
-        <Link Id="Hk9V95L6HDrzfoahH4ufU5" Ids="QCEN8h7EOwhZodQf0lfBhi,SQcqvLQuLZPZAyagftHzNV" />
-        <Link Id="E69vBC2tlWTdpaD59pMq9d" Ids="Bp1Q0WWj6RxfAgdwGMFdVO,AH9wbmZxTs9X0hk89Zbaaf" />
-        <Link Id="QtrJ06sJhdLSNQqBUbOp50" Ids="UjjG81NJDU53Zy1itkdROp,PNtP6vsMpZ9JdFh7Dtqfyi" />
-        <Link Id="EuvDtCRwi7WeK0o46PgDHU" Ids="Jofjj5VfzZUZWfCdhLUpBh,Oc66VEloROWxSzZIeQDuHb" />
-        <Link Id="A3jD2yTuo3esRpOaAPREb5" Ids="Jofjj5VfzZUZWfCdhLUpBh,O020HS3HZsSGV49STrCYFF" />
-        <Link Id="Tn0fCQ8FFz6XN1HA1al6Oz" Ids="TYXCzN5kYNVjCCnW7erflU,JACPMQWXgs34Wb6qI45cTP" />
-        <Link Id="Msuj2a6bEr3kM90gtzgT3Z" Ids="O2SbWAR6TfeMnNARJxAen5,QhkIceZvZcVpkKCaUKXAoB" />
-        <Link Id="HU0N2U3RuWdiW0MwvYVqTV" Ids="M3N4NLaQq9k7kgzG6UZEcJ,N8ga3hkuiJmFXhSuuFQnUI" />
-        <Link Id="HhfzlWucNl5eioOMbGcKYc" Ids="C4cOjdPrTTkR6Z2VZiafWP,JkOer2iU8D5eGLcKC3r5Q7" />
+        <Link Id="D23oCqAsROPAInNrlaGKZJ" Ids="Ee0NTuazktuynBfUEP45Ku,SsouMAfkPG1yOOdfMTaL4g" />
+        <Link Id="KtPi57fDkPZs7QAlcUD4ut" Ids="Qd9vO6LGf7Iu8HGU9NOITC,BTUOXrATowpGh4fCIgRUsZ" />
+        <Link Id="LPw0VZHJF78VnPw3xNHuX5" Ids="GcB7P187aAwCN5VlgiAPvr,S5wABK1Ba572AErDVBddMv" />
+        <Link Id="DToqZ6NViWGE2S6TnbxcKY" Ids="UQyYDCHJxOEwSkxiSDqbBu,IxFROxUmiyT5J4fOuGDmY1" />
+        <Link Id="Boy3uRDRHyEO8zBXQdu4Ie" Ids="CW8CatdlXIRvAgw3CZqCqy,FGgkt4S9QDtobPA9r7wvcz" />
+        <Link Id="DeofFvLc6YEw17qc8XGapM" Ids="UuCM1GviNmP0Iw5a8cJbZb,BAlzuT7go6suWxy3GwKsDd" />
+        <Link Id="BrRLn14UJQyB1Wr4cL4G3Z" Ids="Re4EBwTYunhrzVLmdrBNaQ,Dsh49c306tBg2uAkIuNWTk" />
+        <Link Id="Vu6SxyXEkDz2dsg57Szr25" Ids="Tnbo9Bz1TNyLHQoc8h8iWj,FXoEKknZ23P5dtJo7i8Jny" />
+        <Link Id="CefXVosWVpJ05n7WVHDuYU" Ids="S4eeC0ODHLBKi3dBhgVGms,QDSlSSGkZGKWmDVi6sEgbD" />
+        <Link Id="FNCawidBO2YPs0rJXGd0l7" Ids="S4eeC0ODHLBKi3dBhgVGms,Qeo74321LJUodwE3T5vNc8" />
+        <Link Id="Lf0FP0gAsT9Tu5pHaVKwNr" Ids="DyB9ZDUZoZPpfPzwMo7HPg,IVEs71SVrj3dWhEWHh68ap" />
+        <Link Id="G24uzfcG5ni5scUH6OGKSL" Ids="UTeTR186Fdq0Yz1Ad3MLme,Pl5dUOfKwRTldu3iFAfFS9" />
+        <Link Id="CoowRJfzv29w4n7Ah0TUvE" Ids="VfTiOLtAMZ4m7wR1vofou8,FATIOenzfiUSvzXTVmFY2m" />
+        <Link Id="CwJTKqpM8AESt1fumR8i4s" Ids="DaHdnHRlQVCH7KQIPQ3VbJ,HvmaNPQi1x863Dj124HNyR" />
       </Patch>
     </Node>
   </Patch>
-  <NugetDependency Id="Vuy71CdtdEAMyRXWUmpksh" Location="VL.NetTopologySuite" Version="0.0.0" />
+  <NugetDependency Id="Vb8ytElLCjnSn5NcJJCKfQ" Location="NetTopologySuite" Version="2.6.0" />
+  <NugetDependency Id="P6I1CsQXEduVJcZsjcdYDv" Location="VL.NetTopologySuite" Version="0.0.0" />
 </Document>

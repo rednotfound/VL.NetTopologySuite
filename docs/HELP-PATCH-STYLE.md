@@ -106,8 +106,11 @@ at 80 high it shows `Spread<Object> [4]`, at 140 it lists the items with their t
 `RecordDefinition` node inside the Application canvas, built from vl-mapsui's `VL-PATCH-XML.md`
 recipe (per field: a `Slot` with a `TypeReference` annotation, a `Pad SlotId=`, two
 `ControlPoint`s, four `Link`s, a `Create` input pin and a `Split` output pin; `ProcessDefinition`
-hidden). Its `Create` call site is an ordinary node with `<CategoryReference Kind="RecordType"
-Name="Station" />` and `Output` as a `StateOutputPin`. `Test-VLPatch` had never met a `SlotId` and
+hidden). A Geometry slot carries `NonSerializedAttribute` in `<p:Attributes>` (a .NET class in a
+slot is otherwise flagged "could mutate at runtime", a warning) and the patch declares
+`NetTopologySuite` 2.6.0 as a `NugetDependency` for the slot's type - both copied from vl-mapsui's
+`HowTo Draw many features`. Its `Create` call site is an ordinary node with
+`<CategoryReference Kind="RecordType" Name="Station" />` and `Output` as a `StateOutputPin`. `Test-VLPatch` had never met a `SlotId` and
 counted those as duplicate IDs; fixed the same night.
 
 **A table in a patch is two Spread IOBoxes** (`HowTo Attach attributes`, 2026-11-07): a Pad typed
