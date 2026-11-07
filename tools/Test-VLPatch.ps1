@@ -374,9 +374,12 @@ if (-not $Path) {
         'NetTopologySuite.Geometry|MultiPoint', 'NetTopologySuite.Geometry|MultiLineString', 'NetTopologySuite.Geometry|MultiPolygon', 'NetTopologySuite.Geometry|GeometryCollection',
         'NetTopologySuite.Geometry|GeometryType', 'NetTopologySuite.Geometry|IsEmpty', 'NetTopologySuite.Geometry|SRID', 'NetTopologySuite.Geometry|IsValid', 'NetTopologySuite.Geometry|Area',
         'NetTopologySuite.Geometry|Length', 'NetTopologySuite.Geometry|Centroid', 'NetTopologySuite.Geometry|Bounds', 'NetTopologySuite.Geometry|Coordinates', 'NetTopologySuite.Geometry|Geometries',
+        'NetTopologySuite.Geometry|NumPoints', 'NetTopologySuite.Geometry|IsSimple', 'NetTopologySuite.Geometry|InteriorPoint', 'NetTopologySuite.Geometry|Envelope', 'NetTopologySuite.Geometry|Boundary',
         'NetTopologySuite.Feature|Feature', 'NetTopologySuite.Feature|Split', 'NetTopologySuite.Feature|GetAttribute', 'NetTopologySuite.IO|Read WKT', 'NetTopologySuite.IO|Write WKT',
         'NetTopologySuite.Operation|Buffer', 'NetTopologySuite.Operation|Intersection', 'NetTopologySuite.Operation|Union', 'NetTopologySuite.Operation|Difference',
         'NetTopologySuite.Operation|Distance', 'NetTopologySuite.Operation|Nearest Points', 'NetTopologySuite.Operation|Intersects', 'NetTopologySuite.Operation|Contains', 'NetTopologySuite.Operation|Within',
+        'NetTopologySuite.Operation|SymmetricDifference', 'NetTopologySuite.Operation|ConvexHull', 'NetTopologySuite.Operation|Reverse', 'NetTopologySuite.Operation|IsWithinDistance',
+        'NetTopologySuite.Operation|Touches', 'NetTopologySuite.Operation|Crosses', 'NetTopologySuite.Operation|Overlaps', 'NetTopologySuite.Operation|Covers', 'NetTopologySuite.Operation|CoveredBy', 'NetTopologySuite.Operation|Relate',
         'NetTopologySuite.Index|SpatialIndex', 'NetTopologySuite.Index|Query', 'NetTopologySuite.Network|Network', 'NetTopologySuite.Network|ShortestPath')
     $high = @{}; $low = @{}; $used = @{}
     foreach ($vl in Get-ChildItem (Join-Path $RepoRoot 'help') -Filter *.vl -Recurse -File) {

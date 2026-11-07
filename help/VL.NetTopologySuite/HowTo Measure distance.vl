@@ -154,6 +154,32 @@
             <Pin Id="O82zZ12P4Y3xR7VFxWUQMs" Name="Result" Kind="OutputPin" />
           </Node>
           <Pad Id="NopOvCe39bbWTohYpyfTAA" Comment="On B" Bounds="400,490,140,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="CwipcsImR2ZOFbFAoC0q7V" Comment="Distance" Bounds="230,540,80,15" ShowValueBox="true" isIOBox="true" Value="2.5">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Float64" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="60,580,120,19" Id="GaNYKyQPBDH9do9f6kaQ0T">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="IsWithinDistance" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="LrXuM0AHYv9Zh46Ud0SdZs" Name="A" Kind="InputPin" />
+            <Pin Id="EJGVcd4WoJwiJ8O9i1FFqr" Name="B" Kind="InputPin" />
+            <Pin Id="NNUlLQkD7z9METL8rWo9Xx" Name="Distance" Kind="InputPin" />
+            <Pin Id="AV4xpfa08CD87TFrZAkfBp" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="MD9cPJLSbeP0JIBx0XgODg" Comment="Within" Bounds="60,620,60,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="FTtpcpMxjT6F5yKHDicqdx" Bounds="580,580,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; True while the gap is no more than Distance: the gap is sqrt 5, about 2.24, so 2.5 says True and 2 says False. Cheaper than Distance and a compare on big geometries.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
         </Canvas>
         <Patch Id="Iz8uAwb464cNncQUuMLYsy" Name="Create" />
         <Patch Id="Fz4STYtVsHc8YSL3Y8hOl3" Name="Update" />
@@ -174,6 +200,10 @@
         <Link Id="K08irhXH1fq1FRGhtl50OV" Ids="I8DCBWRk0mrR2U2FqlkkY7,LVvPZBl5DXcXS9nxzuDuOA" />
         <Link Id="IoQqNof0ygMT8jGpurMUM1" Ids="Gdgf1tKX9yFSmn12ZJLjoF,TH1nFKZLAJTmItMe3exX39" />
         <Link Id="R0fSzCAPyWfuSzYfOsvDBw" Ids="O82zZ12P4Y3xR7VFxWUQMs,NopOvCe39bbWTohYpyfTAA" />
+        <Link Id="MRuIWYAFYg5eFaSIy7kvnl" Ids="V76TcUlwrPLoREGHsyWGtn,LrXuM0AHYv9Zh46Ud0SdZs" />
+        <Link Id="OX3TEJ8orE0uu8aFMtvV1o" Ids="OEZhfDbjkC2bjHhQQZQT0P,EJGVcd4WoJwiJ8O9i1FFqr" />
+        <Link Id="IU4I3KW7q56YqmmTYkasLQ" Ids="CwipcsImR2ZOFbFAoC0q7V,NNUlLQkD7z9METL8rWo9Xx" />
+        <Link Id="Nh9wRAXK0PyuPP2IEVzfdf" Ids="AV4xpfa08CD87TFrZAkfBp,MD9cPJLSbeP0JIBx0XgODg" />
       </Patch>
     </Node>
   </Patch>

@@ -497,7 +497,7 @@
             <Pin Id="B2OLaw4et9cLK1maW6UhUE" Name="B" Kind="InputPin" />
             <Pin Id="LNqmsidyoSBbfnR2ljCp9A" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="DNl8ZIOhFMJUhcq9Af8eFi" Bounds="830,467,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; Also Contains and Within. Disjoint is Intersects + Not.">
+          <Pad Id="DNl8ZIOhFMJUhcq9Af8eFi" Bounds="830,467,440,62" ShowValueBox="true" isIOBox="true" Value="&lt; Also Contains, Within, Touches, Crosses, Overlaps, Covers, CoveredBy, Relate, IsWithinDistance, SymmetricDifference, ConvexHull, Reverse. Disjoint is Intersects + Not.">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -695,6 +695,96 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
+          <Node Bounds="60,885,80,19" Id="FMVmt8BsmIj0HsHkzLxrWa">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="NumPoints" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="NQnVv3YSxx1VsehtWnMMdq" Name="Geometry" Kind="InputPin" />
+            <Pin Id="AxtdvXH9WHLwCxxh6uwrkw" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="JbsRdd6mv7IJZMg2OL7WzN" Bounds="250,887,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; How many coordinates, ring closers included.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="60,920,70,19" Id="Gt0qJBcAzqNZ04pJLRuB3F">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="IsSimple" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="HrtAHSA4Gb7l6gC1ONbV9B" Name="Geometry" Kind="InputPin" />
+            <Pin Id="MKxIHynm3xKosJ3hY1fCby" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="MaIQlif5WBHFL9TqlmC8uH" Bounds="250,922,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; No self-crossings. A bowtie line is valid but not simple.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="60,955,100,19" Id="SrfiRN2uw1jSWzZqflrpDM">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="InteriorPoint" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="Pm0oE4yyiFP1VDzdusMV0U" Name="Geometry" Kind="InputPin" />
+            <Pin Id="Qfb3cnNlCuA4laeUbOrDYP" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="BEpgukXtMs7n3fLbMzbD9v" Bounds="250,957,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; A point guaranteed on the shape, unlike Centroid.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="60,990,70,19" Id="LShKJ3eoYDVPy4kltanPfM">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Envelope" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="OMcYQenK66JI9jPeXMCJsZ" Name="Geometry" Kind="InputPin" />
+            <Pin Id="HLupLmqJviUgTIDfeiiy0a" Name="Output" Kind="OutputPin" />
+          </Node>
+          <Pad Id="TXqyKCVTpIHnftJpnFBdPv" Bounds="250,992,440,44" ShowValueBox="true" isIOBox="true" Value="&lt; The bounding box as a geometry; Bounds gives it as numbers.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="60,1025,80,19" Id="R9yDur060ojrQcb5zxowsk">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Boundary" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="Gy7zZJ7BJjeKtM0EzoWJwr" Name="Geometry" Kind="InputPin" />
+            <Pin Id="VA5N0mkxoD0FxNAf0cmiay" Name="Output" Kind="OutputPin" />
+          </Node>
+          <Pad Id="OLowloTSKVgC848cUSzFCa" Bounds="250,1027,440,44" ShowValueBox="true" isIOBox="true" Value="&lt; One dimension down: a polygon's rings, a line's end points.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
         </Canvas>
         <Patch Id="QOXrUnHDAbnOxiNgCfIC4c" Name="Create" />
         <Patch Id="LshNVEcTy7TgmBOYa4DXLq" Name="Update" />
@@ -702,6 +792,7 @@
           <Fragment Id="Kv5tRJWBdIzM45LNneHAzK" Patch="QOXrUnHDAbnOxiNgCfIC4c" Enabled="true" />
           <Fragment Id="C47KEDw5f4t9Cdu7WWXXgK" Patch="LshNVEcTy7TgmBOYa4DXLq" Enabled="true" />
         </ProcessDefinition>
+
       </Patch>
     </Node>
   </Patch>

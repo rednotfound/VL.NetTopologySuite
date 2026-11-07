@@ -153,7 +153,36 @@
             <Pin Id="IRiUUHFqMYJiGkl0gMSl0A" Name="Result" Kind="OutputPin" />
           </Node>
           <Pad Id="MMotUSrZbTqlepVQVtUi4W" Comment="Union as WKT" Bounds="60,540,420,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="CrfKakVba4u0H1ZD4ICfdn" Bounds="580,500,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; SymmetricDifference is not a node: Union minus Intersection. Any types go in - two touching squares intersect in a LineString, two corner-touching squares in a Point.">
+          <Pad Id="CrfKakVba4u0H1ZD4ICfdn" Bounds="580,500,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Any types go in - two touching squares intersect in a LineString, two corner-touching squares in a Point.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="60,600,140,19" Id="UlFPmBJFDPm9rAGvIRsoGS">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="SymmetricDifference" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="ERXBXpytbwivwgLicqY63N" Name="A" Kind="InputPin" />
+            <Pin Id="TzbDaGOqytfCtbGfoPccy5" Name="B" Kind="InputPin" />
+            <Pin Id="PKhzZSi6TmkOS9vHTAdQ3F" Name="Output" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="60,650,50,19" Id="QMpM6CHx03PR2oCaUwBj1P">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Area" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="FdLBP70qjzjPh0FIhhkBmW" Name="Geometry" Kind="InputPin" />
+            <Pin Id="UC8tqt1C70x9EXeK7CEILo" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="Gki7yVB6IxoOfOPl50vAeR" Comment="SymmetricDifference" Bounds="60,690,80,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="RyZfvDi3yKQL3zeRk4qYJK" Bounds="580,600,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; The fourth overlay: what only one of them covers. Union minus Intersection, 1.75 - 0.25 = 1.5. Symmetric - swap A and B and nothing changes.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -185,6 +214,10 @@
         <Link Id="QYBKLXExorI8hGdBBtLpJl" Ids="Gqr74ZHmzLEXkPpqqRcJro,GLvt5KQPoqv71CZ0H1vOgz" />
         <Link Id="RTuZmVdMOCW97eJoNcphL6" Ids="KA5WsaXSWH4P3buZEPRXRt,Rouq6O7TkivEE1R4tuVCqH" />
         <Link Id="N7bxeffS3iI6tRCpsQQUWl" Ids="IRiUUHFqMYJiGkl0gMSl0A,MMotUSrZbTqlepVQVtUi4W" />
+        <Link Id="ApyH3ojR6p6SyAW9IezA79" Ids="UZ9NvF8IwDeTthgqdkSsFK,ERXBXpytbwivwgLicqY63N" />
+        <Link Id="PTOlyNeeeER9gMCBIzOb8d" Ids="SGmaov0TEoBbSqq2u2HCIq,TzbDaGOqytfCtbGfoPccy5" />
+        <Link Id="Bmcl8WMJSnekO2wpEHv0yc" Ids="PKhzZSi6TmkOS9vHTAdQ3F,FdLBP70qjzjPh0FIhhkBmW" />
+        <Link Id="VnfFEIo73qx1W4u2h8TSg9" Ids="UC8tqt1C70x9EXeK7CEILo,Gki7yVB6IxoOfOPl50vAeR" />
       </Patch>
     </Node>
   </Patch>

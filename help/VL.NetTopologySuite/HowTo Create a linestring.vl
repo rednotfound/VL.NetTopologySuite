@@ -161,6 +161,34 @@
             <Pin Id="ImtaKqWLMWac4J86jtclAc" Name="Result" Kind="OutputPin" />
           </Node>
           <Pad Id="ROPMbAfPOYfRDrTRoyGp2u" Comment="WKT" Bounds="230,480,300,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="60,540,70,19" Id="Uw9V0wYTgEhlQ592marAnb">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Reverse" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="KG5atdm2UeYf1wGDLYrDB2" Name="Geometry" Kind="InputPin" />
+            <Pin Id="OWMpuLPfjvxDvlx2518koV" Name="Output" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="60,590,90,19" Id="FiotWc1LokDhsQS27K9sI5">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Write WKT" />
+            </p:NodeReference>
+            <Pin Id="M7Qb7M7O8cd1I2PCYidh2V" Name="Geometry" Kind="InputPin" />
+            <Pin Id="SLQVpWKriPfhRx45p1U6a4" Name="Include Z" Kind="InputPin" />
+            <Pin Id="VKeZqOnof4NFGGN767SBWk" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="RfbOcM7oMSKpNwpaNB3VmD" Comment="Reversed" Bounds="60,630,300,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="CQEt9iOp3gTon1oCok1ilz" Bounds="580,540,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Reverse runs the line the other way: same shape, coordinates in the opposite order. Direction matters when something travels along the line.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
         </Canvas>
         <Patch Id="Q3jZDfuMzyTBc8lVmu7g3X" Name="Create" />
         <Patch Id="KEcjum7NbcfIDKelEvq2sG" Name="Update" />
@@ -182,6 +210,9 @@
         <Link Id="P899ekQugcXIvIR4K2PAUl" Ids="B0Gr7lCxVexJhKlQEaDS0b,GDpsWib4jEVIrLjYxkYuPy" />
         <Link Id="JrvurIDj4C03rqPW9LsJ2I" Ids="OE0XD0qxEuIMcaElHHNhOm,ADSqsXpb42P8Ifw1ylSvqk" />
         <Link Id="N8dW8RfJBKZwQrQvjgF3U7" Ids="ImtaKqWLMWac4J86jtclAc,ROPMbAfPOYfRDrTRoyGp2u" />
+        <Link Id="KO1UpcdmTDcS6Kfr2pddV5" Ids="OE0XD0qxEuIMcaElHHNhOm,KG5atdm2UeYf1wGDLYrDB2" />
+        <Link Id="Bg8VH321wAD0avAMOm5OlF" Ids="OWMpuLPfjvxDvlx2518koV,M7Qb7M7O8cd1I2PCYidh2V" />
+        <Link Id="AZFLMiR1rH8gpDqICX0LOw" Ids="VKeZqOnof4NFGGN767SBWk,RfbOcM7oMSKpNwpaNB3VmD" />
       </Patch>
     </Node>
   </Patch>
