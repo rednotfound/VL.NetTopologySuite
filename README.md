@@ -13,7 +13,8 @@
 > **Since 2026-11-07 a Geometry draws itself in the editor**, the way a GIS draws it: hover any
 > Geometry pin, or make an IOBox of one, and you see a polygon filled semi-transparently with its
 > holes cut out, a line stroked, points as markers and a lone point as a map pin, instead of an
-> object listing. No Renderer in the patch. It comes from `VL.NetTopologySuite.HDE.vl`, an
+> object listing; a Feature shows its geometry with its attribute table under it. No Renderer in
+> the patch. It comes from `VL.NetTopologySuite.HDE.vl`, an
 > editor-only companion that registers viewers with vvvv the way VL.Stride and VL.Fuse do; see
 > [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#drawing-without-a-renderer--the-hde-companion). The table below says
 > exactly what has been shown; the release process and its rules are in

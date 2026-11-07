@@ -386,7 +386,7 @@ The rules that matter when touching it:
   document with Geometry IOBoxes in vvvv and look. The probe used is a scratch file, never
   committed; `tools\HelpPatchGen.ps1` makes one in ten lines. Read `Documents\vvvv\gamma\vvvv_*.log`
   for the `.HDE.vl -> package-cache` line and any error.
-- **Two viewers.** `GeometryViewer` for every Geometry: `Outlines` sorts it into Rings, Lines and
+- **Three viewers.** `GeometryViewer` for every Geometry: `Outlines` sorts it into Rings, Lines and
   Points; all rings are folded into ONE path by a ForEach **accumulator** (a Top border point linked
   to a Bottom one with `IsFeedback="true"`, the pattern of VL.Skia's `HowTo Compose PathEffects`),
   `SetFillType` EvenOdd cuts the holes, one `DrawPath` fills at 0.25 alpha and one strokes; lines
@@ -394,19 +394,22 @@ The rules that matter when touching it:
   goes through `Group` to the editor's own `LayerViewer`, which fits the bounds into the widget.
   `PointViewer` for a lone Point draws a map pin (head, tip, white eye) inside an invisible
   `Rectangle` frame, so the pin is a marker in the box and not the box; the editor picks the viewer
-  registered for the most specific type. Colours are Leaflet's defaults (`#3388ff`). **Y is negated**
+  registered for the most specific type. `FeatureViewer` for a Feature: `Split`, the geometry through
+  a `GeometryViewer` instance, the attributes through the editor's `DictionaryViewer` (its generic
+  `ObjectViewer` shows a dictionary collapsed to its type name), both in a `Column`. Colours are
+  Leaflet's defaults (`#3388ff`). **Y is negated**
   before `Vector (Join)`: geometry is y-up, Skia is y-down, and the first probe drew a rising line
   as falling. The maintainer's review of the first probe set the style: *a point is a pin on a map,
   not a disc; a polygon is solid, and where its holes are must be visible*.
 - **`Outlines` exists because of it**: `Coordinates` concatenates a polygon's shell and holes, and a
   polyline through that drew a stray segment into the hole. Its three outputs are public and useful
   on their own (one polyline per ring or line, every point, ready for Skia or Stride).
-- Known gaps: a `Feature` has no viewer yet (geometry plus its attribute table would be the obvious
-  one); markers in a collection whose points all coincide have zero bounds and draw nothing. A pin
+- Known gaps: a `Coordinate` has no viewer (the generic one lists X, Y, Z, which is fine); markers
+  in a collection whose points all coincide have zero bounds and draw nothing. A pin
   default guessed for a Skia enum made the log say `The project ... has errors` while everything
   still drew - that warning line is the only error report an HDE document gets, so read it.
-- The document depends on `VL.HDE`, `VL.Skia` and `NetTopologySuite` (for the `Point` / `Geometry`
-  type arguments) and on this package at `0.0.0`. `VL.HDE` is *not* a nuspec dependency: every vvvv
+- The document depends on `VL.HDE`, `VL.Skia`, `NetTopologySuite` and `NetTopologySuite.Features`
+  (for the `Geometry` / `Point` / `Feature` type arguments) and on this package at `0.0.0`. `VL.HDE` is *not* a nuspec dependency: every vvvv
   carries it, and an exported app never loads the companion.
 
 ## Node documentation is a tooltip

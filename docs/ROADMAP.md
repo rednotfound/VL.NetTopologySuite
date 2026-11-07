@@ -20,10 +20,10 @@ all six seen in the GUI computing the values their notes name. `Geometry` covera
 `GeometryViewer` and `PointViewer` with vvvv's viewer registry (the mechanism behind VL.Fuse's drawn
 IOBoxes, measured in the install; ARCHITECTURE "Drawing without a renderer"), so a tooltip on a
 Geometry pin or an IOBox of one shows it the way a GIS would: filled polygons with holes cut out,
-stroked lines, point markers, a map pin for a lone point. `Outlines` (node 56, three outputs) came
-out of it. Seen in a probe: polygon with hole, multipolygon, line, point, multipoint, mixed
-collection, lon/lat polygon. Left for later: a `Feature` viewer with the attribute table, a
-`Coordinate` viewer.
+stroked lines, point markers, a map pin for a lone point; a Feature shows its geometry with the
+attribute table under it. `Outlines` (node 56, three outputs) came out of it. Seen in a probe:
+polygon with hole, multipolygon, line, point, multipoint, mixed collection, lon/lat polygon, a
+feature with two attributes.
 
 **2026-10-18, evening: `0.0.4-alpha` released** - the tooltip rewrite alone, one change per release,
 and a fourth walk through the process at the maintainer's suggestion, for practice. Browser upload

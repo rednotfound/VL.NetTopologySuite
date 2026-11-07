@@ -583,9 +583,12 @@ filled even-odd at 0.25 alpha so holes and multipolygons come out right, and str
 stroked; points in a collection are circle markers sized at 2% of the bounds; Y is negated
 throughout (geometry is y-up, Skia y-down); the editor's own `LayerViewer` fits the result into
 the widget, so a lon/lat polygon of 0.01 degrees and a metre-grid polygon of 4,000 fill the box
-alike. `PointViewer` for a lone `Point` draws a map pin inside an invisible frame. Colours are
-Leaflet's defaults (`#3388ff`, fill opacity about 0.2), the look most people know from web maps.
-The editor picks the viewer registered for the most specific type.
+alike. `PointViewer` for a lone `Point` draws a map pin inside an invisible frame. `FeatureViewer`
+shows a feature the way a GIS does on a click: the geometry drawn, the attribute table under it
+(the editor's own `DictionaryViewer`, which lists the rows where its generic `ObjectViewer` only
+named the type). Colours are Leaflet's defaults (`#3388ff`, fill opacity about 0.2), the look
+most people know from web maps. The editor picks the viewer registered for the most specific
+type.
 
 **What the probes caught** on 2026-11-07, each visible in one screenshot and invisible in any
 compile: `Coordinates` concatenates a polygon's shell and holes, so a polyline through it drew a
@@ -599,8 +602,8 @@ has an error.
 **Boundary of the companion:** it depends on `VL.HDE` and `VL.Skia`, which the package itself does
 not - the nuspec declares neither, because every vvvv carries them and an exported application
 never loads a `.HDE.vl`. The package's own rule (no rendering, no maps) is untouched: the companion
-draws for the *editor*, not for a patch. Not done yet: a `Feature` viewer (geometry plus its
-attribute table) and a viewer for `Coordinate`.
+draws for the *editor*, not for a patch. Not done: a viewer for `Coordinate` - the generic one
+lists X, Y and Z, which is what a coordinate is.
 
 ## What stays raw
 
