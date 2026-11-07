@@ -275,28 +275,46 @@ public static partial class GeometryNodes
         return parts;
     }
 
-    // Every ring and line as its own list, which is what drawing needs: a polygon's shell and each
-    // hole separately (Coordinates concatenates them, and a polyline through that concatenation
-    // draws a stray segment from the shell into the hole - seen in the first GeometryViewer probe,
-    // 2026-11-07, which is why this node exists), each part of a collection, a point as a list of
-    // one. Copies, like Coordinates. Boundary gives the same rings as a geometry; this gives them as
-    // coordinates ready for Skia's AddPoly or Stride's line nodes. Empty parts contribute nothing.
+    // What drawing needs, sorted the way every GIS draws: rings to fill (a polygon's shell and each
+    // hole separately - Coordinates concatenates them, and a polyline through that concatenation
+    // draws a stray segment from the shell into the hole, seen in the first GeometryViewer probe,
+    // 2026-11-07, which is why this node exists), lines to stroke, points to mark. Three outputs
+    // rather than one mixed list because a filled ring, a stroked line and a marker are three
+    // different drawings, and a consumer that gets them mixed has to tell them apart again by
+    // type. Collections are flattened. Copies, like Coordinates. Empty parts contribute nothing.
+    // The editor's own viewer (VL.NetTopologySuite.HDE.vl) is the first consumer.
 
     /// <summary>
-    /// Returns every ring and line of the geometry as its own spread of coordinates.
+    /// Takes a geometry apart into the rings, lines and points a drawing needs.
     /// </summary>
     /// <remarks>
-    /// A polygon gives its outer ring and then each hole; a collection gives the outlines of every part; a point gives one coordinate.
-    /// Ready for drawing, one polyline per spread.
+    /// Rings are every polygon's outer ring and then its holes, Lines every linestring, Points every point, collections flattened.
+    /// One polyline per spread, ready for Skia or Stride.
     /// </remarks>
-    public static IReadOnlyList<IReadOnlyList<Coordinate>> Outlines(Geometry? geometry)
+    /// <param name="geometry">The geometry to take apart.</param>
+    /// <param name="rings">Each polygon ring as its own spread of coordinates, closed.</param>
+    /// <param name="lines">Each linestring as its own spread of coordinates.</param>
+    /// <param name="points">Every point's coordinate.</param>
+    public static void Outlines(
+        Geometry? geometry,
+        out IReadOnlyList<IReadOnlyList<Coordinate>> rings,
+        out IReadOnlyList<IReadOnlyList<Coordinate>> lines,
+        out IReadOnlyList<Coordinate> points)
     {
-        var outlines = new List<IReadOnlyList<Coordinate>>();
-        CollectOutlines(geometry, outlines);
-        return outlines;
+        var r = new List<IReadOnlyList<Coordinate>>();
+        var l = new List<IReadOnlyList<Coordinate>>();
+        var p = new List<Coordinate>();
+        CollectOutlines(geometry, r, l, p);
+        rings = r;
+        lines = l;
+        points = p;
     }
 
-    static void CollectOutlines(Geometry? geometry, List<IReadOnlyList<Coordinate>> into)
+    static void CollectOutlines(
+        Geometry? geometry,
+        List<IReadOnlyList<Coordinate>> rings,
+        List<IReadOnlyList<Coordinate>> lines,
+        List<Coordinate> points)
     {
         switch (geometry)
         {
@@ -305,17 +323,21 @@ public static partial class GeometryNodes
             case Polygon polygon:
                 if (polygon.IsEmpty)
                     return;
-                into.Add(Defaults.CopyOf(polygon.ExteriorRing.Coordinates));
+                rings.Add(Defaults.CopyOf(polygon.ExteriorRing.Coordinates));
                 for (var i = 0; i < polygon.NumInteriorRings; i++)
-                    into.Add(Defaults.CopyOf(polygon.GetInteriorRingN(i).Coordinates));
+                    rings.Add(Defaults.CopyOf(polygon.GetInteriorRingN(i).Coordinates));
+                return;
+            case Point point:
+                if (!point.IsEmpty)
+                    points.Add(Defaults.CopyOf(point.Coordinate));
                 return;
             case GeometryCollection collection:
                 for (var i = 0; i < collection.NumGeometries; i++)
-                    CollectOutlines(collection.GetGeometryN(i), into);
+                    CollectOutlines(collection.GetGeometryN(i), rings, lines, points);
                 return;
             default:
                 if (!geometry.IsEmpty)
-                    into.Add(Defaults.CopyOf(geometry.Coordinates));
+                    lines.Add(Defaults.CopyOf(geometry.Coordinates));
                 return;
         }
     }

@@ -259,29 +259,48 @@ public class InspectionTests
             [GeometryNodes.Coordinate(1, 1), GeometryNodes.Coordinate(2, 1), GeometryNodes.Coordinate(2, 2), GeometryNodes.Coordinate(1, 2)]);
         var withHole = GeometryNodes.Polygon(shell, [hole]);
 
-        var outlines = GeometryNodes.Outlines(withHole);
-        Assert.Equal(2, outlines.Count);
-        Assert.Equal(5, outlines[0].Count);   // shell, closed
-        Assert.Equal(5, outlines[1].Count);   // hole, closed
-        Assert.Equal(4, outlines[0][1].X);
-        Assert.Equal(1, outlines[1][0].X);
+        GeometryNodes.Outlines(withHole, out var rings, out var lines, out var points);
+        Assert.Equal(2, rings.Count);
+        Assert.Equal(5, rings[0].Count);   // shell, closed
+        Assert.Equal(5, rings[1].Count);   // hole, closed
+        Assert.Equal(4, rings[0][1].X);
+        Assert.Equal(1, rings[1][0].X);
+        Assert.Empty(lines);
+        Assert.Empty(points);
 
         var two = GeometryNodes.MultiPolygon([MutationTests.UnitSquare(), withHole]);
-        Assert.Equal(3, GeometryNodes.Outlines(two).Count);
+        GeometryNodes.Outlines(two, out rings, out _, out _);
+        Assert.Equal(3, rings.Count);
 
         var line = GeometryNodes.LineString([GeometryNodes.Coordinate(0, 0), GeometryNodes.Coordinate(1, 1), GeometryNodes.Coordinate(2, 0)]);
-        Assert.Single(GeometryNodes.Outlines(line));
-        Assert.Equal(3, GeometryNodes.Outlines(line)[0].Count);
+        GeometryNodes.Outlines(line, out rings, out lines, out points);
+        Assert.Empty(rings);
+        Assert.Single(lines);
+        Assert.Equal(3, lines[0].Count);
+        Assert.Empty(points);
 
         var point = GeometryNodes.Point(GeometryNodes.Coordinate(7, 8));
-        Assert.Single(GeometryNodes.Outlines(point));
-        Assert.Equal(7, GeometryNodes.Outlines(point)[0][0].X);
+        GeometryNodes.Outlines(point, out rings, out lines, out points);
+        Assert.Empty(rings);
+        Assert.Empty(lines);
+        Assert.Single(points);
+        Assert.Equal(7, points[0].X);
 
-        Assert.Empty(GeometryNodes.Outlines(null));
-        Assert.Empty(GeometryNodes.Outlines(GeometryNodes.Point()));
+        // A mixed collection sorts its parts into the three outputs.
+        var mixed = GeometryNodes.GeometryCollection([withHole, line, point, GeometryNodes.MultiPoint([point, point])]);
+        GeometryNodes.Outlines(mixed, out rings, out lines, out points);
+        Assert.Equal(2, rings.Count);
+        Assert.Single(lines);
+        Assert.Equal(3, points.Count);
+
+        GeometryNodes.Outlines(null, out rings, out lines, out points);
+        Assert.Empty(rings); Assert.Empty(lines); Assert.Empty(points);
+        GeometryNodes.Outlines(GeometryNodes.Point(), out _, out _, out points);
+        Assert.Empty(points);
 
         // Copies: writing to an outline must not move the polygon.
-        outlines[0][0].X = 99;
+        GeometryNodes.Outlines(withHole, out rings, out _, out _);
+        rings[0][0].X = 99;
         Assert.Equal(0, GeometryNodes.Coordinates(withHole)[0].X);
     }
 

@@ -289,7 +289,9 @@
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
             <Pin Id="MoDZIF10htoGlaNcxeHmnW" Name="Geometry" Kind="InputPin" />
-            <Pin Id="JzjFMjVLZCDlhdTVb1hTuU" Name="Result" Kind="OutputPin" />
+            <Pin Id="JzjFMjVLZCDlhdTVb1hTuU" Name="Rings" Kind="OutputPin" />
+            <Pin Id="SZT4rT8s9yroHard94vc06" Name="Lines" Kind="OutputPin" />
+            <Pin Id="Bl41OYFLBIeDjP5Itm49i4" Name="Points" Kind="OutputPin" />
           </Node>
           <Pad Id="UmYBvJDyuETzJiF8wpFcOg" Comment="Outlines" Bounds="261,920,200,60" ShowValueBox="true" isIOBox="true" />
           <Pad Id="D6kMxjiUtfrZIRlGFodu54" Bounds="580,960,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Outlines: every ring and line as its own spread of coordinates, holes separately - two here. The drawing nodes want exactly this.">
