@@ -18,7 +18,7 @@ always one ahead of the published one. **Every version is a prerelease** (`-alph
 process and its rules are in [docs/RELEASE.md](docs/RELEASE.md): the maintainer performs the
 irreversible step, and nuget.org's 2026 policy (API keys 30 days at most, Trusted Publishing for CI,
 browser upload for manual) is written there. Never push to nuget.org without the user's explicit
-go; a publish cannot be undone.** 56 public nodes in six categories (40 published as of `0.0.4-alpha`; the 15 of tier 1 and `Outlines` landed in the tree on 2026-11-07 for `0.0.5-alpha`) — `NetTopologySuite.Network` (`Network` +
+go; a publish cannot be undone.** 58 public nodes in six categories (40 published as of `0.0.4-alpha`; the 15 of tier 1, `Outlines` and the two `Attributes` nodes landed in the tree on 2026-11-07 for `0.0.5-alpha`) — `NetTopologySuite.Network` (`Network` +
 `ShortestPath`, an algorithm of ours, promoted from `NetTopologySuite.Experimental.Network` by
 `docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 151
 tests, 16 help patches.** All fifteen of the first wave were (re)written on 2026-09-24 in the community's measured style
@@ -140,6 +140,9 @@ Two more, learned while verifying:
 | An `int` pin needs an `Integer32` IOBox | a `Float64` one fails the compile with `Float64 is no Integer32!`. Cost one round on `HowTo Buffer a geometry.vl`'s `Segments` pin |
 | **A Pad's `Comment` renders as a label to the RIGHT of the box** | so an IOBox occupies far more width than its `Bounds` says, and every label collision in the first help patches came from ignoring it. Give each Pad its own row, or ~200px of clear space to its right |
 | Skia `AddPoly`'s `Close` pin defaults to **True** | from SkiaSharp's `AddPoly(points, close = true)`; a polyline drawn through it needs `DefaultValue="False"` on the pin or every street closes into a zigzag. Cost one GUI round on `HowTo Find the shortest path` (2026-09-25); recipe in `docs/HELP-PATCH-STYLE.md` |
+| **A collection readout stops at 3 rows and prints `...`** | the editor setting `TooltipNumberOfItemsOfCollection` (user `settings.xml`, default 3), read by the editor's `DictionaryViewer` and sequence viewers. The maintainer saw a four-attribute feature list three. Our own viewers list every row (2026-11-07) |
+| **A Spread IOBox is an editable table** | XML: a Pad typed `Spread` of `String` with `<p:Value><Item>…</Item></p:Value>`; two of them side by side are the attribute table `Attributes (Join)` reads. Readouts of a `Spread<T>` output list items, of an `IReadOnlyList<T>` show a type name |
+| A `[Name("Attributes (Join)")]` on a method | renders as the node `Attributes (Join)`: the parenthesised version is part of the plain name string, as `Vector (Join)` is in every shipped `.vl`; `[return: Pin(Name = "Attributes")]` names the output pin. Both confirmed by `vvvvc` resolving the link (2026-11-07) |
 
 ### Laying out a patch
 
@@ -194,7 +197,7 @@ the geometry". A new patch gets that column from the start.
 
 | | proves | state |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ 151 tests, ~300 ms, no network |
+| `dotnet test` | the arithmetic is right | ✅ 160 tests, ~400 ms, no network |
 | `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 18 documents (incl. the HDE companion) |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 16 help patches, 2026-11-07 |
@@ -298,13 +301,13 @@ vl-nettopologysuite/
 │   ├── GeometryNodes.Inspection.cs    # NetTopologySuite.Geometry - Area, IsValid, Bounds, Coordinates, Outlines, Envelope, Boundary, InteriorPoint, NumPoints, IsSimple …
 │   ├── OperationNodes.cs              # NetTopologySuite.Operation - Buffer, ConvexHull, Reverse, four overlays, eight predicates + Relate, Distance, Nearest Points, IsWithinDistance
 │   ├── IONodes.cs                     # NetTopologySuite.IO - Read WKT, Write WKT
-│   ├── FeatureNodes.cs                # NetTopologySuite.Feature - Feature, Split, GetAttribute
+│   ├── FeatureNodes.cs                # NetTopologySuite.Feature - Feature, Split, GetAttribute, Attributes (Join), Attributes (Split)
 │   ├── SpatialIndexNode.cs            # NetTopologySuite.Index - SpatialIndex (process node)
 │   ├── IndexNodes.cs                  # NetTopologySuite.Index - Query
 │   ├── Network.cs                     # NetTopologySuite.Network - the retained handle type, and the scope sentence
 │   ├── NetworkNode.cs                 # NetTopologySuite.Network - Network (process node)
 │   └── NetworkNodes.cs                # NetTopologySuite.Network - ShortestPath
-├── test/VL.NetTopologySuite.Tests/    # 151 xunit tests, no network, no vvvv
+├── test/VL.NetTopologySuite.Tests/    # 160 xunit tests, no network, no vvvv
 ├── help/VL.NetTopologySuite/          # 16 help patches + Help.xml (ordering and tags)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
 ├── docs/ARCHITECTURE.md               # why each node exists, what stays raw, the boundary
@@ -390,7 +393,7 @@ The rules that matter when touching it:
   document with Geometry IOBoxes in vvvv and look. The probe used is a scratch file, never
   committed; `tools\HelpPatchGen.ps1` makes one in ten lines. Read `Documents\vvvv\gamma\vvvv_*.log`
   for the `.HDE.vl -> package-cache` line and any error.
-- **Three viewers.** `GeometryViewer` for every Geometry: `Outlines` sorts it into Rings, Lines and
+- **Four viewers.** `GeometryViewer` for every Geometry: `Outlines` sorts it into Rings, Lines and
   Points; all rings are folded into ONE path by a ForEach **accumulator** (a Top border point linked
   to a Bottom one with `IsFeedback="true"`, the pattern of VL.Skia's `HowTo Compose PathEffects`),
   `SetFillType` EvenOdd cuts the holes, one `DrawPath` fills at 0.25 alpha and one strokes; lines
@@ -401,9 +404,16 @@ The rules that matter when touching it:
   registered for the most specific type. `FeatureViewer` for a Feature: `Split`, the geometry through
   the editor's `AdaptiveViewer` (which dispatches by the geometry's *runtime* type, so a Point
   feature gets the pin - calling `GeometryViewer` directly drew nothing for the Tokyo Station point,
-  which the maintainer found in `HowTo Attach attributes`), the attributes through the editor's
-  `DictionaryViewer` (its generic `ObjectViewer` shows a dictionary collapsed to its type name),
-  both in a `Column`. Colours are
+  which the maintainer found in `HowTo Attach attributes`), and **every attribute as a row of its
+  own**: `Attributes (Split)` → ForEach → `Row` of the key in a `FixedWidthWidget`, a
+  `VerticalLineWidget`, the value (two `TextWidget (SingleLine)`, the editor's own row shape) →
+  `Column`, under the geometry in one `Column`. Not the editor's `DictionaryViewer`: that one takes
+  `TooltipNumberOfItemsOfCollection` rows (3 by default) and prints `...` for the rest, which the
+  maintainer found on a four-attribute feature. `AttributesViewer` registers the same rows for a
+  bare `Dictionary<String, Object>` - **measured 2026-11-07: a package may register a viewer for a
+  CoreLib generic instantiation, and it then wins for every IOBox of that type on the machine**,
+  which is deliberate here (that type is what `Split` and `Attributes (Join)` hand out) and is the
+  one editor-wide effect this package has. Colours are
   Leaflet's defaults (`#3388ff`). **Y is negated**
   before `Vector (Join)`: geometry is y-up, Skia is y-down, and the first probe drew a rising line
   as falling. The maintainer's review of the first probe set the style: *a point is a pin on a map,

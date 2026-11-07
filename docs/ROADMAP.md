@@ -30,7 +30,22 @@ line, the town and the path, the feature with its table, a three-item gallery on
 `Outlines`' output prints `System.Collections.Generic.List`1[...]`, because an `IReadOnlyList` is
 not a VL `Spread` to the editor's viewers, while `Query`'s result lists its items. Returning
 `Spread<T>` from those nodes (VL.Core's own type) would give them the same list view - a small,
-separate change, noted here rather than slipped in.
+separate change, noted here rather than slipped in. (`Attributes (Split)`, the same evening,
+returns `Spread<String>` and its readouts list; `Geometries` and `Outlines` are still to convert.)
+
+**2026-11-07, evening: attributes as a table, and every row shown.** The maintainer asked whether
+the Dictionary was the right model for a feature's attributes and for a table-like way to enter
+them ("添加起来很麻烦啊，不能像表格一样添加"). Surveyed and decided (ARCHITECTURE, "Attributes as a
+table"): the model stays, `Attributes (Join)` reads two Spread IOBoxes as a table with CSV-style
+type inference, `Attributes (Split)` is the inverse - nodes 57 and 58, nine tests, both in
+`HowTo Attach attributes` with High flags and on the front door. Then the second complaint, "even
+with four pairs the IOBox shows three": the editor's `DictionaryViewer` stops at the setting
+`TooltipNumberOfItemsOfCollection` (default 3). `FeatureViewer` now lists every row itself, and
+`AttributesViewer` does the same for a bare `Dictionary<String, Object>` - which proved that a
+package may register a viewer for a CoreLib generic type (the earlier attempt with the editor's
+own `DictionaryViewer` inside had been inconclusive because it rendered the same). Both seen in the
+GUI on the Attach-attributes patch. Follow-up: nothing; the row count is uncapped, which is right
+for a feature and would need a `Take` only if someone views a dictionary of thousands.
 
 **2026-10-18, evening: `0.0.4-alpha` released** - the tooltip rewrite alone, one change per release,
 and a fourth walk through the process at the maintainer's suggestion, for practice. Browser upload

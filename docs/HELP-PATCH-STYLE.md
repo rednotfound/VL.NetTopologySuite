@@ -95,9 +95,18 @@ Explanation front door has a gallery of three (point, line, polygon with hole) a
 
 The box is an ordinary readout Pad with a `Comment` and no `Value`, linked from the node's output;
 vvvv types it from the link. **A dictionary readout needs room**: at 58 or 100 pixels high the
-editor collapses a `Dictionary<String, Object>` to its type name, at 249 × 200 it lists the rows
-(three, then an ellipsis) - measured 2026-11-07 on `HowTo Attach attributes`, with and without a
-viewer registered for that type; the size decided, the viewer changed nothing. Nothing else is needed - no Renderer, no Skia nodes - which is why
+editor collapses a `Dictionary<String, Object>` to its type name, at 249 × 200 it lists the rows -
+measured 2026-11-07 on `HowTo Attach attributes`. Since that evening the package's own
+`AttributesViewer` lists *every* row there; before it the editor's viewer listed three (the
+`TooltipNumberOfItemsOfCollection` setting) and an ellipsis. A Feature IOBox lists every attribute
+under its drawing, so give it 220 × 290 for a point with four attributes.
+
+**A table in a patch is two Spread IOBoxes** (`HowTo Attach attributes`, 2026-11-07): a Pad typed
+`Spread` of `String` (`LastCategoryFullName="Collections" LastDependency="VL.Collections.vl"`, type
+argument `String` from `CoreLibBasics.vl`) with the rows as `<p:Value><Item>name</Item>…</p:Value>`;
+the editor shows the count in the header and one editable row per item. Keys at 120 wide, Values
+at 160, 80 high for four rows, and 70 px of clear space after the Keys box for its label.
+Nothing else is needed - no Renderer, no Skia nodes - which is why
 this column replaced none of the existing notes and moved none of the maintainer's layout: it was
 appended beside it. The Skia recipe below is still the way to draw *in the patch's own window*,
 which the shortest-path patch does to animate; for *seeing a value*, the IOBox is enough.

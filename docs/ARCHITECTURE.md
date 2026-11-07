@@ -560,6 +560,30 @@ on this package, so that its help patches open working. So:
 
 ---
 
+### Attributes as a table — `Attributes (Join)` and `Attributes (Split)`
+
+The maintainer built a four-attribute feature on 2026-11-07 out of four `Add` nodes and asked
+whether the Dictionary was the right model at all, since "GIS tools let a feature carry a lot of
+fields, look at GeoJSON", and whether there was a table-like way in. Surveyed the same day:
+
+- **The model stays.** GeoJSON's `properties` is an untyped JSON object (RFC 7946); NTS keeps an
+  `AttributesTable`; both are "name → any value", which is exactly VL's Dictionary (an
+  `ImmutableDictionary` underneath), so `TryGetValue`, `Keys`, `Values`, `Remove` and `ForEach` are
+  already there and the GeoJSON sibling's features are the same type. QGIS's attribute *table* is a
+  layer concept - every feature of a layer shares typed columns - and this package has no layers.
+- **The entry was the problem.** vvvv has no editable Dictionary IOBox; CoreLib offers `Add`,
+  `Cons` and `FromSequence`. But a Spread IOBox *is* an editable list (the 2019 IOBox update), so
+  two of them side by side - names, values - are a table. `Attributes (Join)` pairs the columns by
+  index and infers types the way a CSV import does (integer, float, boolean, else text; invariant
+  culture; only text that starts like a number is tried as one, so `NaN` stays text; `Infer Types`
+  off keeps everything text). `Attributes (Split)` is the inverse, sorted by name because an
+  `ImmutableDictionary` enumerates in hash order (the readout listed terminal, name, platforms), and
+  returns `Spread<String>` because a `Spread` readout lists its items where an `IReadOnlyList` shows
+  a type name.
+- **Not done, on purpose:** a JSON-text input (`{"name": "Tokyo Station", "platforms": 28}`)
+  belongs to VL.NetTopologySuite.GeoJSON, whose `Read GeoJSON` already converts properties; a typed
+  record per feature is a schema, which is the layer's business, not the feature's.
+
 ## Drawing without a renderer — the HDE companion
 
 **The problem (the maintainer, 2026-11-07):** WKT is text, and most people need to *see* a geometry
@@ -585,9 +609,18 @@ throughout (geometry is y-up, Skia y-down); the editor's own `LayerViewer` fits 
 the widget, so a lon/lat polygon of 0.01 degrees and a metre-grid polygon of 4,000 fill the box
 alike. `PointViewer` for a lone `Point` draws a map pin inside an invisible frame. `FeatureViewer`
 shows a feature the way a GIS does on a click: the geometry drawn through the editor's
-`AdaptiveViewer` (dispatch by runtime type, so a point feature gets the pin), the attribute table under it
-(the editor's own `DictionaryViewer`, which lists the rows where its generic `ObjectViewer` only
-named the type). Colours are Leaflet's defaults (`#3388ff`, fill opacity about 0.2), the look
+`AdaptiveViewer` (dispatch by runtime type, so a point feature gets the pin), the attribute table under it,
+every row: `Attributes (Split)` into a ForEach whose body is the editor's own row shape (key in a
+`FixedWidthWidget`, a `VerticalLineWidget`, the value), collected into a `Column`. The editor's
+`DictionaryViewer` was tried first and is not used, because it takes `TooltipNumberOfItemsOfCollection`
+rows - a user setting, 3 by default - and prints `...` for the rest; the maintainer saw a
+four-attribute feature list three and called it disappointing, and a feature's attributes are the
+one thing a GIS always shows in full. `AttributesViewer` registers the same rows for a bare
+`Dictionary<String, Object>`, the type `Split` and `Attributes (Join)` hand out. That registration
+is the one editor-wide effect this package has: measured 2026-11-07, a package may register a
+viewer for a CoreLib generic instantiation, and the editor then uses it for every IOBox of that
+type, in any patch. Deliberate - the viewer shows the same rows the editor's would, all of them -
+and easy to take out if it ever collides with another package's. Colours are Leaflet's defaults (`#3388ff`, fill opacity about 0.2), the look
 most people know from web maps. The editor picks the viewer registered for the most specific
 type.
 

@@ -3,7 +3,7 @@
 **NetTopologySuite made natural inside [vvvv gamma](https://vvvv.org).** Not another GIS framework.
 
 > **Status: `0.0.4-alpha` on nuget.org since 2026-10-18 — a prerelease, early, and it works.**
-> 56 nodes in six categories, 151 tests, 16 help patches, every node opens one on **F1**. Every
+> 58 nodes in six categories, 160 tests, 16 help patches, every node opens one on **F1**. Every
 > category has been seen running in vvvv gamma 7.4, all sixteen help patches have been seen running
 > in the editor (fifteen of them reviewed by hand by the maintainer), and the published package was
 > installed back from nuget.org alone, its help patches compiled from that install and one of them
@@ -13,7 +13,8 @@
 > **Since 2026-11-07 a Geometry draws itself in the editor**, the way a GIS draws it: hover any
 > Geometry pin, or make an IOBox of one, and you see a polygon filled semi-transparently with its
 > holes cut out, a line stroked, points as markers and a lone point as a map pin, instead of an
-> object listing; a Feature shows its geometry with its attribute table under it. No Renderer in
+> object listing; a Feature shows its geometry with every attribute listed under it, and an IOBox
+> of attributes lists every row. No Renderer in
 > the patch. It comes from `VL.NetTopologySuite.HDE.vl`, an
 > editor-only companion that registers viewers with vvvv the way VL.Stride and VL.Fuse do; see
 > [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#drawing-without-a-renderer--the-hde-companion). The table below says
@@ -122,8 +123,8 @@ a package oversells itself:
 
 | | proves | run |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ **151 tests**, ~300 ms, no network |
-| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, labels do not collide, every node has an F1 flag | ✅ 18 documents, 56 of 56 nodes flagged |
+| `dotnet test` | the arithmetic is right | ✅ **160 tests**, ~400 ms, no network |
+| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, labels do not collide, every node has an F1 flag | ✅ 18 documents, 58 of 58 nodes flagged |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved** — an unresolved one has its links dropped and vanishes from the generated C#, so the script reads the C# | ✅ all 16 help patches |
 | `tools\Test-Install.ps1` | the **packed** package installs from a feed with its dependencies, and every help patch inside it compiles with that install as the only package repository | ✅ 2026-09-25 |
@@ -210,6 +211,14 @@ is a default you will rarely touch.
 | `Feature` | `Geometry`, Dictionary of attributes → `Feature` |
 | `Split` | `Feature` → `Geometry`, Dictionary of attributes |
 | `GetAttribute` | `Feature`, name → value, **Success** *(never throws; a missing or null attribute is Success false)* |
+| `Attributes (Join)` | **Keys**, **Values** (two `Spread<String>`), Infer Types → Dictionary of attributes *(two Spread IOBoxes side by side are a table; "28" is stored as an integer, "true" as a boolean, the rest as text)* |
+| `Attributes (Split)` | Dictionary of attributes → **Keys**, **Values** *(the table again, sorted by name, values as text)* |
+
+The attributes are vvvv's own Dictionary, so `Add`, `Remove`, `TryGetValue`, `Keys`, `Values` and a
+`ForEach` over the pairs work on them, and the GeoJSON reader's features carry the same type. The
+two `Attributes` nodes (2026-11-07) exist because vvvv has no editable Dictionary IOBox and one
+`Add` per attribute is not how a GIS enters data: a Spread IOBox *is* an editable list, so a column
+of names and a column of values are the table.
 
 The type is `NetTopologySuite.Features.Feature` — the NTS team's own neutral model, not a wrapper
 of ours. These two moved here from VL.Mapsui on 2026-08-22, because a feature has to be
