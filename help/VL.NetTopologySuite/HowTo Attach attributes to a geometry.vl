@@ -126,7 +126,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="PeooMkfxv8h2NoXPCvTlRW" Comment="Attributes" Bounds="157,540,249,58" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="PeooMkfxv8h2NoXPCvTlRW" Comment="Attributes" Bounds="1220,430,249,200" ShowValueBox="true" isIOBox="true" />
           <Pad Id="Fd5G5e3tWGLlZDHF9ZBPjm" Bounds="580,537,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Split opens the Feature up again. Its geometry is the same Geometry as everywhere else: Area, Buffer and the rest take it straight from here.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
