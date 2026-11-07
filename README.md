@@ -3,10 +3,12 @@
 **NetTopologySuite made natural inside [vvvv gamma](https://vvvv.org).** Not another GIS framework.
 
 > **Status: `0.0.4-alpha` on nuget.org since 2026-10-18 — a prerelease, early, and it works.**
-> 40 nodes in six categories, 134 tests, 15 help patches, every node opens one on **F1**. Every
-> category has been seen running in vvvv gamma 7.4, all fifteen help patches were reviewed by hand
-> in the editor, and the published package was installed back from nuget.org alone, its fifteen help
-> patches compiled from that install and one of them run in vvvv from it. The table below says
+> 55 nodes in six categories, 150 tests, 16 help patches, every node opens one on **F1**. Every
+> category has been seen running in vvvv gamma 7.4, all sixteen help patches have been seen running
+> in the editor (fifteen of them reviewed by hand by the maintainer), and the published package was
+> installed back from nuget.org alone, its help patches compiled from that install and one of them
+> run in vvvv from it. The fifteen tier-1 nodes of 2026-11-07 are in the tree for `0.0.5-alpha`,
+> not yet on nuget.org. The table below says
 > exactly what has been shown; the release process and its rules are in
 > [docs/RELEASE.md](docs/RELEASE.md).
 >
@@ -112,14 +114,14 @@ a package oversells itself:
 
 | | proves | run |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ **134 tests**, ~300 ms, no network |
-| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, labels do not collide, every node has an F1 flag | ✅ 16 documents, 40 of 40 nodes flagged |
+| `dotnet test` | the arithmetic is right | ✅ **150 tests**, ~300 ms, no network |
+| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, labels do not collide, every node has an F1 flag | ✅ 17 documents, 55 of 55 nodes flagged |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
-| `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved** — an unresolved one has its links dropped and vanishes from the generated C#, so the script reads the C# | ✅ all 15 help patches |
+| `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved** — an unresolved one has its links dropped and vanishes from the generated C#, so the script reads the C# | ✅ all 16 help patches |
 | `tools\Test-Install.ps1` | the **packed** package installs from a feed with its dependencies, and every help patch inside it compiles with that install as the only package repository | ✅ 2026-09-25 |
 | **install from nuget.org** | the published package resolves with its dependencies from nuget.org alone; its 15 shipped help patches compile from that install; `HowTo Find the shortest path` runs in vvvv from it | ✅ 2026-09-26, `0.0.1-alpha` |
-| **the vvvv GUI** | **a node appears under the right category, with the right label, computing the right value** | ✅ every category; all 15 help patches seen 2026-09-24, reviewed by hand 2026-09-25 |
-| **F1 on a node** | the node opens its help patch | ✅ all 39 nodes, 2026-09-24 |
+| **the vvvv GUI** | **a node appears under the right category, with the right label, computing the right value** | ✅ every category; all 15 help patches seen 2026-09-24, reviewed by hand 2026-09-25; the sixteenth and the six tier-1 extensions seen 2026-11-07 |
+| **F1 on a node** | the node opens its help patch | ✅ pressed on all 39 nodes 2026-09-24; 55 of 55 carry the flag (`Test-VLPatch`) |
 
 What the GUI showed, category by category:
 
@@ -152,7 +154,7 @@ Two things the tooling caught that the eye would not:
 
 ## The nodes
 
-**Forty**, in six categories. No node takes more than three inputs, except where a fourth
+**Fifty-five**, in six categories. No node takes more than three inputs, except where a fourth
 is a default you will rarely touch.
 
 ### `NetTopologySuite.Geometry` — making geometry
@@ -186,6 +188,11 @@ is a default you will rarely touch.
 | `Bounds` | `Geometry` → MinX, MinY, MaxX, MaxY |
 | `Coordinates` | `Geometry` → spread of `Coordinate` |
 | `Geometries` | `Geometry` → spread of `Geometry` |
+| `NumPoints` | `Geometry` → int *(a closed ring counts its repeated first coordinate)* |
+| `IsSimple` | `Geometry` → bool *(a self-crossing line is valid but not simple)* |
+| `InteriorPoint` | `Geometry` → `Point` *(always on the shape, where `Centroid` may not be)* |
+| `Envelope` | `Geometry` → `Geometry` *(the bounding box as a rectangle polygon; `Bounds` gives the numbers)* |
+| `Boundary` | `Geometry` → `Geometry` *(a polygon's rings as lines, a line's two end points)* |
 
 ### `NetTopologySuite.Feature` — attaching data to geometry
 
@@ -203,7 +210,12 @@ draws and picks them, and a patch can make one by hand. The reasoning and the fi
 
 ### `NetTopologySuite.Operation`
 
-`Buffer` · `Intersection` · `Union` · `Difference` · `Distance` · `Nearest Points` · `Intersects` · `Contains` · `Within`
+`Buffer` · `ConvexHull` · `Reverse` · `Intersection` · `Union` · `Difference` · `SymmetricDifference` · `Distance` · `Nearest Points` · `IsWithinDistance` · `Intersects` · `Contains` · `Within` · `Touches` · `Crosses` · `Overlaps` · `Covers` · `CoveredBy` · `Relate`
+
+Every predicate is false when either input is missing. `Covers` is `Contains` without the boundary
+exception, `Relate` is the nine-character DE-9IM string behind all of them, and `Disjoint` is still
+`Intersects` plus `Not`. The ten nodes after the first nine are tier 1 of the coverage plan
+(2026-11-07) — each one line of NTS's `Geometry` class.
 
 ### `NetTopologySuite.IO`
 
@@ -282,7 +294,7 @@ usually spoken, and the most common bug in this domain.
 
 ## Help patches
 
-Fifteen, in `help\VL.NetTopologySuite\`, in the order the Help Browser shows them. Press **F1** on
+Sixteen, in `help\VL.NetTopologySuite\`, in the order the Help Browser shows them. Press **F1** on
 any node of this package to open the one that teaches it.
 
 | Topic | Patch |
@@ -291,7 +303,7 @@ any node of this package to open the one that teaches it.
 | Making geometry | `HowTo Create a point` · `HowTo Create a linestring` · `HowTo Create a polygon` · `HowTo Group geometries` · `HowTo Work with Z` |
 | Looking at geometry | `HowTo Inspect a geometry` |
 | Text in, geometry out | `HowTo Read and write WKT` |
-| Spatial operations | `HowTo Buffer a geometry` · `HowTo Combine two geometries` · `HowTo Test how geometries relate` · `HowTo Measure distance` |
+| Spatial operations | `HowTo Buffer a geometry` · `HowTo Combine two geometries` · `HowTo Test how geometries relate` · `HowTo Measure distance` · `HowTo Wrap points in a hull` |
 | Features | `HowTo Attach attributes to a geometry` |
 | Many geometries | `HowTo Query many geometries fast` |
 | Networks | `HowTo Find the shortest path` — draws its town and the path with VL.Skia |

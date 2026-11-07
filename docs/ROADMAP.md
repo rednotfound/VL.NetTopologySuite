@@ -10,6 +10,12 @@ comment; the work is deciding whether they earn a node, not writing them.
 
 ## Now — 0.0.4-alpha on nuget.org, 0.0.5-alpha in the tree
 
+**2026-11-07: tier 1 landed in the tree for `0.0.5-alpha`** - the 15 one-line `Geometry` nodes
+listed under "What the name obliges", 150 tests, every node in a help patch with a High flag (five
+patches extended below their existing layouts, `HowTo Wrap points in a hull` new for `ConvexHull`),
+all six seen in the GUI computing the values their notes name. `Geometry` coverage 20 → 35 of 64
+(55%); predicates 8 named of 9 plus `Relate`; overlays 4 of 4. Not published yet; tier 2 is next.
+
 **2026-10-18, evening: `0.0.4-alpha` released** - the tooltip rewrite alone, one change per release,
 and a fourth walk through the process at the maintainer's suggestion, for practice. Browser upload
 by the maintainer; install-back from nuget.org alone green (the first run lost one patch to a
@@ -184,16 +190,16 @@ The 24 areas and their state:
 | area | state |
 |---|---|
 | geometry creation (Point … GeometryCollection) | ✅ complete |
-| geometry inspection | ◐ half |
-| predicates (`Operation.Predicate` / `Relate`) | ◐ 3 of 9 |
-| overlay (`Operation.Overlay` / `OverlayNG`) | ◐ 3 of 4 |
+| geometry inspection | ◐ most, since tier 1 (2026-11-07): `Envelope`, `InteriorPoint`, `Boundary`, `IsSimple`, `NumPoints` |
+| predicates (`Operation.Predicate` / `Relate`) | ✅ 8 named of 9 plus `Relate`, since tier 1; `Disjoint` deliberately absent |
+| overlay (`Operation.Overlay` / `OverlayNG`) | ✅ 4 of 4, since tier 1 |
 | distance, nearest points | ✅ |
 | buffer | ◐ the basic form; no end-cap / join parameters |
 | validity (`Operation.Valid`) | ◐ verdict, reason, location; no repair |
 | WKT (`IO`) | ✅ |
 | spatial index (`Index.*`) | ◐ STRtree of four |
 | features (separate package) | ✅ |
-| convex / concave hull, minimum bounding circle (`Algorithm`, `Algorithm.Hull`, `Algorithm.Construct`) | ❌ |
+| convex / concave hull, minimum bounding circle (`Algorithm`, `Algorithm.Hull`, `Algorithm.Construct`) | ◐ `ConvexHull` since tier 1; concave hull and minimum bounding circle are tier 2 |
 | affine transformation (`Geometries.Utilities`) | ❌ |
 | simplification (`Simplify`) | ❌ |
 | WKB (`IO`) | ❌ |
@@ -217,7 +223,7 @@ of many, convex hull, simplify, WKB, translate/rotate/scale, a point at a fracti
 repairing an invalid geometry. So the plan below is ordered by *what a geometry user expects*, not by
 NTS's directory.
 
-### Tier 1 — the rest of `Geometry`'s own surface, one line each (15 nodes)
+### Tier 1 — the rest of `Geometry`'s own surface, one line each (15 nodes) — **done 2026-11-07**
 
 `Touches`, `Crosses`, `Overlaps`, `Covers`, `CoveredBy`, `SymmetricDifference`, `ConvexHull`,
 `Envelope` (as a geometry), `InteriorPoint`, `IsSimple`, `IsWithinDistance`, `Reverse`, `Relate`
@@ -271,8 +277,8 @@ once, and re-run the overlap check.
 | **The remaining help patches — done 2026-09-24: ten `HowTo`s, one per node group, every category covered, all seen in the GUI** | `HowTo Create a linestring`, `HowTo Inspect a geometry`, `HowTo Intersect two geometries`, `HowTo Test how geometries relate`. Append each to the right `Topic` in `Help.xml` — **do not number the files.** They were numbered `01 03 04 06` at first, and because only four of the eight existed, every gap read as a broken install. `Help.xml` is the only place ordering lives. |
 | **The cross-package example** | `Coordinates → Polygon → Buffer → Geometry → VL.Mapsui Feature → Map`, living **outside** both repositories. A patch needing two packages cannot ship inside one whose dependencies do not guarantee the other. Precedent: `vvvv-gis\examples\Example Map with data on it.vl`. |
 | **Rebuild detection in `SpatialIndex` / `Network`: reference, then value** | Measured 2026-09-24 in the shortest-path help patch: `Read WKT` makes new objects every frame, so `Read WKT → Geometries → Network` rebuilt every frame (1819 in thirty seconds) while `Read WKT ×6 → Cons → Network` stayed at 1 only because VL's collection builder keeps `Equals` items and NTS compares geometry by value. The reference-only contract in ARCHITECTURE is therefore already value-equality whenever `Cons` is upstream, and a trap whenever it is not. Candidate: keep the reference check first (free), and when references differ fall back to element-wise `EqualsExact` before rebuilding — always cheaper than the rebuild it avoids, and it makes the help patch's `Cache` region a performance choice instead of a requirement. Not done: it changes a documented contract and its 16 + 21 tests, and the user has not decided. |
-| **The remaining predicates** — tier 1 | `Touches`, `Crosses`, `Overlaps`, `Covers`, `CoveredBy`. One line each, left out only to keep the first surface small. `Disjoint` stays out permanently — it is `Intersects` plus `Not`. |
-| **`SymmetricDifference`** — tier 1 | The fourth overlay operation, omitted because it is the least used of the four. |
+| **The remaining predicates** — tier 1, **done 2026-11-07** | `Touches`, `Crosses`, `Overlaps`, `Covers`, `CoveredBy`. One line each, left out only to keep the first surface small. `Disjoint` stays out permanently — it is `Intersects` plus `Not`. |
+| **`SymmetricDifference`** — tier 1, **done 2026-11-07** | The fourth overlay operation, omitted because it is the least used of the four. |
 
 ---
 

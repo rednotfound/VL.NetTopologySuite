@@ -18,10 +18,10 @@ always one ahead of the published one. **Every version is a prerelease** (`-alph
 process and its rules are in [docs/RELEASE.md](docs/RELEASE.md): the maintainer performs the
 irreversible step, and nuget.org's 2026 policy (API keys 30 days at most, Trusted Publishing for CI,
 browser upload for manual) is written there. Never push to nuget.org without the user's explicit
-go; a publish cannot be undone.** 40 public nodes in six categories (all published as of `0.0.3-alpha`) — `NetTopologySuite.Network` (`Network` +
+go; a publish cannot be undone.** 55 public nodes in six categories (40 published as of `0.0.4-alpha`; the 15 of tier 1 landed in the tree on 2026-11-07 for `0.0.5-alpha`) — `NetTopologySuite.Network` (`Network` +
 `ShortestPath`, an algorithm of ours, promoted from `NetTopologySuite.Experimental.Network` by
-`docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 134
-tests, 15 help patches.** All fifteen were (re)written on 2026-09-24 in the community's measured style
+`docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 150
+tests, 16 help patches.** All fifteen of the first wave were (re)written on 2026-09-24 in the community's measured style
 ([docs/HELP-PATCH-STYLE.md](docs/HELP-PATCH-STYLE.md)), every one seen in the GUI, every node opens one
 on **F1** (help flags, audited by `Test-VLPatch`), and `HowTo Find the shortest path` draws its town with
 VL.Skia through ForEach and Cache regions. The
@@ -31,13 +31,16 @@ VL.Skia through ForEach and Cache regions. The
 100,000 points. Every category has now been on a screen. `0.0.1-alpha` is on nuget.org (2026-09-26). See
 [Verification](#verification-be-precise-about-which-one-you-have).
 
-**Coverage, measured 2026-10-18:** the 39 nodes wrap 20 of the 64 members of NTS's `Geometry` class
-(31%) and touch 10 of 24 user-facing capability areas; 14 areas have no node. The maintainer's rule:
+**Coverage, measured 2026-10-18, tier 1 landed 2026-11-07:** the 40 nodes wrapped 20 of the 64 members
+of NTS's `Geometry` class (31%) and touched 10 of 24 user-facing capability areas; the 15 tier-1 nodes
+take `Geometry` to 35 of 64 (55%), the predicates to 8 named of 9 plus `Relate`, the overlays to 4 of
+4, and open the hull area. The maintainer's rule:
 a package that takes the library's name owes its users what a geometry library is expected to do.
 [docs/ROADMAP.md](docs/ROADMAP.md#what-the-name-obliges--coverage-measured-2026-10-18) orders the
 gap in three tiers by user expectation (tier 1: the rest of `Geometry`'s own surface, 15 one-line
 nodes; tier 2: union of many, simplify, WKB, affine transforms, linear referencing, MakeValid …);
-that is the next work, one tier per commit, every node with tests and an F1 flag.
+tier 1 is done (commits `4df2255`, `a990d44`, every node with tests and a High flag, six patches seen in
+the GUI); tier 2 is the next work, one tier per commit.
 
 **`NetTopologySuite.Index` is this package's first `[ProcessNode]`.** `SpatialIndex` holds an `STRtree` and
 rebuilds it only when the set of geometry *references* changes; `Query` returns **Candidates**, not
@@ -133,7 +136,7 @@ Two more, learned while verifying:
 
 | | |
 |---|---|
-| Fluent output pin | **confirmed**: `var Output_6 = OperationNodes.Buffer(...)` vs `var Result_7 = GeometryNodes.Area(...)`. Return type equals first parameter type → `Output`; otherwise `Result` |
+| Fluent output pin | **confirmed**: `var Output_6 = OperationNodes.Buffer(...)` vs `var Result_7 = GeometryNodes.Area(...)`. Return type equals first parameter type → `Output`; otherwise `Result`. **Bit again 2026-11-07:** `Boundary` and `Envelope` take and return `Geometry`, so their pin is `Output`; the first links said `Result` and `vvvvc` refused with `Boundary doesn't have a pin called "Result"` — the one failure on this ladder that is loud |
 | An `int` pin needs an `Integer32` IOBox | a `Float64` one fails the compile with `Float64 is no Integer32!`. Cost one round on `HowTo Buffer a geometry.vl`'s `Segments` pin |
 | **A Pad's `Comment` renders as a label to the RIGHT of the box** | so an IOBox occupies far more width than its `Bounds` says, and every label collision in the first help patches came from ignoring it. Give each Pad its own row, or ~200px of clear space to its right |
 | Skia `AddPoly`'s `Close` pin defaults to **True** | from SkiaSharp's `AddPoly(points, close = true)`; a polyline drawn through it needs `DefaultValue="False"` on the pin or every street closes into a zigzag. Cost one GUI round on `HowTo Find the shortest path` (2026-09-25); recipe in `docs/HELP-PATCH-STYLE.md` |
@@ -187,14 +190,14 @@ listed, and every link must name a file that exists, because both failures are s
 
 | | proves | state |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ 134 tests, ~300 ms, no network |
-| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 16 documents |
+| `dotnet test` | the arithmetic is right | ✅ 150 tests, ~300 ms, no network |
+| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 17 documents |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
-| `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 15 help patches, 2026-09-24 |
+| `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 16 help patches, 2026-11-07 |
 | `tools\Test-Install.ps1` | the **packed** package installs from `dist\feed` with its dependencies, and every help patch inside the install compiles with that install as the only repository | ✅ 2026-09-25, first pass |
 | the vvvv **NodeBrowser** | **which category a node is in** | ✅ 2026-10-17: typing `NetTopologySuite` lists the category folder `NetTopologySuite` and the package; its nodes sit under `NetTopologySuite.Geometry` … `.Network` (was `NTS` until that day) |
-| the vvvv **GUI, running** | the patch computes the right value | ✅ 2026-08-14, vvvv 7.4; all 15 help patches 2026-09-24, reviewed by the maintainer 2026-09-25 |
-| **F1 on a node** | the node carries a High help flag in a patch vvvv has indexed | ✅ 2026-09-24, all 39 nodes then; `GetAttribute` (2026-10-18) is flagged but F1 not yet pressed; `Test-VLPatch` audits the flags |
+| the vvvv **GUI, running** | the patch computes the right value | ✅ 2026-08-14, vvvv 7.4; all 15 help patches 2026-09-24, reviewed by the maintainer 2026-09-25; the six tier-1 patches 2026-11-07 |
+| **F1 on a node** | the node carries a High help flag in a patch vvvv has indexed | ✅ 2026-09-24, all 39 nodes then; the 16 since (`GetAttribute`, tier 1) are flagged and audited by `Test-VLPatch`, F1 not yet pressed on them |
 
 **The last three rows are three different claims, and this is where a false proof lives.** Learned
 here, at the cost of nearly writing down a wrong conclusion:
@@ -286,8 +289,8 @@ vl-nettopologysuite/
 │   ├── Defaults.cs                    # ⭐ the default factory and the defensive copying
 │   ├── InputSets.cs                   # the rebuild-detection rule SpatialIndex and Network share
 │   ├── GeometryNodes.Creation.cs      # NetTopologySuite.Geometry - Coordinate .. GeometryCollection
-│   ├── GeometryNodes.Inspection.cs    # NetTopologySuite.Geometry - Area, IsValid, Bounds, Coordinates …
-│   ├── OperationNodes.cs              # NetTopologySuite.Operation - Buffer, overlay, predicates, Distance, Nearest Points
+│   ├── GeometryNodes.Inspection.cs    # NetTopologySuite.Geometry - Area, IsValid, Bounds, Coordinates, Envelope, Boundary, InteriorPoint, NumPoints, IsSimple …
+│   ├── OperationNodes.cs              # NetTopologySuite.Operation - Buffer, ConvexHull, Reverse, four overlays, eight predicates + Relate, Distance, Nearest Points, IsWithinDistance
 │   ├── IONodes.cs                     # NetTopologySuite.IO - Read WKT, Write WKT
 │   ├── FeatureNodes.cs                # NetTopologySuite.Feature - Feature, Split, GetAttribute
 │   ├── SpatialIndexNode.cs            # NetTopologySuite.Index - SpatialIndex (process node)
@@ -295,8 +298,8 @@ vl-nettopologysuite/
 │   ├── Network.cs                     # NetTopologySuite.Network - the retained handle type, and the scope sentence
 │   ├── NetworkNode.cs                 # NetTopologySuite.Network - Network (process node)
 │   └── NetworkNodes.cs                # NetTopologySuite.Network - ShortestPath
-├── test/VL.NetTopologySuite.Tests/    # 134 xunit tests, no network, no vvvv
-├── help/VL.NetTopologySuite/          # 15 help patches + Help.xml (ordering and tags)
+├── test/VL.NetTopologySuite.Tests/    # 150 xunit tests, no network, no vvvv
+├── help/VL.NetTopologySuite/          # 16 help patches + Help.xml (ordering and tags)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
 ├── docs/ARCHITECTURE.md               # why each node exists, what stays raw, the boundary
 ├── docs/HELP-PATCH-STYLE.md           # the community's help style, measured; help flags; the Skia recipe

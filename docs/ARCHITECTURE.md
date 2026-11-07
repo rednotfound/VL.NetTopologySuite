@@ -287,8 +287,9 @@ cost a patch nothing; the three-input guideline is about inputs.
 
 **Return primitives when a type has no representation in a patch.** NTS's `Envelope` cannot be
 opened by any node, so returning one would leave the caller with neither the numbers nor a way to
-get them. NTS's `Geometry.Envelope` is a third thing again — a rectangular *Polygon* — and is
-reachable raw if that is what someone wants.
+get them. NTS's `Geometry.Envelope` is a third thing again — a rectangular *Polygon* — and since tier 1
+(2026-11-07) it is the `Envelope` node, for the patch that wants the box as something `Intersects`
+or a map layer can take. `Bounds` stays: numbers connect to anything.
 
 ### `Read WKT` reports failure on a pin
 
@@ -569,9 +570,11 @@ geospatial concept that benefits from a VL-native node?* — answers no for all 
 - **Configuration objects**: `BufferParameters`, `EndCapStyle`, `IsValidOp`. Behind pins where they
   matter. A 4-input `Buffer` node to expose an end-cap enum on a rare path is two decisions wearing
   one node.
-- **The long tail of `Geometry`**: `IsSimple`, `Normalized`, `Reverse`, `Boundary`, `InteriorPoint`,
-  `PointOnSurface`, `Relate`, `EqualsTopologically`, and roughly fifty more. All present, none
-  wrapped until asked for.
+- **The long tail of `Geometry`**, shorter since tier 1 (2026-11-07) made `IsSimple`, `Reverse`,
+  `Boundary`, `InteriorPoint`, `Relate`, `Envelope`, `NumPoints`, `ConvexHull`, `IsWithinDistance`,
+  `SymmetricDifference` and the five remaining named predicates into nodes: `Normalized`,
+  `PointOnSurface`, `EqualsTopologically`, `Normalize`, `GetOrdinates` and roughly thirty more stay
+  raw until asked for.
 - **Whole subsystems**: prepared geometry, `Quadtree`, `LinearReferencing`, `Triangulate`,
   `Precision.*`, most of `Operation.*` and `Algorithm.*`. (`STRtree` left this list on 2026-08-23
   and became `NetTopologySuite.Index`; its nearest-neighbour, removal and node-capacity APIs stay raw — the
@@ -588,7 +591,8 @@ The list at the top of this section — `IsSimple`, `Reverse`, `Boundary`, `Inte
 the remaining predicates, simplification, linear referencing, affine transformation — is exactly
 what a Shapely or PostGIS user expects a geometry package to have, so "until asked for" has been
 asked for: [ROADMAP.md](ROADMAP.md#what-the-name-obliges--coverage-measured-2026-10-18) orders
-them in three tiers by user expectation. What stays raw after that is the machinery (`Noding`,
+them in three tiers by user expectation; **tier 1 landed on 2026-11-07** (55 nodes, 35 of 64
+`Geometry` members, 55%). What stays raw after that is the machinery (`Noding`,
 `GeometriesGraph`, `Planargraph`, `Mathematics`) and the configuration objects behind pins.
 
 ---

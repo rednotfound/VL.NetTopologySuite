@@ -29,7 +29,11 @@
     </description>
     <summary>NetTopologySuite geometry as composable nodes for vvvv gamma.</summary>
     <releaseNotes>
-      0.0.5-alpha - In development, not published.
+      0.0.5-alpha - In development, not published. Tier 1 of the coverage plan, 15 new nodes:
+      Touches, Crosses, Overlaps, Covers, CoveredBy, Relate, IsWithinDistance, SymmetricDifference,
+      ConvexHull, Reverse (NetTopologySuite.Operation); Envelope, InteriorPoint, Boundary, IsSimple,
+      NumPoints (NetTopologySuite.Geometry). 55 nodes. New help patch HowTo Wrap points in a hull;
+      five patches extended.
 
       0.0.4-alpha (2026-10-18) - Tooltips rewritten to be short: every node now shows a one-line
       summary, a sentence or two of usage and a line per pin on hover, instead of design notes.
