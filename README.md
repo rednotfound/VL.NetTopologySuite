@@ -3,12 +3,18 @@
 **NetTopologySuite made natural inside [vvvv gamma](https://vvvv.org).** Not another GIS framework.
 
 > **Status: `0.0.4-alpha` on nuget.org since 2026-10-18 — a prerelease, early, and it works.**
-> 55 nodes in six categories, 150 tests, 16 help patches, every node opens one on **F1**. Every
+> 56 nodes in six categories, 151 tests, 16 help patches, every node opens one on **F1**. Every
 > category has been seen running in vvvv gamma 7.4, all sixteen help patches have been seen running
 > in the editor (fifteen of them reviewed by hand by the maintainer), and the published package was
 > installed back from nuget.org alone, its help patches compiled from that install and one of them
-> run in vvvv from it. The fifteen tier-1 nodes of 2026-11-07 are in the tree for `0.0.5-alpha`,
-> not yet on nuget.org. The table below says
+> run in vvvv from it. The fifteen tier-1 nodes of 2026-11-07 and the drawn previews below are in
+> the tree for `0.0.5-alpha`, not yet on nuget.org.
+>
+> **Since 2026-11-07 a Geometry draws itself in the editor**: hover any Geometry pin, or make an
+> IOBox of one, and you see the outline (a polygon with its holes, a line, a dot for a point) instead
+> of an object listing. No Renderer in the patch. It comes from `VL.NetTopologySuite.HDE.vl`, an
+> editor-only companion that registers viewers with vvvv the way VL.Stride and VL.Fuse do; see
+> [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#drawing-without-a-renderer--the-hde-companion). The table below says
 > exactly what has been shown; the release process and its rules are in
 > [docs/RELEASE.md](docs/RELEASE.md).
 >
@@ -114,8 +120,8 @@ a package oversells itself:
 
 | | proves | run |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ **150 tests**, ~300 ms, no network |
-| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, labels do not collide, every node has an F1 flag | ✅ 17 documents, 55 of 55 nodes flagged |
+| `dotnet test` | the arithmetic is right | ✅ **151 tests**, ~300 ms, no network |
+| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, labels do not collide, every node has an F1 flag | ✅ 18 documents, 56 of 56 nodes flagged |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved** — an unresolved one has its links dropped and vanishes from the generated C#, so the script reads the C# | ✅ all 16 help patches |
 | `tools\Test-Install.ps1` | the **packed** package installs from a feed with its dependencies, and every help patch inside it compiles with that install as the only package repository | ✅ 2026-09-25 |
@@ -154,7 +160,7 @@ Two things the tooling caught that the eye would not:
 
 ## The nodes
 
-**Fifty-five**, in six categories. No node takes more than three inputs, except where a fourth
+**Fifty-six**, in six categories. No node takes more than three inputs, except where a fourth
 is a default you will rarely touch.
 
 ### `NetTopologySuite.Geometry` — making geometry
@@ -193,6 +199,7 @@ is a default you will rarely touch.
 | `InteriorPoint` | `Geometry` → `Point` *(always on the shape, where `Centroid` may not be)* |
 | `Envelope` | `Geometry` → `Geometry` *(the bounding box as a rectangle polygon; `Bounds` gives the numbers)* |
 | `Boundary` | `Geometry` → `Geometry` *(a polygon's rings as lines, a line's two end points)* |
+| `Outlines` | `Geometry` → spread of spread of `Coordinate` *(every ring and line separately, holes included: one polyline each, ready to draw)* |
 
 ### `NetTopologySuite.Feature` — attaching data to geometry
 

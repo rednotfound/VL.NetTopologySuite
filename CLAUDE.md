@@ -18,9 +18,9 @@ always one ahead of the published one. **Every version is a prerelease** (`-alph
 process and its rules are in [docs/RELEASE.md](docs/RELEASE.md): the maintainer performs the
 irreversible step, and nuget.org's 2026 policy (API keys 30 days at most, Trusted Publishing for CI,
 browser upload for manual) is written there. Never push to nuget.org without the user's explicit
-go; a publish cannot be undone.** 55 public nodes in six categories (40 published as of `0.0.4-alpha`; the 15 of tier 1 landed in the tree on 2026-11-07 for `0.0.5-alpha`) — `NetTopologySuite.Network` (`Network` +
+go; a publish cannot be undone.** 56 public nodes in six categories (40 published as of `0.0.4-alpha`; the 15 of tier 1 and `Outlines` landed in the tree on 2026-11-07 for `0.0.5-alpha`) — `NetTopologySuite.Network` (`Network` +
 `ShortestPath`, an algorithm of ours, promoted from `NetTopologySuite.Experimental.Network` by
-`docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 150
+`docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 151
 tests, 16 help patches.** All fifteen of the first wave were (re)written on 2026-09-24 in the community's measured style
 ([docs/HELP-PATCH-STYLE.md](docs/HELP-PATCH-STYLE.md)), every one seen in the GUI, every node opens one
 on **F1** (help flags, audited by `Test-VLPatch`), and `HowTo Find the shortest path` draws its town with
@@ -190,14 +190,15 @@ listed, and every link must name a file that exists, because both failures are s
 
 | | proves | state |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ 150 tests, ~300 ms, no network |
-| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 17 documents |
+| `dotnet test` | the arithmetic is right | ✅ 151 tests, ~300 ms, no network |
+| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 18 documents (incl. the HDE companion) |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 16 help patches, 2026-11-07 |
 | `tools\Test-Install.ps1` | the **packed** package installs from `dist\feed` with its dependencies, and every help patch inside the install compiles with that install as the only repository | ✅ 2026-09-25, first pass |
 | the vvvv **NodeBrowser** | **which category a node is in** | ✅ 2026-10-17: typing `NetTopologySuite` lists the category folder `NetTopologySuite` and the package; its nodes sit under `NetTopologySuite.Geometry` … `.Network` (was `NTS` until that day) |
 | the vvvv **GUI, running** | the patch computes the right value | ✅ 2026-08-14, vvvv 7.4; all 15 help patches 2026-09-24, reviewed by the maintainer 2026-09-25; the six tier-1 patches 2026-11-07 |
-| **F1 on a node** | the node carries a High help flag in a patch vvvv has indexed | ✅ 2026-09-24, all 39 nodes then; the 16 since (`GetAttribute`, tier 1) are flagged and audited by `Test-VLPatch`, F1 not yet pressed on them |
+| **F1 on a node** | the node carries a High help flag in a patch vvvv has indexed | ✅ 2026-09-24, all 39 nodes then; the 17 since (`GetAttribute`, tier 1, `Outlines`) are flagged and audited by `Test-VLPatch`, F1 not yet pressed on them |
+| **a Geometry IOBox draws** | the HDE companion registered its viewers in the editor | ✅ 2026-11-07, probe with polygon-with-hole, line, point, lon/lat polygon, all drawn (and the Y flip and the hole artefact caught on the way) |
 
 **The last three rows are three different claims, and this is where a false proof lives.** Learned
 here, at the cost of nearly writing down a wrong conclusion:
@@ -285,11 +286,12 @@ value, close. In vvvv, having a patch open means having it running — there is 
 ```
 vl-nettopologysuite/
 ├── VL.NetTopologySuite.vl / .nuspec   # the package. .vl is hand-edited, never regenerated
+├── VL.NetTopologySuite.HDE.vl         # editor-only companion: Geometry/Point viewers for tooltips and IOBoxes
 ├── src/VL.NetTopologySuite/
 │   ├── Defaults.cs                    # ⭐ the default factory and the defensive copying
 │   ├── InputSets.cs                   # the rebuild-detection rule SpatialIndex and Network share
 │   ├── GeometryNodes.Creation.cs      # NetTopologySuite.Geometry - Coordinate .. GeometryCollection
-│   ├── GeometryNodes.Inspection.cs    # NetTopologySuite.Geometry - Area, IsValid, Bounds, Coordinates, Envelope, Boundary, InteriorPoint, NumPoints, IsSimple …
+│   ├── GeometryNodes.Inspection.cs    # NetTopologySuite.Geometry - Area, IsValid, Bounds, Coordinates, Outlines, Envelope, Boundary, InteriorPoint, NumPoints, IsSimple …
 │   ├── OperationNodes.cs              # NetTopologySuite.Operation - Buffer, ConvexHull, Reverse, four overlays, eight predicates + Relate, Distance, Nearest Points, IsWithinDistance
 │   ├── IONodes.cs                     # NetTopologySuite.IO - Read WKT, Write WKT
 │   ├── FeatureNodes.cs                # NetTopologySuite.Feature - Feature, Split, GetAttribute
@@ -298,7 +300,7 @@ vl-nettopologysuite/
 │   ├── Network.cs                     # NetTopologySuite.Network - the retained handle type, and the scope sentence
 │   ├── NetworkNode.cs                 # NetTopologySuite.Network - Network (process node)
 │   └── NetworkNodes.cs                # NetTopologySuite.Network - ShortestPath
-├── test/VL.NetTopologySuite.Tests/    # 150 xunit tests, no network, no vvvv
+├── test/VL.NetTopologySuite.Tests/    # 151 xunit tests, no network, no vvvv
 ├── help/VL.NetTopologySuite/          # 16 help patches + Help.xml (ordering and tags)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
 ├── docs/ARCHITECTURE.md               # why each node exists, what stays raw, the boundary
@@ -361,6 +363,41 @@ under `NetTopologySuite.Geometries.*`, one letter from our `NetTopologySuite.Geo
 situation VL.Mapsui has with `Mapsui.*`, and the category is what tells them apart (every summary
 here also ended "Uses NetTopologySuite." until 2026-10-18; that line went with the tooltip rewrite
 below, because a tooltip is not the place for it).
+
+## The HDE companion: a Geometry draws itself in the editor
+
+**`VL.NetTopologySuite.HDE.vl`** (repo root, shipped at the package root, staged by `build.ps1`) is
+an editor-only document: it registers *viewers* with vvvv's editor, so a tooltip on any Geometry pin
+and any IOBox of a Geometry draw the shape - polygon with holes, line, a dot for a point - instead
+of an object listing. Built 2026-11-07 after the maintainer asked for "the specialised IOBoxes
+VL.Fuse has"; the mechanism, measured in the vvvv 7.4 install, is in
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#drawing-without-a-renderer--the-hde-companion).
+The rules that matter when touching it:
+
+- **It is the same mechanism VL.Stride, VL.Audio and VL.Fuse use**: `RegisterServices` →
+  `RegisterViewer` (category `HDE.Viewers`, document `VL.HDE`) with a class implementing
+  `IValueViewer<T>` whose `Update(Value, Context) → Widget`. vvvv loads a `<Package>.HDE.vl` beside
+  the package document by itself and compiles it to `<Package>_HDE_Plugin` in its package-cache -
+  which is what the `VL.Fuse_HDE_Plugin` folder there is. Template: CoreLib's help
+  `HowTo Patch a Tooltip`.
+- **`vvvvc` cannot compile it** (`VL.UI.Forms.dll couldn't be found`: VL.HDE needs the editor's own
+  assemblies), so the ladder for this document is: `Test-VLPatch` (structure) → open a probe
+  document with Geometry IOBoxes in vvvv and look. The probe used is a scratch file, never
+  committed; `tools\HelpPatchGen.ps1` makes one in ten lines. Read `Documents\vvvv\gamma\vvvv_*.log`
+  for the `.HDE.vl -> package-cache` line and any error.
+- **Two viewers**: `GeometryViewer` for every Geometry (`Outlines` → nested ForEach → `AddPoly`
+  → `DrawPath` hairline → `Group` → the editor's own `LayerViewer`, which fits the layer's bounds
+  into the widget) and `PointViewer` for a lone Point (a filled `Circle`; the editor picks the
+  viewer registered for the most specific type). **Y is negated** before `Vector (Join)`: geometry
+  is y-up, Skia is y-down, and the first probe drew a rising line as falling.
+- **`Outlines` exists because of it**: `Coordinates` concatenates a polygon's shell and holes, and a
+  polyline through that drew a stray segment into the hole. The node is public and useful on its
+  own (one polyline per ring, ready for Skia or Stride).
+- Known gaps: points inside a collection (MultiPoint) draw nothing (no outline, no bounds of their
+  own); a `Feature` has no viewer yet (geometry plus its attribute table would be the obvious one).
+- The document depends on `VL.HDE`, `VL.Skia` and `NetTopologySuite` (for the `Point` / `Geometry`
+  type arguments) and on this package at `0.0.0`. `VL.HDE` is *not* a nuspec dependency: every vvvv
+  carries it, and an exported app never loads the companion.
 
 ## Node documentation is a tooltip
 

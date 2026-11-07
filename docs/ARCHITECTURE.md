@@ -560,6 +560,42 @@ on this package, so that its help patches open working. So:
 
 ---
 
+## Drawing without a renderer — the HDE companion
+
+**The problem (the maintainer, 2026-11-07):** WKT is text, and most people need to *see* a geometry
+to understand what an operation did - but a Renderer in every patch is too heavy, and other packs
+(VL.Fuse above all) show their values inside the IOBox. **The mechanism, measured in the vvvv 7.4
+install:** the editor keeps a registry of *viewers*. `VL.UI.IValueViewer<T>` (in
+`VL.UI.PatchEditor.Utils.dll`) has `Update(T value, ViewerContext, out IWidget)`; a widget's view
+renders as a Skia `ILayer`, so every tooltip and IOBox preview is a small Skia picture drawn only
+while it is on screen. A library registers one from a `RegisterServices` operation with the
+`RegisterViewer` node (category `HDE.Viewers`, document `VL.HDE`), in a `<Package>.HDE.vl` placed
+beside its package document - vvvv loads it by itself and compiles it to `<Package>_HDE_Plugin` in
+its package-cache. That is what VL.Stride (`VL.Stride.HDE.vl`), VL.Audio, VL.IO.Redis and Fuse
+(`VL.Fuse.HDE.vl`, seen in the cache as `VL.Fuse_HDE_Plugin`) do; the template is CoreLib's help
+`HowTo Patch a Tooltip`. No Gray Book page documents it.
+
+**What this package registers** (`VL.NetTopologySuite.HDE.vl`): `GeometryViewer` for every
+`Geometry` - `Outlines` → for each outline, for each coordinate a `Vector2` with Y negated
+(geometry is y-up, Skia y-down) → `AddPoly` → `DrawPath` with a hairline stroke → `Group` → the
+editor's own `LayerViewer`, which fits the layer's bounds into the widget, so a lon/lat polygon of
+0.01 degrees and a metre-grid polygon of 4,000 fill the box alike - and `PointViewer` for a lone
+`Point`, a filled circle, because a single coordinate has no outline and no bounds. The editor
+picks the viewer registered for the most specific type.
+
+**Three things the probe caught** on 2026-11-07, each visible in one screenshot and invisible in
+any compile: `Coordinates` concatenates a polygon's shell and holes, so a polyline through it drew a
+segment from the shell into the hole (hence `Outlines`); the first line drew upside down (hence the
+Y flip); a point drew nothing (hence `PointViewer`). **`vvvvc` cannot compile an HDE document**
+(`VL.UI.Forms.dll couldn't be found`), so the only check is a probe document with Geometry IOBoxes
+opened in the editor.
+
+**Boundary of the companion:** it depends on `VL.HDE` and `VL.Skia`, which the package itself does
+not - the nuspec declares neither, because every vvvv carries them and an exported application
+never loads a `.HDE.vl`. The package's own rule (no rendering, no maps) is untouched: the companion
+draws for the *editor*, not for a patch. Not done yet: markers for points inside a collection, a
+`Feature` viewer (geometry plus its attribute table), and a viewer for `Coordinate`.
+
 ## What stays raw
 
 Reachable through VL's raw .NET nodes, deliberately not wrapped. The test — *is this a common
