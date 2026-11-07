@@ -56,6 +56,14 @@ and Success), generic over the user's record through VL's `IVLObject` / `IVLType
 to be measured with a probe before anything is designed on it. Dictionary and `Attributes (Join)`
 stay as the schema-less path.
 
+**2026-11-07, night, branch `record-bridge`: built and seen.** `Feature (FromRecord)` and
+`Record (FromFeature)` (ARCHITECTURE, "A record as the schema"), 11 tests against an editor-shaped
+double, `HowTo Use your own record as a feature` with a `Station` record defined in the patch -
+Feature box lists the three typed fields, `3 of 3 fields filled`, Success true, generated C# shows
+`FeatureFromRecord<Station_R>`. On the front door as one note line, not node rows: a generic node
+with nothing connected has no type argument and `vvvvc` reports it as unresolved. Not on `main`: the maintainer opened the branch to see how far the
+idea goes, and merging is their call.
+
 **2026-10-18, evening: `0.0.4-alpha` released** - the tooltip rewrite alone, one change per release,
 and a fourth walk through the process at the maintainer's suggestion, for practice. Browser upload
 by the maintainer; install-back from nuget.org alone green (the first run lost one patch to a

@@ -38,7 +38,7 @@ namespace VL.NetTopologySuite;
 /// Builds features from geometry and attributes, opens them again, and turns a table into attributes.
 /// </summary>
 [Name("Feature")]
-public static class FeatureNodes
+public static partial class FeatureNodes
 {
     // Attributes are a plain Dictionary of string to object - VL's own Dictionary, which is an
     // ImmutableDictionary underneath. Unconnected gives a feature with no attributes, which is all

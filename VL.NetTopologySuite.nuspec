@@ -34,8 +34,10 @@
       ConvexHull, Reverse (NetTopologySuite.Operation); Envelope, InteriorPoint, Boundary, IsSimple,
       NumPoints, Outlines (NetTopologySuite.Geometry); Attributes (Join) and Attributes (Split)
       (NetTopologySuite.Feature): two Spread IOBoxes, names and values, are a table of attributes,
-      with 28 read as an integer and true as a boolean. 58 nodes. New help patch HowTo Wrap points in
-      a hull; six patches extended. A Geometry now draws itself in the editor the way a GIS draws it:
+      with 28 read as an integer and true as a boolean; Feature (FromRecord) and Record (FromFeature):
+      your own record as a feature's schema, every field an attribute, the geometry its own pin.
+      60 nodes. New help patches HowTo Wrap points in a hull and HowTo Use your own record as a
+      feature; six patches extended. A Geometry now draws itself in the editor the way a GIS draws it:
       hover a Geometry pin or make an IOBox of one and you see filled polygons with their holes,
       lines, point markers, a map pin for a point, a Feature with every attribute listed under it
       (VL.NetTopologySuite.HDE.vl, editor only).

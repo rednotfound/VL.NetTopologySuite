@@ -582,10 +582,58 @@ fields, look at GeoJSON", and whether there was a table-like way in. Surveyed th
   objected: a JSON writer tells `true` from `"true"`), and it returns `Spread` because a `Spread`
   readout lists its items where an `IReadOnlyList` shows a type name.
 - **Where this leads** (the maintainer, the same evening): a GIS feature is a row of a table whose
-  columns are defined first, and in vvvv "define first, then fill" is a Record. The schema-level
-  design - a record per feature type, `Spread<Record>` as the dataset, generic bridge nodes to and
-  from NTS `Feature` through VL's `IVLObject` reflection - is being explored on a branch; the
-  Dictionary stays as the schema-less layer underneath.
+  columns are defined first, and in vvvv "define first, then fill" is a Record. Built on branch
+  `record-bridge` the same night, below; the Dictionary stays as the schema-less layer underneath.
+
+### A record as the schema — `Feature (FromRecord)` and `Record (FromFeature)`
+
+The maintainer's framing: "任何的 GIS 的 feature 是带着 geometry 的这么一张表格，schema 是定义的"
+- a feature is a row of a table with a geometry column, and the columns are defined before the
+rows. QGIS, Shapefile and GeoPackage all work that way at the *layer*; NTS and GeoJSON carry no
+schema, so the Dictionary is the right type at their level and the schema has to come from the
+patch. In vvvv the thing you define once and then fill is a Record: `Station` with `Name: String`,
+`Platforms: Integer32`, `Terminal: Boolean`, each field with the IOBox of its type, and a
+`Spread<Station>` as the dataset. The two nodes are the bridge to the NTS `Feature` that GeoJSON
+writes and Mapsui draws.
+
+vl-mapsui built this bridge once before (`ToFeatures<T>`, 2026-08-15) and removed it at the
+maintainer's request (2026-09-25); its NOTES.md carries the measurements, and three of them are
+constraints here:
+
+1. **The record gives the attributes only; the geometry is its own pin.** `ToFeatures` chose the
+   geometry by property type, and that was the objection: the record is the user's, and a rule
+   nobody can see until a Status complains is not a rule. `Feature (FromRecord)` takes `Geometry`
+   and `Record`; nothing about the record's shape is a convention.
+2. **A patched record is read through VL, never through `System.Reflection`.** In the editor a
+   record's public CLR surface is `__State, Context, Identity, __Program__` - the values live
+   inside `__State` and only `IVLObject.Type.Properties` sees them. `vvvvc`'s export emits real
+   public fields, which is why reading the generated C# did not catch it the first time. Keys are
+   `IVLPropertyInfo.OriginalName` (the name the patch shows, spaces included; `Name` is
+   `[Obsolete]` and says so). CLR reflection stays as the fallback for imported .NET types and
+   exported records, with VL's own `[Name]` applied.
+3. **A generic `T` pin, not an `object` pin:** `VL.Serialization.MessagePack`, `VL.ImGui.Editors`
+   and the built-in `Serialize` take the user's record that way and reflect inside. The generated
+   C# of the help patch reads `FeatureFromRecord<Station_R>(…)`.
+
+`Record (FromFeature)` fills a **template** - a value of the record type, usually its `Create`
+node with defaults - with `IVLPropertyInfo.WithValue`, which returns "the instance with the newly
+set value" (a new record for an immutable one; the template is never touched). Values are
+converted when the stored type differs from the slot's (the GeoJSON reader stores every integer as
+Int64, a slot is usually Integer32); a field the feature lacks keeps the template's value, a value
+that cannot be converted keeps it too, and `Status` names both, with `Success` false. Nothing in
+either node needs an `AppHost` or a `NodeContext`, so the tests run without vvvv against a double
+shaped like the editor's record (vl-mapsui's, with `WithValue` added).
+
+**Seen 2026-11-07** in `HowTo Use your own record as a feature`, a record defined in the patch: the
+Feature IOBox lists `Name "Tokyo Station"`, `Platforms 28`, `Terminal TRUE`; `Record (FromFeature)`
+reports `3 of 3 fields filled from Station`, Success true. The record's own IOBox shows only its
+type name - the editor's object viewer for a patched record, not ours to change.
+
+**Open, for the maintainer:** whether this goes to `main` for `0.0.5-alpha` or waits; whether
+`Spread<Record>` → `Spread<Feature>` deserves its own node or stays a `ForEach` (vl-mapsui measured
+that building the data once is what makes a thousand features cheap, 0.013 ms against 52.9
+ms/frame, and that is the patch's job either way); and whether VL.NetTopologySuite.GeoJSON should
+offer `Read GeoJSON` straight into a record spread.
 - **Not done, on purpose:** a JSON-text input (`{"name": "Tokyo Station", "platforms": 28}`)
   belongs to VL.NetTopologySuite.GeoJSON, whose `Read GeoJSON` already converts properties; a typed
   record per feature is a schema, which is the layer's business, not the feature's.

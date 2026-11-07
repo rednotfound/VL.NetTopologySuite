@@ -18,7 +18,7 @@ always one ahead of the published one. **Every version is a prerelease** (`-alph
 process and its rules are in [docs/RELEASE.md](docs/RELEASE.md): the maintainer performs the
 irreversible step, and nuget.org's 2026 policy (API keys 30 days at most, Trusted Publishing for CI,
 browser upload for manual) is written there. Never push to nuget.org without the user's explicit
-go; a publish cannot be undone.** 58 public nodes in six categories (40 published as of `0.0.4-alpha`; the 15 of tier 1, `Outlines` and the two `Attributes` nodes landed in the tree on 2026-11-07 for `0.0.5-alpha`) — `NetTopologySuite.Network` (`Network` +
+go; a publish cannot be undone.** 60 public nodes in six categories (40 published as of `0.0.4-alpha`; the 15 of tier 1, `Outlines`, the two `Attributes` nodes and, on branch `record-bridge`, `Feature (FromRecord)` / `Record (FromFeature)` landed on 2026-11-07 for `0.0.5-alpha`) — `NetTopologySuite.Network` (`Network` +
 `ShortestPath`, an algorithm of ours, promoted from `NetTopologySuite.Experimental.Network` by
 `docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 151
 tests, 16 help patches.** All fifteen of the first wave were (re)written on 2026-09-24 in the community's measured style
@@ -142,6 +142,9 @@ Two more, learned while verifying:
 | Skia `AddPoly`'s `Close` pin defaults to **True** | from SkiaSharp's `AddPoly(points, close = true)`; a polyline drawn through it needs `DefaultValue="False"` on the pin or every street closes into a zigzag. Cost one GUI round on `HowTo Find the shortest path` (2026-09-25); recipe in `docs/HELP-PATCH-STYLE.md` |
 | **A collection readout stops at 3 rows and prints `...`** | the editor setting `TooltipNumberOfItemsOfCollection` (user `settings.xml`, default 3), read by the editor's `DictionaryViewer` and sequence viewers. The maintainer saw a four-attribute feature list three. The Feature viewer lists every row itself (2026-11-07); a bare Dictionary IOBox keeps the editor's grid and its cap |
 | **A Spread IOBox is an editable table** | XML: a Pad typed `Spread` of `String` with `<p:Value><Item>…</Item></p:Value>`; two of them side by side are the attribute table `Attributes (Join)` reads. Readouts of a `Spread<T>` output list items, of an `IReadOnlyList<T>` show a type name |
+| **A patched record has two runtime shapes** | in the editor its values live in `__State` and only `IVLObject.Type.Properties` sees them; `vvvvc`'s export emits public fields, so the generated C# cannot catch a node that reflects with `System.Reflection` (vl-mapsui, 2026-08-15). The record bridge reads through `IVLObject`, keys by `OriginalName`, writes with `IVLPropertyInfo.WithValue`; the test double hides its fields the way the editor does |
+| A generic `T` method is a node | `FeatureFromRecord<T>(Geometry, T, out string)` compiles to `FeatureFromRecord<Station_R>(…)` in the generated C#, the type argument taken from the link. **Unconnected it does not resolve at all** - `vvvvc` reports `did not resolve`, and the front door had to carry the two as a note instead of node rows. Measured 2026-11-07 |
+| `SlotId="…"` is not an `Id` | the validator's `Id="` regex counted a record's `SlotId` attributes as duplicate IDs the first time a help patch defined a record; now `(?<![A-Za-z])Id="` |
 | A `[Name("Attributes (Join)")]` on a method | renders as the node `Attributes (Join)`: the parenthesised version is part of the plain name string, as `Vector (Join)` is in every shipped `.vl`; `[return: Pin(Name = "Attributes")]` names the output pin. Both confirmed by `vvvvc` resolving the link (2026-11-07) |
 
 ### Laying out a patch
@@ -197,7 +200,7 @@ the geometry". A new patch gets that column from the start.
 
 | | proves | state |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ 160 tests, ~400 ms, no network |
+| `dotnet test` | the arithmetic is right | ✅ 171 tests, ~400 ms, no network |
 | `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 18 documents (incl. the HDE companion) |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 16 help patches, 2026-11-07 |
@@ -302,12 +305,13 @@ vl-nettopologysuite/
 │   ├── OperationNodes.cs              # NetTopologySuite.Operation - Buffer, ConvexHull, Reverse, four overlays, eight predicates + Relate, Distance, Nearest Points, IsWithinDistance
 │   ├── IONodes.cs                     # NetTopologySuite.IO - Read WKT, Write WKT
 │   ├── FeatureNodes.cs                # NetTopologySuite.Feature - Feature, Split, GetAttribute, Attributes (Join), Attributes (Split)
+│   ├── FeatureNodes.Record.cs         # NetTopologySuite.Feature - Feature (FromRecord), Record (FromFeature): the user's record as the schema, read through IVLObject
 │   ├── SpatialIndexNode.cs            # NetTopologySuite.Index - SpatialIndex (process node)
 │   ├── IndexNodes.cs                  # NetTopologySuite.Index - Query
 │   ├── Network.cs                     # NetTopologySuite.Network - the retained handle type, and the scope sentence
 │   ├── NetworkNode.cs                 # NetTopologySuite.Network - Network (process node)
 │   └── NetworkNodes.cs                # NetTopologySuite.Network - ShortestPath
-├── test/VL.NetTopologySuite.Tests/    # 160 xunit tests, no network, no vvvv
+├── test/VL.NetTopologySuite.Tests/    # 171 xunit tests, no network, no vvvv
 ├── help/VL.NetTopologySuite/          # 16 help patches + Help.xml (ordering and tags)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
 ├── docs/ARCHITECTURE.md               # why each node exists, what stays raw, the boundary
@@ -339,7 +343,7 @@ Namespace `VL.NetTopologySuite` gives `NetTopologySuite`. `[Name("X")]` renames 
 | `NetTopologySuite.Geometry` | `GeometryNodes.Creation.cs` + `GeometryNodes.Inspection.cs` — `[Name("Geometry")]`, one `partial` class |
 | `NetTopologySuite.Operation` | `OperationNodes.cs` — `[Name("Operation")]` |
 | `NetTopologySuite.IO` | `IONodes.cs` — `[Name("IO")]` |
-| `NetTopologySuite.Feature` | `FeatureNodes.cs` — `[Name("Feature")]` |
+| `NetTopologySuite.Feature` | `FeatureNodes.cs` + `FeatureNodes.Record.cs` — `[Name("Feature")]`, one `partial` class |
 | `NetTopologySuite.Index` | `SpatialIndexNode.cs` (`[ProcessNode(Name = "SpatialIndex", Category = "NetTopologySuite.Index")]`) + `IndexNodes.cs` (`[Name("Index")]`, `Query`) |
 | `NetTopologySuite.Network` | `Network.cs` (the handle type) + `NetworkNode.cs` (`[ProcessNode(Name = "Network", ...)]`) + `NetworkNodes.cs` (`[Name("Network")]`, `ShortestPath`) |
 

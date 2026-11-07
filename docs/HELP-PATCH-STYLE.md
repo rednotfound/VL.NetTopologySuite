@@ -102,6 +102,14 @@ IOBox lists every attribute under its drawing, so give it 220 × 290 for a point
 attributes. The same size rule holds for a `Spread<Object>` readout (`Attributes (Split)`'s Values):
 at 80 high it shows `Spread<Object> [4]`, at 140 it lists the items with their types.
 
+**A record defined in a help patch** (`HowTo Use your own record as a feature`, 2026-11-07) is a
+`RecordDefinition` node inside the Application canvas, built from vl-mapsui's `VL-PATCH-XML.md`
+recipe (per field: a `Slot` with a `TypeReference` annotation, a `Pad SlotId=`, two
+`ControlPoint`s, four `Link`s, a `Create` input pin and a `Split` output pin; `ProcessDefinition`
+hidden). Its `Create` call site is an ordinary node with `<CategoryReference Kind="RecordType"
+Name="Station" />` and `Output` as a `StateOutputPin`. `Test-VLPatch` had never met a `SlotId` and
+counted those as duplicate IDs; fixed the same night.
+
 **A table in a patch is two Spread IOBoxes** (`HowTo Attach attributes`, 2026-11-07): a Pad typed
 `Spread` of `String` (`LastCategoryFullName="Collections" LastDependency="VL.Collections.vl"`, type
 argument `String` from `CoreLibBasics.vl`) with the rows as `<p:Value><Item>name</Item>…</p:Value>`;

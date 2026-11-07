@@ -70,7 +70,7 @@ foreach ($file in $targets) {
         $problems.Add("XML does not parse: " + ($message -replace '\s+', ' ').Trim())
     }
 
-    $allIds = @(([regex]'Id="([^"]+)"').Matches($raw) | ForEach-Object { $_.Groups[1].Value })
+    $allIds = @(([regex]'(?<![A-Za-z])Id="([^"]+)"').Matches($raw) | ForEach-Object { $_.Groups[1].Value })
     $illegal = @($allIds | Where-Object { $_ -notmatch '^[A-V][0-9A-Za-z]{21}$' })
     if ($illegal.Count) { $problems.Add("illegal IDs: $($illegal -join ', ')") }
     $dupes = @($allIds | Group-Object | Where-Object Count -gt 1 | ForEach-Object Name)
@@ -376,7 +376,7 @@ if (-not $Path) {
         'NetTopologySuite.Geometry|Length', 'NetTopologySuite.Geometry|Centroid', 'NetTopologySuite.Geometry|Bounds', 'NetTopologySuite.Geometry|Coordinates', 'NetTopologySuite.Geometry|Geometries',
         'NetTopologySuite.Geometry|NumPoints', 'NetTopologySuite.Geometry|IsSimple', 'NetTopologySuite.Geometry|InteriorPoint', 'NetTopologySuite.Geometry|Envelope', 'NetTopologySuite.Geometry|Boundary',
         'NetTopologySuite.Geometry|Outlines',
-        'NetTopologySuite.Feature|Feature', 'NetTopologySuite.Feature|Split', 'NetTopologySuite.Feature|GetAttribute', 'NetTopologySuite.Feature|Attributes (Join)', 'NetTopologySuite.Feature|Attributes (Split)', 'NetTopologySuite.IO|Read WKT', 'NetTopologySuite.IO|Write WKT',
+        'NetTopologySuite.Feature|Feature', 'NetTopologySuite.Feature|Split', 'NetTopologySuite.Feature|GetAttribute', 'NetTopologySuite.Feature|Attributes (Join)', 'NetTopologySuite.Feature|Attributes (Split)', 'NetTopologySuite.Feature|Feature (FromRecord)', 'NetTopologySuite.Feature|Record (FromFeature)', 'NetTopologySuite.IO|Read WKT', 'NetTopologySuite.IO|Write WKT',
         'NetTopologySuite.Operation|Buffer', 'NetTopologySuite.Operation|Intersection', 'NetTopologySuite.Operation|Union', 'NetTopologySuite.Operation|Difference',
         'NetTopologySuite.Operation|Distance', 'NetTopologySuite.Operation|Nearest Points', 'NetTopologySuite.Operation|Intersects', 'NetTopologySuite.Operation|Contains', 'NetTopologySuite.Operation|Within',
         'NetTopologySuite.Operation|SymmetricDifference', 'NetTopologySuite.Operation|ConvexHull', 'NetTopologySuite.Operation|Reverse', 'NetTopologySuite.Operation|IsWithinDistance',

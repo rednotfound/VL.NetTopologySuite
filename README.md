@@ -3,7 +3,7 @@
 **NetTopologySuite made natural inside [vvvv gamma](https://vvvv.org).** Not another GIS framework.
 
 > **Status: `0.0.4-alpha` on nuget.org since 2026-10-18 — a prerelease, early, and it works.**
-> 58 nodes in six categories, 160 tests, 16 help patches, every node opens one on **F1**. Every
+> 60 nodes in six categories, 171 tests, 17 help patches, every node opens one on **F1**. Every
 > category has been seen running in vvvv gamma 7.4, all sixteen help patches have been seen running
 > in the editor (fifteen of them reviewed by hand by the maintainer), and the published package was
 > installed back from nuget.org alone, its help patches compiled from that install and one of them
@@ -122,8 +122,8 @@ a package oversells itself:
 
 | | proves | run |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ **160 tests**, ~400 ms, no network |
-| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, labels do not collide, every node has an F1 flag | ✅ 18 documents, 58 of 58 nodes flagged |
+| `dotnet test` | the arithmetic is right | ✅ **171 tests**, ~400 ms, no network |
+| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, labels do not collide, every node has an F1 flag | ✅ 19 documents, 60 of 60 nodes flagged |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved** — an unresolved one has its links dropped and vanishes from the generated C#, so the script reads the C# | ✅ all 16 help patches |
 | `tools\Test-Install.ps1` | the **packed** package installs from a feed with its dependencies, and every help patch inside it compiles with that install as the only package repository | ✅ 2026-09-25 |
@@ -212,6 +212,15 @@ is a default you will rarely touch.
 | `GetAttribute` | `Feature`, name → value, **Success** *(never throws; a missing or null attribute is Success false)* |
 | `Attributes (Join)` | **Keys**, **Values** (two `Spread<String>`), Infer Types → Dictionary of attributes *(two Spread IOBoxes side by side are a table; "28" is stored as an integer, "true" as a boolean, the rest as text)* |
 | `Attributes (Split)` | Dictionary of attributes → **Keys**, **Values** *(the table again, sorted by name; values keep their types)* |
+| `Feature (FromRecord)` | `Geometry`, **your own record** → `Feature`, **Status** *(every field of the record becomes an attribute, under the name the patch shows)* |
+| `Record (FromFeature)` | `Feature`, **Template** (a value of your record type) → the record, `Geometry`, **Success**, **Status** *(field by field; a missing field keeps the template's value, Status names it)* |
+
+**A record is a feature's schema** (branch `record-bridge`, 2026-11-07). A GIS feature is a row of a
+table whose columns are defined first; in vvvv "define first, then fill" is a Record. Define
+`Station` once with `Name`, `Platforms` and `Terminal`, and every station is an instance of it, a
+`Spread<Station>` is the dataset, and the two nodes above are the bridge to the `Feature` that
+GeoJSON writes and Mapsui draws - the geometry stays its own pin, so nothing about your record is a
+hidden rule. `HowTo Use your own record as a feature` shows the round trip.
 
 The attributes are vvvv's own Dictionary, so `Add`, `Remove`, `TryGetValue`, `Keys`, `Values` and a
 `ForEach` over the pairs work on them, and the GeoJSON reader's features carry the same type. The
