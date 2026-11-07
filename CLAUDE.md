@@ -405,9 +405,13 @@ The rules that matter when touching it:
   the editor's `AdaptiveViewer` (which dispatches by the geometry's *runtime* type, so a Point
   feature gets the pin - calling `GeometryViewer` directly drew nothing for the Tokyo Station point,
   which the maintainer found in `HowTo Attach attributes`), and **every attribute as a row of its
-  own**: `Attributes (Split)` → ForEach → `Row` of the key in a `FixedWidthWidget`, a
-  `VerticalLineWidget`, and the value through the editor's `AdaptiveViewer` (so a boolean is a
-  checkbox, as in the editor's own grid) → `Column`, under the geometry in one `Column`. Not the
+  own**, in the editor's own `DictionaryViewer` row shape, read out of `HDE.WidgetsAndViewers.vl`:
+  `Attributes (Split)` → ForEach → `Row` of `FixedWidthWidget`(key, X 0.7) | `VerticalLineWidget` |
+  `Flexible`(value), a `HorizontalLineWidget` above each row, both cells through the editor's
+  `AdaptiveViewer` (a quoted string, a right-aligned number, a checkbox, a colour swatch) → `Column`,
+  under the geometry in one `Column`. The maintainer asked for exactly the editor's look and for
+  every row - the rows are uncapped on purpose, and the IOBox `Configure` panel cannot take a
+  row-count option from a viewer (measured: `ViewerContext` carries no settings). Not the
   editor's `DictionaryViewer`: that one takes `TooltipNumberOfItemsOfCollection` rows (3 by
   default) and prints `...` for the rest, which the maintainer found on a four-attribute feature.
   **Measured and then taken out the same day:** a package may register a viewer for a CoreLib

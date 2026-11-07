@@ -621,9 +621,14 @@ every row: `Attributes (Split)` into a ForEach whose body is the editor's own ro
 `DictionaryViewer` was tried first and is not used, because it takes `TooltipNumberOfItemsOfCollection`
 rows - a user setting, 3 by default - and prints `...` for the rest; the maintainer saw a
 four-attribute feature list three and called it disappointing, and a feature's attributes are the
-one thing a GIS always shows in full. The value cell goes through the editor's `AdaptiveViewer`,
-so a boolean is a checkbox and a number a number, as in the editor's own grid; the first cut drew
-text cells and the maintainer rejected it. An `AttributesViewer` for a bare
+one thing a GIS always shows in full. The rows are the editor's own `DictionaryViewer` row shape,
+copied node for node from `HDE.WidgetsAndViewers.vl` (`FixedWidthWidget` key | `VerticalLineWidget`
+| `Flexible` value, a `HorizontalLineWidget` between rows, both cells through `AdaptiveViewer`), so
+a key is quoted, a number right-aligned, a boolean a checkbox, a colour a swatch - the maintainer
+asked for the editor's look, after a first cut with text cells and a second with loose cells. Only
+the `Take` is missing: every row, on purpose. A per-IOBox row count, like the `Configure` panel of
+a native IOBox, is not reachable from a viewer (`ViewerContext` has no settings), and the
+maintainer chose all rows over the global `TooltipNumberOfItemsOfCollection`. An `AttributesViewer` for a bare
 `Dictionary<String, Object>` was registered, seen working, and taken out the same evening: it
 proved that a package may register a viewer for a CoreLib generic instantiation and that the
 editor then uses it for every IOBox of that type in any patch - and that is exactly why it is
