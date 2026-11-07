@@ -42,3 +42,5 @@ deps/
 # Per-machine Claude Code permissions, not shared. The non-local .claude\settings.json
 # (if one is ever added) is shared and deliberately NOT ignored.
 .claude/settings.local.json
+# Throwaway probe documents (never committed)
+scratch/

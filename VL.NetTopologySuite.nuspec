@@ -32,8 +32,9 @@
       0.0.5-alpha - In development, not published. Tier 1 of the coverage plan, 15 new nodes:
       Touches, Crosses, Overlaps, Covers, CoveredBy, Relate, IsWithinDistance, SymmetricDifference,
       ConvexHull, Reverse (NetTopologySuite.Operation); Envelope, InteriorPoint, Boundary, IsSimple,
-      NumPoints (NetTopologySuite.Geometry). 55 nodes. New help patch HowTo Wrap points in a hull;
-      five patches extended.
+      NumPoints, Outlines (NetTopologySuite.Geometry). 56 nodes. New help patch HowTo Wrap points in a
+      hull; five patches extended. A Geometry now draws itself in the editor: hover a Geometry pin or
+      make an IOBox of one and you see the outline (VL.NetTopologySuite.HDE.vl, editor only).
 
       0.0.4-alpha (2026-10-18) - Tooltips rewritten to be short: every node now shows a one-line
       summary, a sentence or two of usage and a line per pin on hover, instead of design notes.
@@ -87,6 +88,9 @@
   <files>
     <!-- Entry point. Must sit at the package root, no subfolder. -->
     <file src="VL.NetTopologySuite.vl" target="" />
+    <!-- Editor-only companion (2026-11-07): registers tooltip/IOBox viewers for Geometry. It depends
+         on VL.HDE, which every vvvv installation carries, so VL.HDE is not declared below. -->
+    <file src="VL.NetTopologySuite.HDE.vl" target="" />
 
     <file src="src\VL.NetTopologySuite\bin\Release\net8.0\VL.NetTopologySuite.dll" target="lib\net8.0\" />
     <file src="src\VL.NetTopologySuite\bin\Release\net8.0\VL.NetTopologySuite.xml" target="lib\net8.0\" />

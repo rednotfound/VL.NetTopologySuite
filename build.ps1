@@ -153,6 +153,11 @@ foreach ($pkg in $Packages) {
     New-Item -ItemType Directory -Force -Path $pkg.PkgDir | Out-Null
 
     Copy-Item $pkg.VlFile -Destination $pkg.PkgDir
+    # A <Package>.HDE.vl beside the package document is the editor-only companion (tooltip
+    # viewers, 2026-11-07); vvvv picks it up from the package folder without the user referencing
+    # it. Staged when present.
+    $hde = [IO.Path]::ChangeExtension($pkg.VlFile, '.HDE.vl')
+    if (Test-Path $hde) { Copy-Item $hde -Destination $pkg.PkgDir; Write-Host "      $(Split-Path $hde -Leaf)  (editor-only viewers)" }
     Copy-Item $pkg.Nuspec -Destination $pkg.PkgDir
 
     [xml]$vl = Get-Content $pkg.VlFile -Raw
