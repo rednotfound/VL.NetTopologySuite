@@ -649,7 +649,16 @@ on the slot, `NetTopologySuite` as a dependency of the patch): `Feature (FromRec
 `Name "Tokyo Station"`, `Platforms 28`, `Terminal TRUE`; `Record (FromFeature)` reports
 `4 of 4 fields filled from Station`, both Success true; the generated C# reads
 `FeatureFromRecord<Station_R>(record: …)`. The record's own IOBox shows only its type name - the
-editor's object viewer for a patched record, not ours to change.
+editor's object viewer for a patched record, not ours to change. **The second half of that patch
+(same night, after the rule moved to the door)** defines a `Building` with `Outline` and `Entrance`,
+both `Geometry`, and puts three doors under one `Create`: `Geometry Field` = Outline (`Building:
+Outline is the shape, 2 attributes`, the Feature box draws the polygon and lists the entrance as a
+drawn row), = Entrance (the pin, the outline drawn in its row), and empty (`Building has 2 fields
+of type Geometry (Entrance, Outline): name the shape in Geometry Field`, Success false); then
+`Record (FromFeature)` with the same pin reads `3 of 3 fields filled from Building`. Seen in vvvv;
+the Feature boxes needed 420 px because a Geometry-valued attribute is drawn, not printed. One
+thing measured there: `IVLObject.Type.Properties` lists a patched record's fields in alphabetical
+order (`Entrance, Outline`), not in the order the record declares them.
 
 **The two paths are meant to look alike** - the maintainer's requirement, so that neither is
 harder to remember: `HowTo Build a feature three ways` mirrors them column by column - one `Add` per

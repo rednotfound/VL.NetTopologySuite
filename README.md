@@ -222,7 +222,9 @@ first, then fill" is a Record. Define `Station` once with `Geometry`, `Name`, `P
 nodes above are the door to the `Feature` that GeoJSON writes and Mapsui draws. A record may hold
 more than one Geometry - a building's outline and its entrance - because one geometry per feature
 is the rule of the exchange formats and the map, not of how data is kept; which field is the shape
-is chosen at the door, on the `Geometry Field` pin, and the others ride along as attributes. `HowTo Use your own record as a feature` shows the round
+is chosen at the door, on the `Geometry Field` pin, and the others ride along as attributes. The
+second half of `HowTo Use your own record as a feature` shows it with a `Building`: outline as the
+shape, entrance as the shape, and no name - refused, with the candidates listed. `HowTo Use your own record as a feature` shows the round
 trip, and `HowTo Build a feature three ways` puts the three paths side by side - one `Add` per
 attribute, the table, the record: the same shape of patch, geometry, the attributes, one node to
 put them together, one to take them apart - where only the middle differs.

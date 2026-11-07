@@ -71,7 +71,9 @@ record column by column, at the maintainer's request that neither be harder to r
 a feature in storage may carry several geometries (outline, entrance, centre; PostGIS and OGR do),
 only the exchange formats and the map take one, so `Geometry Field` on both nodes names the shape,
 several-and-unnamed is refused with the candidates, and the other geometries ride as attributes
-(ARCHITECTURE, point 1 of "The record is the feature"). Feature stays in this package: NTS ships
+(ARCHITECTURE, point 1 of "The record is the feature"); `HowTo Use your own record as a feature`
+got a second half that shows it - a `Building` with Outline and Entrance, three doors, the way back,
+seen in vvvv. Feature stays in this package: NTS ships
 `NetTopologySuite.Features` itself, VL.Mapsui's FeatureLayer and Pick and the GeoJSON package all
 take the NTS `Feature`, so it is the currency between the three; the `NetTopologySuite.Feature`
 category keeps it apart, and a split into its own package later would not rename a node.
