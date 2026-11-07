@@ -286,6 +286,11 @@ and **an open Help Browser window keeps the process alive** (measured 2026-09-25
 wants its vvvv gone sends WM_CLOSE to every visible window of its own pid — still the X button,
 still never a kill — which the picker and the capture script now do.
 
+**One more, 2026-11-07.** (7) **Commit, do not push.** The maintainer decides when a branch goes
+to the remote ("我都没有让你 push 到远端，你都给我 push 上去了"); a push earlier in the same session is
+not permission for the next one. Commit by file name, report the commit, offer the push and stop.
+The same line already covers the release tag and the nuget.org upload (docs/RELEASE.md).
+
 **Never leave vvvv running unattended, and never start it in the background.** Launch, read the
 value, close. In vvvv, having a patch open means having it running — there is no idle state.
 

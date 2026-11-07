@@ -217,7 +217,10 @@ The attributes are vvvv's own Dictionary, so `Add`, `Remove`, `TryGetValue`, `Ke
 container the map and GeoJSON take - one geometry and a few labels - not a data model. Keep your
 data in your own record, with as many geometries as the thing has, and give that record a
 `ToFeature` operation: Split its fields, pick the geometry that this map layer needs, `Add` the
-labels that should travel. A table node (`Attributes (Join)`, with a guess inside: `"true"` and
+labels that should travel - one operation per layer, if the outline and the entrance are drawn
+differently. A dataset holds every geometry a thing has; a feature carries one, because that is
+what GeoJSON and the map take (the survey of PostGIS, OGR, GeoPackage, GeoJSON, Mapsui and NTS is
+in ARCHITECTURE). A table node (`Attributes (Join)`, with a guess inside: `"true"` and
 `true` became one) and a record bridge (`Feature (FromRecord)`, branch `record-bridge`) were built
 that day and taken out the same night; [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#a-feature-is-a-container-not-a-data-model--built-and-taken-out-2026-11-07) keeps why.
 

@@ -59,7 +59,9 @@ a Feature is made at the door for one layer, by an operation the user writes on 
 patching - both removed from `main`; the branch stays unmerged as the record. ARCHITECTURE, "A
 feature is a container, not a data model". `main` is back to `Feature`, `Split`, `GetAttribute`,
 56 nodes, 151 tests. What moves on: the tutorial in VL.Overworld owes a chapter on keeping a
-dataset as a record with its own `ToFeature`.
+dataset as a record with its own `ToFeature` (one per layer, the maintainer's "数据怎么制作是数据怎么
+制作的问题"); NTS's `Features` is at 2.2.0 while this package pins 2.1.0 - look at the diff before
+`0.0.5-alpha`, a dependency bump is its own commit.
 
 **2026-10-18, evening: `0.0.4-alpha` released** - the tooltip rewrite alone, one change per release,
 and a fourth walk through the process at the maintainer's suggestion, for practice. Browser upload

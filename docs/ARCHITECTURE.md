@@ -603,6 +603,58 @@ applied at the moment a feature is made for a layer. So:
    `ToFeature` for the entrance layer if they want one. That is a lesson for the tutorial
    (VL.Overworld), where "how to keep a dataset" belongs; it is not this package's surface.
 
+**What NTS's own `Features` library is**, read on the night of the decision (the installed
+2.1.0's XML docs and the repository's `develop` sources; the README is one line, *"An implementation
+of Feature and FeatureCollection"*, and no file says why a feature has one geometry or names
+GeoJSON, Simple Features or shapefile as its model):
+
+| type | holds | their own words |
+|---|---|---|
+| `IFeature` | `Geometry`, `BoundingBox` (an optional `Envelope`), `Attributes` | "Contains a Geometry and a description of its metadata" |
+| `Feature` | the one implementation, sealed | "Standard implementation of IFeature" |
+| `IAttributesTable` / `AttributesTable` | a string-keyed bag of `object`: `Add`, `Exists`, `GetNames`, `GetValues`, `GetType(name)`, `GetOptionalValue`, indexer, `Count`; a `Dictionary<string, object>` underneath with an optional name comparer | "this feature's metadata, tagged by user-defined strings" |
+| `FeatureCollection` | `Collection<IFeature>` plus a `BoundingBox` | "Represents a feature collection" |
+| `IUnique` | an `Id` | "tagged by an identifier that's assumed to be unique" |
+
+JTS has no Feature; NTS added this for its own readers and writers, split it into its own nuget at
+2.0 (2019, dependency `NetTopologySuite [2.0, 3.0)` only; 34 packages depend on it; 2.2.0 is the
+current version, this package pins 2.1.0). Geometry first, attributes as "metadata about it", no
+schema, every value's type a per-value question. The maintainer's reading of their wording against
+ours: *they say geometry plus the metadata that describes it; we say the record is the thing and
+the geometry is one of its fields. Both hold, and the door is where one is translated into the
+other.*
+
+**How many geometries a feature carries, by system** - the survey behind "one geometry is the
+exchange format's rule":
+
+| system | geometries per feature |
+|---|---|
+| PostGIS table | any number of geometry columns (outline, centroid, entrance side by side is common) |
+| GDAL/OGR, since 1.11 | several geometry fields, field 0 the primary |
+| GeoPackage, Shapefile, ArcGIS feature class | exactly one |
+| GeoJSON, KML Placemark | one (KML's `MultiGeometry` is the workaround) |
+| Mapsui `GeometryFeature`, NTS `Feature` | one `Geometry` property, the rest in the attribute table |
+| QGIS loading a PostGIS table | asks which column; one geometry per layer |
+
+Storage allows many; every exchange and drawing layer takes one; the choice is made once, when the
+feature is made for a layer. VL.Mapsui's `FeatureLayer` converts an NTS `Feature` to a
+`GeometryFeature` with that one geometry, and `Pick` hands an NTS `Feature` back, so the NTS
+`Feature` is the currency between this package, VL.Mapsui and the GeoJSON package, and a split of
+the three Feature nodes into a package of their own (NTS's own split suggests it is legitimate)
+would buy a version number to manage and rename no node; not done.
+
+**The working model, in the maintainer's words** (2026-11-07, night): *"数据归数据… 一个 feature
+在任何其他的系统里面，它可以带更多的 geometry… 只不过是在绘制的时候，或者是在我们做计算的时候，应该拿哪个
+geometry 出来做，是一个需要选择的事情… Feature 就是一个运输容器，它不是数据模型… 相当于就是一个标签，很多标签
+拿过去就可以了。"* Concretely: a dataset is the user's `Spread` of their own record, with every
+geometry the thing has; the map does not care about features, it draws geometries and uses the
+labels for styling and for what a click returns; so from one dataset the user makes as many kinds
+of Feature as there are layers to draw (the outline layer, the entrance layer), each by an
+operation on the record that picks the geometry and `Add`s the labels for that layer; a Feature
+never goes back into the dataset. How to keep such a dataset - define the record, fill it, keep it
+in one place, make features at the door - is the tutorial's subject (VL.Overworld), where the
+maintainer wants "more care spent" on it than a package can give.
+
 `Feature`, `Split`, `GetAttribute` are the whole category. The branch stays unmerged as the record
 of what was measured (the `IVLObject` reading, `OriginalName` keys, the alphabetical property
 order, a Geometry-valued attribute drawn in the Feature box); the only piece kept on `main` is the
