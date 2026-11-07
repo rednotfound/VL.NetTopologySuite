@@ -573,7 +573,46 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="TLTd298VZlPHk462d4TS0J" Bounds="640,690,400,30" ShowValueBox="true" isIOBox="true" Value="NetTopologySuite.Index">
+          <Node Bounds="640,685,110,19" Id="GDgr8Pa8hsizsNA8NqbWDv">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Feature" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Attributes (Join)" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="Ui735KelvSYJH6sDpYBFtm" Name="Keys" Kind="InputPin" />
+            <Pin Id="UzAXUgtjLQqIM6Ibt9GmXj" Name="Values" Kind="InputPin" />
+            <Pin Id="Rnz5cZp71JlBYvK4mMkHtw" Name="Infer Types" Kind="InputPin" />
+            <Pin Id="FD8xWctmuaBlbjyAZgr8ut" Name="Attributes" Kind="OutputPin" />
+          </Node>
+          <Pad Id="V9q8aY9DSQxa3QT1RLcrxH" Bounds="830,687,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; Two columns, names and values, become attributes. 28 reads as an integer.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="640,720,110,19" Id="JmLJhnfFtgYdGRqFRxs2tG">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Feature" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Attributes (Split)" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="OmY9UUjBrR6wrZH4eeuzMP" Name="Attributes" Kind="InputPin" />
+            <Pin Id="Axu9BDP7Z9K5a8Y12wJUzA" Name="Keys" Kind="OutputPin" />
+            <Pin Id="Ru9iXcnsmhAw32vwASM8Cm" Name="Values" Kind="OutputPin" />
+          </Node>
+          <Pad Id="T9KfGZQvXiRShLJoeXbzPW" Bounds="830,722,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; Attributes as two columns again, sorted by name.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="TLTd298VZlPHk462d4TS0J" Bounds="640,760,400,30" ShowValueBox="true" isIOBox="true" Value="NetTopologySuite.Index">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -582,7 +621,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="640,730,100,19" Id="H7Wc23TqMHcsHozsvsEmcP">
+          <Node Bounds="640,800,100,19" Id="H7Wc23TqMHcsHozsvsEmcP">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Index" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="SpatialIndex" />
@@ -593,7 +632,7 @@
             <Pin Id="SsUjdXIfcJiTU6gpsYTb9I" Name="Count" Kind="OutputPin" />
             <Pin Id="Sm2JHNtBoSX76eiqKSrkdi" Name="Indexes Built" Kind="OutputPin" />
           </Node>
-          <Pad Id="Jwx58rxeBtwajS2fLTn5Ry" Bounds="830,732,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; An STRtree over many geometries, built once.">
+          <Pad Id="Jwx58rxeBtwajS2fLTn5Ry" Bounds="830,802,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; An STRtree over many geometries, built once.">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -602,7 +641,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="640,765,60,19" Id="UNdzu8keRj9c3i1W9HXJVV">
+          <Node Bounds="640,835,60,19" Id="UNdzu8keRj9c3i1W9HXJVV">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Index" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Query" />
@@ -613,7 +652,7 @@
             <Pin Id="JOGieuS0BiF6K7U4W8Lh7e" Name="Result" Kind="OutputPin" />
             <Pin Id="STiZuH1ng8vo0yJnoa368D" Name="Candidate Count" Kind="OutputPin" />
           </Node>
-          <Pad Id="PEPIsu440dygUFEhZqdK5n" Bounds="830,767,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; Which geometries MIGHT touch this one. Candidates only.">
+          <Pad Id="PEPIsu440dygUFEhZqdK5n" Bounds="830,837,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; Which geometries MIGHT touch this one. Candidates only.">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -622,7 +661,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="NnPG3qt6zI11yb8mhQ7giJ" Bounds="640,840,400,30" ShowValueBox="true" isIOBox="true" Value="NetTopologySuite.Network">
+          <Pad Id="NnPG3qt6zI11yb8mhQ7giJ" Bounds="640,910,400,30" ShowValueBox="true" isIOBox="true" Value="NetTopologySuite.Network">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -631,7 +670,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="640,880,70,19" Id="V5w9aUOewHAqldp0jiQy31">
+          <Node Bounds="640,950,70,19" Id="V5w9aUOewHAqldp0jiQy31">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Network" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="Network" />
@@ -643,7 +682,7 @@
             <Pin Id="TQ76sxcb39kmIWEclZ4235" Name="Edge Count" Kind="OutputPin" />
             <Pin Id="UdN1MULJESrvFstijCVbfI" Name="Networks Built" Kind="OutputPin" />
           </Node>
-          <Pad Id="HTmzlRYxMwLDl17whjISk2" Bounds="830,882,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; A graph from LineStrings sharing endpoints exactly.">
+          <Pad Id="HTmzlRYxMwLDl17whjISk2" Bounds="830,952,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; A graph from LineStrings sharing endpoints exactly.">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -652,7 +691,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="640,915,90,19" Id="VlXuy9vSgdcsHmzgUeKr0f">
+          <Node Bounds="640,985,90,19" Id="VlXuy9vSgdcsHmzgUeKr0f">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Network" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="ShortestPath" />
@@ -668,7 +707,7 @@
             <Pin Id="Od5S5p8M1iLsGnSGdKdet6" Name="From Snap Distance" Kind="OutputPin" />
             <Pin Id="VbRWTQSphzqX0rnuEgqXP8" Name="To Snap Distance" Kind="OutputPin" />
           </Node>
-          <Pad Id="HTz7wp5hIfikWxQMTy3wgg" Bounds="830,917,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; Dijkstra between two Points. Found can be False.">
+          <Pad Id="HTz7wp5hIfikWxQMTy3wgg" Bounds="830,987,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; Dijkstra between two Points. Found can be False.">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>

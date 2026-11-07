@@ -153,4 +153,110 @@ public class FeatureTests
             Assert.Equal(expected, value);
         }
     }
+
+    // ── Attributes (Join) / Attributes (Split): the table-shaped way in and out ──────────────
+
+    [Fact]
+    public void Join_pairs_names_with_values_and_infers_their_types()
+    {
+        var attributes = FeatureNodes.AttributesJoin(
+            new[] { "name", "platforms", "opened", "terminal", "height" },
+            new[] { "Tokyo Station", "28", "1914", "true", "3.5" });
+
+        Assert.Equal(5, attributes.Count);
+        Assert.Equal("Tokyo Station", attributes["name"]);
+        Assert.Equal(28, attributes["platforms"]);
+        Assert.Equal(1914, attributes["opened"]);
+        Assert.Equal(true, attributes["terminal"]);
+        Assert.Equal(3.5, attributes["height"]);
+    }
+
+    [Fact]
+    public void Join_without_inference_keeps_every_value_as_text()
+    {
+        var attributes = FeatureNodes.AttributesJoin(new[] { "platforms", "terminal" }, new[] { "28", "true" }, inferTypes: false);
+
+        Assert.Equal("28", attributes["platforms"]);
+        Assert.Equal("true", attributes["terminal"]);
+    }
+
+    [Fact]
+    public void Join_reads_numbers_in_the_invariant_culture_and_leaves_what_is_not_a_number_as_text()
+    {
+        var attributes = FeatureNodes.AttributesJoin(
+            new[] { "big", "thousands", "nan", "infinity", "exponent", "plus", "blank", "word" },
+            new[] { "3000000000", "1,000", "NaN", "Infinity", "1e3", "+28", "", "yes" });
+
+        Assert.Equal(3000000000L, attributes["big"]);
+        Assert.Equal("1,000", attributes["thousands"]);
+        Assert.Equal("NaN", attributes["nan"]);
+        Assert.Equal("Infinity", attributes["infinity"]);
+        Assert.Equal(1000.0, attributes["exponent"]);
+        Assert.Equal(28, attributes["plus"]);
+        Assert.Equal("", attributes["blank"]);
+        Assert.Equal("yes", attributes["word"]);
+    }
+
+    [Fact]
+    public void Join_pairs_rows_up_to_the_shorter_column_drops_empty_names_and_lets_a_later_duplicate_win()
+    {
+        var attributes = FeatureNodes.AttributesJoin(
+            new[] { "a", "", "b", "a", "d" },
+            new[] { "1", "2", "3", "4" });
+
+        Assert.Equal(2, attributes.Count);
+        Assert.Equal(4, attributes["a"]);
+        Assert.Equal(3, attributes["b"]);
+        Assert.False(attributes.ContainsKey("d"));
+    }
+
+    [Fact]
+    public void Join_with_nothing_connected_is_empty()
+    {
+        Assert.Empty(FeatureNodes.AttributesJoin(null, null));
+        Assert.Empty(FeatureNodes.AttributesJoin(new[] { "a" }, null));
+    }
+
+    [Fact]
+    public void Split_lists_the_rows_sorted_by_name_as_text()
+    {
+        FeatureNodes.AttributesSplit(
+            Attributes(("terminal", true), ("name", "Tokyo Station"), ("platforms", 28), ("height", 3.5)),
+            out var keys, out var values);
+
+        Assert.Equal(new[] { "height", "name", "platforms", "terminal" }, keys);
+        Assert.Equal(new[] { "3.5", "Tokyo Station", "28", "True" }, values);
+    }
+
+    [Fact]
+    public void Split_of_nothing_is_two_empty_columns()
+    {
+        FeatureNodes.AttributesSplit(null, out var keys, out var values);
+
+        Assert.Empty(keys);
+        Assert.Empty(values);
+    }
+
+    [Fact]
+    public void Join_undoes_Split()
+    {
+        var original = Attributes(("name", "Tokyo Station"), ("platforms", 28), ("terminal", true), ("height", 3.5));
+
+        FeatureNodes.AttributesSplit(original, out var keys, out var values);
+        var back = FeatureNodes.AttributesJoin(keys, values);
+
+        Assert.Equal(original, back);
+    }
+
+    [Fact]
+    public void A_table_becomes_a_feature_whose_attribute_reads_back_typed()
+    {
+        var attributes = FeatureNodes.AttributesJoin(new[] { "name", "platforms" }, new[] { "Tokyo Station", "28" });
+        var feature = FeatureNodes.Feature(GeometryNodes.Point(GeometryNodes.Coordinate(139.7671, 35.6812)), attributes);
+
+        var platforms = FeatureNodes.GetAttribute(feature, "platforms", out var success);
+
+        Assert.True(success);
+        Assert.Equal(28, platforms);
+    }
 }

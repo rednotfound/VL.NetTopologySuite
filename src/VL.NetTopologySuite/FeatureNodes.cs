@@ -1,6 +1,11 @@
-﻿using System.Collections.Immutable;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Globalization;
+using System.Linq;
 using NetTopologySuite.Geometries;
 using VL.Core.Import;
+using VL.Lib.Collections;
 
 using NtsFeature = NetTopologySuite.Features.Feature;
 using AttributesTable = NetTopologySuite.Features.AttributesTable;
@@ -30,7 +35,7 @@ namespace VL.NetTopologySuite;
 // produced by something that has never heard of a map and consumed by something that draws one.
 
 /// <summary>
-/// Builds features from geometry and attributes, and opens them again.
+/// Builds features from geometry and attributes, opens them again, and turns a table into attributes.
 /// </summary>
 [Name("Feature")]
 public static class FeatureNodes
@@ -149,5 +154,120 @@ public static class FeatureNodes
 
         success = false;
         return null;
+    }
+
+    // ── Attributes (Join) / Attributes (Split) ───────────────────────────────────────────────
+    //
+    // Added 2026-11-07 after the maintainer built a four-attribute feature out of four Add nodes
+    // and asked for a table. vvvv has no editable Dictionary IOBox, but a Spread IOBox IS an
+    // editable list (the 2019 IOBox update), so two of them side by side - names, values - are a
+    // table, and this node turns the two columns into the Dictionary that Feature takes. The
+    // Dictionary stays the data model: it is what GeoJSON's untyped properties object maps to,
+    // what NTS's AttributesTable holds, and what TryGetValue, Keys, Values and ForEach already
+    // work on. The surveyed alternatives (2026-11-07): a JSON text input belongs to the GeoJSON
+    // sibling, which already converts properties; a typed record per feature is a layer's schema,
+    // not a feature's, and QGIS keeps it at the layer.
+    //
+    // The values column is text, because a Spread<Object> IOBox cannot be typed into. Types are
+    // inferred the way a CSV import does it: an integer, then a floating-point number, then a
+    // boolean, otherwise the text as it is - invariant culture, so 3.5 is three and a half on
+    // every machine and 1,000 stays text. Only text that starts like a number is tried as one, so
+    // NaN and Infinity stay text. An integer becomes Int32 when it fits and Int64 otherwise; the
+    // GeoJSON reader produces Int64 for every integer, which GetAttribute's Object output hides
+    // either way.
+    //
+    // Rows are paired by index up to the shorter column; a row whose name is empty is dropped; a
+    // later duplicate name replaces an earlier one. A value is never null (an empty cell is ""),
+    // for the reason Split drops nulls.
+    //
+    // Split sorts by name: a VL Dictionary is an ImmutableDictionary, whose enumeration order is
+    // the hash trie's rather than the order rows were added in - the readout that prompted this
+    // listed terminal, name, platforms. Sorted is at least predictable. Values come out as text,
+    // the inverse of Join's input, so Join after Split with inference on gives the same table.
+    // Spread rather than IReadOnlyList on the outputs because an IOBox lists a Spread's items and
+    // shows an IReadOnlyList as a type name (measured 2026-11-07 on Geometries).
+
+    /// <summary>
+    /// Builds attributes from a column of names and a column of values, like a table.
+    /// </summary>
+    /// <remarks>
+    /// A value that looks like a number or a boolean is stored as one, the rest stay text.
+    /// Rows past the shorter column are left out.
+    /// </remarks>
+    /// <param name="keys">The attribute names, one per row.</param>
+    /// <param name="values">The values as text, one per row, for example "28" or "Tokyo Station".</param>
+    /// <param name="inferTypes">True stores 28 as an integer, 3.5 as a float and true as a boolean. False keeps every value as text.</param>
+    /// <returns>The attributes, ready for Feature.</returns>
+    [Name("Attributes (Join)")]
+    [return: Pin(Name = "Attributes")]
+    public static ImmutableDictionary<string, object> AttributesJoin(
+        IReadOnlyList<string>? keys,
+        IReadOnlyList<string>? values,
+        bool inferTypes = true)
+    {
+        var builder = ImmutableDictionary.CreateBuilder<string, object>();
+        if (keys is null || values is null)
+            return builder.ToImmutable();
+
+        var count = Math.Min(keys.Count, values.Count);
+        for (var i = 0; i < count; i++)
+        {
+            var key = keys[i];
+            if (string.IsNullOrEmpty(key))
+                continue;
+
+            var text = values[i] ?? "";
+            builder[key] = inferTypes ? Infer(text) : text;
+        }
+
+        return builder.ToImmutable();
+    }
+
+    static object Infer(string text)
+    {
+        var trimmed = text.Trim();
+        if (trimmed.Length == 0)
+            return text;
+
+        var first = trimmed[0];
+        if (char.IsDigit(first) || first == '-' || first == '+' || first == '.')
+        {
+            if (int.TryParse(trimmed, NumberStyles.Integer, CultureInfo.InvariantCulture, out var i))
+                return i;
+            if (long.TryParse(trimmed, NumberStyles.Integer, CultureInfo.InvariantCulture, out var l))
+                return l;
+            if (double.TryParse(trimmed, NumberStyles.Float, CultureInfo.InvariantCulture, out var d))
+                return d;
+        }
+        else if (bool.TryParse(trimmed, out var b))
+        {
+            return b;
+        }
+
+        return text;
+    }
+
+    /// <summary>
+    /// Takes attributes apart into a column of names and a column of values, sorted by name.
+    /// </summary>
+    /// <remarks>
+    /// Values come out as text.
+    /// Use TryGetValue or GetAttribute for a value with its type.
+    /// </remarks>
+    /// <param name="attributes">The attributes, from Split or Attributes (Join).</param>
+    /// <param name="keys">The names, one per row.</param>
+    /// <param name="values">The values as text, one per row.</param>
+    [Name("Attributes (Split)")]
+    public static void AttributesSplit(
+        ImmutableDictionary<string, object>? attributes,
+        out Spread<string> keys,
+        out Spread<string> values)
+    {
+        var rows = attributes is null
+            ? Array.Empty<KeyValuePair<string, object>>()
+            : attributes.OrderBy(pair => pair.Key, StringComparer.Ordinal).ToArray();
+
+        keys = Spread.Create(rows.Select(pair => pair.Key).ToArray());
+        values = Spread.Create(rows.Select(pair => Convert.ToString(pair.Value, CultureInfo.InvariantCulture) ?? "").ToArray());
     }
 }
