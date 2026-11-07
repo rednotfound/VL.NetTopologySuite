@@ -70,7 +70,7 @@
             <Pin Id="KoJK8T4CXgCWM5QgSgy1kq" Name="Value" Kind="InputPin" />
             <Pin Id="OMdi8Px6Etsg9womYEo553" Name="Output" Kind="StateOutputPin" />
           </Node>
-          <Pad Id="DMy3iEDvndGrHy8EK2Htuy" Bounds="580,300,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; The attributes are vvvv's own Dictionary: Add, Remove, TryGetValue, Keys, Values and a ForEach over the pairs all work. This package adds nothing there, on purpose.">
+          <Pad Id="DMy3iEDvndGrHy8EK2Htuy" Bounds="580,300,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; The attributes are vvvv's own Dictionary: one Add per pair, any value type. Remove, TryGetValue, Keys, Values and a ForEach over the pairs all work. This package adds nothing there, on purpose.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -146,7 +146,7 @@
             <Pin Id="V3MaMjCx1Q92ETjBpcjw5b" Name="Result" Kind="OutputPin" />
           </Node>
           <Pad Id="UQQZed1MOcgFWkQqzHunMB" Comment="Geometry" Bounds="60,650,312,25" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="RbZGXy3Wo9ucymP3zMfVWh" Comment="Feature" Bounds="940,430,220,230" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="RbZGXy3Wo9ucymP3zMfVWh" Comment="Feature" Bounds="940,430,220,280" ShowValueBox="true" isIOBox="true" />
           <Pad Id="UvnUZXkjoGv7r2vNVh3Pnn" Bounds="940,670,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; A Feature draws its geometry and lists its attributes.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
@@ -156,6 +156,69 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
+          <Pad Id="Kj9LCtD9f0PdcSuUUkir5F" Comment="Key" Bounds="300,170,100,15" ShowValueBox="true" isIOBox="true" Value="platforms">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="Dfy5xJgKZZHZfC6YDHgOsU" Comment="Value" Bounds="300,205,60,15" ShowValueBox="true" isIOBox="true" Value="28">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Integer32" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="300,240,53,26" Id="SV8KMStzqWSeaCzkO5B2V0">
+            <p:NodeReference LastCategoryFullName="Collections.Dictionary" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Add" />
+              <CategoryReference Kind="RecordType" Name="Dictionary" />
+            </p:NodeReference>
+            <Pin Id="Dl4oPlDuCosNXJvuCJewt8" Name="Input" Kind="StateInputPin" />
+            <Pin Id="LdovmM1iaMzXUZXWqQpDXa" Name="Key" Kind="InputPin" />
+            <Pin Id="BkDJRy70SIsmLZsg8AraQD" Name="Value" Kind="InputPin" />
+            <Pin Id="UusPqBhAKOSwhvLPQKFGNC" Name="Output" Kind="StateOutputPin" />
+          </Node>
+          <Pad Id="D9yfBmyrfTgLcoUPskhOo6" Comment="Key" Bounds="460,170,100,15" ShowValueBox="true" isIOBox="true" Value="opened">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="VRR0PntIvgOrm3R5dxinsH" Comment="Value" Bounds="460,205,60,15" ShowValueBox="true" isIOBox="true" Value="1914">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Integer32" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="460,240,53,26" Id="NY5hNpxT62l9BH3M09CUdb">
+            <p:NodeReference LastCategoryFullName="Collections.Dictionary" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Add" />
+              <CategoryReference Kind="RecordType" Name="Dictionary" />
+            </p:NodeReference>
+            <Pin Id="Iok5v1zOIU7CfJEfUVoG2q" Name="Input" Kind="StateInputPin" />
+            <Pin Id="DpnDEyd0USYLgIPNyqbnj9" Name="Key" Kind="InputPin" />
+            <Pin Id="M1eKwFw3X3SIw8e74sBKMP" Name="Value" Kind="InputPin" />
+            <Pin Id="DUi92VdbSKqq5PnYr8Gw0m" Name="Output" Kind="StateOutputPin" />
+          </Node>
+          <Pad Id="GVfvzbvfHqWUBZjEtISIkK" Comment="Key" Bounds="620,170,100,15" ShowValueBox="true" isIOBox="true" Value="terminal">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="AWj5WuuNbEiPs2Z9cASx4S" Comment="Value" Bounds="620,205,60,15" ShowValueBox="true" isIOBox="true" Value="True">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Boolean" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="620,240,53,26" Id="LRBmrju9bjE6SyzIc3O1Jd">
+            <p:NodeReference LastCategoryFullName="Collections.Dictionary" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Add" />
+              <CategoryReference Kind="RecordType" Name="Dictionary" />
+            </p:NodeReference>
+            <Pin Id="ICGipTWH2L8uNklKAYvQZC" Name="Input" Kind="StateInputPin" />
+            <Pin Id="RLBigRhem2hiAJJetymrju" Name="Key" Kind="InputPin" />
+            <Pin Id="TfU9OMAjPVukHSmqU3dP1y" Name="Value" Kind="InputPin" />
+            <Pin Id="GmaMdMlKotfj7NPRQ946P0" Name="Output" Kind="StateOutputPin" />
+          </Node>
         </Canvas>
         <Patch Id="LvahuOZMoqzxlQESwF7eYW" Name="Create" />
         <Patch Id="KCzE1eT4SpVSbOKBrqSZ6J" Name="Update" />
@@ -167,7 +230,7 @@
         <Link Id="D2KJJY8arAPgaHGX9xms8p" Ids="MjJoOINiUwKdmdKgB3tzEE,NM9j3I9cZV16ml7NzuCyeO" />
         <Link Id="TAIqMw6cOlxsNkj8fdCrW1" Ids="HKRsxzoZQASyhNmwsN3jDP,KoJK8T4CXgCWM5QgSgy1kq" />
         <Link Id="M2fvdnpxx1MQ8MCu5xDUZ6" Ids="O95HTsvidcIcDO1UoPT5jC,DVouRDemiErB15MUf9icHN" />
-        <Link Id="TAtGWB1fJ0hCnfrtc3yq3A" Ids="OMdi8Px6Etsg9womYEo553,R7F5ZXIRgo0gz2VEe3xzyF" />
+        <Link Id="TAtGWB1fJ0hCnfrtc3yq3A" Ids="GmaMdMlKotfj7NPRQ946P0,R7F5ZXIRgo0gz2VEe3xzyF" />
         <Link Id="GDcBnrlmWkdHQ65ENKHGa0" Ids="JKgSRJEldOmx0ClkcnTpbC,VPhJgwrAAKJbQRHXIJfu0z" />
         <Link Id="T0RL7vInA5Xi9qmOz3Lb32" Ids="JhYlNHa3e9uT0o6bhHJugv,PeooMkfxv8h2NoXPCvTlRW" />
         <Link Id="CFi8hz7JJYen3rrMevixtc" Ids="IuhhLU9Ane6RPnjCO7qSc5,UAy16eB4etN2RLvL60qbaw" />
@@ -177,6 +240,15 @@
         <Link Id="RZcGGIWvKdzyu1ott2i3MZ" Ids="S5ctiwzsxha6gZQcc7m7dF,VWfGTbZhEdEU3SbVgee8Jm" />
         <Link Id="V16mDAUc9cn2WM4fMKrEtR" Ids="VFcTg1TbRgJJHnFPPqBXXL,O9lIuAkNn6wosc2zP16uDY" />
         <Link Id="CrTIJnG04d347RukLl16Iw" Ids="JKgSRJEldOmx0ClkcnTpbC,RbZGXy3Wo9ucymP3zMfVWh" />
+        <Link Id="Fo79rjsWUtcM4cRNGTIKav" Ids="Kj9LCtD9f0PdcSuUUkir5F,LdovmM1iaMzXUZXWqQpDXa" />
+        <Link Id="KXIM8OjoQ8oC5l1WOLaLcr" Ids="Dfy5xJgKZZHZfC6YDHgOsU,BkDJRy70SIsmLZsg8AraQD" />
+        <Link Id="O627HtiMwc5FcKNxTqKHnw" Ids="OMdi8Px6Etsg9womYEo553,Dl4oPlDuCosNXJvuCJewt8" />
+        <Link Id="S7nOYJJPX3wJAx1NddjQnN" Ids="D9yfBmyrfTgLcoUPskhOo6,DpnDEyd0USYLgIPNyqbnj9" />
+        <Link Id="Ccy5nYE307XZWdQapb9YZ6" Ids="VRR0PntIvgOrm3R5dxinsH,M1eKwFw3X3SIw8e74sBKMP" />
+        <Link Id="Edba6yue8wdefrxjuWYZ5z" Ids="UusPqBhAKOSwhvLPQKFGNC,Iok5v1zOIU7CfJEfUVoG2q" />
+        <Link Id="RV0e7nnWtnwx6jiI24nYEe" Ids="GVfvzbvfHqWUBZjEtISIkK,RLBigRhem2hiAJJetymrju" />
+        <Link Id="TYeKOCNHDCE0r14dK9MZIw" Ids="AWj5WuuNbEiPs2Z9cASx4S,TfU9OMAjPVukHSmqU3dP1y" />
+        <Link Id="FTpGTxsBOSjoSYehJSlae1" Ids="DUi92VdbSKqq5PnYr8Gw0m,ICGipTWH2L8uNklKAYvQZC" />
       </Patch>
     </Node>
   </Patch>
