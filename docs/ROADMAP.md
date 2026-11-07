@@ -30,8 +30,7 @@ line, the town and the path, the feature with its table, a three-item gallery on
 `Outlines`' output prints `System.Collections.Generic.List`1[...]`, because an `IReadOnlyList` is
 not a VL `Spread` to the editor's viewers, while `Query`'s result lists its items. Returning
 `Spread<T>` from those nodes (VL.Core's own type) would give them the same list view - a small,
-separate change, noted here rather than slipped in. (`Attributes (Split)`, the same evening,
-returns `Spread<String>` and its readouts list; `Geometries` and `Outlines` are still to convert.)
+separate change, noted here rather than slipped in.
 
 **2026-11-07, evening: attributes as a table, and every row shown.** The maintainer asked whether
 the Dictionary was the right model for a feature's attributes and for a table-like way to enter
@@ -46,15 +45,21 @@ value cell through the editor's `AdaptiveViewer`. An `AttributesViewer` for a ba
 a CoreLib generic type, machine-wide - and the maintainer had it taken out the same evening: the
 editor's grid (typed cells, a checkbox for a boolean) is the better viewer, and the first cut's
 text-only cells were a step back. `Attributes (Split)` hands values out typed for the same reason.
-Seen in the GUI on the Attach-attributes patch.
+Seen in the GUI on the Attach-attributes patch. **Both nodes removed the same night** - see the next
+paragraph; the every-row Feature viewer stays, now a ForEach over the dictionary itself.
 
-**Next direction, the maintainer's (2026-11-07, late):** attributes with a schema. A GIS feature is
-a row of a table whose columns are defined first; in vvvv that is a Record, and `Spread<Record>`
-is the dataset. Nodes to explore on a branch: `Feature (FromRecord)` (any record's fields become
-attributes, a Geometry field the geometry) and `Record (FromFeature)` (the inverse, with defaults
-and Success), generic over the user's record through VL's `IVLObject` / `IVLTypeInfo` reflection -
-to be measured with a probe before anything is designed on it. Dictionary and `Attributes (Join)`
-stay as the schema-less path.
+**2026-11-07, night: a feature is a container, not a data model - the day's feature work undone.**
+The schema direction was built on branch `record-bridge` (the record IS the feature, through
+`IVLObject` reflection; then `Geometry Field` choosing among several geometries; two help patches,
+23 tests, all seen in vvvv), and then the maintainer, after reading NTS's own `Features` library
+(a transport object: one geometry, a bag of labels, no schema, no stated rationale), decided to go
+back to the start: data is the user's own record with as many geometries as the thing has;
+a Feature is made at the door for one layer, by an operation the user writes on their record;
+`Attributes (Join)` guessed types (`"true"` became `true`), `Attributes (Split)` was reachable by
+patching - both removed from `main`; the branch stays unmerged as the record. ARCHITECTURE, "A
+feature is a container, not a data model". `main` is back to `Feature`, `Split`, `GetAttribute`,
+56 nodes, 151 tests. What moves on: the tutorial in VL.Overworld owes a chapter on keeping a
+dataset as a record with its own `ToFeature`.
 
 **2026-10-18, evening: `0.0.4-alpha` released** - the tooltip rewrite alone, one change per release,
 and a fourth walk through the process at the maintainer's suggestion, for practice. Browser upload

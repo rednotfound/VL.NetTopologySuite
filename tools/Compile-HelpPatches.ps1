@@ -150,8 +150,6 @@ $OurNodes = @{
     # NetTopologySuite.Feature
     'Feature'            = 'FeatureNodes\.Feature\('
     'GetAttribute'       = 'FeatureNodes\.GetAttribute\('
-    'Attributes (Join)'  = 'FeatureNodes\.AttributesJoin\('
-    'Attributes (Split)' = 'FeatureNodes\.AttributesSplit\('
     # NetTopologySuite.IO
     'Read WKT'           = 'IONodes\.ReadWKT\('
     'Write WKT'          = 'IONodes\.WriteWKT\('

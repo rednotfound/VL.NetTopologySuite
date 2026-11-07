@@ -33,7 +33,7 @@
 		<VLDocument link="HowTo Wrap points in a hull.vl" tags="convexhull,hull,convex,outline,wrap,multipoint,rubberband,operation,area" />
 	</Topic>
 	<Topic title="Features">
-		<VLDocument link="HowTo Attach attributes to a geometry.vl" tags="feature,attributes,properties,dictionary,split,join,table,keys,values,getattribute,attribute,property,geojson,mapsui,ntsfeature" />
+		<VLDocument link="HowTo Attach attributes to a geometry.vl" tags="feature,attributes,properties,dictionary,add,split,getattribute,attribute,property,geojson,mapsui,ntsfeature" />
 	</Topic>
 	<Topic title="Many geometries">
 		<VLDocument link="HowTo Query many geometries fast.vl" tags="index,spatialindex,strtree,query,candidates,fast,many,performance,envelope,processnode" />

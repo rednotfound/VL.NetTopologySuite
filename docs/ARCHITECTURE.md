@@ -560,35 +560,53 @@ on this package, so that its help patches open working. So:
 
 ---
 
-### Attributes as a table — `Attributes (Join)` and `Attributes (Split)`
+### A feature is a container, not a data model — built and taken out, 2026-11-07
 
-The maintainer built a four-attribute feature on 2026-11-07 out of four `Add` nodes and asked
-whether the Dictionary was the right model at all, since "GIS tools let a feature carry a lot of
-fields, look at GeoJSON", and whether there was a table-like way in. Surveyed the same day:
+One day, three cuts, all removed the same night, kept here because the reasons are the design.
 
-- **The model stays.** GeoJSON's `properties` is an untyped JSON object (RFC 7946); NTS keeps an
-  `AttributesTable`; both are "name → any value", which is exactly VL's Dictionary (an
-  `ImmutableDictionary` underneath), so `TryGetValue`, `Keys`, `Values`, `Remove` and `ForEach` are
-  already there and the GeoJSON sibling's features are the same type. QGIS's attribute *table* is a
-  layer concept - every feature of a layer shares typed columns - and this package has no layers.
-- **The entry was the problem.** vvvv has no editable Dictionary IOBox; CoreLib offers `Add`,
-  `Cons` and `FromSequence`. But a Spread IOBox *is* an editable list (the 2019 IOBox update), so
-  two of them side by side - names, values - are a table. `Attributes (Join)` pairs the columns by
-  index and infers types the way a CSV import does (integer, float, boolean, else text; invariant
-  culture; only text that starts like a number is tried as one, so `NaN` stays text; `Infer Types`
-  off keeps everything text). `Attributes (Split)` is the inverse, sorted by name because an
-  `ImmutableDictionary` enumerates in hash order (the readout listed terminal, name, platforms); its
-  values keep their types (`Spread<Object>` - the first cut returned text and the maintainer
-  objected: a JSON writer tells `true` from `"true"`), and it returns `Spread` because a `Spread`
-  readout lists its items where an `IReadOnlyList` shows a type name.
-- **Where this leads** (the maintainer, the same evening): a GIS feature is a row of a table whose
-  columns are defined first, and in vvvv "define first, then fill" is a Record. The schema-level
-  design - a record per feature type, `Spread<Record>` as the dataset, generic bridge nodes to and
-  from NTS `Feature` through VL's `IVLObject` reflection - is being explored on a branch; the
-  Dictionary stays as the schema-less layer underneath.
-- **Not done, on purpose:** a JSON-text input (`{"name": "Tokyo Station", "platforms": 28}`)
-  belongs to VL.NetTopologySuite.GeoJSON, whose `Read GeoJSON` already converts properties; a typed
-  record per feature is a schema, which is the layer's business, not the feature's.
+**What was built.** The maintainer built a four-attribute feature out of four `Add` nodes and
+asked for a table ("添加起来很麻烦啊，不能像表格一样添加"). Surveyed: GeoJSON's `properties` is an
+untyped JSON object, NTS keeps an `AttributesTable`, both "name → any value", exactly VL's
+Dictionary; vvvv has no editable Dictionary IOBox, but a Spread IOBox *is* an editable list. So
+`Attributes (Join)` read two Spread IOBoxes as a table with CSV-style type inference, and
+`Attributes (Split)` was the inverse with typed values. The maintainer then asked for a schema -
+"a GIS feature is a row of a table whose columns are defined first", in vvvv a Record - and on
+branch `record-bridge` the record *was* the feature: `Feature (FromRecord)` / `Record (FromFeature)`
+read the user's record through `IVLObject.Type.Properties` (keys by `OriginalName`, writes with
+`WithValue`, a generic `T` pin, the editor-vs-export shape caught by an editor-shaped test double),
+first with exactly one Geometry field, then with a `Geometry Field` pin choosing among several,
+the others riding along as attributes. Two help patches, 23 tests, every cut seen in vvvv.
+
+**Why it all came out** (the maintainer, late that night, after reading NTS's own `Features`
+library): a feature is what the map and the file *take* - NTS's `IFeature` is "a Geometry and a
+description of its metadata", one geometry, a string-keyed bag, a bbox, an id, the GeoJSON object
+in C#, with no schema and no rationale written anywhere; VL.Mapsui's `FeatureLayer` and `Pick`
+and the GeoJSON package all take exactly that object. It is a transport container. The data -
+a building with its outline, its entrance, its centre - lives in the user's own record, with as
+many geometries as the thing has, and "one geometry per feature" is the exchange format's rule,
+applied at the moment a feature is made for a layer. So:
+
+1. **`Attributes (Join)` had a guess inside.** `"28"` became an integer and `"true"` a boolean;
+   JSON tells `true` from `"true"`, and the maintainer had objected to exactly that collapse
+   earlier the same day. vvvv's own `Add` chain carries each value with its type and guesses
+   nothing. A few labels on a container do not need a table.
+2. **`Attributes (Split)` was reachable by patching** - a ForEach over the dictionary with
+   CoreLib's `KeyValuePair` Split - and this package's rule is that what a patch can wire is a
+   help patch, not a node. The Feature viewer now does exactly that ForEach.
+3. **The record bridge was the fragile part**: `IVLObject` reflection, a record with no CLR
+   members in the editor and real fields after export (vl-mapsui's `ToFeatures`, 2026-08-15,
+   removed 2026-09-25). A geometry package should not carry a dependency on VL's internals to
+   provide a data model NTS itself does not have.
+4. **The idiomatic answer needs no node.** A record can carry its own operations: the user writes
+   `ToFeature` inside `Building` once - Split its fields, pick the geometry this layer draws,
+   `Add` the labels that should travel - with no reflection and nothing guessed, and a second
+   `ToFeature` for the entrance layer if they want one. That is a lesson for the tutorial
+   (VL.Overworld), where "how to keep a dataset" belongs; it is not this package's surface.
+
+`Feature`, `Split`, `GetAttribute` are the whole category. The branch stays unmerged as the record
+of what was measured (the `IVLObject` reading, `OriginalName` keys, the alphabetical property
+order, a Geometry-valued attribute drawn in the Feature box); the only piece kept on `main` is the
+Feature viewer listing every row.
 
 ## Drawing without a renderer — the HDE companion
 
@@ -616,7 +634,7 @@ the widget, so a lon/lat polygon of 0.01 degrees and a metre-grid polygon of 4,0
 alike. `PointViewer` for a lone `Point` draws a map pin inside an invisible frame. `FeatureViewer`
 shows a feature the way a GIS does on a click: the geometry drawn through the editor's
 `AdaptiveViewer` (dispatch by runtime type, so a point feature gets the pin), the attribute table under it,
-every row: `Attributes (Split)` into a ForEach whose body is the editor's own row shape (key in a
+every row: a ForEach over the dictionary itself (CoreLib's `KeyValuePair` Split) whose body is the editor's own row shape (key in a
 `FixedWidthWidget`, a `VerticalLineWidget`, the value), collected into a `Column`. The editor's
 `DictionaryViewer` was tried first and is not used, because it takes `TooltipNumberOfItemsOfCollection`
 rows - a user setting, 3 by default - and prints `...` for the rest; the maintainer saw a

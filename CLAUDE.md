@@ -18,7 +18,7 @@ always one ahead of the published one. **Every version is a prerelease** (`-alph
 process and its rules are in [docs/RELEASE.md](docs/RELEASE.md): the maintainer performs the
 irreversible step, and nuget.org's 2026 policy (API keys 30 days at most, Trusted Publishing for CI,
 browser upload for manual) is written there. Never push to nuget.org without the user's explicit
-go; a publish cannot be undone.** 58 public nodes in six categories (40 published as of `0.0.4-alpha`; the 15 of tier 1, `Outlines` and the two `Attributes` nodes landed in the tree on 2026-11-07 for `0.0.5-alpha`) — `NetTopologySuite.Network` (`Network` +
+go; a publish cannot be undone.** 56 public nodes in six categories (40 published as of `0.0.4-alpha`; the 15 of tier 1 and `Outlines` landed in the tree on 2026-11-07 for `0.0.5-alpha`) — `NetTopologySuite.Network` (`Network` +
 `ShortestPath`, an algorithm of ours, promoted from `NetTopologySuite.Experimental.Network` by
 `docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 151
 tests, 16 help patches.** All fifteen of the first wave were (re)written on 2026-09-24 in the community's measured style
@@ -141,8 +141,9 @@ Two more, learned while verifying:
 | **A Pad's `Comment` renders as a label to the RIGHT of the box** | so an IOBox occupies far more width than its `Bounds` says, and every label collision in the first help patches came from ignoring it. Give each Pad its own row, or ~200px of clear space to its right |
 | Skia `AddPoly`'s `Close` pin defaults to **True** | from SkiaSharp's `AddPoly(points, close = true)`; a polyline drawn through it needs `DefaultValue="False"` on the pin or every street closes into a zigzag. Cost one GUI round on `HowTo Find the shortest path` (2026-09-25); recipe in `docs/HELP-PATCH-STYLE.md` |
 | **A collection readout stops at 3 rows and prints `...`** | the editor setting `TooltipNumberOfItemsOfCollection` (user `settings.xml`, default 3), read by the editor's `DictionaryViewer` and sequence viewers. The maintainer saw a four-attribute feature list three. The Feature viewer lists every row itself (2026-11-07); a bare Dictionary IOBox keeps the editor's grid and its cap |
-| **A Spread IOBox is an editable table** | XML: a Pad typed `Spread` of `String` with `<p:Value><Item>…</Item></p:Value>`; two of them side by side are the attribute table `Attributes (Join)` reads. Readouts of a `Spread<T>` output list items, of an `IReadOnlyList<T>` show a type name |
-| A `[Name("Attributes (Join)")]` on a method | renders as the node `Attributes (Join)`: the parenthesised version is part of the plain name string, as `Vector (Join)` is in every shipped `.vl`; `[return: Pin(Name = "Attributes")]` names the output pin. Both confirmed by `vvvvc` resolving the link (2026-11-07) |
+| **A Spread IOBox is an editable table** | XML: a Pad typed `Spread` of `String` with `<p:Value><Item>…</Item></p:Value>`; two of them side by side were the attribute table of `Attributes (Join)`, a node built and removed on 2026-11-07. Readouts of a `Spread<T>` output list items, of an `IReadOnlyList<T>` show a type name |
+| A `[Name("Attributes (Join)")]` on a method | renders as the node `Attributes (Join)`: the parenthesised version is part of the plain name string, as `Vector (Join)` is in every shipped `.vl`; `[return: Pin(Name = "Attributes")]` names the output pin. Both confirmed by `vvvvc` resolving the link (2026-11-07; the node itself was removed the same night, the measurement stands) |
+| **A feature is a container, not a data model** | the maintainer's decision, 2026-11-07 night, after a day of building the other thing: `Attributes (Join)`/`(Split)` (a table in, a guess inside: `"true"` and `true` collapse) and a record bridge on branch `record-bridge` (`Feature (FromRecord)` / `Record (FromFeature)` through `IVLObject` reflection, three cuts, two help patches) were all taken out. NTS's own `Features` library is a transport object with no schema and no stated rationale; VL.Mapsui and the GeoJSON package take that object. The user keeps data in their own record and gives it a `ToFeature` operation (Split its fields, pick the geometry, `Add` the labels) - the tutorial's job, in VL.Overworld. `Feature`, `Split`, `GetAttribute` are the whole category |
 
 ### Laying out a patch
 
@@ -197,7 +198,7 @@ the geometry". A new patch gets that column from the start.
 
 | | proves | state |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ 160 tests, ~400 ms, no network |
+| `dotnet test` | the arithmetic is right | ✅ 151 tests, ~400 ms, no network |
 | `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 18 documents (incl. the HDE companion) |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 16 help patches, 2026-11-07 |
@@ -301,13 +302,13 @@ vl-nettopologysuite/
 │   ├── GeometryNodes.Inspection.cs    # NetTopologySuite.Geometry - Area, IsValid, Bounds, Coordinates, Outlines, Envelope, Boundary, InteriorPoint, NumPoints, IsSimple …
 │   ├── OperationNodes.cs              # NetTopologySuite.Operation - Buffer, ConvexHull, Reverse, four overlays, eight predicates + Relate, Distance, Nearest Points, IsWithinDistance
 │   ├── IONodes.cs                     # NetTopologySuite.IO - Read WKT, Write WKT
-│   ├── FeatureNodes.cs                # NetTopologySuite.Feature - Feature, Split, GetAttribute, Attributes (Join), Attributes (Split)
+│   ├── FeatureNodes.cs                # NetTopologySuite.Feature - Feature, Split, GetAttribute (the whole category: a feature is a container)
 │   ├── SpatialIndexNode.cs            # NetTopologySuite.Index - SpatialIndex (process node)
 │   ├── IndexNodes.cs                  # NetTopologySuite.Index - Query
 │   ├── Network.cs                     # NetTopologySuite.Network - the retained handle type, and the scope sentence
 │   ├── NetworkNode.cs                 # NetTopologySuite.Network - Network (process node)
 │   └── NetworkNodes.cs                # NetTopologySuite.Network - ShortestPath
-├── test/VL.NetTopologySuite.Tests/    # 160 xunit tests, no network, no vvvv
+├── test/VL.NetTopologySuite.Tests/    # 151 xunit tests, no network, no vvvv
 ├── help/VL.NetTopologySuite/          # 16 help patches + Help.xml (ordering and tags)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
 ├── docs/ARCHITECTURE.md               # why each node exists, what stays raw, the boundary
@@ -406,7 +407,7 @@ The rules that matter when touching it:
   feature gets the pin - calling `GeometryViewer` directly drew nothing for the Tokyo Station point,
   which the maintainer found in `HowTo Attach attributes`), and **every attribute as a row of its
   own**, in the editor's own `DictionaryViewer` row shape, read out of `HDE.WidgetsAndViewers.vl`:
-  `Attributes (Split)` → ForEach → `Row` of `FixedWidthWidget`(key, X 0.7) | `VerticalLineWidget` |
+  a ForEach over the dictionary itself (CoreLib's `KeyValuePair` Split) → `Row` of `FixedWidthWidget`(key, X 0.7) | `VerticalLineWidget` |
   `Flexible`(value), a `HorizontalLineWidget` above each row, both cells through the editor's
   `AdaptiveViewer` (a quoted string, a right-aligned number, a checkbox, a colour swatch) → `Column`,
   under the geometry in one `Column`. The maintainer asked for exactly the editor's look and for
