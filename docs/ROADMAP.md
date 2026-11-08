@@ -296,7 +296,7 @@ pieces, one commit each:
 
 | | | breaks anything? |
 |---|---|---|
-| **Shapes** | `Rectangle` (Position, Size, Anchor), `Rectangle (Join Points)`, `Circle`, `Ellipse`, `RegularPolygon`, `Arc`, `Sector`, over NTS's `GeometricShapeFactory`. `Anchor` is VL's `RectangleAnchor`, read on a map: `TopLeft` = north-west. Angles in cycles. A help patch `HowTo Make a shape`, drawn | no, new nodes |
+| **Shapes** | `Rectangle` (Position, Size, Anchor), `Rectangle (Join Points)`, `Circle`, `Ellipse`, `RegularPolygon`, `Arc`, `Sector`, over NTS's `GeometricShapeFactory`. `Anchor` is VL's `RectangleAnchor`, read on a map: `TopLeft` = north-west. Angles in cycles. A help patch `HowTo Make a shape`, drawn | no, new nodes. **Done 2026-11-08**: 29 tests (the TopLeft one negative-tested), every node High-flagged, all seven seen drawn in vvvv |
 | **`Vector2`** | `Point`, `LineString`, `Polygon` take `Vector2` / `Spread<Vector2>`; `ToVector2` out | no, new overloads |
 | **WKT names** | `Read WKT` → `FromWKT`, `Write WKT` → `ToWKT`, no alias. Every patch that uses them changes in the same commit: 16 help patches here, then VL.Overworld and VL.Mapsui's help in their repositories; VL.NetTopologySuite.GeoJSON follows with `FromGeoJSON` / `ToGeoJSON` | **yes**, said in the release notes |
 

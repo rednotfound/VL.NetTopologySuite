@@ -130,6 +130,14 @@ $OurNodes = @{
     'MultiLineString'    = 'GeometryNodes\.MultiLineString\('
     'MultiPolygon'       = 'GeometryNodes\.MultiPolygon\('
     'GeometryCollection' = 'GeometryNodes\.GeometryCollection\('
+    # NetTopologySuite.Geometry - shapes (2026-11-08)
+    'Rectangle'          = 'GeometryNodes\.Rectangle\('
+    'Rectangle (Join Points)' = 'GeometryNodes\.RectangleJoinPoints\('
+    'Circle'             = 'GeometryNodes\.Circle\('
+    'Ellipse'            = 'GeometryNodes\.Ellipse\('
+    'RegularPolygon'     = 'GeometryNodes\.RegularPolygon\('
+    'Arc'                = 'GeometryNodes\.Arc\('
+    'Sector'             = 'GeometryNodes\.Sector\('
     # NetTopologySuite.Geometry - inspection
     'GeometryType'       = 'GeometryNodes\.GeometryType\('
     'IsEmpty'            = 'GeometryNodes\.IsEmpty\('

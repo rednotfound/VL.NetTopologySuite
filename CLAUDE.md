@@ -19,10 +19,10 @@ always one ahead of the published one. **Every version is a prerelease** (`-alph
 process and its rules are in [docs/RELEASE.md](docs/RELEASE.md): the maintainer performs the
 irreversible step, and nuget.org's 2026 policy (API keys 30 days at most, Trusted Publishing for CI,
 browser upload for manual) is written there. Never push to nuget.org without the user's explicit
-go; a publish cannot be undone.** 56 public nodes in six categories (all 56 published as of `0.0.5-alpha`; `0.0.6-alpha` is the VL-shaped rethink: shapes, `Vector2`, `FromWKT`) — `NetTopologySuite.Network` (`Network` +
+go; a publish cannot be undone.** 63 public nodes in six categories (56 published as of `0.0.5-alpha`; `0.0.6-alpha` is the VL-shaped rethink, and its seven shape nodes landed on 2026-11-08 - `Vector2` and `FromWKT` next) — `NetTopologySuite.Network` (`Network` +
 `ShortestPath`, an algorithm of ours, promoted from `NetTopologySuite.Experimental.Network` by
-`docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 151
-tests, 16 help patches.** All fifteen of the first wave were (re)written on 2026-09-24 in the community's measured style
+`docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 180
+tests, 17 help patches.** All fifteen of the first wave were (re)written on 2026-09-24 in the community's measured style
 ([docs/HELP-PATCH-STYLE.md](docs/HELP-PATCH-STYLE.md)), every one seen in the GUI, every node opens one
 on **F1** (help flags, audited by `Test-VLPatch`), and `HowTo Find the shortest path` draws its town with
 VL.Skia through ForEach and Cache regions. The
@@ -199,10 +199,10 @@ the geometry". A new patch gets that column from the start.
 
 | | proves | state |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ 151 tests, ~400 ms, no network |
-| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 18 documents (incl. the HDE companion) |
+| `dotnet test` | the arithmetic is right | ✅ 180 tests, ~400 ms, no network |
+| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 19 documents (incl. the HDE companion) |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
-| `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 16 help patches, 2026-11-07 |
+| `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 17 help patches, 2026-11-08 |
 | `tools\Test-Install.ps1` | the **packed** package installs from `dist\feed` with its dependencies, and every help patch inside the install compiles with that install as the only repository | ✅ 2026-09-25, first pass |
 | the vvvv **NodeBrowser** | **which category a node is in** | ✅ 2026-10-17: typing `NetTopologySuite` lists the category folder `NetTopologySuite` and the package; its nodes sit under `NetTopologySuite.Geometry` … `.Network` (was `NTS` until that day) |
 | the vvvv **GUI, running** | the patch computes the right value | ✅ 2026-08-14, vvvv 7.4; all 15 help patches 2026-09-24, reviewed by the maintainer 2026-09-25; the six tier-1 patches 2026-11-07 |
@@ -305,6 +305,7 @@ vl-nettopologysuite/
 │   ├── Defaults.cs                    # ⭐ the default factory and the defensive copying
 │   ├── InputSets.cs                   # the rebuild-detection rule SpatialIndex and Network share
 │   ├── GeometryNodes.Creation.cs      # NetTopologySuite.Geometry - Coordinate .. GeometryCollection
+│   ├── GeometryNodes.Shapes.cs        # NetTopologySuite.Geometry - Rectangle, Rectangle (Join Points), Circle, Ellipse, RegularPolygon, Arc, Sector
 │   ├── GeometryNodes.Inspection.cs    # NetTopologySuite.Geometry - Area, IsValid, Bounds, Coordinates, Outlines, Envelope, Boundary, InteriorPoint, NumPoints, IsSimple …
 │   ├── OperationNodes.cs              # NetTopologySuite.Operation - Buffer, ConvexHull, Reverse, four overlays, eight predicates + Relate, Distance, Nearest Points, IsWithinDistance
 │   ├── IONodes.cs                     # NetTopologySuite.IO - Read WKT, Write WKT
@@ -314,8 +315,8 @@ vl-nettopologysuite/
 │   ├── Network.cs                     # NetTopologySuite.Network - the retained handle type, and the scope sentence
 │   ├── NetworkNode.cs                 # NetTopologySuite.Network - Network (process node)
 │   └── NetworkNodes.cs                # NetTopologySuite.Network - ShortestPath
-├── test/VL.NetTopologySuite.Tests/    # 151 xunit tests, no network, no vvvv
-├── help/VL.NetTopologySuite/          # 16 help patches + Help.xml (ordering and tags)
+├── test/VL.NetTopologySuite.Tests/    # 180 xunit tests, no network, no vvvv
+├── help/VL.NetTopologySuite/          # 17 help patches + Help.xml (ordering and tags)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
 ├── docs/ARCHITECTURE.md               # why each node exists, what stays raw, the boundary
 ├── docs/HELP-PATCH-STYLE.md           # the community's help style, measured; help flags; the Skia recipe
