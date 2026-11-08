@@ -21,7 +21,7 @@ irreversible step, and nuget.org's 2026 policy (API keys 30 days at most, Truste
 browser upload for manual) is written there. Never push to nuget.org without the user's explicit
 go; a publish cannot be undone.** 65 public nodes in six categories (56 published as of `0.0.5-alpha`; `0.0.6-alpha` is the VL-shaped rethink: seven shape nodes, `Coordinate (FromVector2)` / `ToVector2`, and `Read WKT` / `Write WKT` renamed `FromWKT` / `ToWKT` with no alias, all on 2026-11-08) — `NetTopologySuite.Network` (`Network` +
 `ShortestPath`, an algorithm of ours, promoted from `NetTopologySuite.Experimental.Network` by
-`docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 203
+`docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 204
 tests, 17 help patches.** All fifteen of the first wave were (re)written on 2026-09-24 in the community's measured style
 ([docs/HELP-PATCH-STYLE.md](docs/HELP-PATCH-STYLE.md)), every one seen in the GUI, every node opens one
 on **F1** (help flags, audited by `Test-VLPatch`), and `HowTo Find the shortest path` draws its town with
@@ -199,7 +199,7 @@ the geometry". A new patch gets that column from the start.
 
 | | proves | state |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ 203 tests, ~400 ms, no network |
+| `dotnet test` | the arithmetic is right | ✅ 204 tests, ~400 ms, no network |
 | `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 19 documents (incl. the HDE companion) |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 17 help patches, 2026-11-08 |
@@ -315,7 +315,7 @@ vl-nettopologysuite/
 │   ├── Network.cs                     # NetTopologySuite.Network - the retained handle type, and the scope sentence
 │   ├── NetworkNode.cs                 # NetTopologySuite.Network - Network (process node)
 │   └── NetworkNodes.cs                # NetTopologySuite.Network - ShortestPath
-├── test/VL.NetTopologySuite.Tests/    # 203 xunit tests, no network, no vvvv
+├── test/VL.NetTopologySuite.Tests/    # 204 xunit tests, no network, no vvvv
 ├── help/VL.NetTopologySuite/          # 17 help patches + Help.xml (ordering and tags)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
 ├── docs/ARCHITECTURE.md               # why each node exists, what stays raw, the boundary
@@ -406,7 +406,7 @@ The rules that matter when touching it:
   to a Bottom one with `IsFeedback="true"`, the pattern of VL.Skia's `HowTo Compose PathEffects`),
   `SetFillType` EvenOdd cuts the holes, one `DrawPath` fills at 0.25 alpha and one strokes; lines
   are stroked; points become `Circle` markers with radius 2% of the bounds' larger side; all of it
-  goes through `Group` to the editor's own `LayerViewer`, which fits the bounds into the widget.
+  goes through `Group` and a `TransformSRT` into a `LayerWidget` (see the sticky view below).
   `PointViewer` for a lone Point draws a map pin (head, tip, white eye) inside an invisible
   `Rectangle` frame, so the pin is a marker in the box and not the box; the editor picks the viewer
   registered for the most specific type. `FeatureViewer` for a Feature: `Split`, the geometry through
@@ -439,17 +439,20 @@ The rules that matter when touching it:
   it gets every frame). `ViewFrame` (`ViewFrameNode.cs`, a process node in the hidden category
   `NetTopologySuite.Viewer`) keeps the frame until the shape outgrows it or fills less than a
   third (a fresh one gives the shape 80% of the view: 1.6 first, and the maintainer saw half
-  the box used), and gives `GeometryViewer` an invisible frame Rectangle, the grid as Skia
-  `Points` and a label `4 × 2 · grid 1`, all in Skia space. **The view is 4:3 and fills the
-  widget** because `GeometryViewer` draws through `MapLayerViewer`, the editor's `LayerViewer`
-  copied verbatim into the HDE document with three values changed (FixAspectRatio reference
-  4,3; Scale 8/3,2; margin 1): `LayerViewer` squares whatever bounds it gets, so its side strips
-  stayed empty, and anything drawn into them counts toward the bounds and zooms everything out.
-  **The copy needs `IsFriend="true"` on the document's VL.Skia dependency**, as VL.HDE's own
-  document has it: without it `InViewport`, `Rectangle (Join Cached)` and SkiaPaint's `Color`
-  are `Not found` (VL.Skia internals), the log says only "has errors", and the IOBoxes draw white
-  and empty. The HDE document does not open as a patch through the launcher; the maintainer
-  found the red nodes by File → Open on the `dist` copy. Seen working: an LFO-driven width moved the
+  the box used), and gives `GeometryViewer` the grid as Skia `Points`, a label `4 × 2 · grid 1`
+  and the `Scaling` / `Translation` that put its 4:3 view exactly onto the widget. **The viewer
+  is the community's pattern, not the editor's `LayerViewer`**: `LayerWidget (Stateful)` (Size
+  1.6, 1.2, the editor's own) around a `TransformSRT`, background from `TooltipPaint` → `Color`,
+  as in VL.Skia's help `Example Particle Life.HDE.vl` (VL.Audio's HDE also uses `LayerWidget`);
+  public nodes only. `LayerViewer` squares whatever bounds it gets, so its side strips stayed
+  empty, and anything drawn into them counts toward the bounds and zooms everything out.
+  **Tried and rejected the same day:** copying `LayerViewer` into the HDE with its fit set to 4:3
+  - it worked, but only with `IsFriend="true"` on the VL.Skia dependency (it uses three VL.Skia
+  internals: `InViewport`, `Rectangle (Join Cached)`, SkiaPaint's `Color`), and of the nine HDE
+  documents shipped with vvvv 7.4 none but VL.HDE's own declares a friend; the maintainer asked
+  for the usual way. Without the friend those three were `Not found`, the log said only "has
+  errors" and the IOBoxes drew white - found by File → Open on the `dist` copy of the HDE
+  document (the launcher shows an empty window for it) and hovering the red nodes. Seen working: an LFO-driven width moved the
   rectangle inside a still grid, so the editor keeps one viewer instance per IOBox. Three
   traps paid for on the way: `[Smell(SymbolSmell.Internal)]` makes a node *unresolvable* from
   another document (the HDE one included) - `Hidden` is the smell that only hides it; a Skia

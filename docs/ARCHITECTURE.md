@@ -766,9 +766,9 @@ solid, and where its holes are must be visible.* `GeometryViewer` for every `Geo
 sorts it into rings, lines and points; every ring goes into one Skia path (a ForEach accumulator)
 filled even-odd at 0.25 alpha so holes and multipolygons come out right, and stroked; lines are
 stroked; points in a collection are circle markers sized at 2% of the bounds; Y is negated
-throughout (geometry is y-up, Skia y-down); the editor's own `LayerViewer` fits the result into
-the widget, so a lon/lat polygon of 0.01 degrees and a metre-grid polygon of 4,000 fill the box
-alike. `PointViewer` for a lone `Point` draws a map pin inside an invisible frame. `FeatureViewer`
+throughout (geometry is y-up, Skia y-down); the result is scaled into the widget (first by the
+editor's own `LayerViewer`, since 2026-11-08 by `ViewFrame`, below), so a lon/lat polygon of 0.01
+degrees and a metre-grid polygon of 4,000 fill the box alike. `PointViewer` for a lone `Point` draws a map pin inside an invisible frame. `FeatureViewer`
 shows a feature the way a GIS does on a click: the geometry drawn through the editor's
 `AdaptiveViewer` (dispatch by runtime type, so a point feature gets the pin), the attribute table under it,
 every row: a ForEach over the dictionary itself (CoreLib's `KeyValuePair` Split) whose body is the editor's own row shape (key in a
@@ -813,10 +813,10 @@ lists X, Y and Z, which is what a coordinate is.
 The editor's `LayerViewer` fits the bounds of the layers it is given into the box, every frame.
 For a picture of one value that is right; for a value being edited it hides the edit - the
 maintainer made a Rectangle wider and saw it get lower, changed a Circle's radius and saw
-nothing. The bounds are ours to choose, though (PointViewer already frames its pin with an
-invisible Rectangle), so `GeometryViewer` now draws inside a frame decided by `ViewFrame`:
+nothing. So `GeometryViewer` no longer goes through `LayerViewer`; it draws into a view decided
+by `ViewFrame`:
 
-- **Sticky.** A fresh view is the shape's larger side times 1.25, square, centred. It stays while
+- **Sticky.** A fresh view is 1.25 times the shape in its binding direction, 4:3, centred. It stays while
   the shape fits inside it and fills at least a third of it, so a radius or a width being
   dragged changes the drawing, not the zoom. State is per viewer instance, and the editor keeps
   one per IOBox (measured: an LFO-driven width moved inside a still grid); a tooltip is a new
@@ -832,12 +832,17 @@ invisible Rectangle), so `GeometryViewer` now draws inside a frame decided by `V
   InViewport): a 4:3 view came out smaller (59% of the widget), a square one filled 95% of its
   height and nothing more, and a grid drawn into the strips only widened the bounds and zoomed out
   (every Skia layer tried counts toward the bounds; only `Text` reports just its box). So
-  `GeometryViewer` draws through `MapLayerViewer`: `LayerViewer` copied verbatim into the HDE
-  document, with the reference size 4,3, the scaling 8/3,2 and no margin. That copy uses three
-  VL.Skia internals and resolves only because the document's VL.Skia dependency is
-  `IsFriend="true"`, as in VL.HDE's own. `PointViewer` still uses the editor's `LayerViewer`.
+  `GeometryViewer` uses the pattern of VL.Skia's own help, `Example Particle Life.HDE.vl`:
+  `LayerWidget (Stateful)` with the editor's size, 1.6 × 1.2, around a `TransformSRT` whose
+  Scaling and Translation `ViewFrame` computes, so the 4:3 view lands exactly on the widget
+  (origin top-left, y down, in the widget's units). Public nodes only; VL.Audio's HDE uses
+  `LayerWidget` the same way. `PointViewer` still uses the editor's `LayerViewer`.
+- **Rejected: a copy of `LayerViewer`.** It was tried first (fit 4:3, no margin) and worked, but
+  only with `IsFriend="true"` on the VL.Skia dependency, because it uses three VL.Skia internals.
+  Of the nine HDE documents shipped with vvvv 7.4, none but VL.HDE's own declares a friend. The
+  maintainer asked that the solution follow the usual way, so it went.
 
-The arithmetic is C# (`ViewFrameNode.cs`, 18 tests, the stickiness negative-tested) rather than
+The arithmetic is C# (`ViewFrameNode.cs`, 19 tests, the stickiness negative-tested) rather than
 patch logic, because the companion cannot be compiled by `vvvvc` and conditions in hand-written
 patch XML are where mistakes hide. It is a node, so it is public, and it carries
 `[Smell(SymbolSmell.Hidden)]` so the NodeBrowser does not list it - not `Internal`, which was

@@ -17,9 +17,9 @@ namespace VL.NetTopologySuite;
 //
 // Why it exists (the maintainer, 2026-11-08): the editor's LayerViewer fits whatever it is given
 // into the box every frame, so a size change was invisible - a Rectangle made wider looked as if it
-// became lower, a Circle looked the same at every radius. LayerViewer fits the bounds of the layers
-// it draws, and those are ours to set (PointViewer already frames its pin with an invisible
-// Rectangle). So this decides the frame, and adds the two things a map has for scale:
+// became lower, a Circle looked the same at every radius. So GeometryViewer decides its own view:
+// this node picks it, and hands out the Scaling and Translation that put it onto the viewer's
+// LayerWidget, plus the two things a map has for scale:
 //
 // - A STICKY view (hysteresis). It keeps the last frame while the shape fits inside it and fills
 //   at least a third of it; only then does it re-fit, with headroom, so the next edits show as
@@ -46,41 +46,55 @@ public sealed class ViewFrameNode
     /// Keeps the view while the geometry fits it, and lays out the grid and the label.
     /// </summary>
     /// <param name="geometry">The geometry being shown.</param>
-    /// <param name="framePosition">The centre of the view, in Skia space.</param>
-    /// <param name="frameSize">The size of the view.</param>
     /// <param name="grid">The grid points inside the view, in Skia space.</param>
     /// <param name="dotSize">The size of a grid dot.</param>
     /// <param name="label">The geometry's width and height, and the grid step.</param>
     /// <param name="labelPosition">The bottom-left corner of the label, in Skia space.</param>
     /// <param name="labelSize">The box the label is drawn in.</param>
     /// <param name="textSize">The height of the label text.</param>
+    /// <param name="scaling">Scales the view into the viewer's widget.</param>
+    /// <param name="translation">Moves the view into the viewer's widget.</param>
     public void Update(
         Geometry? geometry,
-        out Vector2 framePosition,
-        out Vector2 frameSize,
         out Spread<Vector2> grid,
         out float dotSize,
         out string label,
         out Vector2 labelPosition,
         out Vector2 labelSize,
-        out float textSize)
+        out float textSize,
+        out Vector2 scaling,
+        out Vector2 translation)
     {
         var shape = geometry is null || geometry.IsEmpty ? null : geometry.EnvelopeInternal;
         _view = ViewFrame.Next(_view, shape);
-        ViewFrame.Layout(_view, shape, out framePosition, out frameSize, out grid, out dotSize,
+        ViewFrame.Layout(_view, shape, out grid, out dotSize,
             out label, out labelPosition, out labelSize, out textSize);
+        ViewFrame.ToWidget(_view, out scaling, out translation);
     }
 }
 
 internal static class ViewFrame
 {
-    // The viewer's widget is 4:3 (1.6 x 1.2). The editor's own LayerViewer squares whatever bounds
-    // it gets (FixAspectRatio, reference 1 x 1), so a square view was the most it could fill and
-    // the strips left and right stayed empty; a grid drawn into them only widened the bounds and
-    // zoomed everything out (measured 2026-11-08: the circle went from 310 to 240 pixels). So
-    // GeometryViewer uses MapLayerViewer, LayerViewer copied into the HDE document with its fit
-    // set to 4:3 and no margin, and the view here is 4:3: the frame IS the area shown.
-    internal const double Aspect = 4.0 / 3.0;
+    // The viewer draws into a LayerWidget of WidgetWidth x WidgetHeight - the size the editor's own
+    // LayerViewer uses - whose space starts at its top-left corner, y down, in the widget's units
+    // (the pattern of VL.Skia's "Example Particle Life.HDE.vl": LayerWidget (Stateful) around a
+    // TransformSRT). ToWidget below maps the view onto it exactly, so the view has its aspect.
+    // Not LayerViewer: it squares whatever bounds it gets, so the strips left and right of a view
+    // stayed empty, and a grid drawn into them only widened the bounds and zoomed everything out
+    // (measured 2026-11-08: the circle went from 310 to 240 pixels).
+    internal const double WidgetWidth = 1.6;
+    internal const double WidgetHeight = 1.2;
+    internal const double Aspect = WidgetWidth / WidgetHeight;
+
+    // Uniform scale and offset that put the view's top-left corner (Skia space: MinX, -MaxY) at the
+    // widget's (0, 0) and its bottom-right at (WidgetWidth, WidgetHeight). TransformSRT scales,
+    // then translates.
+    internal static void ToWidget(Envelope view, out Vector2 scaling, out Vector2 translation)
+    {
+        var s = WidgetWidth / view.Width;
+        scaling = new Vector2((float)s, (float)s);
+        translation = new Vector2((float)(-view.MinX * s), (float)(view.MaxY * s));
+    }
 
     // A fresh view gives the shape 1 / Headroom of the view in its binding direction, so it can
     // grow by a quarter before the view moves; the view re-fits when the shape fills less than
@@ -137,13 +151,10 @@ internal static class ViewFrame
 
     internal static void Layout(
         Envelope view, Envelope? shape,
-        out Vector2 framePosition, out Vector2 frameSize, out Spread<Vector2> grid, out float dotSize,
+        out Spread<Vector2> grid, out float dotSize,
         out string label, out Vector2 labelPosition, out Vector2 labelSize, out float textSize)
     {
         var step = Step(view.Width);
-
-        framePosition = new Vector2((float)view.Centre.X, (float)-view.Centre.Y);
-        frameSize = new Vector2((float)view.Width, (float)view.Height);
 
         label = shape is null
             ? $"grid {Format(step)}"

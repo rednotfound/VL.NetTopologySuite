@@ -83,11 +83,8 @@ public class ViewFrameTests
     {
         var shape = Box(0, 0, 4, 2);
         var view = ViewFrame.Next(null, shape);
-        ViewFrame.Layout(view, shape, out var position, out var size, out var grid, out _, out var label, out var labelAt, out _, out _);
-        Assert.Equal(2f, position.X, 4);
-        Assert.Equal(-1f, position.Y, 4);           // centre y = 1 on the map, -1 in Skia
-        Assert.Equal((float)view.Width, size.X, 4);
-        Assert.True(labelAt.Y > position.Y);         // the label sits at the bottom: larger Skia y
+        ViewFrame.Layout(view, shape, out var grid, out _, out var label, out var labelAt, out _, out _);
+        Assert.True(labelAt.Y > -view.Centre.Y);     // the label sits at the bottom: larger Skia y
         Assert.Equal("4 × 2 · grid 1", label);
         Assert.Contains(grid, p => p.X == 0 && p.Y == 0);
         Assert.Contains(grid, p => p.X == 1 && p.Y == -1);  // map (1, 1) is Skia (1, -1)
@@ -97,7 +94,7 @@ public class ViewFrameTests
     public void Nothing_to_show_gives_a_unit_view_and_no_size_in_the_label()
     {
         var view = ViewFrame.Next(null, null);
-        ViewFrame.Layout(view, null, out _, out _, out var grid, out _, out var label, out _, out _, out _);
+        ViewFrame.Layout(view, null, out var grid, out _, out var label, out _, out _, out _);
         Assert.Equal(1, view.Width, 9);
         Assert.Equal(0.75, view.Height, 9);
         Assert.StartsWith("grid ", label);
@@ -109,7 +106,7 @@ public class ViewFrameTests
     {
         var shape = Box(0, 0, 2000, 3000);                   // the maintainer's tall rectangle
         var view = ViewFrame.Next(null, shape);
-        ViewFrame.Layout(view, shape, out _, out _, out var grid, out _, out var label, out var at, out var box, out var text);
+        ViewFrame.Layout(view, shape, out var grid, out _, out var label, out var at, out var box, out var text);
         var right = at.X + ViewFrame.LabelWidth(label, text);
         Assert.Equal(text, box.Y, 2);                        // a box the text's height and width
         Assert.Equal(right - at.X, box.X, 2);
@@ -124,7 +121,7 @@ public class ViewFrameTests
         // The maintainer, 2026-11-08: why are the strips left and right empty?
         var shape = Box(0, 0, 2, 3);
         var view = ViewFrame.Next(null, shape);
-        ViewFrame.Layout(view, shape, out _, out _, out var grid, out _, out _, out _, out _, out _);
+        ViewFrame.Layout(view, shape, out var grid, out _, out _, out _, out _, out _);
         var step = ViewFrame.Step(view.Width);
         Assert.Contains(grid, p => p.X < view.MinX + step);
         Assert.Contains(grid, p => p.X > view.MaxX - step);
@@ -132,13 +129,26 @@ public class ViewFrameTests
     }
 
     [Fact]
+    public void The_view_maps_exactly_onto_the_widget()
+    {
+        // TransformSRT: p * scaling + translation, in Skia space (y down).
+        var view = ViewFrame.Next(null, Box(10, 20, 14, 22));
+        ViewFrame.ToWidget(view, out var s, out var t);
+        Assert.Equal(s.X, s.Y);                                           // uniform: no distortion
+        Assert.Equal(0f, (float)view.MinX * s.X + t.X, 4);                // north-west corner -> (0, 0)
+        Assert.Equal(0f, (float)-view.MaxY * s.Y + t.Y, 4);
+        Assert.Equal((float)ViewFrame.WidgetWidth, (float)view.MaxX * s.X + t.X, 4);   // south-east -> (1.6, 1.2)
+        Assert.Equal((float)ViewFrame.WidgetHeight, (float)-view.MinY * s.Y + t.Y, 4);
+    }
+
+    [Fact]
     public void The_node_keeps_its_view_between_frames()
     {
         var node = new ViewFrameNode();
-        node.Update(GeometryNodes.Rectangle(new Coordinate(0, 0), 4, 2), out var p1, out var s1, out _, out _, out _, out _, out _, out _);
-        node.Update(GeometryNodes.Rectangle(new Coordinate(0, 0), 5, 2), out var p2, out var s2, out _, out _, out var label, out _, out _, out _);
-        Assert.Equal(s1, s2);
-        Assert.Equal(p1, p2);
+        node.Update(GeometryNodes.Rectangle(new Coordinate(0, 0), 4, 2), out _, out _, out _, out _, out _, out _, out var s1, out var t1);
+        node.Update(GeometryNodes.Rectangle(new Coordinate(0, 0), 5, 2), out _, out _, out var label, out _, out _, out _, out var s2, out var t2);
+        Assert.Equal(s1, s2);                        // the same zoom and offset: the view stayed
+        Assert.Equal(t1, t2);
         Assert.StartsWith("5 × 2", label);
     }
 }
