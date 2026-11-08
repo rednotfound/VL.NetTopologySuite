@@ -93,6 +93,14 @@ with the node that makes it. A patch about two geometries also shows them *toget
 Measure distance draws the gap itself as a `LineString` through the two nearest points. The
 Explanation front door has a gallery of three (point, line, polygon with hole) at `x = 1300`.
 
+**A patch of several independent nodes is a grid of cells, not a column** (the maintainer,
+2026-11-08). `HowTo Make a shape` first fed one `Coordinate` into all seven shape nodes and drew
+them in the `x = 940` column: every link ran to a helper that does not matter, and each drawing sat
+far from its node and its note. Now each shape is a cell, 3 across (`x` 60 / 540 / 1020, rows 340
+apart): its own `Coordinate` and value IOBoxes above, the node, the drawing right under the node
+(no label: it would run into the note), the note beside the drawing. The shared idea - a Vector2
+from VL becomes a Coordinate - is a cell of its own.
+
 The box is an ordinary readout Pad with a `Comment` and no `Value`, linked from the node's output;
 vvvv types it from the link. **A dictionary readout needs room**: at 58 or 100 pixels high the
 editor collapses a `Dictionary<String, Object>` to its type name, at 249 × 200 it lists the rows -

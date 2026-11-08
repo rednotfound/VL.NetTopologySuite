@@ -1,21 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Document xmlns:p="property" xmlns:r="reflection" Id="SGmQDwV4BK0ePcRDi6qgnK" LanguageVersion="2025.7.4" Version="0.128">
-  <NugetDependency Id="D7w8OUifNXW1W0Ei3ewZNP" Location="VL.CoreLib" Version="2025.7.4" />
-  <Patch Id="UMiE3ws43aF6imXD8JX0Ob">
-    <Canvas Id="C3VNnocbf8WyJYdXc4v0b0" DefaultCategory="Main" BordersChecked="false" CanvasType="FullCategory" />
+<Document xmlns:p="property" xmlns:r="reflection" Id="B5sXlZjFxcuUkmEUfG47cr" LanguageVersion="2025.7.4" Version="0.128">
+  <NugetDependency Id="QZv73cRCAHRdzb5tevmVpO" Location="VL.CoreLib" Version="2025.7.4" />
+  <Patch Id="DMYggRJ1wM1Xh4rUAsQoLn">
+    <Canvas Id="OpjOlhvPhf0oAXlN6mr9ZW" DefaultCategory="Main" BordersChecked="false" CanvasType="FullCategory" />
     <!--
 
     ************************ Application ************************
 
 -->
-    <Node Name="Application" Bounds="100,100" Id="NN7oNldYwYRoFhv0MKAiOK">
+    <Node Name="Application" Bounds="100,100" Id="DEQ4KUEmZJRqMc14tZUt5u">
       <p:NodeReference>
         <Choice Kind="ContainerDefinition" Name="Process" />
         <CategoryReference Kind="Category" Name="Primitive" />
       </p:NodeReference>
-      <Patch Id="NnZudBJOg3jqOGIsNeF22j">
-        <Canvas Id="FwPE40AlhImj47lO7rheLG" CanvasType="Group">
-          <Pad Id="KBh9bVQnbPXOuGunWOO57y" Bounds="60,40,525,41" ShowValueBox="true" isIOBox="true" Value="Make shapes by position and size!">
+      <Patch Id="ItftlZBXfm59Piyf1e4HpG">
+        <Canvas Id="QgYeHqS0gmU7NN7bAOGVqe" CanvasType="Group">
+          <Pad Id="BMo4CPf0S4lDTKL8vEM452" Bounds="60,40,525,41" ShowValueBox="true" isIOBox="true" Value="Make shapes by position and size!">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -24,7 +24,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="Qw7HaDtvs9qiCoV5JZFZQV" Bounds="60,90,480,46" ShowValueBox="true" isIOBox="true" Value="Like VL.Skia: a position, a size, an anchor. The coordinates are a map's: y grows north.">
+          <Pad Id="CrF38u8clh4unQ3ZEn7tEo" Bounds="60,90,480,46" ShowValueBox="true" isIOBox="true" Value="Like VL.Skia: a position, a size, an anchor. The coordinates are a map's: y grows north.">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -33,99 +33,86 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="Lxox3o5fGMbsMERgFhFvQP" Comment="Position" Bounds="60,150,35,38" ShowValueBox="true" isIOBox="true" Value="0, 0">
-            <p:TypeAnnotation LastCategoryFullName="2D" LastDependency="VL.CoreLib.vl">
-              <Choice Kind="TypeFlag" Name="Vector2" />
-            </p:TypeAnnotation>
-          </Pad>
-          <Node Bounds="60,200,140,19" Id="KgCdSeby0eNsAB3d0VmViF">
+          <Node Bounds="60,170,90,19" Id="QHzV9y1FYyqztPb2iZEagf">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Coordinate (FromVector2)" />
+              <Choice Kind="OperationCallFlag" Name="Coordinate" />
+              <PinReference Kind="InputPin" Name="X" />
+              <PinReference Kind="InputPin" Name="Y" />
             </p:NodeReference>
-            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
-            <Pin Id="DzsAPiAtoczngZDqIXSSoI" Name="Vector" Kind="InputPin" />
-            <Pin Id="DlEIUXDRVPhRxqGi6bq8Hw" Name="Result" Kind="OutputPin" />
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="AwQKK955LVG2LphYMNCN6i" Name="X" Kind="InputPin" DefaultValue="0">
+              <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+                <Choice Kind="TypeFlag" Name="Float64" />
+              </p:TypeAnnotation>
+            </Pin>
+            <Pin Id="D7jCfTQynRB1h54OnJeXGK" Name="Y" Kind="InputPin" DefaultValue="0">
+              <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+                <Choice Kind="TypeFlag" Name="Float64" />
+              </p:TypeAnnotation>
+            </Pin>
+            <Pin Id="VMkkhMGzr1Zk8OsOyuORGl" Name="Result" Kind="OutputPin" />
           </Node>
-          <Node Bounds="260,200,70,19" Id="CCJmVb3EEuWz6jcUGCO3M5">
-            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
-              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="ToVector2" />
-            </p:NodeReference>
-            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
-            <Pin Id="RqHxtlUSmE1OquS4lWq5na" Name="Coordinate" Kind="InputPin" />
-            <Pin Id="LWUS02VOvYEFXHlYFQvmnZ" Name="Result" Kind="OutputPin" />
-          </Node>
-          <Pad Id="MVzQP99FBZ0AaQ7lk6GCUL" Comment="Back" Bounds="360,200,40,38" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="Ct3iIwKGnK6U9w2fnakvEh" Bounds="580,150,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; A Vector2 from anywhere in VL - a mouse, Skia - becomes the position of every shape below. ToVector2 goes back.">
-            <p:TypeAnnotation>
-              <Choice Kind="TypeFlag" Name="String" />
+          <Pad Id="KLLoXB7MhORrK5BUzTI4cu" Comment="Width" Bounds="190,170,50,15" ShowValueBox="true" isIOBox="true" Value="4">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Float64" />
             </p:TypeAnnotation>
-            <p:ValueBoxSettings>
-              <p:fontsize p:Type="Int32">9</p:fontsize>
-              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
-            </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="KyIJVjjUmibmYbYz1OogHf" Comment="Anchor" Bounds="200,300,90,19" ShowValueBox="true" isIOBox="true" Value="TopLeft">
+          <Pad Id="O3jvrcfVfRswnlEIuzwicN" Comment="Height" Bounds="190,192,50,15" ShowValueBox="true" isIOBox="true" Value="2">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Float64" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="SOHQeKryUbW1VtUnD18zDC" Comment="Anchor" Bounds="190,214,90,19" ShowValueBox="true" isIOBox="true" Value="TopLeft">
             <p:TypeAnnotation LastCategoryFullName="2D" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="RectangleAnchor" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="60,340,160,19" Id="GFxbVrkqZHxzTlBIaYtjPh">
+          <Node Bounds="60,260,200,19" Id="O3SGoOeJI7eVlWdcm0OeL1">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Rectangle" />
-              <PinReference Kind="InputPin" Name="Height" />
-              <PinReference Kind="InputPin" Name="Width" />
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
-            <Pin Id="QoxrycR5q621sahZj2ZSmx" Name="Position" Kind="InputPin" />
-            <Pin Id="SU2kFfgqJetyQCxEnY4U5m" Name="Width" Kind="InputPin" DefaultValue="4">
-              <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
-                <Choice Kind="TypeFlag" Name="Float64" />
-              </p:TypeAnnotation>
-            </Pin>
-            <Pin Id="MARqoQFMMormJSFkMSZDWj" Name="Height" Kind="InputPin" DefaultValue="2">
-              <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
-                <Choice Kind="TypeFlag" Name="Float64" />
-              </p:TypeAnnotation>
-            </Pin>
-            <Pin Id="KbpqlWkdwkBfKrQRFexZKC" Name="Anchor" Kind="InputPin" />
-            <Pin Id="MtxZBLLyNUsK1uNFJMLGOf" Name="Factory" Kind="InputPin" />
-            <Pin Id="SFhvRNteSNnYI1NtEJLwVx" Name="Result" Kind="OutputPin" />
+            <Pin Id="JDTrxY2kd8vJsbXcayrFKh" Name="Position" Kind="InputPin" />
+            <Pin Id="TVLlEEtCSxsMDjhKE6JGJ3" Name="Width" Kind="InputPin" />
+            <Pin Id="M5yc0GXChPiGnHhcT2kOkA" Name="Height" Kind="InputPin" />
+            <Pin Id="TaHo8In5vhQxWOsdrCayrZ" Name="Anchor" Kind="InputPin" />
+            <Pin Id="AxUmYfyP2CGhLryEY1qR3z" Name="Factory" Kind="InputPin" />
+            <Pin Id="ELx39PCzFQNUY2zodzOKNF" Name="Result" Kind="OutputPin" />
           </Node>
-          <Node Bounds="260,370,60,19" Id="KCWJnNkZxoZoN4Ylju1SHL">
+          <Node Bounds="320,260,60,19" Id="QLKRF1SgxIprTcx1umA0oL">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Point" />
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
-            <Pin Id="JJn8ekLJ9ldROYnyrQ1xlv" Name="Coordinate" Kind="InputPin" />
-            <Pin Id="M9x7yqattQ0IMfK6p98n6J" Name="Factory" Kind="InputPin" />
-            <Pin Id="Ub5iiGu2Cv75JRI4NrJzwC" Name="Result" Kind="OutputPin" />
+            <Pin Id="PUv10frlwPpWyR8FIt3l0R" Name="Coordinate" Kind="InputPin" />
+            <Pin Id="Mo7wJp2z2HZuucTwLd0uk6" Name="Factory" Kind="InputPin" />
+            <Pin Id="Hf1zzwq1xYNUbJUPN6eHsv" Name="Result" Kind="OutputPin" />
           </Node>
-          <Node Bounds="60,390,45,19" Id="PNHoPVsTnh0lOaewYBjK4g">
+          <Node Bounds="60,290,45,19" Id="BUnuon42PyCvhivN9e6Ujm">
             <p:NodeReference LastCategoryFullName="Collections.Spread" LastDependency="VL.CoreLib.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Cons" />
               <CategoryReference Kind="RecordType" Name="Spread" NeedsToBeDirectParent="true" />
             </p:NodeReference>
-            <Pin Id="MjEZWB7THGNruWbljTFpQn" Name="Input" Kind="InputPin" />
-            <Pin Id="OX4MUZuGd5VQFlcoYdqpJ2" Name="Input 2" Kind="InputPin" />
-            <Pin Id="MLCb5uQo7W2eCOPF5FTGie" Name="Result" Kind="OutputPin" />
+            <Pin Id="DRtWJTq2j08vkRLLnQnNqP" Name="Input" Kind="InputPin" />
+            <Pin Id="J1y9Mhc9WCiShfxAtwfYfE" Name="Input 2" Kind="InputPin" />
+            <Pin Id="I0U3nvEPjGEiPN6bfmnUvc" Name="Result" Kind="OutputPin" />
           </Node>
-          <Node Bounds="60,431,140,19" Id="K7t4ovWI2QcEH9CYLr0W6c">
+          <Node Bounds="60,320,140,19" Id="ECnjuvHMH5wDfVnTWgpRwL">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="GeometryCollection" />
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
-            <Pin Id="VcQjVPjEeeJTpN8JrmyxKn" Name="Geometries" Kind="InputPin" />
-            <Pin Id="L1AuhmjdwYScCi5AzagQYw" Name="Factory" Kind="InputPin" />
-            <Pin Id="DRak06L94jrfBOn32x8SOA" Name="Result" Kind="OutputPin" />
+            <Pin Id="VKEq22Ssaa0IyHfasRbo9q" Name="Geometries" Kind="InputPin" />
+            <Pin Id="Db2sU4ptLRZvLVBUFJEFLb" Name="Factory" Kind="InputPin" />
+            <Pin Id="BJwWEO829oIwcKvtb3Q3Vd" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="OD7edg0uWhQKgPcL6fnJWJ" Comment="Position and Rectangle" Bounds="940,450,180,120" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="HFwXng922QNqOuZhjQ89e4" Bounds="580,300,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Anchor is read on a map: TopLeft puts the position at the north-west corner. Try Center.">
+          <Pad Id="Q02Z4VQyu9x2evKfSuNEPq" Comment="" Bounds="60,360,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="FYjA6H3gvmSOYCzBcTg5AT" Bounds="260,360,240,80" ShowValueBox="true" isIOBox="true" Value="&lt; Anchor is read on a map: TopLeft puts the position (the dot) at the north-west corner. Try Center.">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -134,39 +121,59 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="200,600,90,19" Id="DP18hy5wkNGaKvbB9GOJxW">
+          <Node Bounds="540,170,90,19" Id="S6M1isXxgarsxs1b6nIBWs">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Coordinate" />
-              <PinReference Kind="InputPin" Name="Y" />
               <PinReference Kind="InputPin" Name="X" />
+              <PinReference Kind="InputPin" Name="Y" />
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
-            <Pin Id="EJpE3sBuOmcjdxhLiRIs88" Name="X" Kind="InputPin" DefaultValue="3">
+            <Pin Id="Jf2dpCDrALBhxoquu71bbU" Name="X" Kind="InputPin" DefaultValue="0">
               <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
                 <Choice Kind="TypeFlag" Name="Float64" />
               </p:TypeAnnotation>
             </Pin>
-            <Pin Id="OPWjYg4LOh9rFKN2UT3IKz" Name="Y" Kind="InputPin" DefaultValue="1">
+            <Pin Id="MuBw5muHKaSevmyHdyZMhw" Name="Y" Kind="InputPin" DefaultValue="0">
               <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
                 <Choice Kind="TypeFlag" Name="Float64" />
               </p:TypeAnnotation>
             </Pin>
-            <Pin Id="PTy473EQJWrvBkhcTNbvwp" Name="Result" Kind="OutputPin" />
+            <Pin Id="URP0gYeSZqS2f0k6kLzbGA" Name="Result" Kind="OutputPin" />
           </Node>
-          <Node Bounds="60,640,160,19" Id="BbpYOrAh3Y6NwI1Ncg9ZTC">
+          <Node Bounds="670,170,90,19" Id="KjdBeE3knTZqqyhjhvxrKI">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Coordinate" />
+              <PinReference Kind="InputPin" Name="X" />
+              <PinReference Kind="InputPin" Name="Y" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="JmEsUb35P6iJhcItoBt15o" Name="X" Kind="InputPin" DefaultValue="3">
+              <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+                <Choice Kind="TypeFlag" Name="Float64" />
+              </p:TypeAnnotation>
+            </Pin>
+            <Pin Id="KpCFw14N02NBzxwSdhgWzi" Name="Y" Kind="InputPin" DefaultValue="1">
+              <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+                <Choice Kind="TypeFlag" Name="Float64" />
+              </p:TypeAnnotation>
+            </Pin>
+            <Pin Id="VomEVjifpMS5bDz3IK2hQT" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="540,260,200,19" Id="ARMxwK31ylLCTBfFxZBYia">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Rectangle (Join Points)" />
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
-            <Pin Id="BoIPuLdWO1E8OcXDwtLsMj" Name="Corner A" Kind="InputPin" />
-            <Pin Id="SAujy9pXqcPu2tpKZBrHmL" Name="Corner B" Kind="InputPin" />
-            <Pin Id="A1hoxltQDSYZd0wXKfipi2" Name="Factory" Kind="InputPin" />
-            <Pin Id="PbBJbxQwmGKzkqr3rmMii6" Name="Result" Kind="OutputPin" />
+            <Pin Id="S1Dl9OHW9iE880aGJQQ475" Name="Corner A" Kind="InputPin" />
+            <Pin Id="HC0RXOlBHLNE9HfZeCIIsK" Name="Corner B" Kind="InputPin" />
+            <Pin Id="U6tk1ehVRf5w9pPMqm2bY9" Name="Factory" Kind="InputPin" />
+            <Pin Id="BqEBvs2k25guJUFE9UCzUc" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="VCN59UcAXGWQ6pM1uPC6Kg" Comment="Rectangle (Join Points)" Bounds="940,660,180,120" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="F87bfAkvbe81VSAVDMcISO" Bounds="580,600,320,26" ShowValueBox="true" isIOBox="true" Value="&lt; Two opposite corners, in any order.">
+          <Pad Id="A60eevIQM1eGNg2gj2kQ5O" Comment="" Bounds="540,300,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="EhCjvpXTX1D8mfhoqoDI6G" Bounds="740,300,240,44" ShowValueBox="true" isIOBox="true" Value="&lt; Two opposite corners, in any order.">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -175,150 +182,50 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="AhoAvzJ7lCGpf6ETxqwuvG" Comment="Resolution" Bounds="200,810,40,15" ShowValueBox="true" isIOBox="true" Value="32">
-            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
-              <Choice Kind="TypeFlag" Name="Integer32" />
-            </p:TypeAnnotation>
-          </Pad>
-          <Node Bounds="60,850,130,19" Id="QZ4Pxbh514wdCPWNVWZCJC">
+          <Node Bounds="1020,170,90,19" Id="FIb7aT533iBnWy5dl2hYDX">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Circle" />
-              <PinReference Kind="InputPin" Name="Radius" />
+              <Choice Kind="OperationCallFlag" Name="Coordinate" />
+              <PinReference Kind="InputPin" Name="X" />
+              <PinReference Kind="InputPin" Name="Y" />
             </p:NodeReference>
-            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
-            <Pin Id="T5GYC1ZSXreqc4p1OtXRXR" Name="Position" Kind="InputPin" />
-            <Pin Id="HyUCEx8hVft4Guk8XFj8BB" Name="Radius" Kind="InputPin" DefaultValue="1">
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="DtnPt3ghaI9HuxyXeif2un" Name="X" Kind="InputPin" DefaultValue="0">
               <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
                 <Choice Kind="TypeFlag" Name="Float64" />
               </p:TypeAnnotation>
             </Pin>
-            <Pin Id="ITww910yGuLLDz3rrznaKJ" Name="Resolution" Kind="InputPin" />
-            <Pin Id="OO9m8A2MSPKSwOUzjgZ4V1" Name="Factory" Kind="InputPin" />
-            <Pin Id="Oy94djfI6Wtwv5TU8T8s5q" Name="Result" Kind="OutputPin" />
+            <Pin Id="ULyCMQVa6tsRe1r8cJnURL" Name="Y" Kind="InputPin" DefaultValue="0">
+              <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+                <Choice Kind="TypeFlag" Name="Float64" />
+              </p:TypeAnnotation>
+            </Pin>
+            <Pin Id="DAV8fZQoBe861QxU0Dclux" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="Cy1sSAgvNGsfxvUJvIUndi" Comment="Circle" Bounds="940,870,180,120" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="HgQDyhKt101DT5Udo75JSP" Bounds="580,810,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; A circle is a polygon: Resolution is its number of corners. Try 6.">
-            <p:TypeAnnotation>
-              <Choice Kind="TypeFlag" Name="String" />
-            </p:TypeAnnotation>
-            <p:ValueBoxSettings>
-              <p:fontsize p:Type="Int32">9</p:fontsize>
-              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
-            </p:ValueBoxSettings>
-          </Pad>
-          <Node Bounds="60,1060,150,19" Id="Kb8mIp2tmIwMPiI5aww9k1">
-            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
-              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Ellipse" />
-              <PinReference Kind="InputPin" Name="Height" />
-              <PinReference Kind="InputPin" Name="Width" />
-            </p:NodeReference>
-            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
-            <Pin Id="GNoW5jdmdDpo4cawEvgF5V" Name="Position" Kind="InputPin" />
-            <Pin Id="Hq17j6ZXmHYCHoMwEN6NBp" Name="Width" Kind="InputPin" DefaultValue="4">
-              <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
-                <Choice Kind="TypeFlag" Name="Float64" />
-              </p:TypeAnnotation>
-            </Pin>
-            <Pin Id="J409Nm8NzPbSSR0XxuH5Yp" Name="Height" Kind="InputPin" DefaultValue="2">
-              <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
-                <Choice Kind="TypeFlag" Name="Float64" />
-              </p:TypeAnnotation>
-            </Pin>
-            <Pin Id="QLM7ghuTaeaPv00lxBxyAf" Name="Resolution" Kind="InputPin" />
-            <Pin Id="NtDekqWvWjDinu2ctiYoUq" Name="Factory" Kind="InputPin" />
-            <Pin Id="MPidpAMKQ9FVZ5DgcpbZvI" Name="Result" Kind="OutputPin" />
-          </Node>
-          <Pad Id="ArLEg62buMLwInikkQTrfL" Comment="Ellipse" Bounds="940,1080,180,120" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="TNo7Owic9rqOr0yz6W0806" Bounds="580,1020,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; Width runs west to east, Height south to north.">
-            <p:TypeAnnotation>
-              <Choice Kind="TypeFlag" Name="String" />
-            </p:TypeAnnotation>
-            <p:ValueBoxSettings>
-              <p:fontsize p:Type="Int32">9</p:fontsize>
-              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
-            </p:ValueBoxSettings>
-          </Pad>
-          <Pad Id="KMmVuuYE66pMnCh7LO96Pq" Comment="Sides" Bounds="200,1230,40,15" ShowValueBox="true" isIOBox="true" Value="6">
-            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
-              <Choice Kind="TypeFlag" Name="Integer32" />
-            </p:TypeAnnotation>
-          </Pad>
-          <Node Bounds="60,1270,160,19" Id="A63rsORmjMJQp5aq6aLk8s">
-            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
-              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="RegularPolygon" />
-              <PinReference Kind="InputPin" Name="Radius" />
-            </p:NodeReference>
-            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
-            <Pin Id="IlmXtQjRQKik5Ek5CR7Hwu" Name="Position" Kind="InputPin" />
-            <Pin Id="IleZxHwjr94X1hYovTkVxz" Name="Radius" Kind="InputPin" DefaultValue="1">
-              <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
-                <Choice Kind="TypeFlag" Name="Float64" />
-              </p:TypeAnnotation>
-            </Pin>
-            <Pin Id="GQnAosuHvNn3sV6qpr1l7T" Name="Sides" Kind="InputPin" />
-            <Pin Id="I27kNI7mBc85qCTqlYFlA2" Name="Rotation" Kind="InputPin" />
-            <Pin Id="E8ZqqDznAG5xSST5vYbCYe" Name="Factory" Kind="InputPin" />
-            <Pin Id="K63TymrtvQFjW22jUTATXv" Name="Result" Kind="OutputPin" />
-          </Node>
-          <Pad Id="Ot2jSUugF7JYQsqpjvwXOV" Comment="RegularPolygon" Bounds="940,1290,180,120" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="AEpO75Qm2VCCzwCOIrkuIu" Bounds="580,1230,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Radius reaches the corners. The first corner points east; Rotation turns it, in cycles.">
-            <p:TypeAnnotation>
-              <Choice Kind="TypeFlag" Name="String" />
-            </p:TypeAnnotation>
-            <p:ValueBoxSettings>
-              <p:fontsize p:Type="Int32">9</p:fontsize>
-              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
-            </p:ValueBoxSettings>
-          </Pad>
-          <Pad Id="UAHUZrsM9gZlnLH639aaEz" Comment="Sweep" Bounds="200,1440,50,15" ShowValueBox="true" isIOBox="true" Value="0.25">
+          <Pad Id="OE10XXUigSewQLIVkvuyuO" Comment="Radius" Bounds="1150,170,50,15" ShowValueBox="true" isIOBox="true" Value="1">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Float64" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="60,1480,170,19" Id="IOigiYPuGa7bbYNPEhEcID">
+          <Pad Id="G6Bzt6EUIOswuK1Pwu7Wx7" Comment="Resolution" Bounds="1150,192,40,15" ShowValueBox="true" isIOBox="true" Value="32">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Integer32" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="1020,260,200,19" Id="RdQ6pznu6IJc8gs3jLreaW">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Arc" />
-              <PinReference Kind="InputPin" Name="Radius" />
+              <Choice Kind="OperationCallFlag" Name="Circle" />
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
-            <Pin Id="SWWAA98kBE8cnSEBtk1Zq3" Name="Position" Kind="InputPin" />
-            <Pin Id="BYOYfa58zF8OBVodhNmFvN" Name="Radius" Kind="InputPin" DefaultValue="1">
-              <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
-                <Choice Kind="TypeFlag" Name="Float64" />
-              </p:TypeAnnotation>
-            </Pin>
-            <Pin Id="TAQNP5IDd4mRNNC9nBRBik" Name="Start" Kind="InputPin" />
-            <Pin Id="Rc7D5eDkOjVrPi1snDS2KS" Name="Sweep" Kind="InputPin" />
-            <Pin Id="AksYNrz8YaUveZobGYw56T" Name="Resolution" Kind="InputPin" />
-            <Pin Id="OMCrYDG9XPf511Ygax6R7e" Name="Factory" Kind="InputPin" />
-            <Pin Id="IAWN9IcKu2TYHAVZVMoAnP" Name="Result" Kind="OutputPin" />
+            <Pin Id="PPQanw7gk4kLjmDHBfbAle" Name="Position" Kind="InputPin" />
+            <Pin Id="MntOkkWBPrXEqT5g5krupw" Name="Radius" Kind="InputPin" />
+            <Pin Id="Trd4AhgH48upMdN4Vi02JP" Name="Resolution" Kind="InputPin" />
+            <Pin Id="Ct0rzjiuuJwRXNsYT2FCLu" Name="Factory" Kind="InputPin" />
+            <Pin Id="EvPAun5W2uSWAp4sdFAU2i" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="UaaFe51UZ0xSrmgFExoI6F" Comment="Arc" Bounds="940,1500,180,120" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="60,1640,170,19" Id="D5BSrsCJ5r186wg5TbQjqA">
-            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
-              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Sector" />
-              <PinReference Kind="InputPin" Name="Radius" />
-            </p:NodeReference>
-            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
-            <Pin Id="Sg3Yrh0owXpX7HrHKJhCgY" Name="Position" Kind="InputPin" />
-            <Pin Id="Fug86wRzwcs9u6tHT89naC" Name="Radius" Kind="InputPin" DefaultValue="1">
-              <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
-                <Choice Kind="TypeFlag" Name="Float64" />
-              </p:TypeAnnotation>
-            </Pin>
-            <Pin Id="IDkKiTOD1p2uTQ203YHyEH" Name="Start" Kind="InputPin" />
-            <Pin Id="M3jA4sa6lcuZDZrlpxPvvi" Name="Sweep" Kind="InputPin" />
-            <Pin Id="G1yJmCU61l5pNEdywSiDxZ" Name="Resolution" Kind="InputPin" />
-            <Pin Id="BlRG4y6xNfooBBjERxtf2u" Name="Factory" Kind="InputPin" />
-            <Pin Id="JbVSfxK0eptCb2cNOsueI0" Name="Result" Kind="OutputPin" />
-          </Node>
-          <Pad Id="CudNH1Fm8niw2MKh74NDhS" Comment="Sector" Bounds="940,1660,180,120" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="Q0F4yDuY158Hy6pCu5IoH3" Bounds="580,1440,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Angles are in cycles, counter-clockwise from east: 0.25 is a quarter turn, to the north.">
+          <Pad Id="CSFl4t3OplFra9VSfu5iQu" Comment="" Bounds="1020,300,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="KHcD3uM0THSjDiwhyvYLPf" Bounds="1220,300,240,62" ShowValueBox="true" isIOBox="true" Value="&lt; A circle is a polygon: Resolution is its number of corners. Try 6.">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -327,7 +234,260 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="OXQjDtcNWMrLjP7MNyR6Wg" Bounds="580,1600,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; Arc is a line, Sector the slice of the circle.">
+          <Node Bounds="60,510,90,19" Id="MCMYDRsymh0bFMjS3rwqOT">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Coordinate" />
+              <PinReference Kind="InputPin" Name="X" />
+              <PinReference Kind="InputPin" Name="Y" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="GhZf0omCyb4eQ0cFulkYX2" Name="X" Kind="InputPin" DefaultValue="0">
+              <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+                <Choice Kind="TypeFlag" Name="Float64" />
+              </p:TypeAnnotation>
+            </Pin>
+            <Pin Id="JwcDggVAYNz2b23MXPiCqt" Name="Y" Kind="InputPin" DefaultValue="0">
+              <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+                <Choice Kind="TypeFlag" Name="Float64" />
+              </p:TypeAnnotation>
+            </Pin>
+            <Pin Id="RfekCeoPLCQhXjtizy97JD" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="GcjbkxOd2zYug6LBBbQxzH" Comment="Width" Bounds="190,510,50,15" ShowValueBox="true" isIOBox="true" Value="4">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Float64" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="J7HgJGv64KyHsZfDVXAnm2" Comment="Height" Bounds="190,532,50,15" ShowValueBox="true" isIOBox="true" Value="2">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Float64" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="60,600,200,19" Id="MD7FcyUXy0Hb7Byvn76WOW">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Ellipse" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="JCL1MTxvRra4COLdAJisrF" Name="Position" Kind="InputPin" />
+            <Pin Id="Uzs8MzbEcvBe9UoBeI63PP" Name="Width" Kind="InputPin" />
+            <Pin Id="CYvTiuVroMV5ETcl7qvqX3" Name="Height" Kind="InputPin" />
+            <Pin Id="VOrGAcBuC7qrvWBhP3wqYG" Name="Resolution" Kind="InputPin" />
+            <Pin Id="F5k7v0G7lThRLTlHz6NiZ8" Name="Factory" Kind="InputPin" />
+            <Pin Id="S2QBKy9wPcBXfVPZWzr1Zy" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="Qe1SQjAFzHwsJr9QPR2gpb" Comment="" Bounds="60,640,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="NvpBKtkwD8NsYZchtbxzPR" Bounds="260,640,240,44" ShowValueBox="true" isIOBox="true" Value="&lt; Width runs west to east, Height south to north.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="540,510,90,19" Id="P3dswMBpmYpdLXuE5nYNcW">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Coordinate" />
+              <PinReference Kind="InputPin" Name="X" />
+              <PinReference Kind="InputPin" Name="Y" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="BKzTcJP2Q9qn8Ixx1UbALC" Name="X" Kind="InputPin" DefaultValue="0">
+              <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+                <Choice Kind="TypeFlag" Name="Float64" />
+              </p:TypeAnnotation>
+            </Pin>
+            <Pin Id="Cgcws3od73ZxkuHxIZJq8m" Name="Y" Kind="InputPin" DefaultValue="0">
+              <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+                <Choice Kind="TypeFlag" Name="Float64" />
+              </p:TypeAnnotation>
+            </Pin>
+            <Pin Id="CqAowNw8qxwfnX2WNLvpSa" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="BVYK9rVmv5MlAeGnHDJEAt" Comment="Radius" Bounds="670,510,50,15" ShowValueBox="true" isIOBox="true" Value="1">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Float64" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="SSETJ5DqlBcWmyxkO7KZtw" Comment="Sides" Bounds="670,532,40,15" ShowValueBox="true" isIOBox="true" Value="6">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Integer32" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="NJ7ei7ImyWSJUSsSxwltwG" Comment="Rotation" Bounds="670,554,50,15" ShowValueBox="true" isIOBox="true" Value="0">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Float64" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="540,600,200,19" Id="OAow49bUeGzCwcXjS7xz33">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="RegularPolygon" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="GLMTrcvX5GyoXDoFgs1nfE" Name="Position" Kind="InputPin" />
+            <Pin Id="IqDxZ9cL1GrRtXWeaGhQ1K" Name="Radius" Kind="InputPin" />
+            <Pin Id="KBCKM9Et2bS7q1T2z7kAi6" Name="Sides" Kind="InputPin" />
+            <Pin Id="VMKuNKbpCdCR16toglQuZg" Name="Rotation" Kind="InputPin" />
+            <Pin Id="U8MSwSYAvEsVKHQYonqii6" Name="Factory" Kind="InputPin" />
+            <Pin Id="AEblqY6Pv0umC8VvkNQ57m" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="AqodBZt3iSfNBg0XNkeYiQ" Comment="" Bounds="540,640,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="Thh8UnPjpeSvSOqbGuodTE" Bounds="740,640,240,62" ShowValueBox="true" isIOBox="true" Value="&lt; Radius reaches the corners. The first corner points east; Rotation turns it, in cycles.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="1020,510,90,19" Id="JPyGCRjIqcXr0H0hWSbws5">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Coordinate" />
+              <PinReference Kind="InputPin" Name="X" />
+              <PinReference Kind="InputPin" Name="Y" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="SJQW7vY7Gp4L0T2SkO1fKE" Name="X" Kind="InputPin" DefaultValue="0">
+              <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+                <Choice Kind="TypeFlag" Name="Float64" />
+              </p:TypeAnnotation>
+            </Pin>
+            <Pin Id="O3hQq5CnTuiL7V6i71PUsP" Name="Y" Kind="InputPin" DefaultValue="0">
+              <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+                <Choice Kind="TypeFlag" Name="Float64" />
+              </p:TypeAnnotation>
+            </Pin>
+            <Pin Id="AA55knOOtmgw7Sg0l5P9g6" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="E2BftVO0HIYq5z6otudVFK" Comment="Radius" Bounds="1150,510,50,15" ShowValueBox="true" isIOBox="true" Value="1">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Float64" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="JpouJSOZ82F71hKR2HpWRZ" Comment="Start" Bounds="1150,532,50,15" ShowValueBox="true" isIOBox="true" Value="0">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Float64" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="JbrtU78bqcBFvsGbWTPcoj" Comment="Sweep" Bounds="1150,554,50,15" ShowValueBox="true" isIOBox="true" Value="0.25">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Float64" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="1020,600,200,19" Id="Vjdw9fBOuPWdu1rdBZQf1a">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Arc" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="HNqzBeLPUZMZzgHmRCeawk" Name="Position" Kind="InputPin" />
+            <Pin Id="JBNjG4NPHt8ZSjxD60iaeF" Name="Radius" Kind="InputPin" />
+            <Pin Id="UY5nhxnpW2AhP6awhO7Qj9" Name="Start" Kind="InputPin" />
+            <Pin Id="VP1ts6l5ilYQzBiAqGHfHV" Name="Sweep" Kind="InputPin" />
+            <Pin Id="OBQDumGlBBqu6UVg5vzxWk" Name="Resolution" Kind="InputPin" />
+            <Pin Id="GcbUFM8TCebwTT7sb5g1UA" Name="Factory" Kind="InputPin" />
+            <Pin Id="VcxLE8gThnIrYco6LEimb2" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="DbQbCAnL7yr3JY6wUmsi85" Comment="" Bounds="1020,640,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="E9eDLUipITo8jTr9kqOJti" Bounds="1220,640,240,80" ShowValueBox="true" isIOBox="true" Value="&lt; Angles are in cycles, counter-clockwise from east: 0.25 is a quarter turn, to the north. An Arc is a line.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="60,850,90,19" Id="Pv0H7erB69ZtgGKXkkFRdY">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Coordinate" />
+              <PinReference Kind="InputPin" Name="X" />
+              <PinReference Kind="InputPin" Name="Y" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="Oi7RvE9e11ZAq3KJS5XNRC" Name="X" Kind="InputPin" DefaultValue="0">
+              <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+                <Choice Kind="TypeFlag" Name="Float64" />
+              </p:TypeAnnotation>
+            </Pin>
+            <Pin Id="Bi2LJ1IH2KeSeY2Iu3TtL7" Name="Y" Kind="InputPin" DefaultValue="0">
+              <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+                <Choice Kind="TypeFlag" Name="Float64" />
+              </p:TypeAnnotation>
+            </Pin>
+            <Pin Id="DiiGDyq4HFF7bLVpS92L6v" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="U50uJ5u502OKxXPtCpdX7w" Comment="Radius" Bounds="190,850,50,15" ShowValueBox="true" isIOBox="true" Value="1">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Float64" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="Flz0rpxQr3fWbG8PgnQzAQ" Comment="Start" Bounds="190,872,50,15" ShowValueBox="true" isIOBox="true" Value="0">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Float64" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="FMpBElqh6mjSjGab2DmOSR" Comment="Sweep" Bounds="190,894,50,15" ShowValueBox="true" isIOBox="true" Value="0.25">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Float64" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="60,940,200,19" Id="MJ5IGUB5bvPbjIWMLMtvKi">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Sector" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="SStYXJdiyOLo1raErUog4g" Name="Position" Kind="InputPin" />
+            <Pin Id="J2te6TbLlEdS50mQyvs2Qv" Name="Radius" Kind="InputPin" />
+            <Pin Id="TojjeOUj1YexgHDnD0lUzx" Name="Start" Kind="InputPin" />
+            <Pin Id="KZGYdcIlDfddFBycGwicaa" Name="Sweep" Kind="InputPin" />
+            <Pin Id="QQOls84XtVU9HkFObcyAm4" Name="Resolution" Kind="InputPin" />
+            <Pin Id="EfnFw8jstWRqpGpaXKNulJ" Name="Factory" Kind="InputPin" />
+            <Pin Id="QcQCBvlAOVXmTVBG3CvYgW" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="UZaH2vqrkFqVZ1bQuirLRh" Comment="" Bounds="60,980,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="BSNjgtZ6emyx819hYohqmF" Bounds="260,980,240,44" ShowValueBox="true" isIOBox="true" Value="&lt; The same angles. A Sector is the slice of the circle.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="HmMF4c88EhskwszgkePlCB" Comment="Vector2" Bounds="540,850,35,38" ShowValueBox="true" isIOBox="true" Value="0, 0">
+            <p:TypeAnnotation LastCategoryFullName="2D" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Vector2" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="540,910,150,19" Id="DyY4ChoTuYfHAT7TDAMG4b">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Coordinate (FromVector2)" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="OP5ijDPUfxxA2cgmTJVrK7" Name="Vector" Kind="InputPin" />
+            <Pin Id="BfrDesYmgAM4gtI53ktPiv" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="540,950,70,19" Id="CKA9VZlW8L40OCK4CLlp98">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="ToVector2" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="TlPUJY8OUSLeqmo4655uv9" Name="Coordinate" Kind="InputPin" />
+            <Pin Id="Fq1LS8aTlojmE0zHq6SXgK" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="G00jdwER4dP8yysIpJWPDX" Comment="Back" Bounds="540,990,35,38" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="OsVWzntPXOvRLuFfDIQaWJ" Bounds="740,910,240,80" ShowValueBox="true" isIOBox="true" Value="&lt; A Vector2 from anywhere in VL - a mouse, Skia - becomes a Coordinate, the position every shape takes. ToVector2 goes back.">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -337,41 +497,52 @@
             </p:ValueBoxSettings>
           </Pad>
         </Canvas>
-        <Patch Id="HvYMbtwkdoKKhneoJHyUHH" Name="Create" />
-        <Patch Id="JCqpmvAhAmfWSlFcTA0KXj" Name="Update" />
-        <ProcessDefinition Id="CgFubn593Biub9Xuy9UDOP">
-          <Fragment Id="SE1aWUYSaOxjW4VDK2wPnE" Patch="HvYMbtwkdoKKhneoJHyUHH" Enabled="true" />
-          <Fragment Id="OkdqK0uGYOLMXwG6AssZJ7" Patch="JCqpmvAhAmfWSlFcTA0KXj" Enabled="true" />
+        <Patch Id="NShwI5zoF0VnTGl9DU4fhF" Name="Create" />
+        <Patch Id="ApE8LCrtlOnsIYzI6Gva8H" Name="Update" />
+        <ProcessDefinition Id="T98HNem41BRlAgYIyUkwpo">
+          <Fragment Id="GhfaStg6PaAStRuLjC63MK" Patch="NShwI5zoF0VnTGl9DU4fhF" Enabled="true" />
+          <Fragment Id="LnoV8pKB4UNfciG7Wqm5Gx" Patch="ApE8LCrtlOnsIYzI6Gva8H" Enabled="true" />
         </ProcessDefinition>
-        <Link Id="ERbYuiguchwMbeeBpLDWhS" Ids="Lxox3o5fGMbsMERgFhFvQP,DzsAPiAtoczngZDqIXSSoI" />
-        <Link Id="Ha4tbE8V6BAYLTDbr4JsFQ" Ids="DlEIUXDRVPhRxqGi6bq8Hw,RqHxtlUSmE1OquS4lWq5na" />
-        <Link Id="TG62ldElshd4OMoS4RQPrg" Ids="LWUS02VOvYEFXHlYFQvmnZ,MVzQP99FBZ0AaQ7lk6GCUL" />
-        <Link Id="UwIdkgQsXiLW6L0wbpMzUY" Ids="DlEIUXDRVPhRxqGi6bq8Hw,QoxrycR5q621sahZj2ZSmx" />
-        <Link Id="So4X3Zl0p1x7G09BGbORKT" Ids="KyIJVjjUmibmYbYz1OogHf,KbpqlWkdwkBfKrQRFexZKC" />
-        <Link Id="DlLInP4RUAvlRnr6wd3M7r" Ids="DlEIUXDRVPhRxqGi6bq8Hw,JJn8ekLJ9ldROYnyrQ1xlv" />
-        <Link Id="D69gvMauXVgKvLBZTFkazS" Ids="Ub5iiGu2Cv75JRI4NrJzwC,MjEZWB7THGNruWbljTFpQn" />
-        <Link Id="SQpoH3h41oX30YAi0qnqtY" Ids="SFhvRNteSNnYI1NtEJLwVx,OX4MUZuGd5VQFlcoYdqpJ2" />
-        <Link Id="T54cmITKyn9jSuczIQDOxr" Ids="MLCb5uQo7W2eCOPF5FTGie,VcQjVPjEeeJTpN8JrmyxKn" />
-        <Link Id="EXDrcPjFjvhZEQFaOdSlHc" Ids="DRak06L94jrfBOn32x8SOA,OD7edg0uWhQKgPcL6fnJWJ" />
-        <Link Id="LjpZ9Zq0GvLmCVjZGPVLkO" Ids="DlEIUXDRVPhRxqGi6bq8Hw,BoIPuLdWO1E8OcXDwtLsMj" />
-        <Link Id="TwMQMRnTR7jh9UMoWjFKcB" Ids="PTy473EQJWrvBkhcTNbvwp,SAujy9pXqcPu2tpKZBrHmL" />
-        <Link Id="LXkgpqYwRu2plD4VCVsOV9" Ids="PbBJbxQwmGKzkqr3rmMii6,VCN59UcAXGWQ6pM1uPC6Kg" />
-        <Link Id="OykWGTaVYJyTVOkJLrEsEo" Ids="DlEIUXDRVPhRxqGi6bq8Hw,T5GYC1ZSXreqc4p1OtXRXR" />
-        <Link Id="H3MdmnZ5jKGIBqebT3ECVk" Ids="AhoAvzJ7lCGpf6ETxqwuvG,ITww910yGuLLDz3rrznaKJ" />
-        <Link Id="NMJsYIySsqCF2svbrI6s9J" Ids="Oy94djfI6Wtwv5TU8T8s5q,Cy1sSAgvNGsfxvUJvIUndi" />
-        <Link Id="UxrDo0LNdaaodYLTDcLMIn" Ids="DlEIUXDRVPhRxqGi6bq8Hw,GNoW5jdmdDpo4cawEvgF5V" />
-        <Link Id="MrxqgyRNM48lJxn8TbkYWA" Ids="MPidpAMKQ9FVZ5DgcpbZvI,ArLEg62buMLwInikkQTrfL" />
-        <Link Id="VcMf6uqJGzjOTrfY7KVq1j" Ids="DlEIUXDRVPhRxqGi6bq8Hw,IlmXtQjRQKik5Ek5CR7Hwu" />
-        <Link Id="LBJTOaTTpEnXF3uq765Shm" Ids="KMmVuuYE66pMnCh7LO96Pq,GQnAosuHvNn3sV6qpr1l7T" />
-        <Link Id="MghsdkSrpUg2x7dvUKKFDa" Ids="K63TymrtvQFjW22jUTATXv,Ot2jSUugF7JYQsqpjvwXOV" />
-        <Link Id="ELLB7RcN0OGH1JBVAmYyWa" Ids="DlEIUXDRVPhRxqGi6bq8Hw,SWWAA98kBE8cnSEBtk1Zq3" />
-        <Link Id="Us9g1DBnJryOjSxjmyrT2L" Ids="UAHUZrsM9gZlnLH639aaEz,Rc7D5eDkOjVrPi1snDS2KS" />
-        <Link Id="HMAjxRTETI49wdDgmXGklf" Ids="IAWN9IcKu2TYHAVZVMoAnP,UaaFe51UZ0xSrmgFExoI6F" />
-        <Link Id="Jk1ygNayE77ibQOLl7WqkU" Ids="DlEIUXDRVPhRxqGi6bq8Hw,Sg3Yrh0owXpX7HrHKJhCgY" />
-        <Link Id="KUdsh0wWoCx223pgnXiE74" Ids="UAHUZrsM9gZlnLH639aaEz,M3jA4sa6lcuZDZrlpxPvvi" />
-        <Link Id="BLnWDcrIRzOTEuARvloFin" Ids="JbVSfxK0eptCb2cNOsueI0,CudNH1Fm8niw2MKh74NDhS" />
+        <Link Id="CGjeRIlIGdmkQ1nTeQGaKp" Ids="VMkkhMGzr1Zk8OsOyuORGl,JDTrxY2kd8vJsbXcayrFKh" />
+        <Link Id="UIgayTx8uWYrFj4j9HpI69" Ids="KLLoXB7MhORrK5BUzTI4cu,TVLlEEtCSxsMDjhKE6JGJ3" />
+        <Link Id="K7EKqO9JYFckT3yeAFEV5k" Ids="O3jvrcfVfRswnlEIuzwicN,M5yc0GXChPiGnHhcT2kOkA" />
+        <Link Id="PnQ7TV49yokIRpJ7wgUUPN" Ids="SOHQeKryUbW1VtUnD18zDC,TaHo8In5vhQxWOsdrCayrZ" />
+        <Link Id="HGunfEiANASRjjoDlWmVv2" Ids="VMkkhMGzr1Zk8OsOyuORGl,PUv10frlwPpWyR8FIt3l0R" />
+        <Link Id="Mp0f05WHm6b4POfaKgt1yL" Ids="Hf1zzwq1xYNUbJUPN6eHsv,DRtWJTq2j08vkRLLnQnNqP" />
+        <Link Id="O4SNUnxZElwUqTzf9WzM5Y" Ids="ELx39PCzFQNUY2zodzOKNF,J1y9Mhc9WCiShfxAtwfYfE" />
+        <Link Id="KvBEOsZR7DhQ1pPz98OzBq" Ids="I0U3nvEPjGEiPN6bfmnUvc,VKEq22Ssaa0IyHfasRbo9q" />
+        <Link Id="VlvBapNMnIx3ZXecIvcWJY" Ids="BJwWEO829oIwcKvtb3Q3Vd,Q02Z4VQyu9x2evKfSuNEPq" />
+        <Link Id="DztDbI5xgpcZ4VW7U5NVMq" Ids="URP0gYeSZqS2f0k6kLzbGA,S1Dl9OHW9iE880aGJQQ475" />
+        <Link Id="HT71045uY8Kw5GQYEmO19h" Ids="VomEVjifpMS5bDz3IK2hQT,HC0RXOlBHLNE9HfZeCIIsK" />
+        <Link Id="FXZ0NbdySUJOpwdqAkQEp2" Ids="BqEBvs2k25guJUFE9UCzUc,A60eevIQM1eGNg2gj2kQ5O" />
+        <Link Id="L5xgUNB4mpwTo7pzOsO3bo" Ids="DAV8fZQoBe861QxU0Dclux,PPQanw7gk4kLjmDHBfbAle" />
+        <Link Id="C9544i4rK2ZjTwognySDQR" Ids="OE10XXUigSewQLIVkvuyuO,MntOkkWBPrXEqT5g5krupw" />
+        <Link Id="BgWW9j7cZXQNTCOi66Ut1X" Ids="G6Bzt6EUIOswuK1Pwu7Wx7,Trd4AhgH48upMdN4Vi02JP" />
+        <Link Id="FLsICUBFKI5g4uB221e20a" Ids="EvPAun5W2uSWAp4sdFAU2i,CSFl4t3OplFra9VSfu5iQu" />
+        <Link Id="GnHv0vhRqOg6aHGYnUVWCY" Ids="RfekCeoPLCQhXjtizy97JD,JCL1MTxvRra4COLdAJisrF" />
+        <Link Id="RKjMRpzSHnw3ilHRbFE1l4" Ids="GcjbkxOd2zYug6LBBbQxzH,Uzs8MzbEcvBe9UoBeI63PP" />
+        <Link Id="SoRxXMHk730EGVzJde5ap8" Ids="J7HgJGv64KyHsZfDVXAnm2,CYvTiuVroMV5ETcl7qvqX3" />
+        <Link Id="C4Rzr8rMvnduZgF27I67OG" Ids="S2QBKy9wPcBXfVPZWzr1Zy,Qe1SQjAFzHwsJr9QPR2gpb" />
+        <Link Id="TfdDYEAMeFn7JRG4BdyMpX" Ids="CqAowNw8qxwfnX2WNLvpSa,GLMTrcvX5GyoXDoFgs1nfE" />
+        <Link Id="UeRQGcydRWKZafMbGsiuxo" Ids="BVYK9rVmv5MlAeGnHDJEAt,IqDxZ9cL1GrRtXWeaGhQ1K" />
+        <Link Id="TmF788bdjEDzxpUraC8gQW" Ids="SSETJ5DqlBcWmyxkO7KZtw,KBCKM9Et2bS7q1T2z7kAi6" />
+        <Link Id="Mic3Cqj9t5DEpMpJ5plomn" Ids="NJ7ei7ImyWSJUSsSxwltwG,VMKuNKbpCdCR16toglQuZg" />
+        <Link Id="TBXwqTOqdi947GRDsJw7TG" Ids="AEblqY6Pv0umC8VvkNQ57m,AqodBZt3iSfNBg0XNkeYiQ" />
+        <Link Id="E4dKyK67tbVdpXU7VjpN4J" Ids="AA55knOOtmgw7Sg0l5P9g6,HNqzBeLPUZMZzgHmRCeawk" />
+        <Link Id="VPpYSx0lsj0hT56qumLQOX" Ids="E2BftVO0HIYq5z6otudVFK,JBNjG4NPHt8ZSjxD60iaeF" />
+        <Link Id="BtpiYZdJLislFSlWQVrJVh" Ids="JpouJSOZ82F71hKR2HpWRZ,UY5nhxnpW2AhP6awhO7Qj9" />
+        <Link Id="MTubXMG5MVg4vVJYp9I0aW" Ids="JbrtU78bqcBFvsGbWTPcoj,VP1ts6l5ilYQzBiAqGHfHV" />
+        <Link Id="KJREgNQzO7FA0g34rseAkU" Ids="VcxLE8gThnIrYco6LEimb2,DbQbCAnL7yr3JY6wUmsi85" />
+        <Link Id="TCOiesFeJoogg3tCMR03es" Ids="DiiGDyq4HFF7bLVpS92L6v,SStYXJdiyOLo1raErUog4g" />
+        <Link Id="Hf6OtvQmJR2k1BIyJ37o4r" Ids="U50uJ5u502OKxXPtCpdX7w,J2te6TbLlEdS50mQyvs2Qv" />
+        <Link Id="EsJB1qR0p2oeGxKWDAtOoT" Ids="Flz0rpxQr3fWbG8PgnQzAQ,TojjeOUj1YexgHDnD0lUzx" />
+        <Link Id="BWLJQhaov4LQEvnv6iAl9v" Ids="FMpBElqh6mjSjGab2DmOSR,KZGYdcIlDfddFBycGwicaa" />
+        <Link Id="PJlUKEEnJvM54udo0VAN5T" Ids="QcQCBvlAOVXmTVBG3CvYgW,UZaH2vqrkFqVZ1bQuirLRh" />
+        <Link Id="B3fLRNBq9dSGytvXVePhsB" Ids="HmMF4c88EhskwszgkePlCB,OP5ijDPUfxxA2cgmTJVrK7" />
+        <Link Id="Fz0BjtDIPLrWPBwHvr0Yih" Ids="BfrDesYmgAM4gtI53ktPiv,TlPUJY8OUSLeqmo4655uv9" />
+        <Link Id="M1F9cLuhvmVj2iPBbzG0fx" Ids="Fq1LS8aTlojmE0zHq6SXgK,G00jdwER4dP8yysIpJWPDX" />
       </Patch>
     </Node>
   </Patch>
-  <NugetDependency Id="CNw2iL7UikzVCqQtONnhi7" Location="VL.NetTopologySuite" Version="0.0.0" />
+  <NugetDependency Id="DrWkVEAwQF3fuMMY2SQtQh" Location="VL.NetTopologySuite" Version="0.0.0" />
 </Document>

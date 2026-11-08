@@ -193,7 +193,12 @@ listed, and every link must name a file that exists, because both failures are s
 **Every patch shows its geometry** (2026-11-07): a column of drawn Geometry IOBoxes at `x = 940`,
 180 × 120, one per geometry that matters, and `A and B` together through `Cons` →
 `GeometryCollection` where the patch is about two; recipe in `docs/HELP-PATCH-STYLE.md`, "Showing
-the geometry". A new patch gets that column from the start.
+the geometry". A new patch gets that column from the start. **Except where a patch shows several
+nodes that stand on their own** (2026-11-08, the maintainer, on `HowTo Make a shape`, whose seven
+shapes all hung off one shared `Coordinate` with their drawings in a far column): there each node is
+a cell on an even grid - its own inputs above it, its drawing right under it, its note beside the
+drawing - and nothing is shared across cells just to save a node. The nodes are the point of the
+patch; a helper that every link runs to pulls the eye to the wrong place.
 
 ## Verification — be precise about which one you have
 
