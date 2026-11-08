@@ -162,14 +162,25 @@ foreach ($file in $targets) {
     #
     # A Pad carrying both is a constant feeding something, and an unwired one still gets flagged -
     # deliberately, since that is a link somebody forgot.
+    #
+    # Except a labelled STRING constant, which only warns: the maintainer's convention since
+    # 2026-11-08 (HowTo Buffer a geometry) is a column of sample WKT beside the input, to copy
+    # into it. A forgotten link of any other type still fails.
     $linked = @($linkMatches | ForEach-Object { $_.Source; $_.Sink })
-    foreach ($m in ([regex]'<Pad Id="([^"]+)"([^>]*)>').Matches($raw)) {
+    foreach ($m in ([regex]'(?s)<Pad Id="([^"]+)"([^>]*?)(/>|>(.*?)</Pad>)').Matches($raw)) {
         $pad = $m.Groups[1].Value
         if ($linked -contains $pad) { continue }
 
         $attributes = $m.Groups[2].Value
         $isAnnotation = ($attributes -match '\sValue="') -and ($attributes -notmatch '\sComment="')
         if ($isAnnotation) { continue }
+
+        $isSample = ($attributes -match '\sValue="') -and ($m.Groups[4].Value -match '<Choice Kind="TypeFlag" Name="String" />')
+        if ($isSample) {
+            $label = [regex]::Match($attributes, '\sComment="([^"]*)"').Groups[1].Value
+            Write-Host "  warn  Pad $pad '$label' is a String constant wired to nothing - fine for a sample value to copy, a bug otherwise" -ForegroundColor Yellow
+            continue
+        }
 
         $problems.Add("dangling Pad $pad - an IOBox wired to nothing")
     }
