@@ -193,12 +193,15 @@ listed, and every link must name a file that exists, because both failures are s
 **Every patch shows its geometry** (2026-11-07): a column of drawn Geometry IOBoxes at `x = 940`,
 180 × 120, one per geometry that matters, and `A and B` together through `Cons` →
 `GeometryCollection` where the patch is about two; recipe in `docs/HELP-PATCH-STYLE.md`, "Showing
-the geometry". A new patch gets that column from the start. **Except where a patch shows several
-nodes that stand on their own** (2026-11-08, the maintainer, on `HowTo Make a shape`, whose seven
-shapes all hung off one shared `Coordinate` with their drawings in a far column): there each node is
-a cell on an even grid - its own inputs above it, its drawing right under it, its note beside the
-drawing - and nothing is shared across cells just to save a node. The nodes are the point of the
-patch; a helper that every link runs to pulls the eye to the wrong place.
+the geometry". 
+**The layout rule for every help patch - the maintainer's, 2026-11-08, marked very important:
+the nodes the patch is about are the core.** Spread them evenly over the canvas; put each one's
+own inputs and helpers around it, its drawn result right next to it, its note beside it. Never
+wire one shared helper (a `Coordinate`, a `Factory`, a constant) into all of them to save a node:
+every link then runs to the least important thing on the canvas. `HowTo Make a shape` broke this
+(seven shapes off one `Coordinate`, drawings in a far column at `x = 940`) and is now the
+reference: one cell per shape on a 3-wide grid. The maintainer says many of the other patches
+have the same problem; the `x = 940` column is the old way, not the rule.
 
 ## Verification — be precise about which one you have
 
