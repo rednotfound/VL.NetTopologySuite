@@ -6,7 +6,7 @@ namespace VL.NetTopologySuite.Tests;
 
 /// <summary>
 /// The view a Geometry IOBox draws in: sticky while the shape fits, re-fitted when it outgrows the
-/// view or shrinks below a quarter of it; a round grid step; Skia space (y down) out.
+/// view or fills less than a third of it; the editor's 4:3 aspect; a round grid step; Skia space (y down) out.
 /// </summary>
 public class ViewFrameTests
 {
@@ -21,12 +21,25 @@ public class ViewFrameTests
         Assert.Equal(1, view.Centre.Y, 9);
     }
 
+    [Theory]
+    [InlineData(4, 2)]
+    [InlineData(1, 3)]
+    [InlineData(10, 0)]
+    public void A_fresh_view_is_square_and_the_shape_fills_it_to_the_headroom(double w, double h)
+    {
+        // The maintainer, 2026-11-08: the shape used about half of the box; 1.6 headroom was half
+        // of that, the editor's LayerViewer margin the other half (it shows a square, so ours is).
+        var view = ViewFrame.Next(null, Box(0, 0, w, h));
+        Assert.Equal(ViewFrame.Aspect, view.Width / view.Height, 9);
+        Assert.Equal(1 / ViewFrame.Headroom, ViewFrame.Fill(view, Box(0, 0, w, h)), 9);
+    }
+
     [Fact]
     public void The_view_stays_while_the_shape_grows_inside_it()
     {
         // The point of the whole node: a wider rectangle must LOOK wider, so the frame must not move.
         var view = ViewFrame.Next(null, Box(-2, -1, 2, 1));
-        var after = ViewFrame.Next(view, Box(-3, -1, 3, 1));
+        var after = ViewFrame.Next(view, Box(-2.4, -1, 2.4, 1));   // 20% wider, inside the 25% headroom
         Assert.Same(view, after);
     }
 
@@ -40,11 +53,11 @@ public class ViewFrameTests
     }
 
     [Fact]
-    public void The_view_refits_when_the_shape_shrinks_below_a_quarter()
+    public void The_view_refits_when_the_shape_shrinks_below_a_third()
     {
-        var view = ViewFrame.Next(null, Box(-2, -2, 2, 2));
+        var view = ViewFrame.Next(null, Box(-2, -2, 2, 2));   // 5 x 5 around a 4 x 4
         Assert.Same(view, ViewFrame.Next(view, Box(-0.9, -0.9, 0.9, 0.9)));
-        Assert.NotSame(view, ViewFrame.Next(view, Box(-0.5, -0.5, 0.5, 0.5)));
+        Assert.NotSame(view, ViewFrame.Next(view, Box(-0.7, -0.7, 0.7, 0.7)));
     }
 
     [Fact]
@@ -70,7 +83,7 @@ public class ViewFrameTests
     {
         var shape = Box(0, 0, 4, 2);
         var view = ViewFrame.Next(null, shape);
-        ViewFrame.Layout(view, shape, out var position, out var size, out var grid, out _, out var label, out var labelAt, out _);
+        ViewFrame.Layout(view, shape, out var position, out var size, out var grid, out _, out var label, out var labelAt, out _, out _);
         Assert.Equal(2f, position.X, 4);
         Assert.Equal(-1f, position.Y, 4);           // centre y = 1 on the map, -1 in Skia
         Assert.Equal((float)view.Width, size.X, 4);
@@ -84,18 +97,33 @@ public class ViewFrameTests
     public void Nothing_to_show_gives_a_unit_view_and_no_size_in_the_label()
     {
         var view = ViewFrame.Next(null, null);
-        ViewFrame.Layout(view, null, out _, out _, out var grid, out _, out var label, out _, out _);
+        ViewFrame.Layout(view, null, out _, out _, out var grid, out _, out var label, out _, out _, out _);
         Assert.Equal(1, view.Width, 9);
+        Assert.Equal(1, view.Height, 9);
         Assert.StartsWith("grid ", label);
         Assert.NotEmpty(grid);
+    }
+
+    [Fact]
+    public void The_label_sits_in_the_bottom_left_corner_with_no_dots_under_it()
+    {
+        var shape = Box(0, 0, 4, 2);
+        var view = ViewFrame.Next(null, shape);
+        ViewFrame.Layout(view, shape, out _, out _, out var grid, out _, out var label, out var at, out var box, out var text);
+        Assert.Equal(text, box.Y, 5);                       // a box exactly the text's height
+        Assert.True(at.X > view.MinX && at.X < view.MinX + view.Width * 0.05);
+        Assert.True(-at.Y > view.MinY && -at.Y < view.MinY + view.Height * 0.05);
+        Assert.True(-at.Y + text <= shape.MinY);            // below the freshly fitted shape
+        var right = at.X + label.Length * text * 0.6;
+        Assert.DoesNotContain(grid, p => p.X >= at.X && p.X <= right && -p.Y <= -at.Y + text);
     }
 
     [Fact]
     public void The_node_keeps_its_view_between_frames()
     {
         var node = new ViewFrameNode();
-        node.Update(GeometryNodes.Rectangle(new Coordinate(0, 0), 4, 2), out var p1, out var s1, out _, out _, out _, out _, out _);
-        node.Update(GeometryNodes.Rectangle(new Coordinate(0, 0), 5, 2), out var p2, out var s2, out _, out _, out var label, out _, out _);
+        node.Update(GeometryNodes.Rectangle(new Coordinate(0, 0), 4, 2), out var p1, out var s1, out _, out _, out _, out _, out _, out _);
+        node.Update(GeometryNodes.Rectangle(new Coordinate(0, 0), 5, 2), out var p2, out var s2, out _, out _, out var label, out _, out _, out _);
         Assert.Equal(s1, s2);
         Assert.Equal(p1, p2);
         Assert.StartsWith("5 × 2", label);

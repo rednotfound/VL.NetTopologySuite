@@ -816,16 +816,22 @@ maintainer made a Rectangle wider and saw it get lower, changed a Circle's radiu
 nothing. The bounds are ours to choose, though (PointViewer already frames its pin with an
 invisible Rectangle), so `GeometryViewer` now draws inside a frame decided by `ViewFrame`:
 
-- **Sticky.** A fresh view is the shape's larger side times 1.6, square, centred. It stays while
-  the shape fits inside it and is at least a quarter of its size, so a radius or a width being
+- **Sticky.** A fresh view is the shape's larger side times 1.25, square, centred. It stays while
+  the shape fits inside it and fills at least a third of it, so a radius or a width being
   dragged changes the drawing, not the zoom. State is per viewer instance, and the editor keeps
   one per IOBox (measured: an LFO-driven width moved inside a still grid); a tooltip is a new
   viewer per hover, so a glance is always fitted.
 - **A dot grid at a round step** (1, 2 or 5 times a power of ten, 4 to 10 cells) and a label
   `4 × 2 · grid 1`: the absolute size, which a map shows with a scale bar and which no amount of
-  fitting can show.
+  fitting can show. The label sits in the bottom-left corner, in the margin below a freshly fitted
+  shape, and the grid leaves a hole for it.
+- **Square, and as full as LayerViewer allows.** The first version (1.6 headroom) used about half
+  the box, which the maintainer saw at once. LayerViewer draws into a fixed 1.6 × 1.2 widget and
+  squares the bounds it is given before fitting them, so a 4:3 view came out *smaller* (59% of the
+  widget) and a square one fills 95% of its height; the strips left and right are its own. Using
+  all of the widget would mean replacing LayerViewer with our own `LayerWidget` pipeline.
 
-The arithmetic is C# (`ViewFrameNode.cs`, 13 tests, the stickiness negative-tested) rather than
+The arithmetic is C# (`ViewFrameNode.cs`, 17 tests, the stickiness negative-tested) rather than
 patch logic, because the companion cannot be compiled by `vvvvc` and conditions in hand-written
 patch XML are where mistakes hide. It is a node, so it is public, and it carries
 `[Smell(SymbolSmell.Hidden)]` so the NodeBrowser does not list it - not `Internal`, which was

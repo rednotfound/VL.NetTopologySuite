@@ -670,6 +670,7 @@
               <Pin Id="VzWIS4LN4HRmdK47Vy1JTt" Name="Dot Size" Kind="OutputPin" />
               <Pin Id="MhxKty5toPsh2KVDeobyU6" Name="Label" Kind="OutputPin" />
               <Pin Id="Ko86qg2OCf48A2kfYudoAk" Name="Label Position" Kind="OutputPin" />
+              <Pin Id="HJX8lEgwXkN5MafhW8OCU9" Name="Label Size" Kind="OutputPin" />
               <Pin Id="TGAJjqWK7dcyylyDl7WTV6" Name="Text Size" Kind="OutputPin" />
             </Node>
             <Node Bounds="1000,260,45,19" Id="C2qN0DP0EY73FmKKd77ERJ">
@@ -806,6 +807,7 @@
             <Pin Id="P4yqvbjWp3avCkHzWDTGZv" Name="Context" Kind="InputPin" />
             <Pin Id="I20cLcR8GvCtyLz3HVwgvp" Name="Widget" Kind="OutputPin" />
           </Patch>
+          <Link Id="QyCYNSRHmXRX49cnIN5JQl" Ids="HJX8lEgwXkN5MafhW8OCU9,HuLLZNtPiyXFXu8oP8SiBp" />
           <Link Id="VpRcf9dOFe6uMiE0Sdp0le" Ids="L3TmLqEWFYJDQAXdDnCvwq,NM07dlTL4TVWyqMxWdy6Ez" IsHidden="true" />
           <Link Id="Cw3dhuQG8MD23RUrOjr7jt" Ids="P4yqvbjWp3avCkHzWDTGZv,MdtEWJG1RWN6G6GeAlzJpZ" IsHidden="true" />
           <Link Id="BdVGomtpBG3dxEBqXDucMX" Ids="SwbjZiRB4PFZVLgAAanrpY,I20cLcR8GvCtyLz3HVwgvp" IsHidden="true" />
