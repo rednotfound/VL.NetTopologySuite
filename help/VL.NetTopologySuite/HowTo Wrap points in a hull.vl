@@ -133,7 +133,7 @@
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="GeometryCollection" />
             </p:NodeReference>
-            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
             <Pin Id="CXOK1JUMcs3LDEAH4tBjAA" Name="Geometries" Kind="InputPin" />
             <Pin Id="J9PSZJDCqFrLB9QdRrRPBt" Name="Factory" Kind="InputPin" />
             <Pin Id="MtjAnBuVA7oPw55WBSdpnF" Name="Result" Kind="OutputPin" />

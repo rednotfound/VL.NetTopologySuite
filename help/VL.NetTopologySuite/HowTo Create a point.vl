@@ -107,7 +107,7 @@
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Read WKT" />
             </p:NodeReference>
-            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
             <Pin Id="GJT8SYpsrDwNLN8ivMMqpX" Name="WKT" Kind="InputPin" />
             <Pin Id="CppJECkxStbLN6GFTBZ0Ip" Name="Factory" Kind="InputPin" />
             <Pin Id="EU5OOEPUn3RN2RurzRWjY0" Name="Result" Kind="OutputPin" />
