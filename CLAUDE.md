@@ -21,7 +21,7 @@ irreversible step, and nuget.org's 2026 policy (API keys 30 days at most, Truste
 browser upload for manual) is written there. Never push to nuget.org without the user's explicit
 go; a publish cannot be undone.** 65 public nodes in six categories (56 published as of `0.0.5-alpha`; `0.0.6-alpha` is the VL-shaped rethink: seven shape nodes, `Coordinate (FromVector2)` / `ToVector2`, and `Read WKT` / `Write WKT` renamed `FromWKT` / `ToWKT` with no alias, all on 2026-11-08) — `NetTopologySuite.Network` (`Network` +
 `ShortestPath`, an algorithm of ours, promoted from `NetTopologySuite.Experimental.Network` by
-`docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 185
+`docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 198
 tests, 17 help patches.** All fifteen of the first wave were (re)written on 2026-09-24 in the community's measured style
 ([docs/HELP-PATCH-STYLE.md](docs/HELP-PATCH-STYLE.md)), every one seen in the GUI, every node opens one
 on **F1** (help flags, audited by `Test-VLPatch`), and `HowTo Find the shortest path` draws its town with
@@ -199,7 +199,7 @@ the geometry". A new patch gets that column from the start.
 
 | | proves | state |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ 185 tests, ~400 ms, no network |
+| `dotnet test` | the arithmetic is right | ✅ 198 tests, ~400 ms, no network |
 | `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 19 documents (incl. the HDE companion) |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 17 help patches, 2026-11-08 |
@@ -315,7 +315,7 @@ vl-nettopologysuite/
 │   ├── Network.cs                     # NetTopologySuite.Network - the retained handle type, and the scope sentence
 │   ├── NetworkNode.cs                 # NetTopologySuite.Network - Network (process node)
 │   └── NetworkNodes.cs                # NetTopologySuite.Network - ShortestPath
-├── test/VL.NetTopologySuite.Tests/    # 185 xunit tests, no network, no vvvv
+├── test/VL.NetTopologySuite.Tests/    # 198 xunit tests, no network, no vvvv
 ├── help/VL.NetTopologySuite/          # 17 help patches + Help.xml (ordering and tags)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
 ├── docs/ARCHITECTURE.md               # why each node exists, what stays raw, the boundary
@@ -434,6 +434,20 @@ The rules that matter when touching it:
 - **`Outlines` exists because of it**: `Coordinates` concatenates a polygon's shell and holes, and a
   polyline through that drew a stray segment into the hole. Its three outputs are public and useful
   on their own (one polyline per ring or line, every point, ready for Skia or Stride).
+- **The view is sticky, with a dot grid and a size label** (2026-11-08, the maintainer: a wider
+  Rectangle looked lower, a Circle the same at every radius, because LayerViewer fits whatever
+  it gets every frame). `ViewFrame` (`ViewFrameNode.cs`, a process node in the hidden category
+  `NetTopologySuite.Viewer`) keeps the frame until the shape outgrows it or shrinks below a
+  quarter, and gives `GeometryViewer` an invisible frame Rectangle, the grid as Skia `Points`
+  and a label `4 × 2 · grid 1`, all in Skia space. Seen working: an LFO-driven width moved the
+  rectangle inside a still grid, so the editor keeps one viewer instance per IOBox. Three
+  traps paid for on the way: `[Smell(SymbolSmell.Internal)]` makes a node *unresolvable* from
+  another document (the HDE one included) - `Hidden` is the smell that only hides it; a Skia
+  `Text` layer's `Size` is a Vector2 box, the font size is `SetTextSize` on the paint (`Float32
+  is no Vector2!`); and vvvv recompiles the companion only when the `.HDE.vl` changes, so
+  `build.ps1` now evicts `package-cache\VL.NetTopologySuite_HDE_Plugin.<version>` too. To find
+  what the log's bare "has errors" means, splice the new nodes into an ordinary probe patch and
+  let `vvvvc` name the error.
 - Known gaps: a `Coordinate` has no viewer (the generic one lists X, Y, Z, which is fine); markers
   in a collection whose points all coincide have zero bounds and draw nothing. A pin
   default guessed for a Skia enum made the log say `The project ... has errors` while everything

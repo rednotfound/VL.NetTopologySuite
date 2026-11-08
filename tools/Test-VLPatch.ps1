@@ -414,7 +414,10 @@ if (-not $Path) {
         }
         $inSource = [System.Collections.Generic.List[string]]::new()
         foreach ($s in $sources) {
-            foreach ($m in [regex]::Matches($s, '\[ProcessNode\(Name = "([^"]+)", Category = "([^"]+)"\)\]')) {
+            # A node carrying [Smell(...)] (ViewFrame, the HDE viewer's helper: Hidden) is hidden
+            # from the NodeBrowser by design and owes no F1 help.
+            foreach ($m in [regex]::Matches($s, '\[ProcessNode\(Name = "([^"]+)", Category = "([^"]+)"\)\]((?:\s*\[[^\]]*\])*)')) {
+                if ($m.Groups[3].Value -match '\[Smell\(') { continue }
                 $inSource.Add("$($m.Groups[2].Value)|$($m.Groups[1].Value)")
             }
             $class = [regex]::Match($s, 'public static (?:partial )?class (\w+)')

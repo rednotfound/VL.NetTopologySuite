@@ -1,0 +1,103 @@
+using System.Linq;
+using NetTopologySuite.Geometries;
+using Xunit;
+
+namespace VL.NetTopologySuite.Tests;
+
+/// <summary>
+/// The view a Geometry IOBox draws in: sticky while the shape fits, re-fitted when it outgrows the
+/// view or shrinks below a quarter of it; a round grid step; Skia space (y down) out.
+/// </summary>
+public class ViewFrameTests
+{
+    private static Envelope Box(double minX, double minY, double maxX, double maxY) => new(minX, maxX, minY, maxY);
+
+    [Fact]
+    public void A_first_shape_is_fitted_with_headroom()
+    {
+        var view = ViewFrame.Next(null, Box(0, 0, 4, 2));
+        Assert.Equal(4 * ViewFrame.Headroom, view.Width, 9);
+        Assert.Equal(2, view.Centre.X, 9);
+        Assert.Equal(1, view.Centre.Y, 9);
+    }
+
+    [Fact]
+    public void The_view_stays_while_the_shape_grows_inside_it()
+    {
+        // The point of the whole node: a wider rectangle must LOOK wider, so the frame must not move.
+        var view = ViewFrame.Next(null, Box(-2, -1, 2, 1));
+        var after = ViewFrame.Next(view, Box(-3, -1, 3, 1));
+        Assert.Same(view, after);
+    }
+
+    [Fact]
+    public void The_view_refits_when_the_shape_outgrows_it()
+    {
+        var view = ViewFrame.Next(null, Box(-2, -1, 2, 1));
+        var after = ViewFrame.Next(view, Box(-10, -1, 10, 1));
+        Assert.NotSame(view, after);
+        Assert.True(after.Contains(Box(-10, -1, 10, 1)));
+    }
+
+    [Fact]
+    public void The_view_refits_when_the_shape_shrinks_below_a_quarter()
+    {
+        var view = ViewFrame.Next(null, Box(-2, -2, 2, 2));
+        Assert.Same(view, ViewFrame.Next(view, Box(-0.9, -0.9, 0.9, 0.9)));
+        Assert.NotSame(view, ViewFrame.Next(view, Box(-0.5, -0.5, 0.5, 0.5)));
+    }
+
+    [Fact]
+    public void A_line_or_a_point_still_gets_a_frame()
+    {
+        Assert.True(ViewFrame.Next(null, Box(0, 0, 5, 0)).Height > 0);
+        Assert.True(ViewFrame.Next(null, Box(3, 3, 3, 3)).Width > 0);
+    }
+
+    [Theory]
+    [InlineData(6, 1)]
+    [InlineData(10, 2)]
+    [InlineData(30, 5)]
+    [InlineData(60, 10)]
+    [InlineData(0.06, 0.01)]
+    public void The_grid_step_is_one_two_or_five_times_a_power_of_ten(double extent, double step)
+    {
+        Assert.Equal(step, ViewFrame.Step(extent), 9);
+    }
+
+    [Fact]
+    public void Layout_is_in_Skia_space_with_y_down()
+    {
+        var shape = Box(0, 0, 4, 2);
+        var view = ViewFrame.Next(null, shape);
+        ViewFrame.Layout(view, shape, out var position, out var size, out var grid, out _, out var label, out var labelAt, out _);
+        Assert.Equal(2f, position.X, 4);
+        Assert.Equal(-1f, position.Y, 4);           // centre y = 1 on the map, -1 in Skia
+        Assert.Equal((float)view.Width, size.X, 4);
+        Assert.True(labelAt.Y > position.Y);         // the label sits at the bottom: larger Skia y
+        Assert.Equal("4 × 2 · grid 1", label);
+        Assert.Contains(grid, p => p.X == 0 && p.Y == 0);
+        Assert.Contains(grid, p => p.X == 1 && p.Y == -1);  // map (1, 1) is Skia (1, -1)
+    }
+
+    [Fact]
+    public void Nothing_to_show_gives_a_unit_view_and_no_size_in_the_label()
+    {
+        var view = ViewFrame.Next(null, null);
+        ViewFrame.Layout(view, null, out _, out _, out var grid, out _, out var label, out _, out _);
+        Assert.Equal(1, view.Width, 9);
+        Assert.StartsWith("grid ", label);
+        Assert.NotEmpty(grid);
+    }
+
+    [Fact]
+    public void The_node_keeps_its_view_between_frames()
+    {
+        var node = new ViewFrameNode();
+        node.Update(GeometryNodes.Rectangle(new Coordinate(0, 0), 4, 2), out var p1, out var s1, out _, out _, out _, out _, out _);
+        node.Update(GeometryNodes.Rectangle(new Coordinate(0, 0), 5, 2), out var p2, out var s2, out _, out _, out var label, out _, out _);
+        Assert.Equal(s1, s2);
+        Assert.Equal(p1, p2);
+        Assert.StartsWith("5 × 2", label);
+    }
+}

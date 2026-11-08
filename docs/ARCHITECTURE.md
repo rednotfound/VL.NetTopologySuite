@@ -808,6 +808,30 @@ never loads a `.HDE.vl`. The package's own rule (no rendering, no maps) is untou
 draws for the *editor*, not for a patch. Not done: a viewer for `Coordinate` - the generic one
 lists X, Y and Z, which is what a coordinate is.
 
+### The view: sticky, with a grid and a size label (2026-11-08)
+
+The editor's `LayerViewer` fits the bounds of the layers it is given into the box, every frame.
+For a picture of one value that is right; for a value being edited it hides the edit - the
+maintainer made a Rectangle wider and saw it get lower, changed a Circle's radius and saw
+nothing. The bounds are ours to choose, though (PointViewer already frames its pin with an
+invisible Rectangle), so `GeometryViewer` now draws inside a frame decided by `ViewFrame`:
+
+- **Sticky.** A fresh view is the shape's larger side times 1.6, square, centred. It stays while
+  the shape fits inside it and is at least a quarter of its size, so a radius or a width being
+  dragged changes the drawing, not the zoom. State is per viewer instance, and the editor keeps
+  one per IOBox (measured: an LFO-driven width moved inside a still grid); a tooltip is a new
+  viewer per hover, so a glance is always fitted.
+- **A dot grid at a round step** (1, 2 or 5 times a power of ten, 4 to 10 cells) and a label
+  `4 × 2 · grid 1`: the absolute size, which a map shows with a scale bar and which no amount of
+  fitting can show.
+
+The arithmetic is C# (`ViewFrameNode.cs`, 13 tests, the stickiness negative-tested) rather than
+patch logic, because the companion cannot be compiled by `vvvvc` and conditions in hand-written
+patch XML are where mistakes hide. It is a node, so it is public, and it carries
+`[Smell(SymbolSmell.Hidden)]` so the NodeBrowser does not list it - not `Internal`, which was
+tried first and makes a node unresolvable from any other document. Its outputs are in Skia space
+(y down), like everything else the viewer draws.
+
 ## What stays raw
 
 Reachable through VL's raw .NET nodes, deliberately not wrapped. The test — *is this a common

@@ -16,7 +16,10 @@ maintainer's GUI pass over all 16 patches; the gate green from the feed and from
 same day the maintainer rethought how nodes should be shaped: **VL's organisation, the map's
 coordinates** - shapes by Position/Size/Anchor as in VL.Skia, `Vector2` in, `FromWKT` / `ToWKT`
 instead of `Read WKT` / `Write WKT`. It comes before tier 2, in `0.0.6-alpha`; see "Before tier 2"
-below and ARCHITECTURE, "Nodes in VL's shape, coordinates in the map's".
+below and ARCHITECTURE, "Nodes in VL's shape, coordinates in the map's". All three pieces landed the
+same day. **Then the drawn IOBox stopped hiding edits**: it kept re-fitting, so a wider rectangle
+looked lower; the view is now sticky, with a dot grid and a size label (ARCHITECTURE, "The view:
+sticky, with a grid and a size label"), seen working in vvvv.
 
 **2026-11-07: tier 1 landed in the tree for `0.0.5-alpha`** - the 15 one-line `Geometry` nodes
 listed under "What the name obliges", 150 tests, every node in a help patch with a High flag (five
