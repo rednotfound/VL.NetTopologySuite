@@ -6,7 +6,7 @@ lib/
 *.suo
 .vs/
 
-# Staged package repository produced by build.ps1 (dist\VL.GIS is the package,
+# Staged package repository produced by build.ps1 (dist\VL.NetTopologySuite is the package,
 # dist\ itself is what you pass to vvvv --package-repositories)
 dist/
 

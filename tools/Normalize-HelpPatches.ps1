@@ -1,11 +1,11 @@
 <#
 .SYNOPSIS
-    Pins the VL.GIS dependency of every help patch to 0.0.0.
+    Pins the VL.NetTopologySuite dependency of every help patch to 0.0.0.
 
 .DESCRIPTION
     A help patch ships *inside* the package it demonstrates, and still has to declare a
     dependency on it. vvvv writes whichever version it resolved while the patch was being
-    authored -- 0.1.0-alpha, read from dist\VL.GIS\VL.GIS.nuspec -- and the patch would
+    authored -- 0.0.6-alpha, say, read from the staged nuspec -- and the patch would
     then keep asking for that exact version long after the package has moved on.
 
     Every pack that ships with vvvv avoids this by pinning the lowest possible version:

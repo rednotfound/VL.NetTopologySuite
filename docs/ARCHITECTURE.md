@@ -844,7 +844,7 @@ by `ViewFrame`:
   Of the nine HDE documents shipped with vvvv 7.4, none but VL.HDE's own declares a friend. The
   maintainer asked that the solution follow the usual way, so it went.
 
-The arithmetic is C# (`ViewFrameNode.cs`, 19 tests, the stickiness negative-tested) rather than
+The arithmetic is C# (`ViewFrameNode.cs` and `ViewFrame.cs`, 19 tests, the stickiness negative-tested) rather than
 patch logic, because the companion cannot be compiled by `vvvvc` and conditions in hand-written
 patch XML are where mistakes hide. It is a node, so it is public, and it carries
 `[Smell(SymbolSmell.Hidden)]` so the NodeBrowser does not list it - not `Internal`, which was

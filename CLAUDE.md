@@ -322,7 +322,9 @@ vl-nettopologysuite/
 │   ├── IndexNodes.cs                  # NetTopologySuite.Index - Query
 │   ├── Network.cs                     # NetTopologySuite.Network - the retained handle type, and the scope sentence
 │   ├── NetworkNode.cs                 # NetTopologySuite.Network - Network (process node)
-│   └── NetworkNodes.cs                # NetTopologySuite.Network - ShortestPath
+│   ├── NetworkNodes.cs                # NetTopologySuite.Network - ShortestPath
+│   ├── ViewFrameNode.cs               # NetTopologySuite.Viewer (hidden) - ViewFrame, the Geometry IOBox's view (process node)
+│   └── ViewFrame.cs                   # its arithmetic: the sticky view, grid, label, widget transform (internal)
 ├── test/VL.NetTopologySuite.Tests/    # 202 xunit tests, no network, no vvvv
 ├── help/VL.NetTopologySuite/          # 17 help patches + Help.xml (ordering and tags)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
@@ -444,7 +446,7 @@ The rules that matter when touching it:
   on their own (one polyline per ring or line, every point, ready for Skia or Stride).
 - **The view is sticky, with a dot grid and a size label** (2026-11-08, the maintainer: a wider
   Rectangle looked lower, a Circle the same at every radius, because LayerViewer fits whatever
-  it gets every frame). `ViewFrame` (`ViewFrameNode.cs`, a process node in the hidden category
+  it gets every frame). `ViewFrame` (`ViewFrameNode.cs` + `ViewFrame.cs`, a process node in the hidden category
   `NetTopologySuite.Viewer`) keeps the frame until the shape outgrows it or fills less than a
   third (a fresh one gives the shape 80% of the view: 1.6 first, and the maintainer saw half
   the box used), and gives `GeometryViewer` the grid as Skia `Points`, a label `4 × 2 · grid 1`
