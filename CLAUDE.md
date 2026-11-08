@@ -467,6 +467,11 @@ and VL.Mapsui, copied verbatim with only the anchor type changed.
 
 Answer these before writing it. If any answer is thin, it is a help patch rather than a node.
 
+- **Is it in VL's shape, with the map's coordinates?** The maintainer's rule, 2026-11-08
+  ([ARCHITECTURE](docs/ARCHITECTURE.md#nodes-in-vls-shape-coordinates-in-the-maps)): name the node
+  after what the user wants to get (`FromWKT`, not `Read WKT`), take pins the way VL.Skia does
+  (Position, Size, Anchor, `Vector2`, angles in cycles), and keep y **north** - `TopLeft` is the
+  north-west corner. Screen coordinates are not this package's business.
 - **Can a patch reach the same result by wiring existing nodes?** Then it is a help patch.
   `Disjoint` is absent for exactly this reason — it is `Intersects` plus `Not`.
 - **Does it hold a resource?** Then `[ProcessNode]`, not a static method.

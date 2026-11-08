@@ -10,6 +10,13 @@ comment; the work is deciding whether they earn a node, not writing them.
 
 ## Now — 0.0.4-alpha on nuget.org, 0.0.5-alpha in the tree
 
+**2026-11-08: `0.0.5-alpha` packed and tagged locally, the upload is the maintainer's.** After the
+maintainer's GUI pass over all 16 patches; the gate green from the feed and from an install. The
+same day the maintainer rethought how nodes should be shaped: **VL's organisation, the map's
+coordinates** - shapes by Position/Size/Anchor as in VL.Skia, `Vector2` in, `FromWKT` / `ToWKT`
+instead of `Read WKT` / `Write WKT`. It comes before tier 2, in `0.0.6-alpha`; see "Before tier 2"
+below and ARCHITECTURE, "Nodes in VL's shape, coordinates in the map's".
+
 **2026-11-07: tier 1 landed in the tree for `0.0.5-alpha`** - the 15 one-line `Geometry` nodes
 listed under "What the name obliges", 150 tests, every node in a help patch with a High flag (five
 patches extended below their existing layouts, `HowTo Wrap points in a hull` new for `ConvexHull`),
@@ -276,6 +283,25 @@ NTS's directory.
 `Envelope` (as a geometry), `InteriorPoint`, `IsSimple`, `IsWithinDistance`, `Reverse`, `Relate`
 (the DE-9IM string), `Boundary`, `NumPoints`. Takes the `Geometry` share from 31% to about 55%.
 `Disjoint` stays out: it is `Intersects` + `Not`, and the rule in "Adding a node" holds.
+
+### Before tier 2: nodes in VL's shape, coordinates in the map's — decided 2026-11-08, for `0.0.6-alpha`
+
+The maintainer's rethink, written up with its measurements in
+[ARCHITECTURE](ARCHITECTURE.md#nodes-in-vls-shape-coordinates-in-the-maps): the nodes so far ask
+the user to think in NTS's terms (four coordinates for a box, `Read WKT` for "a geometry from
+WKT"). The organisation is learned from VL.Skia; the coordinates stay the map's (y north). This
+comes before tier 2, because every tier-2 node would otherwise be designed the old way. Three
+pieces, one commit each:
+
+| | | breaks anything? |
+|---|---|---|
+| **Shapes** | `Rectangle` (Position, Size, Anchor), `Rectangle (Join Points)`, `Circle`, `Ellipse`, `RegularPolygon`, `Arc`, `Sector`, over NTS's `GeometricShapeFactory`. `Anchor` is VL's `RectangleAnchor`, read on a map: `TopLeft` = north-west. Angles in cycles. A help patch `HowTo Make a shape`, drawn | no, new nodes |
+| **`Vector2`** | `Point`, `LineString`, `Polygon` take `Vector2` / `Spread<Vector2>`; `ToVector2` out | no, new overloads |
+| **WKT names** | `Read WKT` → `FromWKT`, `Write WKT` → `ToWKT`, no alias. Every patch that uses them changes in the same commit: 16 help patches here, then VL.Overworld and VL.Mapsui's help in their repositories; VL.NetTopologySuite.GeoJSON follows with `FromGeoJSON` / `ToGeoJSON` | **yes**, said in the release notes |
+
+Later in the same spirit: `Star` (`SineStarFactory`), `RoundRectangle`, square and hexagon grids.
+Tier 2 is then designed by the test at the end of that ARCHITECTURE section (what does the user
+want, from what; how does VL describe it; north is up).
 
 ### Tier 2 — the common operations that live in their own namespaces (~14 nodes)
 

@@ -13,6 +13,7 @@ than reading them.
 ## Contents
 
 - [One job](#one-job)
+- [Nodes in VL's shape, coordinates in the map's](#nodes-in-vls-shape-coordinates-in-the-maps)
 - [Native types, and the one thing we add](#native-types-and-the-one-thing-we-add)
 - [The factory, and why SRID is 0](#the-factory-and-why-srid-is-0)
 - [Node categories](#node-categories)
@@ -46,6 +47,85 @@ information the user wants**, because our code lacks NTS's mileage. Every node's
 where its answer comes from, and vvvv shows it as the tooltip. Almost every node here says "Uses
 NetTopologySuite", which is the honest answer — and the defensive copying described below is the
 one place where it is not the whole answer.
+
+---
+
+## Nodes in VL's shape, coordinates in the map's
+
+Decided by the maintainer on 2026-11-08, the day `0.0.5-alpha` was packed. Two observations
+started it, and they turned out to be one problem.
+
+> 我们现在的生成 geometry 的方法都是从给坐标开始的，然后很不直观，比如绘制一个 rectangle，我都给出
+> 四个点的坐标……一般人都是给中心点或者左上角，然后再给长宽。
+>
+> 从 wkt 生成 Geometry 的节点居然叫 Read WKT，而人的思维方式是我要从 wkt 创建 geometry，那才是目
+> 的呀。
+
+**The diagnosis: the first 56 nodes were named and shaped after NTS's API, not after the way a VL
+user thinks.** `WKTReader.Read` became `Read WKT`; `GeometryFactory.CreatePolygon(shell)` became a
+node that takes rings of coordinates. Each was a faithful wrapper and each asks the user to think in
+NTS's terms. The nodes are correct; the *question they answer* is the library's, not the user's.
+
+**The principle, in two halves:**
+
+1. **The organisation follows VL.** Node names, pin names, pin order and the way a shape is described
+   are learned from VL's own libraries, VL.Skia above all, so that a user who has drawn a rectangle in
+   Skia already knows how to make one here. The maintainer: *"我们是学习 Skia 的组织结构"*.
+2. **The coordinates follow the map.** x grows east, y grows **north**. The maintainer: *"坐标还是
+   follow 地图坐标才是我们的核心！我们不太管屏幕坐标！"* This package does not know that a screen
+   exists, as it does not know that a map renderer exists. Screen space (y down) is VL.Skia's
+   business; the HDE viewers negate y on the way to Skia, and that is the only place a screen is
+   allowed to appear.
+
+The two halves meet in one place and must be stated there: **an anchor named after a direction means
+that direction on a map.** `TopLeft` is the north-west corner, the one with the smallest x and the
+**largest** y, where in Skia it is the smallest y. Same enum, same words, the corner a person points
+at on a map.
+
+### What was measured
+
+In the vvvv 7.4 install (help patches of every shipped pack, VL.Core by reflection):
+
+| | |
+|---|---|
+| How VL describes a shape | **Position, Size, Anchor.** `Rectangle` 277 uses, `Circle` 43 (Position, Radius), `Rectangle (Join)` 36, `Rectangle (Bounds)` 18, `RoundRectangle`, `Segment` (Position, Size, Cycles), `Rectangle (Join Points)`, `CircleSpread` (Center, Count, Width, Phase). Nobody hands VL four corners to get a box |
+| The anchor | `VL.Lib.Mathematics.RectangleAnchor`: TopLeft, TopCenter, TopRight, MiddleLeft, Center, MiddleRight, BottomLeft, BottomCenter, BottomRight |
+| A position | `Stride.Core.Mathematics.Vector2`. **This package accepts none**: `Vector2` occurs zero times in `src\`, so a mouse position or a Skia point has to be split into X and Y and rejoined into a `Coordinate` before it becomes a point |
+| How VL names a conversion | `FromX` / `ToX`: `FromValue` 86, `FromHSL` 21, `FromPolar` 6, `FromBytes` 4, `FromGeographic` 3; `ToString` 41, `ToPath` 3. **`Read` means a file or a stream** (`FileReader`, `ReadBackTexture`) |
+| Angles | VL measures them in **cycles**, 0 to 1 a full turn (`Segment`'s Cycles, `FromPolar`) |
+
+Elsewhere: Shapely 2.0 turned `.wkt` into the functions `from_wkt` / `to_wkt`; PostGIS names it
+`ST_GeomFromText` / `ST_AsText`; Grasshopper, the closest node-based tool, builds `Rectangle` from a
+plane and X/Y sizes and `Polygon` from a radius and a segment count; Turf.js builds grids from a
+bounding box and a cell size. Nobody calls it reading.
+
+And NTS already has the arithmetic, unwrapped (2.6.0, by reflection): `GeometricShapeFactory`
+(`CreateRectangle`, `CreateCircle`, `CreateEllipse`, `CreateArc`, `CreateArcPolygon`,
+`CreateSquircle`, `CreateSupercircle`, with `Centre`, `Base`, `Width`, `Height`, `NumPoints`,
+`Rotation`), `SineStarFactory`, `Shape.Random.RandomPointsBuilder`, `Shape.Fractal.*`. So the shape
+nodes are NTS's answer behind VL's question, which is exactly the job this package has.
+
+### What it decides
+
+- **Shape nodes, pins after VL.Skia.** `Rectangle` (Position, Size, Anchor; default `Center`),
+  `Rectangle (Join Points)` (two corners), `Circle` (Position, Radius, Resolution), `Ellipse`
+  (Position, Size, Rotation, Resolution), `RegularPolygon` (Position, Radius, Sides, Rotation),
+  `Arc` and `Sector` (Position, Radius, Start, Sweep). Angles in cycles, as in VL; a circle is a
+  polygon, so it needs a segment count where Skia does not.
+- **`Vector2` in and out.** `Point`, `LineString`, `Polygon` and every shape node take `Vector2`
+  (and `Spread<Vector2>`) as well as `Coordinate`; `ToVector2` hands coordinates back. The copying
+  rule does not change: a `Vector2` is a value, so it is copied by construction.
+- **`Read WKT` → `FromWKT`, `Write WKT` → `ToWKT`, no alias.** The maintainer: *"Read WKT 可以不留
+  了"*. Two names for one node clutter the NodeBrowser, and this package has never carried
+  compatibility aliases. It breaks every patch that uses them (the 16 help patches, VL.Overworld,
+  VL.Mapsui's help); still alpha, so now is the cheapest moment. VL.NetTopologySuite.GeoJSON should
+  follow with `FromGeoJSON` / `ToGeoJSON`, in its own repository, by its own rules.
+
+### The test, for every node from here on
+
+Before NTS's method name: **what does the user want to get, and from what?** The answer is the node
+name (`FromWKT`: a geometry from WKT). Before NTS's parameters: **how does VL already describe this?**
+The answer is the pins (Position, Size, Anchor). Then **which way is up?** North, always.
 
 ---
 
