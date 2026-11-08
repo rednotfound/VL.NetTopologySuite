@@ -770,7 +770,7 @@ filled even-odd at 0.25 alpha so holes and multipolygons come out right, and str
 stroked; points in a collection are circle markers sized at 2% of the bounds; Y is negated
 throughout (geometry is y-up, Skia y-down); the result is scaled into the widget (first by the
 editor's own `LayerViewer`, since 2026-11-08 by `ViewFrame`, below), so a lon/lat polygon of 0.01
-degrees and a metre-grid polygon of 4,000 fill the box alike. `PointViewer` for a lone `Point` draws a map pin inside an invisible frame. `FeatureViewer`
+degrees and a metre-grid polygon of 4,000 fill the box alike. `PointViewer` for a lone `Point` draws a map pin at a fixed size. `FeatureViewer`
 shows a feature the way a GIS does on a click: the geometry drawn through the editor's
 `AdaptiveViewer` (dispatch by runtime type, so a point feature gets the pin), the attribute table under it,
 every row: a ForEach over the dictionary itself (CoreLib's `KeyValuePair` Split) whose body is the editor's own row shape (key in a
@@ -838,7 +838,10 @@ by `ViewFrame`:
   `LayerWidget (Stateful)` with the editor's size, 1.6 × 1.2, around a `TransformSRT` whose
   Scaling and Translation `ViewFrame` computes, so the 4:3 view lands exactly on the widget
   (origin top-left, y down, in the widget's units). Public nodes only; VL.Audio's HDE uses
-  `LayerWidget` the same way. `PointViewer` still uses the editor's `LayerViewer`.
+  `LayerWidget` the same way. `PointViewer` moved to the same pattern before `0.0.6-alpha` shipped
+  (the maintainer's pre-release review: a point IOBox on a checkerboard beside geometry IOBoxes on
+  the tooltip's background, and an invisible frame steering someone else's fit), with a constant
+  transform; no viewer of ours goes through `LayerViewer` any more.
 - **Rejected: a copy of `LayerViewer`.** It was tried first (fit 4:3, no margin) and worked, but
   only with `IsFriend="true"` on the VL.Skia dependency, because it uses three VL.Skia internals.
   Of the nine HDE documents shipped with vvvv 7.4, none but VL.HDE's own declares a friend. The

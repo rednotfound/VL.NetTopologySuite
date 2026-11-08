@@ -417,8 +417,10 @@ The rules that matter when touching it:
   `SetFillType` EvenOdd cuts the holes, one `DrawPath` fills at 0.25 alpha and one strokes; lines
   are stroked; points become `Circle` markers with radius 2% of the bounds' larger side; all of it
   goes through `Group` and a `TransformSRT` into a `LayerWidget` (see the sticky view below).
-  `PointViewer` for a lone Point draws a map pin (head, tip, white eye) inside an invisible
-  `Rectangle` frame, so the pin is a marker in the box and not the box; the editor picks the viewer
+  `PointViewer` for a lone Point draws a map pin (head, tip, white eye) at a fixed size, through
+  the same `LayerWidget` + `TransformSRT` as `GeometryViewer` with a constant transform (an
+  invisible `Rectangle` frame steered the editor's `LayerViewer` until 2026-11-08), so the pin is a
+  marker in the box and not the box; the editor picks the viewer
   registered for the most specific type. `FeatureViewer` for a Feature: `Split`, the geometry through
   the editor's `AdaptiveViewer` (which dispatches by the geometry's *runtime* type, so a Point
   feature gets the pin - calling `GeometryViewer` directly drew nothing for the Tokyo Station point,

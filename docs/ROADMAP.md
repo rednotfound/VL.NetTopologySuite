@@ -364,6 +364,14 @@ once, and re-run the overlap check.
 Ordered by how likely something is to need them. Since 2026-10-18 the coverage tiers above give the
 order; these rows keep the reasoning for each item.
 
+**`ViewFrame` out of the runtime library** (the maintainer's pre-release review, 2026-11-08: keep it
+for `0.0.6-alpha`, move it later). It is arithmetic for the editor's Geometry IOBox only, yet ships
+in `VL.NetTopologySuite.dll` as a node with `Smell(Hidden)` in the hidden category
+`NetTopologySuite.Viewer`. The mechanism is VL's own (VL.Core and VL.Skia use smells), the
+placement is the unusual part. Options: a small editor-only assembly the HDE document references,
+or the logic as patch inside the HDE document (which `vvvvc` cannot compile, so it would lose its 19
+tests). Not a node change for users either way.
+
 **Help patch layout, the rest of the list** (2026-11-08, deferred by the maintainer: "剩下的问题都不大，
 今后有时间再看"). The rule is in CLAUDE.md: the featured nodes spread evenly, each with its own inputs,
 drawing and note around it, no shared helper wired into all. Done: `HowTo Make a shape`, `HowTo Inspect
