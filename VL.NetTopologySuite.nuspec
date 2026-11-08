@@ -29,7 +29,7 @@
     </description>
     <summary>NetTopologySuite geometry as composable nodes for vvvv gamma.</summary>
     <releaseNotes>
-      0.0.6-alpha - In development, not published. Shapes by position and size, the way VL.Skia
+      0.0.6-alpha (2026-11-08) - 8 new nodes, 64 in all. Shapes by position and size, the way VL.Skia
       describes them: Rectangle (Position, Width, Height, Anchor), Rectangle (Join Points), Circle,
       Ellipse, RegularPolygon, Arc, Sector (NetTopologySuite.Geometry). Coordinates are a map's: y
       grows north, so the TopLeft anchor is the north-west corner. Angles in cycles. New help patch

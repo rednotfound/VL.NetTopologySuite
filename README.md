@@ -2,19 +2,20 @@
 
 **NetTopologySuite made natural inside [vvvv gamma](https://vvvv.org).** Not another GIS framework.
 
-> **Status: `0.0.5-alpha` on nuget.org since 2026-11-08 — a prerelease, early, and it works.**
-> 56 nodes in six categories, 151 tests, 16 help patches, every node opens one on **F1**. Every
-> category has been seen running in vvvv gamma 7.4, all sixteen help patches have been seen running
-> in the editor (fifteen of them reviewed by hand by the maintainer), and the published package was
-> installed back from nuget.org alone, its help patches compiled from that install and one of them
-> run in vvvv from it. The fifteen tier-1 nodes of 2026-11-07 and the drawn previews below are
-> part of `0.0.5-alpha`.
+> **Status: `0.0.6-alpha` on nuget.org since 2026-11-08 — a prerelease, early, and it works.**
+> 64 nodes in six categories, 202 tests, 17 help patches, every node opens one on **F1**. Every
+> category has been seen running in vvvv gamma 7.4 and every help patch in the editor. New in
+> `0.0.6-alpha`: shapes by position and size the way VL.Skia describes them (`Rectangle`, `Circle`,
+> `Ellipse`, `RegularPolygon`, `Arc`, `Sector` …), and a drawn Geometry IOBox that keeps its view
+> while you edit. **Breaking:** `Read WKT` / `Write WKT` are now `FromWKT` / `ToWKT`, with no alias -
+> a patch made with an older version shows the old node unresolved; put the new one in its place.
 >
 > **Since 2026-11-07 a Geometry draws itself in the editor**, the way a GIS draws it: hover any
 > Geometry pin, or make an IOBox of one, and you see a polygon filled semi-transparently with its
 > holes cut out, a line stroked, points as markers and a lone point as a map pin, instead of an
 > object listing; a Feature shows its geometry with every attribute listed under it. No Renderer in
-> the patch. It comes from `VL.NetTopologySuite.HDE.vl`, an
+> the patch. Since `0.0.6-alpha` an IOBox keeps its view while you edit it, so a wider rectangle
+> looks wider and a bigger circle bigger, over a dot grid with a label such as `4 × 2 · grid 1`. It comes from `VL.NetTopologySuite.HDE.vl`, an
 > editor-only companion that registers viewers with vvvv the way VL.Stride and VL.Fuse do; see
 > [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#drawing-without-a-renderer--the-hde-companion). The table below says
 > exactly what has been shown; the release process and its rules are in
@@ -75,7 +76,7 @@ shows the version actually loaded. Two things to know:
 - **Within about 30 minutes of a release the command can silently do nothing**: NuGet caches each
   package's version list for 30 minutes, so a list fetched before the release still says the old
   version is the latest, and the install reports it as already present. Either wait, or ask for the
-  version by name, `nuget install VL.NetTopologySuite -version 0.0.5-alpha`, or delete the one
+  version by name, `nuget install VL.NetTopologySuite -version 0.0.6-alpha`, or delete the one
   cache file `list_vl.nettopologysuite_index.dat` under `%LOCALAPPDATA%\NuGet\v3-cache` — it is
   only a cache. (Measured on 2026-10-17, an hour after a release.)
 - **What changed between versions** is in the release notes on the
@@ -122,10 +123,10 @@ a package oversells itself:
 
 | | proves | run |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ **151 tests**, ~400 ms, no network |
-| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, labels do not collide, every node has an F1 flag | ✅ 18 documents, 56 of 56 nodes flagged |
+| `dotnet test` | the arithmetic is right | ✅ **202 tests**, ~400 ms, no network |
+| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, labels do not collide, every node has an F1 flag | ✅ 19 documents, 64 of 64 nodes flagged |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
-| `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved** — an unresolved one has its links dropped and vanishes from the generated C#, so the script reads the C# | ✅ all 16 help patches |
+| `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved** — an unresolved one has its links dropped and vanishes from the generated C#, so the script reads the C# | ✅ all 17 help patches |
 | `tools\Test-Install.ps1` | the **packed** package installs from a feed with its dependencies, and every help patch inside it compiles with that install as the only package repository | ✅ 2026-09-25 |
 | **install from nuget.org** | the published package resolves with its dependencies from nuget.org alone; its 15 shipped help patches compile from that install; `HowTo Find the shortest path` runs in vvvv from it | ✅ 2026-09-26, `0.0.1-alpha` |
 | **the vvvv GUI** | **a node appears under the right category, with the right label, computing the right value** | ✅ every category; all 15 help patches seen 2026-09-24, reviewed by hand 2026-09-25; the sixteenth and the six tier-1 extensions seen 2026-11-07 |
@@ -181,6 +182,22 @@ is a default you will rarely touch.
 | `MultiLineString` | spread of `LineString` → `MultiLineString` |
 | `MultiPolygon` | spread of `Polygon` → `MultiPolygon` |
 | `GeometryCollection` | spread of `Geometry` → `GeometryCollection` |
+| `Coordinate (FromVector2)` | a `Vector2` from a mouse or Skia → `Coordinate`, exactly |
+
+### `NetTopologySuite.Geometry` — shapes by position and size
+
+The way VL.Skia describes a shape, with a map's coordinates: y grows north, so `TopLeft` is the
+north-west corner; angles are in cycles, counter-clockwise from east. See `HowTo Make a shape`.
+
+| Node | in → out |
+|---|---|
+| `Rectangle` | Position, Width, Height, Anchor → `Polygon` |
+| `Rectangle (Join Points)` | two opposite corners → `Polygon` |
+| `Circle` | Position, Radius, Resolution → `Polygon` |
+| `Ellipse` | Position, Width, Height → `Polygon` |
+| `RegularPolygon` | Position, Radius, Sides, Rotation → `Polygon` |
+| `Arc` | Position, Radius, Start, Sweep → `LineString` |
+| `Sector` | Position, Radius, Start, Sweep → `Polygon` |
 
 ### `NetTopologySuite.Geometry` — reading it back
 
@@ -371,7 +388,7 @@ to the repository's help folder, so a patch saved in vvvv is the one git sees.
 
 To use the working tree instead of the published package, point vvvv at the staged folder:
 `vvvv.exe MyPatch.vl --package-repositories <repo>\dist;<repo>\deps`. The working version is
-always one ahead of the published one (`0.0.6-alpha` while `0.0.5-alpha` is on nuget.org), so the
+always one ahead of the published one (`0.0.7-alpha` while `0.0.6-alpha` is on nuget.org), so the
 two can never be mistaken for each other in a NuGet cache.
 
 ---
