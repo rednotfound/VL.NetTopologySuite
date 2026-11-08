@@ -152,7 +152,7 @@
             <Pin Id="AQeDRYO9SA30a0cXqkEM7P" Name="Factory" Kind="InputPin" />
             <Pin Id="AdIwTOwsTha10mfRNqgBjQ" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="Bfw5MTOpwSZ5Zw5uWLZzWR" Comment="Point" Bounds="180,1040,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="Bfw5MTOpwSZ5Zw5uWLZzWR" Comment="Point" Bounds="62,1070,180,120" ShowValueBox="true" isIOBox="true" />
           <Pad Id="PPt16V4PzE18jl6gcitTVQ" Bounds="580,960,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Or from a Vector2: a mouse, a position in Skia. Float32 to Float64 loses nothing.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
