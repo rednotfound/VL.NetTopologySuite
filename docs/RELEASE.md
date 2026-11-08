@@ -347,6 +347,33 @@ on the first run. One thing the release could not fix: the README packed into it
 was "not yet on nuget.org", so the package page reads stale until `0.0.6-alpha` - update the
 README's status line *before* packing, next time. Working version `0.0.6-alpha`.
 
+## `0.0.6-alpha` — 2026-11-08, evening
+
+The VL-shaped rethink: seven shape nodes by position and size (`Rectangle`, `Rectangle (Join
+Points)`, `Circle`, `Ellipse`, `RegularPolygon`, `Arc`, `Sector`), `Coordinate (FromVector2)`, and
+**BREAKING** `Read WKT` / `Write WKT` renamed `FromWKT` / `ToWKT` with no alias; 64 nodes. The drawn
+IOBox keeps its view while you edit, over a dot grid with a size label, and both viewers now use
+the community's `LayerWidget` + `TransformSRT` pattern (VL.Skia's own help example) instead of the
+editor's `LayerViewer`. `ToVector2` was built and dropped before release (the one lossy node).
+
+The maintainer asked for an overall review before the tag was pushed: is anything serious, too
+special, badly named or misplaced? It found no blocker; it moved `ViewFrame`'s arithmetic into its
+own file (one type per file), corrected tool comments that still said VL.GIS, and moved
+`PointViewer` off `LayerViewer` and its invisible frame (a point IOBox was on a checkerboard beside
+geometry IOBoxes on the tooltip background). `ViewFrame` stays in the runtime library for now
+(ROADMAP); the shapes keep three names rather than VL.Skia's one `Segment`. The README status line
+was updated before packing this time, and the Explanation front door lists the eight new nodes.
+Gate green at `ea31941` from a clean build, local tag moved there before it was pushed. Browser
+upload; `Test-Install -FromNuGetOrg -Version 0.0.6-alpha` green: signed, dependencies along, all 17
+patches compile from the install. Working version `0.0.7-alpha`.
+
+**What it breaks downstream:** every patch with `Read WKT` / `Write WKT` - VL.Mapsui's help (9
+patches) and VL.Overworld's tutorials (6, plus one uncommitted). Their nuspecs ask for a *minimum*
+version, so a user who installs `0.0.6-alpha` gets red nodes there until they follow. Plan agreed
+the same evening: VL.NetTopologySuite.GeoJSON renames `Read GeoJSON` / `Write GeoJSON` to
+`FromGeoJSON` / `ToGeoJSON` in the same round, then VL.Mapsui and VL.Overworld change both names
+once and release, in the family's order.
+
 ## Updating a vvvv that already has the previous version
 
 `nuget install VL.NetTopologySuite -pre` again, in vvvv's command line; the nugets folder then
