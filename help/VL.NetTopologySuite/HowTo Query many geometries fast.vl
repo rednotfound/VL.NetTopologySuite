@@ -97,7 +97,7 @@
             <Pin Id="KiYD0l7mYYUH2bXx1mF0dp" Name="Result" Kind="OutputPin" />
             <Pin Id="Ti7RJeQU5QGLkbLDkrEAhf" Name="Success" Kind="OutputPin" />
           </Node>
-          <Pad Id="FwvEJJ1QyBFIF8Jvy1iSeF" Bounds="580,290,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; This line misses the search area, but its bounding BOX covers it. It will be a candidate.">
+          <Pad Id="FwvEJJ1QyBFIF8Jvy1iSeF" Bounds="649,290,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; This line misses the search area, but its bounding BOX covers it. It will be a candidate.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -118,7 +118,7 @@
             <Pin Id="INMxT8GcgO7w20QUa1UpyG" Name="Input 4" Kind="InputPin" />
             <Pin Id="DA2lTIVQmUjxOf8WygQbTk" Name="Result" Kind="OutputPin" />
           </Node>
-          <Node Bounds="60,400,100,19" Id="MU8V6LTEMouKw849Gxm4ro">
+          <Node Bounds="60,430,100,19" Id="MU8V6LTEMouKw849Gxm4ro">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Index" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="ProcessAppFlag" Name="SpatialIndex" />
@@ -129,9 +129,9 @@
             <Pin Id="JX3teMQg3fyLYapWMOAruQ" Name="Count" Kind="OutputPin" />
             <Pin Id="L7XqeiivfgussCoOSb1Ach" Name="Indexes Built" Kind="OutputPin" />
           </Node>
-          <Pad Id="PnRmGGY559ZgPDRApMeqXs" Comment="Count" Bounds="110,440,50,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="OTFyzpeug6bM85W23Np92b" Comment="Indexes Built" Bounds="157,470,50,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="BVahQ8gCaWtcWX0h2eWJ3F" Bounds="580,439,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Built once. Edit the search area all you like: Indexes Built stays at 1. It rebuilds only when the set of geometries changes - a different count or object.">
+          <Pad Id="PnRmGGY559ZgPDRApMeqXs" Comment="Count" Bounds="110,470,50,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="OTFyzpeug6bM85W23Np92b" Comment="Indexes Built" Bounds="157,500,50,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="BVahQ8gCaWtcWX0h2eWJ3F" Bounds="649,437,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Built once. Edit the search area all you like: Indexes Built stays at 1. It rebuilds only when the set of geometries changes - a different count or object.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -140,7 +140,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="IeDhLyqa9K5U3OUmxbjSKh" Comment="Search area" Bounds="117,560,207,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0.5 0.5, 1.5 0.5, 1.5 1.5, 0.5 1.5, 0.5 0.5))">
+          <Pad Id="IeDhLyqa9K5U3OUmxbjSKh" Comment="Search area" Bounds="117,560,272,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0.5 0.5, 1.5 0.5, 1.5 1.5, 0.5 1.5, 0.5 0.5))">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -169,7 +169,7 @@
           </Node>
           <Pad Id="PIoaeu8SiocIjTGcjDsPWM" Comment="Candidates" Bounds="117,700,50,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="QGhP7c6EeQtyl4s277pAic" Comment="Result" Bounds="62,750,270,122" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="L53ltEYaP8itBzLneoPuay" Bounds="580,590,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; CANDIDATES, not results: their boxes touch the search box, their shapes may not. Run Intersects on the candidates for the final yes/no - on a few instead of on all.">
+          <Pad Id="L53ltEYaP8itBzLneoPuay" Bounds="649,661,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; CANDIDATES, not results: their boxes touch the search box, their shapes may not. Run Intersects on the candidates for the final yes/no - on a few instead of on all.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -178,7 +178,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="400,660,80,19" Id="CklGbUnyF0NquPGCVNCG5b">
+          <Node Bounds="412,660,80,19" Id="CklGbUnyF0NquPGCVNCG5b">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Intersects" />
@@ -188,19 +188,7 @@
             <Pin Id="EarU1k9AhNAPVKGTNKG4Pu" Name="B" Kind="InputPin" />
             <Pin Id="B6OcrdoMscxUgk8JlrLwdL" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="HtBMidNy8DwRg1Nrppb5rr" Comment="Line intersects?" Bounds="402,710,60,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="QSbCajaCIxb2J0d32kGm9Y" Comment="Search" Bounds="940,600,180,120" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="1240,750,140,19" Id="HKyIjGNeY2XwuE8VMO17Wi">
-            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
-              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="GeometryCollection" />
-            </p:NodeReference>
-            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
-            <Pin Id="AUzygmoE70Bobud5duk268" Name="Geometries" Kind="InputPin" />
-            <Pin Id="RBPVi3HVbgG1NwitC8Qkhw" Name="Factory" Kind="InputPin" />
-            <Pin Id="LG4dzpy0SqjqX6852jgqjV" Name="Result" Kind="OutputPin" />
-          </Node>
-          <Pad Id="GFrqPTnKoQaFYCR28xZ60l" Comment="Candidates" Bounds="940,740,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="HtBMidNy8DwRg1Nrppb5rr" Comment="Line intersects?" Bounds="414,710,60,15" ShowValueBox="true" isIOBox="true" />
         </Canvas>
         <Patch Id="CMa1XXEGnZne2LXczuPNQl" Name="Create" />
         <Patch Id="OP5U5hs0D4zWQ0D50r0rXh" Name="Update" />
@@ -227,9 +215,6 @@
         <Link Id="LFcKgIxawD0NdkYbahOCBk" Ids="PUcAkk2J046PRKILoZvRzR,LHVuJtpuRvLRY7eLUVJ5QV" />
         <Link Id="OuXdVxDb86UFUfsKFnDz3p" Ids="KiYD0l7mYYUH2bXx1mF0dp,EarU1k9AhNAPVKGTNKG4Pu" />
         <Link Id="B7dy7HjtFLGuyBX7xdGtY2" Ids="B6OcrdoMscxUgk8JlrLwdL,HtBMidNy8DwRg1Nrppb5rr" />
-        <Link Id="Ob3RiJfCs1ZsJeqstipNIX" Ids="PUcAkk2J046PRKILoZvRzR,QSbCajaCIxb2J0d32kGm9Y" />
-        <Link Id="AsgukCbadAhNIUOueIY1cF" Ids="FtOvgcfaWVxOLT3AfWFQBD,AUzygmoE70Bobud5duk268" />
-        <Link Id="F34c9wEqUTo6sKlXgWZo2Z" Ids="LG4dzpy0SqjqX6852jgqjV,GFrqPTnKoQaFYCR28xZ60l" />
       </Patch>
     </Node>
   </Patch>

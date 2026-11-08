@@ -33,7 +33,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="Q9iIot6scgEhDafrkLC5Wc" Comment="Geometry" Bounds="60,170,300,15" ShowValueBox="true" isIOBox="true" Value="POINT (139.7671 35.6812)">
+          <Pad Id="Q9iIot6scgEhDafrkLC5Wc" Comment="Geometry" Bounds="62,170,146,15" ShowValueBox="true" isIOBox="true" Value="POINT (139.7671 35.6812)">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -49,17 +49,17 @@
             <Pin Id="O95HTsvidcIcDO1UoPT5jC" Name="Result" Kind="OutputPin" />
             <Pin Id="Vd5vQ1VNIJYw9effE57rZN" Name="Success" Kind="OutputPin" />
           </Node>
-          <Pad Id="MjJoOINiUwKdmdKgB3tzEE" Comment="Key" Bounds="151,280,100,15" ShowValueBox="true" isIOBox="true" Value="name">
+          <Pad Id="MjJoOINiUwKdmdKgB3tzEE" Comment="Key" Bounds="290,210,46,15" ShowValueBox="true" isIOBox="true" Value="name">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="HKRsxzoZQASyhNmwsN3jDP" Comment="Value" Bounds="175,320,200,15" ShowValueBox="true" isIOBox="true" Value="Tokyo Station">
+          <Pad Id="HKRsxzoZQASyhNmwsN3jDP" Comment="Value" Bounds="314,240,104,15" ShowValueBox="true" isIOBox="true" Value="Tokyo Station">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="125,370,53,26" Id="DXjNH3dXJLLOLYSSOkjoxR">
+          <Node Bounds="264,261,53,26" Id="DXjNH3dXJLLOLYSSOkjoxR">
             <p:NodeReference LastCategoryFullName="Collections.Dictionary" LastDependency="VL.CoreLib.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Add" />
@@ -70,7 +70,7 @@
             <Pin Id="KoJK8T4CXgCWM5QgSgy1kq" Name="Value" Kind="InputPin" />
             <Pin Id="OMdi8Px6Etsg9womYEo553" Name="Output" Kind="StateOutputPin" />
           </Node>
-          <Pad Id="DMy3iEDvndGrHy8EK2Htuy" Bounds="580,300,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; The attributes are vvvv's own Dictionary: one Add per pair, any value type. Remove, TryGetValue, Keys, Values and a ForEach over the pairs all work. This package adds nothing there, on purpose.">
+          <Pad Id="DMy3iEDvndGrHy8EK2Htuy" Bounds="580,581,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; The attributes are vvvv's own Dictionary: one Add per pair, any value type. Remove, TryGetValue, Keys, Values and a ForEach over the pairs all work. This package adds nothing there, on purpose.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -79,7 +79,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="60,430,70,19" Id="BHGbHodxxPnDW5m80MBYeh">
+          <Node Bounds="60,660,209,19" Id="BHGbHodxxPnDW5m80MBYeh">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Feature" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Feature" />
@@ -89,7 +89,7 @@
             <Pin Id="R7F5ZXIRgo0gz2VEe3xzyF" Name="Attributes" Kind="InputPin" />
             <Pin Id="JKgSRJEldOmx0ClkcnTpbC" Name="Result" Kind="OutputPin" />
           </Node>
-          <Node Bounds="60,490,50,19" Id="BbLqOCjysZuEGmbC1cJPrs">
+          <Node Bounds="60,1210,50,19" Id="BbLqOCjysZuEGmbC1cJPrs">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Feature" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Split" />
@@ -99,12 +99,12 @@
             <Pin Id="IuhhLU9Ane6RPnjCO7qSc5" Name="Geometry" Kind="OutputPin" />
             <Pin Id="JhYlNHa3e9uT0o6bhHJugv" Name="Attributes" Kind="OutputPin" />
           </Node>
-          <Pad Id="PMBjmfC7eSGU7Maq0wQIuG" Comment="Name" Bounds="285,435,80,15" ShowValueBox="true" isIOBox="true" Value="name">
+          <Pad Id="PMBjmfC7eSGU7Maq0wQIuG" Comment="Name" Bounds="277,790,80,15" ShowValueBox="true" isIOBox="true" Value="name">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="200,465,80,19" Id="JdtFHufji1hGpEaVidWs6F">
+          <Node Bounds="200,815,80,19" Id="JdtFHufji1hGpEaVidWs6F">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Feature" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="GetAttribute" />
@@ -115,9 +115,9 @@
             <Pin Id="S5ctiwzsxha6gZQcc7m7dF" Name="Result" Kind="OutputPin" />
             <Pin Id="VFcTg1TbRgJJHnFPPqBXXL" Name="Success" Kind="OutputPin" />
           </Node>
-          <Pad Id="O9lIuAkNn6wosc2zP16uDY" Comment="Success" Bounds="300,465,35,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="VWfGTbZhEdEU3SbVgee8Jm" Comment="Value" Bounds="200,505,150,25" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="NgAsqqpTMY0HrSuxb76iFd" Bounds="580,440,320,60" ShowValueBox="true" isIOBox="true" Value="&lt; GetAttribute takes one by name. Type a name the Feature does not have: Success goes false, nothing throws.">
+          <Pad Id="O9lIuAkNn6wosc2zP16uDY" Comment="Success" Bounds="277,850,35,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="VWfGTbZhEdEU3SbVgee8Jm" Comment="Value" Bounds="202,870,116,31" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="NgAsqqpTMY0HrSuxb76iFd" Bounds="580,790,320,60" ShowValueBox="true" isIOBox="true" Value="&lt; GetAttribute takes one by name. Type a name the Feature does not have: Success goes false, nothing throws.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -126,8 +126,8 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="PeooMkfxv8h2NoXPCvTlRW" Comment="Attributes" Bounds="1220,430,249,200" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="Fd5G5e3tWGLlZDHF9ZBPjm" Bounds="580,537,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Split opens the Feature up again. Its geometry is the same Geometry as everywhere else: Area, Buffer and the rest take it straight from here.">
+          <Pad Id="PeooMkfxv8h2NoXPCvTlRW" Comment="Attributes" Bounds="107,1270,227,139" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="Fd5G5e3tWGLlZDHF9ZBPjm" Bounds="580,887,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Split opens the Feature up again. Its geometry is the same Geometry as everywhere else: Area, Buffer and the rest take it straight from here.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -136,7 +136,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="60,610,90,19" Id="EvUa8M4Dx8IljkC05OhZXb">
+          <Node Bounds="60,1440,90,19" Id="EvUa8M4Dx8IljkC05OhZXb">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Write WKT" />
@@ -145,9 +145,9 @@
             <Pin Id="SKiK1XmUyC96cIWLMkT5A0" Name="Include Z" Kind="InputPin" />
             <Pin Id="V3MaMjCx1Q92ETjBpcjw5b" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="UQQZed1MOcgFWkQqzHunMB" Comment="Geometry" Bounds="60,650,312,25" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="RbZGXy3Wo9ucymP3zMfVWh" Comment="Feature" Bounds="940,430,220,290" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="UvnUZXkjoGv7r2vNVh3Pnn" Bounds="940,730,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; A Feature draws its geometry and lists every attribute.">
+          <Pad Id="UQQZed1MOcgFWkQqzHunMB" Comment="Geometry" Bounds="60,1480,312,25" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="RbZGXy3Wo9ucymP3zMfVWh" Comment="Feature" Bounds="205,910,220,290" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="UvnUZXkjoGv7r2vNVh3Pnn" Bounds="580,1153,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; A Feature draws its geometry and lists every attribute.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -156,17 +156,17 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="Kj9LCtD9f0PdcSuUUkir5F" Comment="Key" Bounds="300,170,100,15" ShowValueBox="true" isIOBox="true" Value="platforms">
+          <Pad Id="Kj9LCtD9f0PdcSuUUkir5F" Comment="Key" Bounds="290,310,60,15" ShowValueBox="true" isIOBox="true" Value="platforms">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="Dfy5xJgKZZHZfC6YDHgOsU" Comment="Value" Bounds="300,205,60,15" ShowValueBox="true" isIOBox="true" Value="28">
+          <Pad Id="Dfy5xJgKZZHZfC6YDHgOsU" Comment="Value" Bounds="314,330,60,15" ShowValueBox="true" isIOBox="true" Value="28">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Integer32" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="300,240,53,26" Id="SV8KMStzqWSeaCzkO5B2V0">
+          <Node Bounds="264,360,53,26" Id="SV8KMStzqWSeaCzkO5B2V0">
             <p:NodeReference LastCategoryFullName="Collections.Dictionary" LastDependency="VL.CoreLib.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Add" />
@@ -177,17 +177,17 @@
             <Pin Id="BkDJRy70SIsmLZsg8AraQD" Name="Value" Kind="InputPin" />
             <Pin Id="UusPqBhAKOSwhvLPQKFGNC" Name="Output" Kind="StateOutputPin" />
           </Node>
-          <Pad Id="D9yfBmyrfTgLcoUPskhOo6" Comment="Key" Bounds="460,170,100,15" ShowValueBox="true" isIOBox="true" Value="opened">
+          <Pad Id="D9yfBmyrfTgLcoUPskhOo6" Comment="Key" Bounds="290,410,67,15" ShowValueBox="true" isIOBox="true" Value="opened">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="VRR0PntIvgOrm3R5dxinsH" Comment="Value" Bounds="460,205,60,15" ShowValueBox="true" isIOBox="true" Value="1914">
+          <Pad Id="VRR0PntIvgOrm3R5dxinsH" Comment="Value" Bounds="314,440,60,15" ShowValueBox="true" isIOBox="true" Value="1914">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Integer32" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="460,240,53,26" Id="NY5hNpxT62l9BH3M09CUdb">
+          <Node Bounds="264,470,53,26" Id="NY5hNpxT62l9BH3M09CUdb">
             <p:NodeReference LastCategoryFullName="Collections.Dictionary" LastDependency="VL.CoreLib.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Add" />
@@ -198,17 +198,17 @@
             <Pin Id="M1eKwFw3X3SIw8e74sBKMP" Name="Value" Kind="InputPin" />
             <Pin Id="DUi92VdbSKqq5PnYr8Gw0m" Name="Output" Kind="StateOutputPin" />
           </Node>
-          <Pad Id="GVfvzbvfHqWUBZjEtISIkK" Comment="Key" Bounds="620,170,100,15" ShowValueBox="true" isIOBox="true" Value="terminal">
+          <Pad Id="GVfvzbvfHqWUBZjEtISIkK" Comment="Key" Bounds="290,530,67,15" ShowValueBox="true" isIOBox="true" Value="terminal">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="AWj5WuuNbEiPs2Z9cASx4S" Comment="Value" Bounds="620,205,60,15" ShowValueBox="true" isIOBox="true" Value="True">
+          <Pad Id="AWj5WuuNbEiPs2Z9cASx4S" Comment="Value" Bounds="314,560,60,15" ShowValueBox="true" isIOBox="true" Value="True">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Boolean" />
             </p:TypeAnnotation>
           </Pad>
-          <Node Bounds="620,240,53,26" Id="LRBmrju9bjE6SyzIc3O1Jd">
+          <Node Bounds="264,590,53,26" Id="LRBmrju9bjE6SyzIc3O1Jd">
             <p:NodeReference LastCategoryFullName="Collections.Dictionary" LastDependency="VL.CoreLib.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Add" />
@@ -253,4 +253,4 @@
     </Node>
   </Patch>
   <NugetDependency Id="JrcxVNOy8CHSWiuJ8ttdrL" Location="VL.NetTopologySuite" Version="0.0.0" />
-</Document>
+</Document>

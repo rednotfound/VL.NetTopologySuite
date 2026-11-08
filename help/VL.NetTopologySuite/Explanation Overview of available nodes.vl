@@ -16,7 +16,7 @@
       <Patch Id="N0ijytRdSDJJ8VzozxrD0d">
         <Canvas Id="LjApK5zztCCYqd1sio2qRY" CanvasType="Group">
           <Pad Id="AjQ6L32LbCKWoq0mBAhejf" Bounds="60,40,315,41" ShowValueBox="true" isIOBox="true" Value="VL.NetTopologySuite">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -25,7 +25,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="GZrpaDRGv1X8d3TkYcp5op" Bounds="60,95,900,64" ShowValueBox="true" isIOBox="true" Value="NetTopologySuite geometry as nodes: make it, measure it, combine it, read and write WKT. Every node hands back a native NetTopologySuite type, so the output of one is the input of the next - and of VL.GeoJSON and VL.Mapsui, which speak the same type.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -34,7 +34,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="PGpnAQPypIEyQxfbohQ5Re" Bounds="60,170,400,30" ShowValueBox="true" isIOBox="true" Value="NetTopologySuite.Geometry - making">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -52,8 +52,8 @@
             <Pin Id="T4JodVQXTUoFJLOmh4I5E2" Name="Y" Kind="InputPin" />
             <Pin Id="I86E6YH8tWl4KYIEWOHGLk" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="QRkdteAgUuodTB5RvcaNZ2" Bounds="250,212,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; X and Y become a Coordinate. CoordinateZ adds Z.">
-            <p:TypeAnnotation>
+          <Pad Id="QRkdteAgUuodTB5RvcaNZ2" Bounds="250,212,375,26" ShowValueBox="true" isIOBox="true" Value="&lt; X and Y become a Coordinate. CoordinateZ adds Z.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -71,8 +71,8 @@
             <Pin Id="BX2UF9g3Ifr6WbSXxp8R6U" Name="Factory" Kind="InputPin" />
             <Pin Id="TI5VsqPhJjPj9gw2xSaXVs" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="Ln0PKXgnrVhvIyg4Z8IP6i" Bounds="250,247,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; A Coordinate becomes a Point. Factory sets the SRID.">
-            <p:TypeAnnotation>
+          <Pad Id="Ln0PKXgnrVhvIyg4Z8IP6i" Bounds="250,247,375,26" ShowValueBox="true" isIOBox="true" Value="&lt; A Coordinate becomes a Point. Factory sets the SRID.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -90,8 +90,8 @@
             <Pin Id="B5VWBAzvRqlCNoTaTvSlAO" Name="Factory" Kind="InputPin" />
             <Pin Id="RlnuzBH7I1eKAbR4HfI3wJ" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="KvYStBGGZKJX3LY9XuKEhN" Bounds="250,282,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; An ordered run of Coordinates.">
-            <p:TypeAnnotation>
+          <Pad Id="KvYStBGGZKJX3LY9XuKEhN" Bounds="250,282,375,26" ShowValueBox="true" isIOBox="true" Value="&lt; An ordered run of Coordinates.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -109,8 +109,8 @@
             <Pin Id="TUeEMgxV5fTCjaJP24Jck1" Name="Factory" Kind="InputPin" />
             <Pin Id="QOu18svO9B2EIof8rp0aX1" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="TZLchcvlU00UwkCp1WH2sl" Bounds="250,317,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; A closed run. The first Coordinate is repeated for you.">
-            <p:TypeAnnotation>
+          <Pad Id="TZLchcvlU00UwkCp1WH2sl" Bounds="250,317,375,26" ShowValueBox="true" isIOBox="true" Value="&lt; A closed run. The first Coordinate is repeated for you.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -129,8 +129,8 @@
             <Pin Id="L7KI8411q7FBcZ3CbcwXMG" Name="Factory" Kind="InputPin" />
             <Pin Id="JuLUG7GQXq6kjNTNXd6Zm4" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="OfzGyPXPECgPrUuEC9TU34" Bounds="250,352,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; A shell ring, plus holes as more rings.">
-            <p:TypeAnnotation>
+          <Pad Id="OfzGyPXPECgPrUuEC9TU34" Bounds="250,352,375,26" ShowValueBox="true" isIOBox="true" Value="&lt; A shell ring, plus holes as more rings.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -148,8 +148,8 @@
             <Pin Id="StpnN2tDaCQ8BBbB23NN76" Name="Factory" Kind="InputPin" />
             <Pin Id="HXJOglS2qXnF37ipR2fq45" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="TIdgy4DPxwIMfFJyzHEK2P" Bounds="250,387,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; Anything together. Multi* are the strict containers.">
-            <p:TypeAnnotation>
+          <Pad Id="TIdgy4DPxwIMfFJyzHEK2P" Bounds="250,387,375,26" ShowValueBox="true" isIOBox="true" Value="&lt; Anything together. Multi* are the strict containers.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -167,8 +167,8 @@
             <Pin Id="Pu3DgjEkSZa80pm29E1jTe" Name="Factory" Kind="InputPin" />
             <Pin Id="ON9DIdmabRUgsDwEzyeuji" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="QeyYXjeNe44XDx8rRHNWH8" Bounds="250,422,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; Only Polygons.">
-            <p:TypeAnnotation>
+          <Pad Id="QeyYXjeNe44XDx8rRHNWH8" Bounds="250,422,375,26" ShowValueBox="true" isIOBox="true" Value="&lt; Only Polygons.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -186,8 +186,8 @@
             <Pin Id="FqSBc5EGKuZQKXiXKvBJbU" Name="Factory" Kind="InputPin" />
             <Pin Id="EFD8dqVOH1GAG2LsT4YFwW" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="SRBz50Gt7I1mpPf8ihzZdM" Bounds="250,457,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; Only Points.">
-            <p:TypeAnnotation>
+          <Pad Id="SRBz50Gt7I1mpPf8ihzZdM" Bounds="250,457,375,26" ShowValueBox="true" isIOBox="true" Value="&lt; Only Points.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -205,8 +205,8 @@
             <Pin Id="MknbD8NNNhK6cEzLyX6aEz" Name="Factory" Kind="InputPin" />
             <Pin Id="R6TDIfWffSptYPZNslopVB" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="ES4SdQuiD1OpEdvgvwQV47" Bounds="250,492,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; Only LineStrings.">
-            <p:TypeAnnotation>
+          <Pad Id="ES4SdQuiD1OpEdvgvwQV47" Bounds="250,492,375,26" ShowValueBox="true" isIOBox="true" Value="&lt; Only LineStrings.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -223,8 +223,8 @@
             <Pin Id="OahPGRRUAaifuwnjUaXURA" Name="SRID" Kind="InputPin" />
             <Pin Id="Sy1vOVhXYV6qFthHPAiMB6" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="I0R0WtGAXqxT0SPJzeIGBf" Bounds="250,527,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; Makes an SRID for every Factory pin. 0 means unset.">
-            <p:TypeAnnotation>
+          <Pad Id="I0R0WtGAXqxT0SPJzeIGBf" Bounds="250,527,375,26" ShowValueBox="true" isIOBox="true" Value="&lt; Makes an SRID for every Factory pin. 0 means unset.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -232,8 +232,8 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="C4u15ywvLabuPFCVezBy2I" Bounds="60,600,400,30" ShowValueBox="true" isIOBox="true" Value="NetTopologySuite.Geometry - reading">
-            <p:TypeAnnotation>
+          <Pad Id="C4u15ywvLabuPFCVezBy2I" Bounds="60,600,335,30" ShowValueBox="true" isIOBox="true" Value="NetTopologySuite.Geometry - reading">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -250,8 +250,8 @@
             <Pin Id="MlhvRvBaKGZg3JiVjh6zlp" Name="Geometry" Kind="InputPin" />
             <Pin Id="BODB2EMwCa5BkYwxeoKU1H" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="DTYFi7U8mW0Fkx53xXQSAS" Bounds="250,642,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; In the coordinates' units squared.">
-            <p:TypeAnnotation>
+          <Pad Id="DTYFi7U8mW0Fkx53xXQSAS" Bounds="250,642,375,26" ShowValueBox="true" isIOBox="true" Value="&lt; In the coordinates' units squared.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -268,8 +268,8 @@
             <Pin Id="AFl0xYPHW4vkBliFggKG1O" Name="Geometry" Kind="InputPin" />
             <Pin Id="BweruZGloYrPuRYxUAc66n" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="TjwF9syoyhuV4FgfauffKt" Bounds="250,677,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; Along a line, or around a polygon.">
-            <p:TypeAnnotation>
+          <Pad Id="TjwF9syoyhuV4FgfauffKt" Bounds="250,677,375,26" ShowValueBox="true" isIOBox="true" Value="&lt; Along a line, or around a polygon.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -286,8 +286,8 @@
             <Pin Id="LNUXx8TPbsMC0e18EAoxIK" Name="Geometry" Kind="InputPin" />
             <Pin Id="UxmI6FSaBXRE4Ftvjs7C2E" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="NdRJ6TMOgjjJrzFW11fjPk" Bounds="250,712,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; The centre of mass, as a Point.">
-            <p:TypeAnnotation>
+          <Pad Id="NdRJ6TMOgjjJrzFW11fjPk" Bounds="250,712,375,26" ShowValueBox="true" isIOBox="true" Value="&lt; The centre of mass, as a Point.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -307,8 +307,8 @@
             <Pin Id="ViXGODl1xZCcRDnR7lwQhR" Name="Max X" Kind="OutputPin" />
             <Pin Id="CtpDFCgh74fTtL2l16aq6j" Name="Max Y" Kind="OutputPin" />
           </Node>
-          <Pad Id="K6VA5e8JvocqZ6d1YYfgKJ" Bounds="250,747,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; The axis-aligned box - the cheapest question there is.">
-            <p:TypeAnnotation>
+          <Pad Id="K6VA5e8JvocqZ6d1YYfgKJ" Bounds="250,747,375,26" ShowValueBox="true" isIOBox="true" Value="&lt; The axis-aligned box - the cheapest question there is.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -327,8 +327,8 @@
             <Pin Id="Q0CbDWvRr7VSbLbWRQQmcy" Name="Reason" Kind="OutputPin" />
             <Pin Id="U0p6Lii6MUIfINsT1zC9xk" Name="Location" Kind="OutputPin" />
           </Node>
-          <Pad Id="KkwuTtijSK0rLG93DS4Hkb" Bounds="250,782,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; True, or a reason and where it goes wrong.">
-            <p:TypeAnnotation>
+          <Pad Id="KkwuTtijSK0rLG93DS4Hkb" Bounds="250,782,375,26" ShowValueBox="true" isIOBox="true" Value="&lt; True, or a reason and where it goes wrong.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -345,8 +345,8 @@
             <Pin Id="GzOIObeZLI4wyFx4zzRZNA" Name="Geometry" Kind="InputPin" />
             <Pin Id="JFOkVX2aI1Htu4fY8kLo4T" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="LIDbMzF9Y092vZ6msyjn21" Bounds="250,817,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; The coordinates back out, as a Spread. Also Geometries.">
-            <p:TypeAnnotation>
+          <Pad Id="LIDbMzF9Y092vZ6msyjn21" Bounds="250,817,375,26" ShowValueBox="true" isIOBox="true" Value="&lt; The coordinates back out, as a Spread. Also Geometries.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -363,8 +363,8 @@
             <Pin Id="SVnodsru3TMDBCACANaKUa" Name="Geometry" Kind="InputPin" />
             <Pin Id="DF1CWCmXBM8MN4HG6bUhWM" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="BW3uWcZJoxE6xbQIlprjLp" Bounds="250,852,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; The type as text. Also IsEmpty and SRID.">
-            <p:TypeAnnotation>
+          <Pad Id="BW3uWcZJoxE6xbQIlprjLp" Bounds="250,852,375,26" ShowValueBox="true" isIOBox="true" Value="&lt; The type as text. Also IsEmpty and SRID.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -373,7 +373,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="LsOWiW6xUNmIsnbKJXJaPG" Bounds="640,170,400,30" ShowValueBox="true" isIOBox="true" Value="NetTopologySuite.IO">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -393,7 +393,7 @@
             <Pin Id="JQX3OmV0zgTxboZRX8IsoD" Name="Success" Kind="OutputPin" />
           </Node>
           <Pad Id="TUgQmXZFFavVvTyVH3EAdV" Bounds="830,212,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; Text in, Geometry out. Never throws - see Success.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -412,7 +412,7 @@
             <Pin Id="MnhqdbzUMiT88T72LnZaG2" Name="Result" Kind="OutputPin" />
           </Node>
           <Pad Id="MdPgwawm1OKwHL16xO7nP3" Bounds="830,247,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; Geometry out as text. Z only with Include Z on.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -421,7 +421,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="PDcL7jMrV2DAIiARvH2eR8" Bounds="640,320,400,30" ShowValueBox="true" isIOBox="true" Value="NetTopologySuite.Operation">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -441,7 +441,7 @@
             <Pin Id="V61NB9of7kusRjC5PaJzFl" Name="Output" Kind="OutputPin" />
           </Node>
           <Pad Id="FhlMJwFDdqLZf38Lg9MXU6" Bounds="830,362,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; Grow or shrink by a distance, in the geometry's units.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -460,7 +460,7 @@
             <Pin Id="MJQeUw3YCvwdCebMtHI5Rr" Name="Output" Kind="OutputPin" />
           </Node>
           <Pad Id="OiuhYgzEMbTJnp39WSA2Yg" Bounds="830,397,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; Also Intersection and Difference.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -479,7 +479,7 @@
             <Pin Id="ThfJEKKB7h3tmB0MVQIf9x" Name="Result" Kind="OutputPin" />
           </Node>
           <Pad Id="PnaVgATx0N3SFIdUgJIoQx" Bounds="830,432,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; The shortest gap. Nearest Points says where it is.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -498,7 +498,7 @@
             <Pin Id="LNqmsidyoSBbfnR2ljCp9A" Name="Result" Kind="OutputPin" />
           </Node>
           <Pad Id="DNl8ZIOhFMJUhcq9Af8eFi" Bounds="830,467,440,62" ShowValueBox="true" isIOBox="true" Value="&lt; Also Contains, Within, Touches, Crosses, Overlaps, Covers, CoveredBy, Relate, IsWithinDistance, SymmetricDifference, ConvexHull, Reverse. Disjoint is Intersects + Not.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -507,7 +507,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="F4WY3tZA5UqHlM2R2BLTS8" Bounds="640,540,400,30" ShowValueBox="true" isIOBox="true" Value="NetTopologySuite.Feature">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -526,7 +526,7 @@
             <Pin Id="MJIdl5lvVjCocjwrIhAmJv" Name="Result" Kind="OutputPin" />
           </Node>
           <Pad Id="Qpz6mPdtYdkid2BQBbQidv" Bounds="830,582,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; A geometry with attributes. GeoJSON and Mapsui share it.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -545,7 +545,7 @@
             <Pin Id="RyjtAT74Ohg2Yoz2B0BC4B" Name="Attributes" Kind="OutputPin" />
           </Node>
           <Pad Id="IzuYLTTwdJ2dGRQZFy4Rj3" Bounds="830,617,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; The Feature taken apart again.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -565,7 +565,7 @@
             <Pin Id="OkFxUP4Zsl6jWnM0gUzwps" Name="Success" Kind="OutputPin" />
           </Node>
           <Pad Id="VVQIN30Oidroa7XMRkTJOQ" Bounds="830,652,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; One attribute by name, with Success instead of an error.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -574,7 +574,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="TLTd298VZlPHk462d4TS0J" Bounds="640,690,400,30" ShowValueBox="true" isIOBox="true" Value="NetTopologySuite.Index">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -594,7 +594,7 @@
             <Pin Id="Sm2JHNtBoSX76eiqKSrkdi" Name="Indexes Built" Kind="OutputPin" />
           </Node>
           <Pad Id="Jwx58rxeBtwajS2fLTn5Ry" Bounds="830,732,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; An STRtree over many geometries, built once.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -614,7 +614,7 @@
             <Pin Id="STiZuH1ng8vo0yJnoa368D" Name="Candidate Count" Kind="OutputPin" />
           </Node>
           <Pad Id="PEPIsu440dygUFEhZqdK5n" Bounds="830,767,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; Which geometries MIGHT touch this one. Candidates only.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -623,7 +623,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="NnPG3qt6zI11yb8mhQ7giJ" Bounds="640,840,400,30" ShowValueBox="true" isIOBox="true" Value="NetTopologySuite.Network">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -644,7 +644,7 @@
             <Pin Id="UdN1MULJESrvFstijCVbfI" Name="Networks Built" Kind="OutputPin" />
           </Node>
           <Pad Id="HTmzlRYxMwLDl17whjISk2" Bounds="830,882,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; A graph from LineStrings sharing endpoints exactly.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -669,7 +669,7 @@
             <Pin Id="VbRWTQSphzqX0rnuEgqXP8" Name="To Snap Distance" Kind="OutputPin" />
           </Node>
           <Pad Id="HTz7wp5hIfikWxQMTy3wgg" Bounds="830,917,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; Dijkstra between two Points. Found can be False.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -678,7 +678,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="PLosEUYbNoy31VeN2SJo6y" Bounds="60,1120,300,30" ShowValueBox="true" isIOBox="true" Value="Not here, on purpose">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -687,7 +687,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="OzMvtiP0mKvVoJ1znWpy4o" Bounds="60,1160,520,110" ShowValueBox="true" isIOBox="true" Value="A map: VL.Mapsui draws NTS geometry, this package does not know maps exist.&#xD;&#xA;Reprojection: an SRID is a label, it never moves a coordinate.&#xD;&#xA;Disjoint, Count, ForEach: build them from nodes you already have.&#xD;&#xA;The rest of NetTopologySuite: reachable through vvvv's raw .NET nodes.&#xD;&#xA;Units follow the coordinates. Mixing SRIDs never throws - it quietly answers wrong.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -704,7 +704,7 @@
             <Pin Id="NQnVv3YSxx1VsehtWnMMdq" Name="Geometry" Kind="InputPin" />
             <Pin Id="AxtdvXH9WHLwCxxh6uwrkw" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="JbsRdd6mv7IJZMg2OL7WzN" Bounds="250,887,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; How many coordinates, ring closers included.">
+          <Pad Id="JbsRdd6mv7IJZMg2OL7WzN" Bounds="250,887,375,26" ShowValueBox="true" isIOBox="true" Value="&lt; How many coordinates, ring closers included.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -722,7 +722,7 @@
             <Pin Id="HrtAHSA4Gb7l6gC1ONbV9B" Name="Geometry" Kind="InputPin" />
             <Pin Id="MKxIHynm3xKosJ3hY1fCby" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="MaIQlif5WBHFL9TqlmC8uH" Bounds="250,922,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; No self-crossings. A bowtie line is valid but not simple.">
+          <Pad Id="MaIQlif5WBHFL9TqlmC8uH" Bounds="250,922,375,26" ShowValueBox="true" isIOBox="true" Value="&lt; No self-crossings. A bowtie line is valid but not simple.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -740,7 +740,7 @@
             <Pin Id="Pm0oE4yyiFP1VDzdusMV0U" Name="Geometry" Kind="InputPin" />
             <Pin Id="Qfb3cnNlCuA4laeUbOrDYP" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="BEpgukXtMs7n3fLbMzbD9v" Bounds="250,957,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; A point guaranteed on the shape, unlike Centroid.">
+          <Pad Id="BEpgukXtMs7n3fLbMzbD9v" Bounds="250,957,375,26" ShowValueBox="true" isIOBox="true" Value="&lt; A point guaranteed on the shape, unlike Centroid.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -758,7 +758,7 @@
             <Pin Id="OMcYQenK66JI9jPeXMCJsZ" Name="Geometry" Kind="InputPin" />
             <Pin Id="HLupLmqJviUgTIDfeiiy0a" Name="Output" Kind="OutputPin" />
           </Node>
-          <Pad Id="TXqyKCVTpIHnftJpnFBdPv" Bounds="250,992,440,44" ShowValueBox="true" isIOBox="true" Value="&lt; The bounding box as a geometry; Bounds gives it as numbers.">
+          <Pad Id="TXqyKCVTpIHnftJpnFBdPv" Bounds="250,992,392,44" ShowValueBox="true" isIOBox="true" Value="&lt; The bounding box as a geometry; Bounds gives it as numbers.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -776,7 +776,7 @@
             <Pin Id="Gy7zZJ7BJjeKtM0EzoWJwr" Name="Geometry" Kind="InputPin" />
             <Pin Id="VA5N0mkxoD0FxNAf0cmiay" Name="Output" Kind="OutputPin" />
           </Node>
-          <Pad Id="OLowloTSKVgC848cUSzFCa" Bounds="250,1027,440,44" ShowValueBox="true" isIOBox="true" Value="&lt; One dimension down: a polygon's rings, a line's end points.">
+          <Pad Id="OLowloTSKVgC848cUSzFCa" Bounds="250,1027,375,44" ShowValueBox="true" isIOBox="true" Value="&lt; One dimension down: a polygon's rings, a line's end points.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -785,7 +785,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="PMSMMRnqKLRDiiXCWoBVDS" Bounds="1300,170,300,80" ShowValueBox="true" isIOBox="true" Value="&lt; What a geometry looks like. Hover any Geometry pin, or make an IOBox of one, and the editor draws it - polygons filled, holes cut out, points as pins.">
+          <Pad Id="PMSMMRnqKLRDiiXCWoBVDS" Bounds="1300,170,300,80" ShowValueBox="true" isIOBox="true" Value="What a geometry looks like. Hover any Geometry pin, or make an IOBox of one, and the editor draws it - polygons filled, holes cut out, points as pins.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -849,7 +849,6 @@
           <Fragment Id="Kv5tRJWBdIzM45LNneHAzK" Patch="QOXrUnHDAbnOxiNgCfIC4c" Enabled="true" />
           <Fragment Id="C47KEDw5f4t9Cdu7WWXXgK" Patch="LshNVEcTy7TgmBOYa4DXLq" Enabled="true" />
         </ProcessDefinition>
-
         <Link Id="Ed5KSNgAoUb2TKrMw3UihS" Ids="Q2b0kmaaQm6lKzOQBiVFmt,CXqPvZ0Wz2XC6uu8IM2f1d" />
         <Link Id="LjWLw5L3ENqXFqTTcHbpoy" Ids="Ln43qdHV8r3kdrvAL156Ra,AVgDRKxmgxiGdmJFErivhE" />
         <Link Id="Is8cQlvdCaHjycHrtcAJgX" Ids="FZH570tPjL7SIEipsW2ls1,JflTeY7k31PLTL64hDB5fs" />

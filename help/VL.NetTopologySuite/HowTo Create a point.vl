@@ -81,7 +81,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="60,380,90,19" Id="IJn2MiZJrAtm8YQh3zxOep">
+          <Node Bounds="60,460,90,19" Id="IJn2MiZJrAtm8YQh3zxOep">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Write WKT" />
@@ -91,8 +91,8 @@
             <Pin Id="LJ29fcvoFIXt2vvOkzhwkc" Name="Include Z" Kind="InputPin" />
             <Pin Id="JoPCrcnHzlgckUI1keYt3n" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="GBOr3kfiXYl3s17QybFe2c" Comment="WKT" Bounds="62,430,300,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="MdCaZrrdtxLtBHm34nGerP" Bounds="580,408,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Well-Known Text: the same text pastes into any other GIS tool. See HowTo Read and write WKT.">
+          <Pad Id="GBOr3kfiXYl3s17QybFe2c" Comment="WKT" Bounds="62,510,300,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="MdCaZrrdtxLtBHm34nGerP" Bounds="580,515,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Well-Known Text: the same text pastes into any other GIS tool. See HowTo Read and write WKT.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -101,7 +101,33 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="FProIKz4igfVgD6tKTTZa3" Comment="Point" Bounds="940,320,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="FProIKz4igfVgD6tKTTZa3" Comment="Point" Bounds="180,370,180,120" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="60,650,90,19" Id="LhIOgeqrvIaOQYBYQ5zAtO">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Read WKT" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="GJT8SYpsrDwNLN8ivMMqpX" Name="WKT" Kind="InputPin" />
+            <Pin Id="CppJECkxStbLN6GFTBZ0Ip" Name="Factory" Kind="InputPin" />
+            <Pin Id="EU5OOEPUn3RN2RurzRWjY0" Name="Result" Kind="OutputPin" />
+            <Pin Id="PBHpHemoJvkPl4J05A5bbW" Name="Success" Kind="OutputPin" />
+          </Node>
+          <Pad Id="A6WJJ8LWPgQLsnA4j7jyfo" Comment="WKT" Bounds="62,610,148,15" ShowValueBox="true" isIOBox="true" Value="POINT (139.7671 35.6812)">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="FBoQ0yvQjOiLIXRpbnnN6V" Comment="" Bounds="62,711,190,132" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="M0RXG1TnQ4jPnQnAPdYtZA" Bounds="580,691,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; You can also create a point with WKT">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
         </Canvas>
         <Patch Id="QmuyJQZFIv18CjBqNhjePZ" Name="Create" />
         <Patch Id="OVFNQlTacwSZjmlwxxYvt7" Name="Update" />
@@ -115,6 +141,8 @@
         <Link Id="RVKkzHaikbjaYQzlV5W5i1" Ids="UiQI9faYoR2Ij2GiIJMMjI,LoAdkZgUoxAwAbtX3xVNZY" />
         <Link Id="UQzK2JpVt8c2eFIoioKHku" Ids="JoPCrcnHzlgckUI1keYt3n,GBOr3kfiXYl3s17QybFe2c" />
         <Link Id="Ch8JnSUYTLFCfzt9YW9gAz" Ids="UiQI9faYoR2Ij2GiIJMMjI,FProIKz4igfVgD6tKTTZa3" />
+        <Link Id="UjmKAs8RUJUMKOKFfxYTom" Ids="A6WJJ8LWPgQLsnA4j7jyfo,GJT8SYpsrDwNLN8ivMMqpX" />
+        <Link Id="B9G8pGtPMNWNmrcplHzrmu" Ids="EU5OOEPUn3RN2RurzRWjY0,FBoQ0yvQjOiLIXRpbnnN6V" />
       </Patch>
     </Node>
   </Patch>

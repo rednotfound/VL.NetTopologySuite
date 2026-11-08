@@ -16,7 +16,7 @@
       <Patch Id="Gll2HVgf9F4k1PLcaQcTyK">
         <Canvas Id="BP6BAUtrOPAWerk3rnkONJ" CanvasType="Group">
           <Pad Id="EnjGyg2wxJnvB5jmYzvUKh" Bounds="60,40,255,41" ShowValueBox="true" isIOBox="true" Value="Use ConvexHull!">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -25,7 +25,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="DKjuwOtWYzzlpLmZ1yEWEy" Bounds="60,95,480,64" ShowValueBox="true" isIOBox="true" Value="The smallest convex polygon around everything in a geometry - a rubber band. The usual way to get one outline around a spread of points.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -38,8 +38,8 @@
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="PsUcOWpijzVzC0BHukHfUN" Bounds="580,170,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Six points: four corners and two inside. Paste any geometry here - a LineString, a polygon with a dent.">
-            <p:TypeAnnotation>
+          <Pad Id="PsUcOWpijzVzC0BHukHfUN" Bounds="865,170,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Six points: four corners and two inside. Paste any geometry here - a LineString, a polygon with a dent.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -58,7 +58,7 @@
             <Pin Id="HtknoBSUi7Jpj35pnjLRqS" Name="Result" Kind="OutputPin" />
             <Pin Id="JoSTZTchFbhMtrG1hSxpQP" Name="Success" Kind="OutputPin" />
           </Node>
-          <Node Bounds="60,290,90,19" Id="KidLduNSTgTcwm9B3wHicO">
+          <Node Bounds="60,459,90,19" Id="KidLduNSTgTcwm9B3wHicO">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="ConvexHull" />
@@ -67,7 +67,7 @@
             <Pin Id="C29mk39MgSM7HR1uoOWCzB" Name="Geometry" Kind="InputPin" />
             <Pin Id="BX5wZDtdy6C0kTFpYp5jLa" Name="Output" Kind="OutputPin" />
           </Node>
-          <Node Bounds="230,290,50,19" Id="R282qfNjqlbZLaXqoHnmyg">
+          <Node Bounds="117,540,50,19" Id="R282qfNjqlbZLaXqoHnmyg">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Area" />
@@ -76,8 +76,8 @@
             <Pin Id="GVnKXXJN8e1BrSkAFsWNgb" Name="Geometry" Kind="InputPin" />
             <Pin Id="ArlIs52nJo8gLKQMtT8Y9l" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="NTVmXQFEV3tNJtJmQe02dB" Comment="Area" Bounds="230,330,80,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="400,290,110,19" Id="PjsKFGq02CHXkUVulOIReq">
+          <Pad Id="NTVmXQFEV3tNJtJmQe02dB" Comment="Area" Bounds="117,580,80,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="269,540,110,19" Id="PjsKFGq02CHXkUVulOIReq">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="GeometryType" />
@@ -86,9 +86,9 @@
             <Pin Id="OLcyGSwNYd7mhAYJGFracM" Name="Geometry" Kind="InputPin" />
             <Pin Id="Skh4fiWeuBhMx4YVxSkHfg" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="Sub7mMFVEHoRxpTPDvP7TC" Comment="Type" Bounds="400,330,100,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="UEL1FKXFjkfYUr8IG4RVy4" Bounds="580,290,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Area 12: the band touches the four corners and the two inside points are gone. A Polygon, whatever went in; collinear points give a LineString, one point a Point.">
-            <p:TypeAnnotation>
+          <Pad Id="Sub7mMFVEHoRxpTPDvP7TC" Comment="Type" Bounds="269,580,100,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="UEL1FKXFjkfYUr8IG4RVy4" Bounds="865,547,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Area 12: the band touches the four corners and the two inside points are gone. A Polygon, whatever went in; collinear points give a LineString, one point a Point.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -96,7 +96,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="60,380,90,19" Id="Exmu3ZsbeyRrWvBbswSmi1">
+          <Node Bounds="64,780,90,19" Id="Exmu3ZsbeyRrWvBbswSmi1">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Write WKT" />
@@ -106,9 +106,9 @@
             <Pin Id="MqLVpLsFbamiLsJyOmKwv0" Name="Include Z" Kind="InputPin" />
             <Pin Id="A5Oc7wqNqyWOKrJo6pKtIp" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="CZlmFcSsr277L492Pypz8g" Comment="Hull" Bounds="60,420,460,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="LnyxQGG5uGm5RIZvUPM5OI" Bounds="580,380,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Drawing a hull around moving points is the cheap way to show where a crowd is. A hull around a polygon fills in its dents.">
-            <p:TypeAnnotation>
+          <Pad Id="CZlmFcSsr277L492Pypz8g" Comment="Hull" Bounds="64,820,194,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="LnyxQGG5uGm5RIZvUPM5OI" Bounds="865,637,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Drawing a hull around moving points is the cheap way to show where a crowd is. A hull around a polygon fills in its dents.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -116,8 +116,29 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="OEW9cuF21ClUG26xJ8EANP" Comment="Points" Bounds="940,220,180,120" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="Qy9OGv9rNWByh92i1ka46Q" Comment="Hull" Bounds="940,360,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="OEW9cuF21ClUG26xJ8EANP" Comment="Points" Bounds="85,281,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="Qy9OGv9rNWByh92i1ka46Q" Comment="Hull" Bounds="100,631,180,120" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="465,540,95,19" Id="TgY8npxyzigQNqPshoA96c">
+            <p:NodeReference LastCategoryFullName="Collections.Spread" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Cons" />
+              <CategoryReference Kind="RecordType" Name="Spread" NeedsToBeDirectParent="true" />
+            </p:NodeReference>
+            <Pin Id="UWPcSLEMXgmNjPqUTTWQE3" Name="Input" Kind="InputPin" />
+            <Pin Id="Sn6ibQswV1fNMvHghBHSs8" Name="Input 2" Kind="InputPin" />
+            <Pin Id="Rf5Z4nvqEhBNnOkiOOuYtS" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="465,580,106,19" Id="FrpJC7m9yF4MyJkj8r5eS9">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="GeometryCollection" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="CXOK1JUMcs3LDEAH4tBjAA" Name="Geometries" Kind="InputPin" />
+            <Pin Id="J9PSZJDCqFrLB9QdRrRPBt" Name="Factory" Kind="InputPin" />
+            <Pin Id="MtjAnBuVA7oPw55WBSdpnF" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="IDvLiLk9BqkNCgEBwjUPfN" Comment="" Bounds="467,631,190,132" ShowValueBox="true" isIOBox="true" />
         </Canvas>
         <Patch Id="B0KNQ8AUWTrsdEdS9EtQdi" Name="Create" />
         <Patch Id="REibPYhH0P52RnJI4auaw8" Name="Update" />
@@ -135,6 +156,10 @@
         <Link Id="JXmHCVcnAvHlVimxXUgxs9" Ids="A5Oc7wqNqyWOKrJo6pKtIp,CZlmFcSsr277L492Pypz8g" />
         <Link Id="PqcyUabX1ILd6F4LgwNfep" Ids="HtknoBSUi7Jpj35pnjLRqS,OEW9cuF21ClUG26xJ8EANP" />
         <Link Id="MRbAi2vwvc0XfXN5KwdCrM" Ids="BX5wZDtdy6C0kTFpYp5jLa,Qy9OGv9rNWByh92i1ka46Q" />
+        <Link Id="TJzs2lrdOaaObAzQ9onYM2" Ids="HtknoBSUi7Jpj35pnjLRqS,UWPcSLEMXgmNjPqUTTWQE3" />
+        <Link Id="TIaKSdUElPUMfoi7V3Jvpz" Ids="BX5wZDtdy6C0kTFpYp5jLa,Sn6ibQswV1fNMvHghBHSs8" />
+        <Link Id="NXJkA9jbHF8QNDBO1zWM3t" Ids="Rf5Z4nvqEhBNnOkiOOuYtS,CXOK1JUMcs3LDEAH4tBjAA" />
+        <Link Id="SkbGFS8csboQUyLqeWLy2x" Ids="MtjAnBuVA7oPw55WBSdpnF,IDvLiLk9BqkNCgEBwjUPfN" />
       </Patch>
     </Node>
   </Patch>

@@ -33,7 +33,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="BP0xNmoxlS9NPBIJXRdIym" Comment="Shape" Bounds="60,170,400,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))">
+          <Pad Id="BP0xNmoxlS9NPBIJXRdIym" Comment="Polygon" Bounds="60,170,400,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -49,7 +49,7 @@
             <Pin Id="LkK7l896wHKAFtk3Fc0P3e" Name="Result" Kind="OutputPin" />
             <Pin Id="QIMcLpWKMSmy2sPylXlol9" Name="Success" Kind="OutputPin" />
           </Node>
-          <Pad Id="Vee6hDcErDHs3QdrcDtvsb" Bounds="580,170,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; Feed it a LINESTRING and see the corridor.">
+          <Pad Id="Vee6hDcErDHs3QdrcDtvsb" Bounds="580,207,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; Feed it a LINESTRING and see the corridor.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -58,7 +58,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="316,260,50,19" Id="O2VqKMguuxqXpg8KyMK9pz">
+          <Node Bounds="185,310,50,19" Id="O2VqKMguuxqXpg8KyMK9pz">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Area" />
@@ -67,13 +67,13 @@
             <Pin Id="LeRmeV5Ve4ZLLvRFM5u3FO" Name="Geometry" Kind="InputPin" />
             <Pin Id="JpG2Tyrx1oIdQ2sTzFMvP7" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="HDJE2ercKEZM7M81XV8sn9" Comment="Area before" Bounds="316,300,80,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="E5HPNB2PBUVrf0Pzu3QJrd" Comment="Distance" Bounds="94,310,80,15" ShowValueBox="true" isIOBox="true" Value="0.25">
+          <Pad Id="HDJE2ercKEZM7M81XV8sn9" Comment="Area before" Bounds="185,350,80,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="E5HPNB2PBUVrf0Pzu3QJrd" Comment="Distance" Bounds="94,430,80,15" ShowValueBox="true" isIOBox="true" Value="0.25">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Float64" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="SkKHjv4DpLRwCNdEIVExr2" Bounds="580,280,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; THE DISTANCE IS IN THE GEOMETRY'S OWN UNITS. Here 0.25 is a quarter of the unit square. On longitude/latitude it would be a quarter DEGREE - project to metres first.">
+          <Pad Id="SkKHjv4DpLRwCNdEIVExr2" Bounds="580,400,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; THE DISTANCE IS IN THE GEOMETRY'S OWN UNITS. Here 0.25 is a quarter of the unit square. On longitude/latitude it would be a quarter DEGREE - project to metres first.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -82,12 +82,12 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="PzVjkpNIRqASYXk4Pu4G2J" Comment="Segments" Bounds="127,340,80,15" ShowValueBox="true" isIOBox="true" Value="8">
+          <Pad Id="PzVjkpNIRqASYXk4Pu4G2J" Comment="Segments" Bounds="127,460,80,15" ShowValueBox="true" isIOBox="true" Value="8">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Integer32" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="M3IJYU7rygqNe9AYCIptjE" Bounds="580,368,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Segments per quarter turn. 8 is NetTopologySuite's default and visibly faceted; raise it and watch &quot;Area after&quot; converge.">
+          <Pad Id="M3IJYU7rygqNe9AYCIptjE" Bounds="580,488,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Segments per quarter turn. 8 is NetTopologySuite's default and visibly faceted; raise it and watch &quot;Area after&quot; converge.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -96,7 +96,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="60,370,70,19" Id="ND9GleengBeG2qGBwBC1Xl">
+          <Node Bounds="60,490,70,19" Id="ND9GleengBeG2qGBwBC1Xl">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Buffer" />
@@ -107,7 +107,7 @@
             <Pin Id="KOHZAMuFPApMbj0Qs6QUBc" Name="Segments" Kind="InputPin" />
             <Pin Id="ShVM7FfJ1J7Cev3P5AQoBJ" Name="Output" Kind="OutputPin" />
           </Node>
-          <Pad Id="AasBwdG79lGSoijoWJDw88" Bounds="580,438,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; Try a negative distance: the shape shrinks.">
+          <Pad Id="AasBwdG79lGSoijoWJDw88" Bounds="580,658,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; Try a negative distance: the shape shrinks.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -116,7 +116,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="103,440,50,19" Id="SkzMQ2eVpGXtvOnnhVR67T">
+          <Node Bounds="103,660,50,19" Id="SkzMQ2eVpGXtvOnnhVR67T">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Area" />
@@ -125,8 +125,8 @@
             <Pin Id="NsgKlzmi2gnNeeo1dor7b3" Name="Geometry" Kind="InputPin" />
             <Pin Id="EWfwl9xfhVnlq4Js6W18VU" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="PeiSmpE3qzt8XAg1jhGp8M" Comment="Area after" Bounds="103,480,80,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="272,440,100,19" Id="MHG034oWrNzLzFhcag4KDj">
+          <Pad Id="PeiSmpE3qzt8XAg1jhGp8M" Comment="Area after" Bounds="103,700,80,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="272,660,100,19" Id="MHG034oWrNzLzFhcag4KDj">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Intersection" />
@@ -136,7 +136,7 @@
             <Pin Id="AnozXOihq44WeKXVjXSd8J" Name="B" Kind="InputPin" />
             <Pin Id="CZs98kZFsWaS6LJoy4qzy6" Name="Output" Kind="OutputPin" />
           </Node>
-          <Node Bounds="272,500,50,19" Id="QczzksB55S9zXlnyIcZ5yL">
+          <Node Bounds="272,720,50,19" Id="QczzksB55S9zXlnyIcZ5yL">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Area" />
@@ -145,8 +145,8 @@
             <Pin Id="B7lpVtQ9E6R2j0aqzaqMsL" Name="Geometry" Kind="InputPin" />
             <Pin Id="L09i48AwUE3NtVFeXFmQn6" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="IhGkrpRrVzP4SQsgNkfwLV" Comment="Intersection area" Bounds="272,540,80,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="DCSW42bxhmqP3Fe8A8z3j1" Bounds="580,490,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Intersection of the buffered shape with the original gives the original back - area 1 again. Geometry in, geometry out: operations chain with nothing in between.">
+          <Pad Id="IhGkrpRrVzP4SQsgNkfwLV" Comment="Intersection area" Bounds="274,770,80,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="DCSW42bxhmqP3Fe8A8z3j1" Bounds="580,710,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Intersection of the buffered shape with the original gives the original back - area 1 again. Geometry in, geometry out: operations chain with nothing in between.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -155,7 +155,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="60,590,90,19" Id="SCaIid0qCmFKKEi31telxK">
+          <Node Bounds="60,810,90,19" Id="SCaIid0qCmFKKEi31telxK">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Write WKT" />
@@ -164,10 +164,20 @@
             <Pin Id="SVqfBwaF7UsW52Q7DeUSox" Name="Include Z" Kind="InputPin" />
             <Pin Id="QXBKJ8yXabwXDjl61ds1f8" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="UpZ4AHx4i4TUH18F8QIkhY" Comment="WKT" Bounds="60,630,460,54" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="I0N9a7Mwvi9HtVqxPZDzUY" Comment="Input" Bounds="940,220,180,120" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="HNcRnPgxxkTob8CvJoSni9" Comment="Buffered" Bounds="940,370,180,120" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="Rrp52t2UF0s0GiEXUxqLaC" Comment="Intersection" Bounds="940,520,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="UpZ4AHx4i4TUH18F8QIkhY" Comment="WKT" Bounds="62,860,375,114" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="I0N9a7Mwvi9HtVqxPZDzUY" Comment="Input" Bounds="-186,290,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="HNcRnPgxxkTob8CvJoSni9" Comment="Buffered" Bounds="-177,551,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="Rrp52t2UF0s0GiEXUxqLaC" Comment="Intersection" Bounds="447,701,102,81" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="L1PLzEUH9SoNO5uTk641sr" Comment="Polyline" Bounds="268,203,191,15" ShowValueBox="true" isIOBox="true" Value="LINESTRING (0 0, 1 1, 2 0)">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="MUBHZRM9LPANKVixvJ97tF" Comment="Point" Bounds="268,239,191,15" ShowValueBox="true" isIOBox="true" Value="POINT (0 0)">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
         </Canvas>
         <Patch Id="NBi4r1Gg1GzxVuLVSjFRyS" Name="Create" />
         <Patch Id="TCyHkNr9gTEvU7OfV5UiwM" Name="Update" />
@@ -175,7 +185,6 @@
           <Fragment Id="MgY2m6SlWYNJGYPFxzKmbI" Patch="NBi4r1Gg1GzxVuLVSjFRyS" Enabled="true" />
           <Fragment Id="QRTUFZTUChRWuKRfhYWdfg" Patch="TCyHkNr9gTEvU7OfV5UiwM" Enabled="true" />
         </ProcessDefinition>
-        <Link Id="P7tn8lSc3n3DWboaUtIlD9" Ids="BP0xNmoxlS9NPBIJXRdIym,QRwIvrYv8Cz2GPkG0P0NdO" />
         <Link Id="SQmfxML6FNogFbP2sQxVn6" Ids="LkK7l896wHKAFtk3Fc0P3e,LeRmeV5Ve4ZLLvRFM5u3FO" />
         <Link Id="OCx3pCFVJDoeGltlgQn05d" Ids="JpG2Tyrx1oIdQ2sTzFMvP7,HDJE2ercKEZM7M81XV8sn9" />
         <Link Id="IhMXJcakb0FK8cRHZVZLuS" Ids="LkK7l896wHKAFtk3Fc0P3e,Cu9mc2DK7OGsjELaPK3dfI" />
@@ -192,6 +201,7 @@
         <Link Id="CrKBe8cTYHRY1peyg13msH" Ids="LkK7l896wHKAFtk3Fc0P3e,I0N9a7Mwvi9HtVqxPZDzUY" />
         <Link Id="RCMRN56JvULEAzMWhJ0UKd" Ids="ShVM7FfJ1J7Cev3P5AQoBJ,HNcRnPgxxkTob8CvJoSni9" />
         <Link Id="JGVPbYLluUlVSmpQVxLDQX" Ids="CZs98kZFsWaS6LJoy4qzy6,Rrp52t2UF0s0GiEXUxqLaC" />
+        <Link Id="F0x4U73feoBNa8CL9zs0e1" Ids="BP0xNmoxlS9NPBIJXRdIym,QRwIvrYv8Cz2GPkG0P0NdO" />
       </Patch>
     </Node>
   </Patch>

@@ -58,7 +58,7 @@
             <Pin Id="AY28YyZEeolSqhzOcWHojq" Name="Result" Kind="OutputPin" />
             <Pin Id="V3PtEsAMufV37x0wpGq2Zk" Name="Success" Kind="OutputPin" />
           </Node>
-          <Node Bounds="91,310,110,19" Id="R28GWtzAsg0MOdG8CHDuES">
+          <Node Bounds="60,400,110,19" Id="R28GWtzAsg0MOdG8CHDuES">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="GeometryType" />
@@ -67,8 +67,8 @@
             <Pin Id="RCFHhudpu35nF3gNtVna65" Name="Geometry" Kind="InputPin" />
             <Pin Id="B6Dz7mjNWWy24EtrkgnOy2" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="IbGpYmGYq3Uhg0RXBbuukg" Comment="Type" Bounds="91,350,120,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="261,310,70,19" Id="JAvVVyRU3tzBII8f6MzcQm">
+          <Pad Id="IbGpYmGYq3Uhg0RXBbuukg" Comment="Type" Bounds="60,440,120,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="230,400,70,19" Id="JAvVVyRU3tzBII8f6MzcQm">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="IsEmpty" />
@@ -77,8 +77,8 @@
             <Pin Id="GhQsW5Dstj3OeSVpmSTdoM" Name="Geometry" Kind="InputPin" />
             <Pin Id="HluFWTO941RRkwMF09ro9C" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="DpJJKe1v1OUuqg1WXp8BEz" Comment="Empty" Bounds="261,350,60,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="391,310,50,19" Id="KNhL6gd2PgoJKX1FShithj">
+          <Pad Id="DpJJKe1v1OUuqg1WXp8BEz" Comment="Empty" Bounds="230,440,60,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="360,400,50,19" Id="KNhL6gd2PgoJKX1FShithj">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="SRID" />
@@ -87,8 +87,8 @@
             <Pin Id="OgI50w9eQZxc4S10Du1xLD" Name="Geometry" Kind="InputPin" />
             <Pin Id="QuosgCFxWt87mqVOQ54KKu" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="Tbsg60h5aHN8h8YRxz26h6" Comment="SRID" Bounds="391,350,60,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="OTT1KDqv6g3kTtWgtejpwi" Bounds="580,290,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; IsValid is the one reader not shown here - HowTo Create a polygon has it.">
+          <Pad Id="Tbsg60h5aHN8h8YRxz26h6" Comment="SRID" Bounds="360,440,60,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="OTT1KDqv6g3kTtWgtejpwi" Bounds="587,406,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; IsValid is the one reader not shown here - HowTo Create a polygon has it.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -97,7 +97,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="89,410,50,19" Id="DZIf5yLdVkAMYnvn83wojZ">
+          <Node Bounds="67,580,50,19" Id="DZIf5yLdVkAMYnvn83wojZ">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Area" />
@@ -106,8 +106,8 @@
             <Pin Id="V7bof3aV8yIJZNaVCqNZyL" Name="Geometry" Kind="InputPin" />
             <Pin Id="UHuRqNJDaYENypKCIUAzYN" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="IOWzd0X7FXfqpJzaotkXMK" Comment="Area" Bounds="91,460,80,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="261,420,60,19" Id="OzZBKZUJC7fFVrgXSpty9E">
+          <Pad Id="IOWzd0X7FXfqpJzaotkXMK" Comment="Area" Bounds="69,630,80,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="239,590,60,19" Id="OzZBKZUJC7fFVrgXSpty9E">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Length" />
@@ -116,8 +116,8 @@
             <Pin Id="BpPD63hxb4b8Iq4LXHDUKK" Name="Geometry" Kind="InputPin" />
             <Pin Id="QNTknksRiSY2m8ttlxo6Pc" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="GCIfW3uwOy4f3HM6E1ZwX9" Comment="Length" Bounds="261,460,80,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="V4OnvzZcuPoJHLXEqHqJ4h" Bounds="580,400,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Area: 12 minus the hole. Length: the perimeter, both rings counted. Both in the coordinates' own units - on longitude/latitude that is degrees and square degrees.">
+          <Pad Id="GCIfW3uwOy4f3HM6E1ZwX9" Comment="Length" Bounds="239,630,80,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="V4OnvzZcuPoJHLXEqHqJ4h" Bounds="587,580,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Area: 12 minus the hole. Length: the perimeter, both rings counted. Both in the coordinates' own units - on longitude/latitude that is degrees and square degrees.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -126,7 +126,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="391,420,70,19" Id="UX6B3OzOWgK2Zl9CyuovhJ">
+          <Node Bounds="369,590,70,19" Id="UX6B3OzOWgK2Zl9CyuovhJ">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Centroid" />
@@ -135,7 +135,7 @@
             <Pin Id="AUugM5by3xO0ACFQnxACDp" Name="Geometry" Kind="InputPin" />
             <Pin Id="GAyUp8kq8od66bChuyckyV" Name="Result" Kind="OutputPin" />
           </Node>
-          <Node Bounds="391,470,90,19" Id="BviqfbIPJGUACgAo2y9Bl6">
+          <Node Bounds="369,640,90,19" Id="BviqfbIPJGUACgAo2y9Bl6">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Write WKT" />
@@ -144,8 +144,8 @@
             <Pin Id="OvwNbKUgNVFr6pm2bw9mQJ" Name="Include Z" Kind="InputPin" />
             <Pin Id="BReOEtYj0dEgVxo1F45z0W" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="R6sJhEotGgv2vBTLWR9fEa" Comment="Centroid" Bounds="391,510,160,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="Nmy79UgJBD471HLjbGCtRg" Bounds="580,488,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; The hole pulls the centroid a little right of the rectangle's middle.">
+          <Pad Id="R6sJhEotGgv2vBTLWR9fEa" Comment="Centroid" Bounds="371,690,129,51" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="Nmy79UgJBD471HLjbGCtRg" Bounds="587,671,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; The hole pulls the centroid a little right of the rectangle's middle.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -154,7 +154,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="60,550,328,19" Id="KHywiXEKbCXEyM4xP7iIeq">
+          <Node Bounds="67,830,328,19" Id="KHywiXEKbCXEyM4xP7iIeq">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Bounds" />
@@ -166,11 +166,11 @@
             <Pin Id="EAUJ33N9nX0QFitKZXKVV1" Name="Max X" Kind="OutputPin" />
             <Pin Id="BCrWhiO3hkUXH8Yq63kE0r" Name="Max Y" Kind="OutputPin" />
           </Node>
-          <Pad Id="CnP0BoSmeU9Iycahi0scTj" Comment="Min X" Bounds="60,590,70,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="BN1QSUmn2BovAUMkKYtoeo" Comment="Min Y" Bounds="170,590,70,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="MntLt75WkMaxW4gYdBtKOB" Comment="Max X" Bounds="280,590,70,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="SjcfFeaRiquKdcYlSfs9ca" Comment="Max Y" Bounds="390,590,70,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="UXv1DWeMB3Zv0B8qdqV8Yo" Bounds="580,550,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Bounds is the axis-aligned box around the geometry: the cheapest question there is, and the one spatial indexes are built on - see HowTo Query many geometries fast.">
+          <Pad Id="CnP0BoSmeU9Iycahi0scTj" Comment="Min X" Bounds="67,870,70,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="BN1QSUmn2BovAUMkKYtoeo" Comment="Min Y" Bounds="177,870,70,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="MntLt75WkMaxW4gYdBtKOB" Comment="Max X" Bounds="287,870,70,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="SjcfFeaRiquKdcYlSfs9ca" Comment="Max Y" Bounds="408,867,70,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="UXv1DWeMB3Zv0B8qdqV8Yo" Bounds="587,842,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Bounds is the axis-aligned box around the geometry: the cheapest question there is, and the one spatial indexes are built on - see HowTo Query many geometries fast.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -179,7 +179,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="60,650,80,19" Id="QRY8lPGgETiW2oeg5gqKcO">
+          <Node Bounds="67,967,80,19" Id="QRY8lPGgETiW2oeg5gqKcO">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="NumPoints" />
@@ -188,8 +188,8 @@
             <Pin Id="AlJcGYNRnTjahfcLv5LO1k" Name="Geometry" Kind="InputPin" />
             <Pin Id="PssVk8KsHNcUfWyQzIHetn" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="Hn2kNjsKXsa0c04tPC7r9d" Comment="NumPoints" Bounds="60,690,60,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="261,650,70,19" Id="EEaNIYhUxEyDfkZsXIqirW">
+          <Pad Id="Hn2kNjsKXsa0c04tPC7r9d" Comment="NumPoints" Bounds="67,1007,60,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="217,967,70,19" Id="EEaNIYhUxEyDfkZsXIqirW">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="IsSimple" />
@@ -198,8 +198,8 @@
             <Pin Id="HQSwNYMqGmC4gjFkTE0wVc" Name="Geometry" Kind="InputPin" />
             <Pin Id="IJflOBFAqbg7Vz8itfnqyp" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="FmM84VVlKE9bYvg6WNl7XV" Comment="Simple" Bounds="261,690,60,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="DFft7K9z8YjKYKeob83zzg" Bounds="580,650,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; NumPoints counts every coordinate, ring closers included: 10 here. IsSimple: no self-crossings. A bowtie LineString is valid but not simple.">
+          <Pad Id="FmM84VVlKE9bYvg6WNl7XV" Comment="Simple" Bounds="217,1007,60,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="DFft7K9z8YjKYKeob83zzg" Bounds="587,972,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; NumPoints counts every coordinate, ring closers included: 10 here. IsSimple: no self-crossings. A bowtie LineString is valid but not simple.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -208,7 +208,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="60,740,100,19" Id="E9KIAWWXVKITj4YYLlT1a0">
+          <Node Bounds="67,1156,100,19" Id="E9KIAWWXVKITj4YYLlT1a0">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="InteriorPoint" />
@@ -217,7 +217,7 @@
             <Pin Id="LAvFvlblUayJwc5pYouRiz" Name="Geometry" Kind="InputPin" />
             <Pin Id="IDekJ2DGgzQDpCspkJVZ8J" Name="Result" Kind="OutputPin" />
           </Node>
-          <Node Bounds="60,790,90,19" Id="FtGHxRqnMll5ewdEYtUpaQ">
+          <Node Bounds="67,1600,90,19" Id="FtGHxRqnMll5ewdEYtUpaQ">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Write WKT" />
@@ -226,8 +226,8 @@
             <Pin Id="LBzDp2A60ErlJHY4nNZAB8" Name="Include Z" Kind="InputPin" />
             <Pin Id="NgW8GTBC6LjgmciFeQ94iY" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="KYfjfWrxNS5Df3TBBP6Bsj" Comment="InteriorPoint" Bounds="60,830,100,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="261,740,80,19" Id="FahSdykn99ab7xyQbVA9Ez">
+          <Pad Id="KYfjfWrxNS5Df3TBBP6Bsj" Comment="InteriorPoint" Bounds="67,1640,100,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="268,1300,80,19" Id="FahSdykn99ab7xyQbVA9Ez">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Boundary" />
@@ -236,7 +236,7 @@
             <Pin Id="EJEyF1Omp4CWocMd1FwzfU" Name="Geometry" Kind="InputPin" />
             <Pin Id="MRtJyzMVDjz6YWNTSEG9cw" Name="Output" Kind="OutputPin" />
           </Node>
-          <Node Bounds="261,790,60,19" Id="JIQednqz0TEj1go4cgWQVg">
+          <Node Bounds="415,1370,60,19" Id="JIQednqz0TEj1go4cgWQVg">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Length" />
@@ -244,8 +244,8 @@
             <Pin Id="I7lUlA0VyWEN3oC2drEQIe" Name="Geometry" Kind="InputPin" />
             <Pin Id="CQ9Czc9bzgRL2zS7iM69kO" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="LmNlgUdF9XfQ9r2deHzRJt" Comment="Boundary length" Bounds="261,830,80,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="GazU5pDW0SGSKaCUGuDd8f" Bounds="580,740,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; InteriorPoint is always on the shape; Centroid is not, think of a U. Boundary is the rings as lines: its Length is 18, the same as Length above, and its Area is 0.">
+          <Pad Id="LmNlgUdF9XfQ9r2deHzRJt" Comment="Boundary length" Bounds="417,1410,51,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="GazU5pDW0SGSKaCUGuDd8f" Bounds="587,1156,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; InteriorPoint is always on the shape; Centroid is not, think of a U. Boundary is the rings as lines: its Length is 18, the same as Length above, and its Area is 0.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -254,7 +254,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="60,880,70,19" Id="CqlM0s6GVnNRrlN3qGpKoG">
+          <Node Bounds="67,1690,70,19" Id="CqlM0s6GVnNRrlN3qGpKoG">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Envelope" />
@@ -263,7 +263,7 @@
             <Pin Id="OizSmyIIG9YFwm6dfe84HW" Name="Geometry" Kind="InputPin" />
             <Pin Id="SXpBLx1fEGoXzr675rh6wp" Name="Output" Kind="OutputPin" />
           </Node>
-          <Node Bounds="60,930,90,19" Id="QJ2fXN3uYgN1Pi1wkMyYb5">
+          <Node Bounds="67,1850,90,19" Id="QJ2fXN3uYgN1Pi1wkMyYb5">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Write WKT" />
@@ -272,8 +272,8 @@
             <Pin Id="GpUQbhP7HZWzhTHnbwy64A" Name="Include Z" Kind="InputPin" />
             <Pin Id="OLrP8AySH4CEJWG9w2sW2B" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="CXiMfFP3GOXuAPnBcUrmV7" Comment="Envelope" Bounds="60,970,420,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="I5vFPxRKEZpaNdud3I8B6p" Bounds="580,880,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; The bounding box as a geometry, POLYGON ((0 0, 0 3, 4 3, 4 0, 0 0)) - ready for Intersects, Buffer or a map, where Bounds gives numbers.">
+          <Pad Id="CXiMfFP3GOXuAPnBcUrmV7" Comment="Envelope" Bounds="67,1890,287,18" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="I5vFPxRKEZpaNdud3I8B6p" Bounds="587,1296,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; The bounding box as a geometry, POLYGON ((0 0, 0 3, 4 3, 4 0, 0 0)) - ready for Intersects, Buffer or a map, where Bounds gives numbers.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -282,7 +282,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="261,880,70,19" Id="N5u3egFaEqf8WjIZz329KL">
+          <Node Bounds="278,1540,70,19" Id="N5u3egFaEqf8WjIZz329KL">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Outlines" />
@@ -293,7 +293,7 @@
             <Pin Id="SZT4rT8s9yroHard94vc06" Name="Lines" Kind="OutputPin" />
             <Pin Id="Bl41OYFLBIeDjP5Itm49i4" Name="Points" Kind="OutputPin" />
           </Node>
-          <Pad Id="D6kMxjiUtfrZIRlGFodu54" Bounds="580,960,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Outlines: every ring and line as its own spread of coordinates, holes separately - two rings here. The drawing nodes want exactly this.">
+          <Pad Id="D6kMxjiUtfrZIRlGFodu54" Bounds="587,1552,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Outlines: every ring and line as its own spread of coordinates, holes separately - two rings here. The drawing nodes want exactly this.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -302,10 +302,14 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="AHWmF5c11anQE3ipbMsjNu" Comment="Geometry" Bounds="940,220,180,120" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="PB45DZwxaIU8WupXYI0Nha" Comment="InteriorPoint" Bounds="940,740,180,120" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="DsYHY0PlImxtes9SmFrNV9" Comment="Boundary" Bounds="940,880,180,120" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="Mmli5buE39QJGKhzQsN6Zg" Comment="Envelope" Bounds="940,1020,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="AHWmF5c11anQE3ipbMsjNu" Comment="Geometry" Bounds="182,240,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="PB45DZwxaIU8WupXYI0Nha" Comment="InteriorPoint" Bounds="76,1211,101,96" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="DsYHY0PlImxtes9SmFrNV9" Comment="Boundary" Bounds="270,1355,117,95" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="Mmli5buE39QJGKhzQsN6Zg" Comment="Envelope" Bounds="174,1740,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="Cvn8rhHJz4nQKEpLcbMgSq" SlotId="U2U4wTl1YjhPEpmoujdBvs" Bounds="125,340" />
+          <Pad Id="BJHyeRoo7sSMfeJJscpivP" SlotId="U2U4wTl1YjhPEpmoujdBvs" Bounds="69,781" />
+          <Pad Id="AEWKfe7BFGZNgjepNfGrP5" SlotId="U2U4wTl1YjhPEpmoujdBvs" Bounds="69,1078" />
+          <Pad Id="GbGawbYW5EDLIIwXB2e8qr" SlotId="U2U4wTl1YjhPEpmoujdBvs" Bounds="69,521" />
         </Canvas>
         <Patch Id="RPUybcGdfRC1BIbiHVndoh" Name="Create" />
         <Patch Id="BXUytzEaMEIHMIlmFTaepV" Name="Update" />
@@ -320,36 +324,38 @@
         <Link Id="FfNkY13LwpaBVqgdAC63SH" Ids="HluFWTO941RRkwMF09ro9C,DpJJKe1v1OUuqg1WXp8BEz" />
         <Link Id="PZgVxcDo1bhxE5t6EmUcmP" Ids="AY28YyZEeolSqhzOcWHojq,OgI50w9eQZxc4S10Du1xLD" />
         <Link Id="FS6iFdCDXGu07U2FKenk9G" Ids="QuosgCFxWt87mqVOQ54KKu,Tbsg60h5aHN8h8YRxz26h6" />
-        <Link Id="H3V0Uo0iPfm7lxrmo6cfnn" Ids="AY28YyZEeolSqhzOcWHojq,V7bof3aV8yIJZNaVCqNZyL" />
         <Link Id="AOXEXcGWx7zAwZccylHLJL" Ids="UHuRqNJDaYENypKCIUAzYN,IOWzd0X7FXfqpJzaotkXMK" />
-        <Link Id="H470eeqtW6BVUyvfKl33Py" Ids="AY28YyZEeolSqhzOcWHojq,BpPD63hxb4b8Iq4LXHDUKK" />
         <Link Id="L9e9F2MkEgsigT3J8YzUwm" Ids="QNTknksRiSY2m8ttlxo6Pc,GCIfW3uwOy4f3HM6E1ZwX9" />
-        <Link Id="LzdhHGDPXISPemNw1PS3Gt" Ids="AY28YyZEeolSqhzOcWHojq,AUugM5by3xO0ACFQnxACDp" />
         <Link Id="M7voI58Bkw9nFJvNSr6DLS" Ids="GAyUp8kq8od66bChuyckyV,SzDt4ScbWEfbqzI9glVIxl" />
         <Link Id="FkC75iBjM43TNGZLBpzFz4" Ids="BReOEtYj0dEgVxo1F45z0W,R6sJhEotGgv2vBTLWR9fEa" />
-        <Link Id="SzAvwb8qlI25PSPL04EUMQ" Ids="AY28YyZEeolSqhzOcWHojq,LTG4SVtucOaOIhzoV8IDih" />
         <Link Id="S6OZo9rv8J5JechVxjRMC3" Ids="T7I8eS5ypq01mOg0Q8q3S8,CnP0BoSmeU9Iycahi0scTj" />
         <Link Id="K5UegfEDQ6uuGpZgeUoNtU" Ids="FpwJvSZFZMtbxBkKyEnxXg,BN1QSUmn2BovAUMkKYtoeo" />
         <Link Id="SF3SfTdfEEH4a1fEIPCBLv" Ids="EAUJ33N9nX0QFitKZXKVV1,MntLt75WkMaxW4gYdBtKOB" />
         <Link Id="JiB8bDssIJjZzHUvxtb9Xg" Ids="BCrWhiO3hkUXH8Yq63kE0r,SjcfFeaRiquKdcYlSfs9ca" />
-        <Link Id="S8hElz33DpiS1KCoNRWNF7" Ids="AY28YyZEeolSqhzOcWHojq,AlJcGYNRnTjahfcLv5LO1k" />
         <Link Id="V6JHAviy7TyYar7bn0QNpd" Ids="PssVk8KsHNcUfWyQzIHetn,Hn2kNjsKXsa0c04tPC7r9d" />
-        <Link Id="FkwCc4pKIsA5dgk6nKCO5O" Ids="AY28YyZEeolSqhzOcWHojq,HQSwNYMqGmC4gjFkTE0wVc" />
         <Link Id="IqLUP7Rguv7fAQw4fIbuxg" Ids="IJflOBFAqbg7Vz8itfnqyp,FmM84VVlKE9bYvg6WNl7XV" />
-        <Link Id="PgS2IVMHTMkNAotRiduMSw" Ids="AY28YyZEeolSqhzOcWHojq,LAvFvlblUayJwc5pYouRiz" />
         <Link Id="DHfpBMYeFGT3DAh0y9HB75" Ids="IDekJ2DGgzQDpCspkJVZ8J,Tf1zBxsR09iC3TR9W2tjyu" />
         <Link Id="GjvL7GBXguOVQaGdh6UaE6" Ids="NgW8GTBC6LjgmciFeQ94iY,KYfjfWrxNS5Df3TBBP6Bsj" />
-        <Link Id="ONfM0tHfG1IKtVO2oVTu4G" Ids="AY28YyZEeolSqhzOcWHojq,EJEyF1Omp4CWocMd1FwzfU" />
         <Link Id="H39cQmUZgc4w6my3bxJGbZ" Ids="MRtJyzMVDjz6YWNTSEG9cw,I7lUlA0VyWEN3oC2drEQIe" />
         <Link Id="FyIg3hRUJLUAOIykLzamtX" Ids="CQ9Czc9bzgRL2zS7iM69kO,LmNlgUdF9XfQ9r2deHzRJt" />
-        <Link Id="A4fQ3Q5QLTwPPrzKMscKi5" Ids="AY28YyZEeolSqhzOcWHojq,OizSmyIIG9YFwm6dfe84HW" />
         <Link Id="Vo4fBM3AfhalA8AOuVDvIz" Ids="SXpBLx1fEGoXzr675rh6wp,TzH6EwZQ4Vh59MGHk2I23h" />
         <Link Id="OTWOAtvMY21M2T4llBfjjO" Ids="OLrP8AySH4CEJWG9w2sW2B,CXiMfFP3GOXuAPnBcUrmV7" />
-        <Link Id="Pftflv92yoOzrQRJhHnwhG" Ids="AY28YyZEeolSqhzOcWHojq,MoDZIF10htoGlaNcxeHmnW" />
         <Link Id="JnJNTY1UxpDvrFfTiznN7s" Ids="AY28YyZEeolSqhzOcWHojq,AHWmF5c11anQE3ipbMsjNu" />
         <Link Id="FFYxv46PFLjsrDzHuFNMd6" Ids="IDekJ2DGgzQDpCspkJVZ8J,PB45DZwxaIU8WupXYI0Nha" />
         <Link Id="Afd00SVnLmSlq7dUTRiEf5" Ids="MRtJyzMVDjz6YWNTSEG9cw,DsYHY0PlImxtes9SmFrNV9" />
         <Link Id="AQJ6boPuGg4qVIQ5hEdFjm" Ids="SXpBLx1fEGoXzr675rh6wp,Mmli5buE39QJGKhzQsN6Zg" />
+        <Slot Id="U2U4wTl1YjhPEpmoujdBvs" Name="geometry" />
+        <Link Id="KtDBouanp3rNVQeweDSY4j" Ids="AY28YyZEeolSqhzOcWHojq,Cvn8rhHJz4nQKEpLcbMgSq" />
+        <Link Id="EMn2SiL7KMdLDv7nS6R11f" Ids="BJHyeRoo7sSMfeJJscpivP,LTG4SVtucOaOIhzoV8IDih" />
+        <Link Id="VKdbgsAWbfMMnLkYtc8QYx" Ids="AEWKfe7BFGZNgjepNfGrP5,LAvFvlblUayJwc5pYouRiz" />
+        <Link Id="SpqFocKrX0HNntksiQfllZ" Ids="AEWKfe7BFGZNgjepNfGrP5,EJEyF1Omp4CWocMd1FwzfU" />
+        <Link Id="SMoKJ6AWiBtPsIvQDbrIh3" Ids="AEWKfe7BFGZNgjepNfGrP5,MoDZIF10htoGlaNcxeHmnW" />
+        <Link Id="MJxRpUOsL3QQRL8hKxlNdV" Ids="AEWKfe7BFGZNgjepNfGrP5,OizSmyIIG9YFwm6dfe84HW" />
+        <Link Id="QFgpgfwwtOJMbXjiJ7Gpjj" Ids="BJHyeRoo7sSMfeJJscpivP,AlJcGYNRnTjahfcLv5LO1k" />
+        <Link Id="R3BgsewMBzIPdsi1hldneJ" Ids="BJHyeRoo7sSMfeJJscpivP,HQSwNYMqGmC4gjFkTE0wVc" />
+        <Link Id="UmHFunl8BbrLztSk9GWAcR" Ids="GbGawbYW5EDLIIwXB2e8qr,V7bof3aV8yIJZNaVCqNZyL" />
+        <Link Id="Sd7wiL8OzhTLiTxYjLiXDm" Ids="GbGawbYW5EDLIIwXB2e8qr,BpPD63hxb4b8Iq4LXHDUKK" />
+        <Link Id="Iwno8faofFWOwHvfImTEGk" Ids="GbGawbYW5EDLIIwXB2e8qr,AUugM5by3xO0ACFQnxACDp" />
       </Patch>
     </Node>
   </Patch>

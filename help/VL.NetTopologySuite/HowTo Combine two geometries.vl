@@ -38,7 +38,7 @@
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="UepX2U47OamZGsNNttfEat" Comment="B" Bounds="232,210,400,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0.5 0.5, 1.5 0.5, 1.5 1.5, 0.5 1.5, 0.5 0.5))">
+          <Pad Id="UepX2U47OamZGsNNttfEat" Comment="B" Bounds="516,170,400,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0.5 0.5, 1.5 0.5, 1.5 1.5, 0.5 1.5, 0.5 0.5))">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -54,7 +54,7 @@
             <Pin Id="UZ9NvF8IwDeTthgqdkSsFK" Name="Result" Kind="OutputPin" />
             <Pin Id="Q0hhEbUXWMUUVlYcLApuq0" Name="Success" Kind="OutputPin" />
           </Node>
-          <Node Bounds="230,260,90,19" Id="Q8qui34qeKDkPEKdz2qX1b">
+          <Node Bounds="514,220,90,19" Id="Q8qui34qeKDkPEKdz2qX1b">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Read WKT" />
@@ -65,7 +65,7 @@
             <Pin Id="SGmaov0TEoBbSqq2u2HCIq" Name="Result" Kind="OutputPin" />
             <Pin Id="LAFauEDPu5sKUmgPFz029X" Name="Success" Kind="OutputPin" />
           </Node>
-          <Node Bounds="60,330,60,19" Id="Q3dcj2YkBNi5pEootZlF8T">
+          <Node Bounds="60,650,60,19" Id="Q3dcj2YkBNi5pEootZlF8T">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Union" />
@@ -75,7 +75,7 @@
             <Pin Id="OrJIM6JNf0a3Tvlk69USG0" Name="B" Kind="InputPin" />
             <Pin Id="KA5WsaXSWH4P3buZEPRXRt" Name="Output" Kind="OutputPin" />
           </Node>
-          <Node Bounds="60,390,50,19" Id="K3oUApKQp5jFdrKJw4pVjl">
+          <Node Bounds="245,720,50,19" Id="K3oUApKQp5jFdrKJw4pVjl">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Area" />
@@ -84,8 +84,8 @@
             <Pin Id="O0TysdfwFjUuiYXlSZ0X4O" Name="Geometry" Kind="InputPin" />
             <Pin Id="CtXkNOyvEDwhy49QLa1oL0" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="UooGajfj8EBtw5rcEC4qfN" Comment="Union" Bounds="60,430,80,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="230,330,100,19" Id="TQBDWcyoeBrZ3cJgzuoU1O">
+          <Pad Id="UooGajfj8EBtw5rcEC4qfN" Comment="Union" Bounds="247,760,80,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="491,650,100,19" Id="TQBDWcyoeBrZ3cJgzuoU1O">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Intersection" />
@@ -95,7 +95,7 @@
             <Pin Id="MfjtQ2hOzIXmADgSikj6Uj" Name="B" Kind="InputPin" />
             <Pin Id="EqmGx2eurpik342m1g3CQG" Name="Output" Kind="OutputPin" />
           </Node>
-          <Node Bounds="230,390,50,19" Id="BaHedzqeYafWHvEciE9QlZ">
+          <Node Bounds="680,720,50,19" Id="BaHedzqeYafWHvEciE9QlZ">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Area" />
@@ -104,8 +104,8 @@
             <Pin Id="PGALBbMgLeTqpHjuowLc4d" Name="Geometry" Kind="InputPin" />
             <Pin Id="BaZ7aP2WAXI31kMo0a7pTE" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="KqHZA4eyghvjr3JtYlin2a" Comment="Intersection" Bounds="230,430,80,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="400,330,90,19" Id="MDmpahUB1D8gpCMvm7eAYs">
+          <Pad Id="KqHZA4eyghvjr3JtYlin2a" Comment="Intersection" Bounds="682,770,80,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="850,650,90,19" Id="MDmpahUB1D8gpCMvm7eAYs">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Difference" />
@@ -115,7 +115,7 @@
             <Pin Id="L4g8NRRTOcpDbie0O5DXbr" Name="B" Kind="InputPin" />
             <Pin Id="U9Yxt8bqE3k8TTqejK1bGZ" Name="Output" Kind="OutputPin" />
           </Node>
-          <Node Bounds="400,390,50,19" Id="IQOQgN6JBrctpRZAdH5vBJ">
+          <Node Bounds="1074,700,50,19" Id="IQOQgN6JBrctpRZAdH5vBJ">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Area" />
@@ -124,8 +124,8 @@
             <Pin Id="F9qLxBAbOKUuova6vRNOqt" Name="Geometry" Kind="InputPin" />
             <Pin Id="Gqr74ZHmzLEXkPpqqRcJro" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="GLvt5KQPoqv71CZ0H1vOgz" Comment="Difference" Bounds="400,430,80,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="DqWvXlqbnhWPUnq8ldviO9" Bounds="580,330,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Union: everything either covers. Intersection: only what both cover. Difference: A with B cut away.">
+          <Pad Id="GLvt5KQPoqv71CZ0H1vOgz" Comment="Difference" Bounds="1076,740,80,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="DqWvXlqbnhWPUnq8ldviO9" Bounds="1580,682,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Union: everything either covers. Intersection: only what both cover. Difference: A with B cut away.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -134,7 +134,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="AzZvHgqJa3kvzsF03GmJ7I" Bounds="580,410,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; 1 + 1 - 0.25 = 1.75, then 0.25 and 0.75. If the areas do not add up, the overlay did not do what you meant.">
+          <Pad Id="AzZvHgqJa3kvzsF03GmJ7I" Bounds="1580,839,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; 1 + 1 - 0.25 = 1.75, then 0.25 and 0.75. If the areas do not add up, the overlay did not do what you meant.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -143,7 +143,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="60,500,90,19" Id="JOiVvmEbaJXgBoEnBNYKNw">
+          <Node Bounds="92,870,90,19" Id="JOiVvmEbaJXgBoEnBNYKNw">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Write WKT" />
@@ -152,8 +152,8 @@
             <Pin Id="B0WumrlaD8TDpJ1XOYsp7o" Name="Include Z" Kind="InputPin" />
             <Pin Id="IRiUUHFqMYJiGkl0gMSl0A" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="MMotUSrZbTqlepVQVtUi4W" Comment="Union as WKT" Bounds="60,540,420,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="CrfKakVba4u0H1ZD4ICfdn" Bounds="580,500,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Any types go in - two touching squares intersect in a LineString, two corner-touching squares in a Point.">
+          <Pad Id="MMotUSrZbTqlepVQVtUi4W" Comment="Union as WKT" Bounds="92,910,420,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="CrfKakVba4u0H1ZD4ICfdn" Bounds="1580,746,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Any types go in - two touching squares intersect in a LineString, two corner-touching squares in a Point.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -162,7 +162,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="60,600,140,19" Id="UlFPmBJFDPm9rAGvIRsoGS">
+          <Node Bounds="60,1110,140,19" Id="UlFPmBJFDPm9rAGvIRsoGS">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="SymmetricDifference" />
@@ -172,7 +172,7 @@
             <Pin Id="TzbDaGOqytfCtbGfoPccy5" Name="B" Kind="InputPin" />
             <Pin Id="PKhzZSi6TmkOS9vHTAdQ3F" Name="Output" Kind="OutputPin" />
           </Node>
-          <Node Bounds="60,650,50,19" Id="QMpM6CHx03PR2oCaUwBj1P">
+          <Node Bounds="262,1230,50,19" Id="QMpM6CHx03PR2oCaUwBj1P">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Area" />
@@ -181,8 +181,8 @@
             <Pin Id="FdLBP70qjzjPh0FIhhkBmW" Name="Geometry" Kind="InputPin" />
             <Pin Id="UC8tqt1C70x9EXeK7CEILo" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="Gki7yVB6IxoOfOPl50vAeR" Comment="SymmetricDifference" Bounds="60,690,80,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="RyZfvDi3yKQL3zeRk4qYJK" Bounds="580,600,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; The fourth overlay: what only one of them covers. Union minus Intersection, 1.75 - 0.25 = 1.5. Symmetric - swap A and B and nothing changes.">
+          <Pad Id="Gki7yVB6IxoOfOPl50vAeR" Comment="SymmetricDifference" Bounds="264,1280,80,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="RyZfvDi3yKQL3zeRk4qYJK" Bounds="491,1154,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; The fourth overlay: what only one of them covers. Union minus Intersection, 1.75 - 0.25 = 1.5. Symmetric - swap A and B and nothing changes.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -191,13 +191,13 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="UKYKvzMbCLbdlKgqAv4xfe" Comment="A" Bounds="940,160,150,120" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="ACo1xgrrSVBGt0pLfRovdr" Comment="B" Bounds="1180,160,150,120" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="UirI4Le5DLUF3Wo4GTPzGZ" Comment="Union" Bounds="940,300,150,120" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="OUECaJ5KdyEkGxIUhUl7d0" Comment="Intersection" Bounds="1180,300,150,120" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="UhJHeQO7r4lJSxnQPEqigN" Comment="Difference" Bounds="940,440,150,120" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="DHRvqGWbgDMSLuOhxA0mvV" Comment="SymmetricDifference" Bounds="1180,440,150,120" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="1180,590,45,19" Id="RkkYPyfddDLg4bBkdz3hbo">
+          <Pad Id="UKYKvzMbCLbdlKgqAv4xfe" Comment="A" Bounds="62,320,150,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="ACo1xgrrSVBGt0pLfRovdr" Comment="B" Bounds="516,280,150,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="UirI4Le5DLUF3Wo4GTPzGZ" Comment="Union" Bounds="62,711,150,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="OUECaJ5KdyEkGxIUhUl7d0" Comment="Intersection" Bounds="493,711,150,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="UhJHeQO7r4lJSxnQPEqigN" Comment="Difference" Bounds="852,711,150,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="DHRvqGWbgDMSLuOhxA0mvV" Comment="SymmetricDifference" Bounds="62,1180,150,120" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="1254,645,45,19" Id="RkkYPyfddDLg4bBkdz3hbo">
             <p:NodeReference LastCategoryFullName="Collections.Spread" LastDependency="VL.CoreLib.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Cons" />
@@ -207,7 +207,7 @@
             <Pin Id="OYTI6a8zO9E1VkPib18ct2" Name="Input 2" Kind="InputPin" />
             <Pin Id="IrGRNbls8AJ1kDZ0IeQNtU" Name="Result" Kind="OutputPin" />
           </Node>
-          <Node Bounds="1180,625,140,19" Id="TxIqNhj8B5PnnyGsaKg6V6">
+          <Node Bounds="1254,680,140,19" Id="TxIqNhj8B5PnnyGsaKg6V6">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="GeometryCollection" />
@@ -217,7 +217,7 @@
             <Pin Id="CayIRX7MCXDfH4uOh4XZ84" Name="Factory" Kind="InputPin" />
             <Pin Id="CW0m79MU02oYTeCMjmnwUC" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="TfOcnOmyZgMJGSWxK0iTnu" Comment="A and B" Bounds="940,580,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="TfOcnOmyZgMJGSWxK0iTnu" Comment="A and B" Bounds="1256,721,180,120" ShowValueBox="true" isIOBox="true" />
         </Canvas>
         <Patch Id="ChqhvedAlqfvIf6tSK1WVx" Name="Create" />
         <Patch Id="D4dtW8GpBJ3R9iCX3NX1Vv" Name="Update" />

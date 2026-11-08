@@ -16,7 +16,7 @@
       <Patch Id="MuCK9OtS1eVLzZmiQTRUBh">
         <Canvas Id="Bm1W6AOiFxsgoU6o5Bl6KY" CanvasType="Group">
           <Pad Id="PyD13Zx4NkBxktgkipYlnQ" Bounds="60,40,255,41" ShowValueBox="true" isIOBox="true" Value="Use LineString!">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -25,7 +25,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="IhJ2ayA4CQxjFxLLc9GLbY" Bounds="60,95,480,46" ShowValueBox="true" isIOBox="true" Value="An ordered run of coordinates. Cons gathers them into a Spread, LineString joins them in that order - the order is the shape.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -93,16 +93,7 @@
             <Pin Id="KSzg3HMtAceL1zafEH4L0V" Name="Y" Kind="InputPin" />
             <Pin Id="K6REJZWhRLkeslAZQm8xmC" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="OeQDMK5SL9D8vp1lUTG3qi" Bounds="580,255,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; Swap two of the coordinates: same points, different shape.">
-            <p:TypeAnnotation>
-              <Choice Kind="TypeFlag" Name="String" />
-            </p:TypeAnnotation>
-            <p:ValueBoxSettings>
-              <p:fontsize p:Type="Int32">9</p:fontsize>
-              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
-            </p:ValueBoxSettings>
-          </Pad>
-          <Node Bounds="60,320,39,19" Id="Vs771yx1QH7MHMQ8keLi01">
+          <Node Bounds="60,320,90,19" Id="Vs771yx1QH7MHMQ8keLi01">
             <p:NodeReference LastCategoryFullName="Collections.Spread" LastDependency="VL.CoreLib.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="Cons" />
@@ -123,64 +114,7 @@
             <Pin Id="RPd9ZZOZ7gvoyhHkQYoiHG" Name="Factory" Kind="InputPin" />
             <Pin Id="OE0XD0qxEuIMcaElHHNhOm" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="KbLNlgGvv1tu8lceOu4aBC" Bounds="580,380,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Two coordinates are the minimum, there is no maximum. A line that ends where it started is still a LineString - a ring is LinearRing, see HowTo Create a polygon.">
-            <p:TypeAnnotation>
-              <Choice Kind="TypeFlag" Name="String" />
-            </p:TypeAnnotation>
-            <p:ValueBoxSettings>
-              <p:fontsize p:Type="Int32">9</p:fontsize>
-              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
-            </p:ValueBoxSettings>
-          </Pad>
-          <Node Bounds="60,440,60,19" Id="GlI6GvQodvZCNcPUP5BKhM">
-            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
-              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Length" />
-            </p:NodeReference>
-            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
-            <Pin Id="Lu9b0TQSr2b8gaWULjnlgo" Name="Geometry" Kind="InputPin" />
-            <Pin Id="B0Gr7lCxVexJhKlQEaDS0b" Name="Result" Kind="OutputPin" />
-          </Node>
-          <Pad Id="GDpsWib4jEVIrLjYxkYuPy" Comment="Length" Bounds="60,480,100,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="MaJSUrlXP2UmGLhu5e1Qt9" Bounds="580,468,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Length is measured along the line, in the coordinates' own units: 2 x sqrt(2) here, about 2.83.">
-            <p:TypeAnnotation>
-              <Choice Kind="TypeFlag" Name="String" />
-            </p:TypeAnnotation>
-            <p:ValueBoxSettings>
-              <p:fontsize p:Type="Int32">9</p:fontsize>
-              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
-            </p:ValueBoxSettings>
-          </Pad>
-          <Node Bounds="230,440,90,19" Id="LRZ4WbZLZkRPVDPIaSAkBj">
-            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
-              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Write WKT" />
-            </p:NodeReference>
-            <Pin Id="ADSqsXpb42P8Ifw1ylSvqk" Name="Geometry" Kind="InputPin" />
-            <Pin Id="JUSArjLeu6YBj64o46PbNB" Name="Include Z" Kind="InputPin" />
-            <Pin Id="ImtaKqWLMWac4J86jtclAc" Name="Result" Kind="OutputPin" />
-          </Node>
-          <Pad Id="ROPMbAfPOYfRDrTRoyGp2u" Comment="WKT" Bounds="230,480,300,15" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="60,540,70,19" Id="Uw9V0wYTgEhlQ592marAnb">
-            <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
-              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Reverse" />
-            </p:NodeReference>
-            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
-            <Pin Id="KG5atdm2UeYf1wGDLYrDB2" Name="Geometry" Kind="InputPin" />
-            <Pin Id="OWMpuLPfjvxDvlx2518koV" Name="Output" Kind="OutputPin" />
-          </Node>
-          <Node Bounds="60,590,90,19" Id="FiotWc1LokDhsQS27K9sI5">
-            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
-              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Write WKT" />
-            </p:NodeReference>
-            <Pin Id="M7Qb7M7O8cd1I2PCYidh2V" Name="Geometry" Kind="InputPin" />
-            <Pin Id="SLQVpWKriPfhRx45p1U6a4" Name="Include Z" Kind="InputPin" />
-            <Pin Id="VKeZqOnof4NFGGN767SBWk" Name="Result" Kind="OutputPin" />
-          </Node>
-          <Pad Id="RfbOcM7oMSKpNwpaNB3VmD" Comment="Reversed" Bounds="60,630,300,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="CQEt9iOp3gTon1oCok1ilz" Bounds="580,540,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Reverse runs the line the other way: same shape, coordinates in the opposite order. Direction matters when something travels along the line.">
+          <Pad Id="KbLNlgGvv1tu8lceOu4aBC" Bounds="580,335,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Two coordinates are the minimum, there is no maximum. A line that ends where it started is still a LineString - a ring is LinearRing, see HowTo Create a polygon.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -189,8 +123,65 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="DyPw229Kx6SPTKxNHRgF3U" Comment="Line" Bounds="940,380,180,120" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="AzCk0Dh5aYd0HXzBLP7GWC" Comment="Reversed" Bounds="940,540,180,120" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="321,620,60,19" Id="GlI6GvQodvZCNcPUP5BKhM">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Length" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="Lu9b0TQSr2b8gaWULjnlgo" Name="Geometry" Kind="InputPin" />
+            <Pin Id="B0Gr7lCxVexJhKlQEaDS0b" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="GDpsWib4jEVIrLjYxkYuPy" Comment="Length" Bounds="321,660,100,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="MaJSUrlXP2UmGLhu5e1Qt9" Bounds="580,630,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Length is measured along the line, in the coordinates' own units: 2 x sqrt(2) here, about 2.83.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="330,440,90,19" Id="LRZ4WbZLZkRPVDPIaSAkBj">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Write WKT" />
+            </p:NodeReference>
+            <Pin Id="ADSqsXpb42P8Ifw1ylSvqk" Name="Geometry" Kind="InputPin" />
+            <Pin Id="JUSArjLeu6YBj64o46PbNB" Name="Include Z" Kind="InputPin" />
+            <Pin Id="ImtaKqWLMWac4J86jtclAc" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="ROPMbAfPOYfRDrTRoyGp2u" Comment="WKT" Bounds="330,480,191,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="60,760,70,19" Id="Uw9V0wYTgEhlQ592marAnb">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Reverse" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="KG5atdm2UeYf1wGDLYrDB2" Name="Geometry" Kind="InputPin" />
+            <Pin Id="OWMpuLPfjvxDvlx2518koV" Name="Output" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="320,910,90,19" Id="FiotWc1LokDhsQS27K9sI5">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Write WKT" />
+            </p:NodeReference>
+            <Pin Id="M7Qb7M7O8cd1I2PCYidh2V" Name="Geometry" Kind="InputPin" />
+            <Pin Id="SLQVpWKriPfhRx45p1U6a4" Name="Include Z" Kind="InputPin" />
+            <Pin Id="VKeZqOnof4NFGGN767SBWk" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="RfbOcM7oMSKpNwpaNB3VmD" Comment="Reversed" Bounds="320,950,300,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="CQEt9iOp3gTon1oCok1ilz" Bounds="580,759,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Reverse runs the line the other way: same shape, coordinates in the opposite order. Direction matters when something travels along the line.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="DyPw229Kx6SPTKxNHRgF3U" Comment="Line" Bounds="62,441,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="AzCk0Dh5aYd0HXzBLP7GWC" Comment="Reversed" Bounds="62,890,180,120" ShowValueBox="true" isIOBox="true" />
         </Canvas>
         <Patch Id="Q3jZDfuMzyTBc8lVmu7g3X" Name="Create" />
         <Patch Id="KEcjum7NbcfIDKelEvq2sG" Name="Update" />

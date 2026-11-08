@@ -758,9 +758,9 @@
           </Pad>
           <Pad Id="GkdmnAl1oqQOczGfZ65UYe" Comment="From Snap Distance" Bounds="123,980,35,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="IagBPGnKo51LrLwEC2fKmb" Comment="To Snap Distance" Bounds="144,960,35,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="Qj7R5nsPJXgDCfzuNZmHKX" Comment="Town" Bounds="940,310,180,120" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="U1EV6pjopwl8fKA2RsT2IJ" Comment="Path" Bounds="940,870,180,120" ShowValueBox="true" isIOBox="true" />
-          <Node Bounds="1180,320,140,19" Id="BRz2WvGDC6ejvE8TXK2DMd">
+          <Pad Id="Qj7R5nsPJXgDCfzuNZmHKX" Comment="Town" Bounds="311,490,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="U1EV6pjopwl8fKA2RsT2IJ" Comment="Path" Bounds="343,970,180,120" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="309,420,140,19" Id="BRz2WvGDC6ejvE8TXK2DMd">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="GeometryCollection" />
@@ -779,7 +779,6 @@
         </ProcessDefinition>
         <Link Id="C7quaGzOzPpMEWkvKqVpRx" Ids="RiA1yvcmb3cTKbvPRERtG5,SIM7lG4xFtf2NYOKYEAxsD" />
         <Link Id="FUFyIFFnpAA4gXUR5Rk18O" Ids="SIM7lG4xFtf2NYOKYEAxsD,Kchynch6zY1V7FQ8XZx99c" />
-        
         <Link Id="G41utGPa3aUtwBHOXwTiFa" Ids="EKDR5iNExAxwIel8ejOsMW,OIVjLaWKDIeTG4CTuw4GfE" />
         <Link Id="IE8tDezm8fr9EFollCPb0D" Ids="BvElYw1TRNSxGoPDS4z5uj,TIrFIv3uHcy1d1mN2nIgL1" />
         <Link Id="PR3zKGoLDSFmLNL09gOEpe" Ids="AywDRqxg784pC33z8ABIpe,QisOQP9NWiKdlPbFxDm2se" />
