@@ -389,16 +389,57 @@ if (-not $Path) {
         'NetTopologySuite.Geometry|Length', 'NetTopologySuite.Geometry|Centroid', 'NetTopologySuite.Geometry|Bounds', 'NetTopologySuite.Geometry|Coordinates', 'NetTopologySuite.Geometry|Geometries',
         'NetTopologySuite.Geometry|NumPoints', 'NetTopologySuite.Geometry|IsSimple', 'NetTopologySuite.Geometry|InteriorPoint', 'NetTopologySuite.Geometry|Envelope', 'NetTopologySuite.Geometry|Boundary',
         'NetTopologySuite.Geometry|Outlines',
+        'NetTopologySuite.Geometry|Rectangle', 'NetTopologySuite.Geometry|Rectangle (Join Points)', 'NetTopologySuite.Geometry|Circle', 'NetTopologySuite.Geometry|Ellipse',
+        'NetTopologySuite.Geometry|RegularPolygon', 'NetTopologySuite.Geometry|Arc', 'NetTopologySuite.Geometry|Sector',
         'NetTopologySuite.Feature|Feature', 'NetTopologySuite.Feature|Split', 'NetTopologySuite.Feature|GetAttribute', 'NetTopologySuite.IO|Read WKT', 'NetTopologySuite.IO|Write WKT',
         'NetTopologySuite.Operation|Buffer', 'NetTopologySuite.Operation|Intersection', 'NetTopologySuite.Operation|Union', 'NetTopologySuite.Operation|Difference',
         'NetTopologySuite.Operation|Distance', 'NetTopologySuite.Operation|Nearest Points', 'NetTopologySuite.Operation|Intersects', 'NetTopologySuite.Operation|Contains', 'NetTopologySuite.Operation|Within',
         'NetTopologySuite.Operation|SymmetricDifference', 'NetTopologySuite.Operation|ConvexHull', 'NetTopologySuite.Operation|Reverse', 'NetTopologySuite.Operation|IsWithinDistance',
         'NetTopologySuite.Operation|Touches', 'NetTopologySuite.Operation|Crosses', 'NetTopologySuite.Operation|Overlaps', 'NetTopologySuite.Operation|Covers', 'NetTopologySuite.Operation|CoveredBy', 'NetTopologySuite.Operation|Relate',
         'NetTopologySuite.Index|SpatialIndex', 'NetTopologySuite.Index|Query', 'NetTopologySuite.Network|Network', 'NetTopologySuite.Network|ShortestPath')
+    # The table above is written by hand, so a node added to the package and not to the table was
+    # invisible to this audit: "56 of 56" while seven new shape nodes sat in the tree (2026-11-08).
+    # So read the nodes out of the source and FAIL on any the table does not name. Category comes
+    # from the class's [Name("...")] (one file of a partial class carries it), the node name from
+    # a method's [Name("...")] or else the method's own name; process nodes from [ProcessNode].
+    $srcDir = Join-Path $RepoRoot 'src\VL.NetTopologySuite'
+    if (Test-Path $srcDir) {
+        $sources = @(Get-ChildItem $srcDir -Filter *.cs -File | ForEach-Object { [IO.File]::ReadAllText($_.FullName) })
+        $categoryOf = @{}
+        foreach ($s in $sources) {
+            foreach ($m in [regex]::Matches($s, '\[Name\("([^"]+)"\)\]\s*public static (?:partial )?class (\w+)')) {
+                $categoryOf[$m.Groups[2].Value] = "NetTopologySuite.$($m.Groups[1].Value)"
+            }
+        }
+        $inSource = [System.Collections.Generic.List[string]]::new()
+        foreach ($s in $sources) {
+            foreach ($m in [regex]::Matches($s, '\[ProcessNode\(Name = "([^"]+)", Category = "([^"]+)"\)\]')) {
+                $inSource.Add("$($m.Groups[2].Value)|$($m.Groups[1].Value)")
+            }
+            $class = [regex]::Match($s, 'public static (?:partial )?class (\w+)')
+            if (-not $class.Success -or -not $categoryOf.ContainsKey($class.Groups[1].Value)) { continue }
+            $category = $categoryOf[$class.Groups[1].Value]
+            foreach ($m in [regex]::Matches($s, '(?m)((?:^[ \t]*\[[^\r\n]*\][ \t]*\r?\n)*)^[ \t]*public static (?!(?:partial )?class)[^\r\n(=]*?(\w+)\(')) {
+                $named = [regex]::Match($m.Groups[1].Value, '\[Name\("([^"]+)"\)\]')
+                $node = if ($named.Success) { $named.Groups[1].Value } else { $m.Groups[2].Value }
+                $inSource.Add("$category|$node")
+            }
+        }
+        foreach ($n in ($inSource | Sort-Object -Unique)) {
+            if ($ourNodes -notcontains $n) {
+                Write-Host "  FAIL  $n is a node in src\ but not in this script's node list - add it, or F1 is never audited for it" -ForegroundColor Red
+                $totalProblems++
+            }
+        }
+    }
+
     $high = @{}; $low = @{}; $used = @{}
     foreach ($vl in Get-ChildItem (Join-Path $RepoRoot 'help') -Filter *.vl -Recurse -File) {
         $raw = [IO.File]::ReadAllText($vl.FullName)
-        $pattern = '<p:NodeReference LastCategoryFullName="([^"]+)" LastDependency="VL\.NetTopologySuite\.vl">(?:(?!</p:NodeReference>).)*?<Choice Kind="(?:OperationCallFlag|ProcessAppFlag)" Name="([^"]+)" />\s*</p:NodeReference>\s*(?:<p:HelpFocus[^>]*>(High|Low)</p:HelpFocus>)?'
+        # Anything may sit between the node's name and </p:NodeReference>: a pin given a default in the
+        # editor adds a <PinReference .../> there, and a pattern that wanted the closing tag right after
+        # the name missed every such node - six of the seven shapes, 2026-11-08.
+        $pattern = '<p:NodeReference LastCategoryFullName="([^"]+)" LastDependency="VL\.NetTopologySuite\.vl">(?:(?!</p:NodeReference>).)*?<Choice Kind="(?:OperationCallFlag|ProcessAppFlag)" Name="([^"]+)" />(?:(?!</p:NodeReference>).)*?</p:NodeReference>\s*(?:<p:HelpFocus[^>]*>(High|Low)</p:HelpFocus>)?'
         foreach ($m in [regex]::Matches($raw, $pattern, 'Singleline')) {
             $key = "$($m.Groups[1].Value)|$($m.Groups[2].Value)"
             $used[$key] = $true
