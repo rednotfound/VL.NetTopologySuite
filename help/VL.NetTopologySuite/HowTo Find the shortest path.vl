@@ -65,7 +65,7 @@
               <Node Bounds="55,310,90,19" Id="LfG2VOEbRhaZ8EAbHKDEje">
                 <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
                   <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-                  <Choice Kind="OperationCallFlag" Name="Read WKT" />
+                  <Choice Kind="OperationCallFlag" Name="FromWKT" />
                 </p:NodeReference>
                 <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
                 <Pin Id="Kchynch6zY1V7FQ8XZx99c" Name="WKT" Kind="InputPin" />
@@ -84,7 +84,7 @@
               </Node>
             </Patch>
           </Node>
-          <Pad Id="RmGKxpSefaOUokc1VHG2w0" Bounds="579,402,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Read WKT parses the text every frame, making new geometries every frame. The Cache runs it only when the text changes, so Network sees the same objects and builds once.">
+          <Pad Id="RmGKxpSefaOUokc1VHG2w0" Bounds="579,402,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; FromWKT parses the text every frame, making new geometries every frame. The Cache runs it only when the text changes, so Network sees the same objects and builds once.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -236,7 +236,7 @@
           <Node Bounds="58,1085,90,19" Id="TZaXFi1gDgRTxeZSsS0N21">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Write WKT" />
+              <Choice Kind="OperationCallFlag" Name="ToWKT" />
             </p:NodeReference>
             <Pin Id="JrszWjK2bxYuJV5tQwLN53" Name="Geometry" Kind="InputPin" />
             <Pin Id="MPOPiX0Fh9aFvlqAGZJlsS" Name="Include Z" Kind="InputPin" />

@@ -15,7 +15,7 @@
       </p:NodeReference>
       <Patch Id="IHjwVSYwJCFaMpJaNomk7j">
         <Canvas Id="HS5Q7sUcAAjzStk4P8Pxyi" CanvasType="Group">
-          <Pad Id="GEcmAdSuFVxgFuESd22b2E" Bounds="60,40,435,41" ShowValueBox="true" isIOBox="true" Value="Use Read WKT and Write WKT!">
+          <Pad Id="GEcmAdSuFVxgFuESd22b2E" Bounds="60,40,435,41" ShowValueBox="true" isIOBox="true" Value="Use FromWKT and ToWKT!">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -50,7 +50,7 @@
           <Node Bounds="60,220,90,19" Id="Srj4s9VyFfcdufAoEso80L">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Read WKT" />
+              <Choice Kind="OperationCallFlag" Name="FromWKT" />
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
             <Pin Id="Ql3oue3P0mBZDX5Qr8a5v4" Name="WKT" Kind="InputPin" />
@@ -110,7 +110,7 @@
           <Node Bounds="60,550,90,19" Id="M4sgdUf6Qp6tc3H1qFHGRY">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Write WKT" />
+              <Choice Kind="OperationCallFlag" Name="ToWKT" />
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
             <Pin Id="Gc9PJWpfOR6SkXXQ0uVhcz" Name="Geometry" Kind="InputPin" />
@@ -118,7 +118,7 @@
             <Pin Id="InDbfZDjSddncSR4oFxiS8" Name="Result" Kind="OutputPin" />
           </Node>
           <Pad Id="MFYUcxMgykJFFt0PU03qIj" Comment="WKT" Bounds="60,590,400,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="SDIi3LrwTg8hL9fJsILesk" Bounds="580,470,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Write WKT does NOT carry the SRID back out - plain WKT has nowhere to put it. Z is dropped too unless Include Z is on.">
+          <Pad Id="SDIi3LrwTg8hL9fJsILesk" Bounds="580,470,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; ToWKT does NOT carry the SRID back out - plain WKT has nowhere to put it. Z is dropped too unless Include Z is on.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>

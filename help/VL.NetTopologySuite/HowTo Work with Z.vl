@@ -81,7 +81,7 @@
           <Node Bounds="299,510,90,19" Id="L6ozYmTiamoNv5fWlJPhNe">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Write WKT" />
+              <Choice Kind="OperationCallFlag" Name="ToWKT" />
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
             <Pin Id="JTzOJmPfIpUj3YqVfJk1b7" Name="Geometry" Kind="InputPin" />
@@ -106,7 +106,7 @@
           <Node Bounds="299,610,90,19" Id="PI0nzFYHXSMIqpufRVbf0q">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Write WKT" />
+              <Choice Kind="OperationCallFlag" Name="ToWKT" />
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
             <Pin Id="VeoNV9Eepz1mg2qnqMfsoO" Name="Geometry" Kind="InputPin" />
@@ -114,7 +114,7 @@
             <Pin Id="UqJq5UcdZx913WvsciQboZ" Name="Result" Kind="OutputPin" />
           </Node>
           <Pad Id="ONBNOqDbg0gmjwnhnwUqya" Comment="WKT" Bounds="301,670,163,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="RXHUWcRiynGoJBQ8aJDJXk" Bounds="580,625,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Include Z on: POINT Z (...). Read WKT understands this form too. Whether Buffer and friends keep Z is NetTopologySuite's decision - check here when it matters.">
+          <Pad Id="RXHUWcRiynGoJBQ8aJDJXk" Bounds="580,625,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Include Z on: POINT Z (...). FromWKT understands this form too. Whether Buffer and friends keep Z is NetTopologySuite's decision - check here when it matters.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>

@@ -41,7 +41,7 @@
           <Node Bounds="60,230,90,19" Id="PaIZnbV61ysfYWaBPXmRbx">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Read WKT" />
+              <Choice Kind="OperationCallFlag" Name="FromWKT" />
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
             <Pin Id="Q6v7PZHFWdVVzQzU230Lj2" Name="WKT" Kind="InputPin" />
@@ -57,7 +57,7 @@
           <Node Bounds="212,230,90,19" Id="IspNmu6CTlQFgIaYaAvEW8">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Read WKT" />
+              <Choice Kind="OperationCallFlag" Name="FromWKT" />
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
             <Pin Id="GDG219xYhsBhIccNpCf5Xm" Name="WKT" Kind="InputPin" />
@@ -73,7 +73,7 @@
           <Node Bounds="361,230,90,19" Id="IhH0vMkZAO12lddgSNG3O9">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Read WKT" />
+              <Choice Kind="OperationCallFlag" Name="FromWKT" />
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
             <Pin Id="VOw7cQc4eAZFB8hd1wHKWM" Name="WKT" Kind="InputPin" />
@@ -171,7 +171,7 @@
           <Node Bounds="-75,820,90,19" Id="GJYIwiNnSuClQYzTTQZwLY">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Write WKT" />
+              <Choice Kind="OperationCallFlag" Name="ToWKT" />
             </p:NodeReference>
             <Pin Id="SJs6psPikuEwxBHSL0ddmQ" Name="Geometry" Kind="InputPin" />
             <Pin Id="S8r7ganjtnS6FIwC9l6NmF" Name="Include Z" Kind="InputPin" />

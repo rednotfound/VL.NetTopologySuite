@@ -54,10 +54,10 @@ reference it. Then double-click the canvas and type a node name — they are in 
 categories below. The smallest chain is three nodes and an IOBox:
 
 ```
-Coordinate (X, Y)  →  Point  →  Write WKT  →  an IOBox showing POINT (139.7671 35.6812)
+Coordinate (X, Y)  →  Point  →  ToWKT  →  an IOBox showing POINT (139.7671 35.6812)
 ```
 
-From there, `Read WKT` turns any text into geometry, `Buffer` grows it, `Area` measures it, and
+From there, `FromWKT` turns any text into geometry, `Buffer` grows it, `Area` measures it, and
 `HowTo Buffer a geometry` shows the four wired together. Coordinates go X first: longitude, then
 latitude.
 
@@ -145,7 +145,7 @@ What the GUI showed, category by category:
 - **`NetTopologySuite.Network`** (2026-08-23 through Tutorial 13; 2026-09-24 in `HowTo Find the shortest path`,
   which draws its town with VL.Skia): `Networks Built` stays at 1 while From and To move, `Found`
   turns False on an island, the teal path follows the streets.
-- **`[Name]` on a *method* is honoured**, so the nodes render as `Read WKT`, `Write WKT`,
+- **`[Name]` on a *method* is honoured**, so the nodes render as `FromWKT`, `ToWKT`,
   `Nearest Points`. Fluent operations get an `Output` pin, the rest get `Result` — confirmed in
   the generated C#.
 
@@ -241,7 +241,8 @@ exception, `Relate` is the nine-character DE-9IM string behind all of them, and 
 
 ### `NetTopologySuite.IO`
 
-`Read WKT` · `Write WKT`
+`FromWKT` · `ToWKT` (until `0.0.6-alpha`: `Read WKT` · `Write WKT`, renamed with no alias - a patch
+made with an older version shows the old node unresolved; put `FromWKT` / `ToWKT` in its place)
 
 ### `NetTopologySuite.Index` — asking many geometries a question without asking each one
 
@@ -254,7 +255,7 @@ exception, `Relate` is the nine-character DE-9IM string behind all of them, and 
 when the *set of geometry references* changes — never when only the spread wrapper is new, and
 never by comparing coordinates. **Watch Indexes Built: it should reach 1 and stay.** If it climbs
 every frame, the geometries upstream are being re-created every frame and the index is doing
-nothing for you — `Read WKT` upstream does exactly that, and the help patches put it in a `Cache`
+nothing for you — `FromWKT` upstream does exactly that, and the help patches put it in a `Cache`
 region for that reason.
 
 **Candidates are not results.** `Query` returns the geometries whose *bounding boxes* intersect the

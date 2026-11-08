@@ -24,7 +24,7 @@
 		<VLDocument link="HowTo Inspect a geometry.vl" tags="inspect,geometrytype,isempty,srid,area,length,centroid,bounds,envelope,numpoints,issimple,interiorpoint,boundary,outlines,rings,readers,geometry" />
 	</Topic>
 	<Topic title="Text in, geometry out">
-		<VLDocument link="HowTo Read and write WKT.vl" tags="wkt,wellknowntext,read,write,parse,text,srid,io,roundtrip" />
+		<VLDocument link="HowTo Read and write WKT.vl" tags="wkt,fromwkt,towkt,wellknowntext,read,write,parse,text,srid,io,roundtrip" />
 	</Topic>
 	<Topic title="Spatial operations">
 		<VLDocument link="HowTo Buffer a geometry.vl" tags="buffer,grow,shrink,offset,intersection,operation,units,segments" />

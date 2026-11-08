@@ -11,8 +11,8 @@ public class WktTests
     [Fact]
     public void The_MVP_path_reads_WKT_into_a_native_geometry()
     {
-        // Brief §35, second target: WKT -> Read WKT -> Geometry.
-        var geometry = IONodes.ReadWKT("POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))", null, out var success);
+        // Brief §35, second target: WKT -> FromWKT -> Geometry.
+        var geometry = IONodes.FromWKT("POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))", null, out var success);
 
         Assert.True(success);
         Assert.IsAssignableFrom<global::NetTopologySuite.Geometries.Geometry>(geometry);
@@ -30,12 +30,12 @@ public class WktTests
     [InlineData("GEOMETRYCOLLECTION (POINT (0 0))", "GeometryCollection")]
     public void Every_geometry_type_round_trips(string wkt, string expectedType)
     {
-        var geometry = IONodes.ReadWKT(wkt, null, out var success);
+        var geometry = IONodes.FromWKT(wkt, null, out var success);
         Assert.True(success);
         Assert.Equal(expectedType, GeometryNodes.GeometryType(geometry));
 
-        var written = IONodes.WriteWKT(geometry);
-        var again = IONodes.ReadWKT(written, null, out var successAgain);
+        var written = IONodes.ToWKT(geometry);
+        var again = IONodes.FromWKT(written, null, out var successAgain);
 
         Assert.True(successAgain);
         Assert.True(geometry.EqualsTopologically(again));
@@ -44,7 +44,7 @@ public class WktTests
     [Fact]
     public void Coordinate_order_survives_the_round_trip_x_first()
     {
-        var point = IONodes.ReadWKT("POINT (13.4 52.5)", null, out _);
+        var point = IONodes.FromWKT("POINT (13.4 52.5)", null, out _);
 
         Assert.Equal(13.4, point.Coordinate.X, 12);
         Assert.Equal(52.5, point.Coordinate.Y, 12);
@@ -63,7 +63,7 @@ public class WktTests
     {
         // The whole point of the Success pin: half-typed text is the normal state of an IOBox
         // somebody is editing, and a node throwing sixty times a second is not a diagnostic.
-        var geometry = IONodes.ReadWKT(wkt, null, out var success);
+        var geometry = IONodes.FromWKT(wkt, null, out var success);
 
         Assert.False(success);
         Assert.NotNull(geometry);
@@ -74,8 +74,8 @@ public class WktTests
     public void A_reader_still_works_after_a_failure()
     {
         // The reader is shared and reused across frames, so a bad string must not poison it.
-        IONodes.ReadWKT("GARBAGE", null, out _);
-        var geometry = IONodes.ReadWKT("POINT (9 9)", null, out var success);
+        IONodes.FromWKT("GARBAGE", null, out _);
+        var geometry = IONodes.FromWKT("POINT (9 9)", null, out var success);
 
         Assert.True(success);
         Assert.Equal(9, geometry.Coordinate.X);
@@ -86,7 +86,7 @@ public class WktTests
     {
         // Consistent with the LinearRing node, which closes rings for the same reason. Without
         // FixStructure this throws "points must form a closed linestring".
-        var geometry = IONodes.ReadWKT("POLYGON ((0 0, 1 0, 1 1, 0 1))", null, out var success);
+        var geometry = IONodes.FromWKT("POLYGON ((0 0, 1 0, 1 1, 0 1))", null, out var success);
 
         Assert.True(success);
         Assert.Equal(1.0, GeometryNodes.Area(geometry), 12);
@@ -100,7 +100,7 @@ public class WktTests
     {
         // The correction that matters: NTS's own reader stamps -1 here regardless of the factory,
         // so a patch would otherwise see -1 from typed geometry and 0 from built geometry.
-        var read = IONodes.ReadWKT("POINT (1 2)", null, out _);
+        var read = IONodes.FromWKT("POINT (1 2)", null, out _);
         var built = GeometryNodes.Point(GeometryNodes.Coordinate(1, 2));
 
         Assert.Equal(0, GeometryNodes.SRID(read));
@@ -110,7 +110,7 @@ public class WktTests
     [Fact]
     public void Read_WKT_takes_its_SRID_from_the_factory_pin()
     {
-        var geometry = IONodes.ReadWKT("POINT (1 2)", GeometryNodes.GeometryFactory(4326), out _);
+        var geometry = IONodes.FromWKT("POINT (1 2)", GeometryNodes.GeometryFactory(4326), out _);
 
         Assert.Equal(4326, GeometryNodes.SRID(geometry));
     }
@@ -118,7 +118,7 @@ public class WktTests
     [Fact]
     public void An_SRID_prefix_in_the_text_wins_over_the_factory()
     {
-        var geometry = IONodes.ReadWKT(
+        var geometry = IONodes.FromWKT(
             "SRID=32654;POINT (1 2)", GeometryNodes.GeometryFactory(4326), out var success);
 
         Assert.True(success);
@@ -131,7 +131,7 @@ public class WktTests
         var geometry = GeometryNodes.Point(
             GeometryNodes.Coordinate(1, 2), GeometryNodes.GeometryFactory(4326));
 
-        var written = IONodes.WriteWKT(geometry);
+        var written = IONodes.ToWKT(geometry);
 
         Assert.DoesNotContain("4326", written);
         Assert.Equal("POINT (1 2)", written);
@@ -145,8 +145,8 @@ public class WktTests
         var point = GeometryNodes.Point(GeometryNodes.CoordinateZ(1, 2, 3));
 
         // Documented as a real way to lose data, so it is pinned down rather than trusted.
-        Assert.Equal("POINT (1 2)", IONodes.WriteWKT(point));
-        Assert.Contains("3", IONodes.WriteWKT(point, includeZ: true));
+        Assert.Equal("POINT (1 2)", IONodes.ToWKT(point));
+        Assert.Contains("3", IONodes.ToWKT(point, includeZ: true));
     }
 
     [Fact]
@@ -154,7 +154,7 @@ public class WktTests
     {
         var point = GeometryNodes.Point(GeometryNodes.CoordinateZ(1, 2, 3));
 
-        var again = IONodes.ReadWKT(IONodes.WriteWKT(point, includeZ: true), null, out var success);
+        var again = IONodes.FromWKT(IONodes.ToWKT(point, includeZ: true), null, out var success);
 
         Assert.True(success);
         Assert.Equal(3, again.Coordinate.Z);
@@ -163,6 +163,6 @@ public class WktTests
     [Fact]
     public void Write_WKT_survives_an_unconnected_pin()
     {
-        Assert.Equal("", IONodes.WriteWKT(null));
+        Assert.Equal("", IONodes.ToWKT(null));
     }
 }

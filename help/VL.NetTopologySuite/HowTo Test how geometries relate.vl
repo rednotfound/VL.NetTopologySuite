@@ -55,7 +55,7 @@
           <Node Bounds="60,260,90,19" Id="FctGB16SVX9kjJPRA6gXVp">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Read WKT" />
+              <Choice Kind="OperationCallFlag" Name="FromWKT" />
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
             <Pin Id="FWgE4GDYjGOWXiMOfg7Q9A" Name="WKT" Kind="InputPin" />
@@ -66,7 +66,7 @@
           <Node Bounds="230,260,90,19" Id="OZVZtHWdIgvOTFj6hpGG8o">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Read WKT" />
+              <Choice Kind="OperationCallFlag" Name="FromWKT" />
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
             <Pin Id="JTQ0aWSRGpA4D1mZooX3Dy" Name="WKT" Kind="InputPin" />

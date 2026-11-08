@@ -376,7 +376,7 @@ get them. NTS's `Geometry.Envelope` is a third thing again — a rectangular *Po
 (2026-11-07) it is the `Envelope` node, for the patch that wants the box as something `Intersects`
 or a map layer can take. `Bounds` stays: numbers connect to anything.
 
-### `Read WKT` reports failure on a pin
+### `FromWKT` reports failure on a pin
 
 Half-typed text is the **normal** state of an IOBox someone is editing, and a node that throws sixty
 times a second is not a diagnostic. `Success` goes false and the geometry goes empty.
@@ -385,7 +385,7 @@ It catches broadly on purpose: NTS throws `ParseException` for malformed text an
 for text that parses and then describes something illegal (measured). From the patch author's side
 those are one problem.
 
-### `Write WKT` has an `Include Z` pin and no SRID pin
+### `ToWKT` has an `Include Z` pin and no SRID pin
 
 NTS's writer **drops Z silently** at its default dimension of 2 — a Point built from a
 `CoordinateZ` writes as `POINT (1 2)`, elevation gone (measured). That is a real way to lose data on

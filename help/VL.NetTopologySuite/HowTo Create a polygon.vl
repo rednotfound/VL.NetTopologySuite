@@ -279,7 +279,7 @@
           <Node Bounds="338,1220,63,19" Id="AoYnYZchDEyPTjYCaserzp">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Write WKT" />
+              <Choice Kind="OperationCallFlag" Name="ToWKT" />
             </p:NodeReference>
             <Pin Id="PAEUvx9GZr4QOy5L3kKqx9" Name="Geometry" Kind="InputPin" />
             <Pin Id="J5c7ETPYLgNQBo0tvG23xL" Name="Include Z" Kind="InputPin" />

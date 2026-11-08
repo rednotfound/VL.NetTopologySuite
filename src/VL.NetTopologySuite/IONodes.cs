@@ -19,10 +19,12 @@ namespace VL.NetTopologySuite;
 // file-format package this one is explicitly not trying to be. It has its own package,
 // VL.NetTopologySuite.GeoJSON, whose Read GeoJSON and Write GeoJSON join this category.
 //
-// [Name] is used on the methods here rather than relying on how VL splits a PascalCase name,
-// because ReadWKT would otherwise be shown as something like "Read W K T". NameAttribute is legal
-// on a method - its AttributeUsage is All, read out of VL.Core's metadata - and the GUI confirms
-// the label (see CLAUDE.md).
+// FromWKT and ToWKT were Read WKT and Write WKT until 2026-11-08 (0.0.6-alpha), renamed with no
+// alias by the maintainer's rule (ARCHITECTURE, "Nodes in VL's shape, coordinates in the map's"):
+// a node is named after what the user wants to get, and in VL a value made from another
+// representation is FromX / ToX (FromHSL, FromPolar, ToString), while Read means a file or a
+// stream. [Name] stays on the methods so the label is exact rather than however VL splits a
+// PascalCase identifier; NameAttribute is legal on a method (AttributeUsage All).
 
 /// <summary>
 /// Reads and writes geometry as Well-Known Text.
@@ -52,7 +54,7 @@ public static class IONodes
     // Cache region for anything large.
 
     /// <summary>
-    /// Parses a geometry from Well-Known Text, such as POINT (13.4 52.5).
+    /// Makes a geometry from Well-Known Text, such as POINT (13.4 52.5).
     /// </summary>
     /// <remarks>
     /// A polygon needs doubled brackets: POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0)). An unclosed ring is closed for you.
@@ -61,8 +63,8 @@ public static class IONodes
     /// <param name="wkt">The text to parse.</param>
     /// <param name="factory">Sets the SRID, 0 when unconnected. An SRID=4326; prefix in the text wins.</param>
     /// <param name="success">False until the text parses; the result is then an empty geometry.</param>
-    [Name("Read WKT")]
-    public static Geometry ReadWKT(
+    [Name("FromWKT")]
+    public static Geometry FromWKT(
         [Pin(Name = "WKT")] string? wkt,
         GeometryFactory? factory,
         out bool success)
@@ -92,7 +94,7 @@ public static class IONodes
         }
     }
 
-    // The round trip through Read WKT preserves coordinates and geometry type. It does NOT preserve
+    // The round trip through FromWKT preserves coordinates and geometry type. It does NOT preserve
     // SRID, and there is no pin to make it: WKTWriter in NTS 2.6 has no way to emit one (checked
     // against the type's own members, not assumed), and plain WKT has nowhere to put it. A geometry
     // written and read back carries whatever SRID the reader's Factory says - so if the SRID
@@ -105,15 +107,15 @@ public static class IONodes
     // reads back and most other tools do too.
 
     /// <summary>
-    /// Writes a geometry as Well-Known Text.
+    /// Turns a geometry into Well-Known Text.
     /// </summary>
     /// <remarks>
     /// The SRID is not written, because WKT has no place for it.
     /// </remarks>
     /// <param name="geometry">The geometry to write.</param>
     /// <param name="includeZ">Writes the elevation too. Off, Z is dropped.</param>
-    [Name("Write WKT")]
-    public static string WriteWKT(Geometry? geometry, bool includeZ = false)
+    [Name("ToWKT")]
+    public static string ToWKT(Geometry? geometry, bool includeZ = false)
     {
         if (geometry is null)
             return "";

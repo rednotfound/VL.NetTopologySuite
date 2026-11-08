@@ -24,7 +24,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="EXfyeoM3jQEEUz7cqqd0op" Bounds="60,95,480,46" ShowValueBox="true" isIOBox="true" Value="Two numbers become a Coordinate, the Coordinate becomes a Point, and Write WKT shows what you made. X first, then Y.">
+          <Pad Id="EXfyeoM3jQEEUz7cqqd0op" Bounds="60,95,480,46" ShowValueBox="true" isIOBox="true" Value="Two numbers become a Coordinate, the Coordinate becomes a Point, and ToWKT shows what you made. X first, then Y.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -84,7 +84,7 @@
           <Node Bounds="60,460,90,19" Id="IJn2MiZJrAtm8YQh3zxOep">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Write WKT" />
+              <Choice Kind="OperationCallFlag" Name="ToWKT" />
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
             <Pin Id="LoAdkZgUoxAwAbtX3xVNZY" Name="Geometry" Kind="InputPin" />
@@ -105,7 +105,7 @@
           <Node Bounds="60,650,90,19" Id="LhIOgeqrvIaOQYBYQ5zAtO">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-              <Choice Kind="OperationCallFlag" Name="Read WKT" />
+              <Choice Kind="OperationCallFlag" Name="FromWKT" />
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
             <Pin Id="GJT8SYpsrDwNLN8ivMMqpX" Name="WKT" Kind="InputPin" />

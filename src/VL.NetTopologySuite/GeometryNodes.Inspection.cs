@@ -15,7 +15,7 @@ public static partial class GeometryNodes
 {
     // ── What is it ────────────────────────────────────────────────────────────
 
-    // The OGC name, so it matches what Write WKT emits and what other GIS tools call it.
+    // The OGC name, so it matches what ToWKT emits and what other GIS tools call it.
 
     /// <summary>
     /// Tells what kind of geometry this is: Point, LineString, Polygon, MultiPolygon and so on.
@@ -39,7 +39,7 @@ public static partial class GeometryNodes
     [Name("IsEmpty")]
     public static bool IsEmpty(Geometry? geometry) => geometry?.IsEmpty ?? true;
 
-    // 0 means unset, which is what the default factory produces - and what Read WKT produces too, so
+    // 0 means unset, which is what the default factory produces - and what FromWKT produces too, so
     // typed and built geometry agree. That agreement is deliberate: NTS's own reader stamps -1 for
     // "unknown" regardless of the factory it was given, so without a correction a patch would see
     // two different numbers both meaning "nobody said". An SRID=...; prefix in the text still wins.
@@ -209,7 +209,7 @@ public static partial class GeometryNodes
     }
 
     // The same box as Bounds, but as a geometry - so it can go straight into Intersects, Buffer,
-    // Write WKT or a map layer without four numbers being reassembled first. NTS degrades it:
+    // ToWKT or a map layer without four numbers being reassembled first. NTS degrades it:
     // a point's envelope is a Point, a horizontal or vertical line's is a LineString, anything with
     // area is a rectangular Polygon. Built fresh by NTS, no shared coordinates. Tier 1, 2026-11-07.
 

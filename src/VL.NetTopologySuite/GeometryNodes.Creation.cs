@@ -53,7 +53,7 @@ public static partial class GeometryNodes
     // distinct NetTopologySuite types, not two conveniences over one.
     //
     // Z survives creation and copying, but most operations ignore it: Area and Length are computed
-    // in 2D, and Buffer and the overlay operations return 2D results. Write WKT also drops Z unless
+    // in 2D, and Buffer and the overlay operations return 2D results. ToWKT also drops Z unless
     // told otherwise. M ordinates are not exposed in this version.
 
     /// <summary>
@@ -61,7 +61,7 @@ public static partial class GeometryNodes
     /// </summary>
     /// <remarks>
     /// Most operations ignore Z: Area, Length, Buffer and the overlay operations work in 2D.
-    /// Write WKT keeps Z only with Include Z on.
+    /// ToWKT keeps Z only with Include Z on.
     /// </remarks>
     [Name("CoordinateZ")]
     public static CoordinateZ CoordinateZ(double x = 0, double y = 0, double z = 0)

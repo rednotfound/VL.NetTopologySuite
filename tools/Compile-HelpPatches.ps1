@@ -161,8 +161,8 @@ $OurNodes = @{
     'Feature'            = 'FeatureNodes\.Feature\('
     'GetAttribute'       = 'FeatureNodes\.GetAttribute\('
     # NetTopologySuite.IO
-    'Read WKT'           = 'IONodes\.ReadWKT\('
-    'Write WKT'          = 'IONodes\.WriteWKT\('
+    'FromWKT'           = 'IONodes\.FromWKT\('
+    'ToWKT'          = 'IONodes\.ToWKT\('
     # NetTopologySuite.Operation
     'Buffer'             = 'OperationNodes\.Buffer\('
     'Intersection'       = 'OperationNodes\.Intersection\('

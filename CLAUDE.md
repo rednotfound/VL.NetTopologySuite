@@ -19,7 +19,7 @@ always one ahead of the published one. **Every version is a prerelease** (`-alph
 process and its rules are in [docs/RELEASE.md](docs/RELEASE.md): the maintainer performs the
 irreversible step, and nuget.org's 2026 policy (API keys 30 days at most, Trusted Publishing for CI,
 browser upload for manual) is written there. Never push to nuget.org without the user's explicit
-go; a publish cannot be undone.** 65 public nodes in six categories (56 published as of `0.0.5-alpha`; `0.0.6-alpha` is the VL-shaped rethink: seven shape nodes and `Coordinate (FromVector2)` / `ToVector2` landed on 2026-11-08, `FromWKT` next) — `NetTopologySuite.Network` (`Network` +
+go; a publish cannot be undone.** 65 public nodes in six categories (56 published as of `0.0.5-alpha`; `0.0.6-alpha` is the VL-shaped rethink: seven shape nodes, `Coordinate (FromVector2)` / `ToVector2`, and `Read WKT` / `Write WKT` renamed `FromWKT` / `ToWKT` with no alias, all on 2026-11-08) — `NetTopologySuite.Network` (`Network` +
 `ShortestPath`, an algorithm of ours, promoted from `NetTopologySuite.Experimental.Network` by
 `docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 185
 tests, 17 help patches.** All fifteen of the first wave were (re)written on 2026-09-24 in the community's measured style
@@ -308,7 +308,7 @@ vl-nettopologysuite/
 │   ├── GeometryNodes.Shapes.cs        # NetTopologySuite.Geometry - Rectangle, Rectangle (Join Points), Circle, Ellipse, RegularPolygon, Arc, Sector
 │   ├── GeometryNodes.Inspection.cs    # NetTopologySuite.Geometry - Area, IsValid, Bounds, Coordinates, Outlines, Envelope, Boundary, InteriorPoint, NumPoints, IsSimple …
 │   ├── OperationNodes.cs              # NetTopologySuite.Operation - Buffer, ConvexHull, Reverse, four overlays, eight predicates + Relate, Distance, Nearest Points, IsWithinDistance
-│   ├── IONodes.cs                     # NetTopologySuite.IO - Read WKT, Write WKT
+│   ├── IONodes.cs                     # NetTopologySuite.IO - FromWKT, ToWKT (Read WKT, Write WKT until 0.0.6)
 │   ├── FeatureNodes.cs                # NetTopologySuite.Feature - Feature, Split, GetAttribute (the whole category: a feature is a container)
 │   ├── SpatialIndexNode.cs            # NetTopologySuite.Index - SpatialIndex (process node)
 │   ├── IndexNodes.cs                  # NetTopologySuite.Index - Query
@@ -353,7 +353,7 @@ Namespace `VL.NetTopologySuite` gives `NetTopologySuite`. `[Name("X")]` renames 
 
 **Finding a node's code: node → category → file.** The NodeBrowser (or a help patch's
 `LastCategoryFullName`) gives the category; the table gives the file; inside it, a node whose name
-has a space is `[Name("Read WKT")]` on a method, otherwise the method is named like the node.
+has a space or a version is `[Name("Rectangle (Join Points)")]` on a method, otherwise the method is named like the node.
 **Source files follow what vvvv's own libraries do** (VL.CoreLib, VL.ImGui, VL.Skia, VL.IO.Redis and
 vl-mapsui, measured 2026-10-17): one type per file named after the type; a static class of
 operations is `<Topic>Nodes.cs` (CoreLib: `SpreadNodes.cs`, `KeyboardNodes.cs`); a split of one class

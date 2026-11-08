@@ -172,7 +172,7 @@ public static class OperationNodes
     //
     // When the geometries touch or overlap the two points coincide - some shared point, not a
     // meaningful "nearest" one, because at distance 0 the question has no unique answer. When either
-    // input is missing or empty both outputs are missing rather than an error, matching how Read WKT
+    // input is missing or empty both outputs are missing rather than an error, matching how FromWKT
     // treats a question that cannot be answered yet.
     //
     // The coordinates are copies. NTS can hand back live references into a geometry's own storage,

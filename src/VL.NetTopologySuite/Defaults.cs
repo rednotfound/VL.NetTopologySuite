@@ -112,7 +112,7 @@ internal static class Defaults
     /// instance is created may be removed in a future release". So is the
     /// <c>WKTReader(GeometryFactory)</c> constructor. Building the services explicitly is both
     /// correct and the route NTS asks for.</para>
-    /// <para>Without it, <c>Read WKT</c> and the creation nodes would disagree in every patch, and
+    /// <para>Without it, <c>FromWKT</c> and the creation nodes would disagree in every patch, and
     /// would disagree using two different numbers that both mean "unset" — -1 and 0.</para>
     /// <para>An <c>SRID=...;</c> prefix in the text still wins, which is correct: the document said
     /// something specific.</para>

@@ -23,10 +23,10 @@
 .EXAMPLE
     . .\tools\HelpPatchGen.ps1
     $d = New-Doc
-    Heading $d 60 40 'Use Read WKT!'
+    Heading $d 60 40 'Use FromWKT!'
     Intro   $d 60 90 'Well-Known Text is the plain-text form of a geometry.'
     $wkt = Pad $d String '60,170,400,15' 'POINT (1 1)' 'WKT'
-    $r = Node $d 'Read WKT' 'NetTopologySuite.IO' '60,220,90,19' -In 'WKT','Factory' -Out 'Result','Success'
+    $r = Node $d 'FromWKT' 'NetTopologySuite.IO' '60,220,90,19' -In 'WKT','Factory' -Out 'Result','Success'
     Link $d $wkt $r.WKT
     Link $d $r.Result (OutPad $d '60,280,300,15' 'Geometry')
     Note $d 580 220 'Break the text on purpose: Success goes False, the geometry goes empty. Never throws.'
@@ -218,7 +218,7 @@ function Region($d, [string]$Bounds, [string]$TopAt, [string]$BottomAt, $Region 
 
 # A Cache region runs its body only when what comes in through its Top control point changes,
 # and hands the SAME objects out of its Bottom control point every other frame. That is what a
-# static node such as Read WKT needs in front of SpatialIndex or Network: those rebuild when the
+# static node such as FromWKT needs in front of SpatialIndex or Network: those rebuild when the
 # geometry REFERENCES change, and a static node makes new objects every frame. (Cons happened to
 # hide this: VL's collection builder keeps the old items when the new ones are Equals, and NTS
 # compares geometry by value. Geometries hands the new objects straight through.) Shape copied
