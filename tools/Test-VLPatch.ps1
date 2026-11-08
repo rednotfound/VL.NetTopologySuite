@@ -391,7 +391,7 @@ if (-not $Path) {
         'NetTopologySuite.Geometry|Outlines',
         'NetTopologySuite.Geometry|Rectangle', 'NetTopologySuite.Geometry|Rectangle (Join Points)', 'NetTopologySuite.Geometry|Circle', 'NetTopologySuite.Geometry|Ellipse',
         'NetTopologySuite.Geometry|RegularPolygon', 'NetTopologySuite.Geometry|Arc', 'NetTopologySuite.Geometry|Sector',
-        'NetTopologySuite.Geometry|Coordinate (FromVector2)', 'NetTopologySuite.Geometry|ToVector2',
+        'NetTopologySuite.Geometry|Coordinate (FromVector2)',
         'NetTopologySuite.Feature|Feature', 'NetTopologySuite.Feature|Split', 'NetTopologySuite.Feature|GetAttribute', 'NetTopologySuite.IO|FromWKT', 'NetTopologySuite.IO|ToWKT',
         'NetTopologySuite.Operation|Buffer', 'NetTopologySuite.Operation|Intersection', 'NetTopologySuite.Operation|Union', 'NetTopologySuite.Operation|Difference',
         'NetTopologySuite.Operation|Distance', 'NetTopologySuite.Operation|Nearest Points', 'NetTopologySuite.Operation|Intersects', 'NetTopologySuite.Operation|Contains', 'NetTopologySuite.Operation|Within',

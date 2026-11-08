@@ -117,8 +117,10 @@ nodes are NTS's answer behind VL's question, which is exactly the job this packa
   Float32 map coordinate is about a metre coarse (a step of 1.5e-5 degrees at Tokyo's longitude,
   1.4 m; a step of 1 m at a Web Mercator easting of 15,550,000). Stride's `Double2` exists and
   appears in no shipped help patch. The maintainer chose `Coordinate` (double) everywhere, with
-  `Coordinate (FromVector2)` and `ToVector2` as the bridge to a mouse, Skia or Stride - so the
-  precision is lost in one visible place, where a screen meets a map, and nowhere else. A shape
+  `Coordinate (FromVector2)` as the way in from a mouse, Skia or Stride, which loses nothing
+  (every Float32 is exactly a double). `ToVector2`, the way back, was built and dropped the same
+  day: it was the one node that lost precision silently, and drawing does not need it - `Outlines`
+  hands Skia its points. The maintainer agreed: positions are `Coordinate`, full stop. A shape
   takes Width and Height as doubles for the same reason, where Skia takes a `Vector2` Size.
 - **`Read WKT` → `FromWKT`, `Write WKT` → `ToWKT`, no alias.** The maintainer: *"Read WKT 可以不留
   了"*. Two names for one node clutter the NodeBrowser, and this package has never carried

@@ -123,7 +123,6 @@ $OurNodes = @{
     'Split'              = '(GeometryNodes|FeatureNodes)\.Split\('
     'GeometryFactory'    = 'GeometryNodes\.GeometryFactory\('
     'Coordinate (FromVector2)' = 'GeometryNodes\.CoordinateFromVector2\('
-    'ToVector2'          = 'GeometryNodes\.ToVector2\('
     'Point'              = 'GeometryNodes\.Point\('
     'LineString'         = 'GeometryNodes\.LineString\('
     'LinearRing'         = 'GeometryNodes\.LinearRing\('

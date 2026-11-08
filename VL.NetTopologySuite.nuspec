@@ -33,8 +33,8 @@
       describes them: Rectangle (Position, Width, Height, Anchor), Rectangle (Join Points), Circle,
       Ellipse, RegularPolygon, Arc, Sector (NetTopologySuite.Geometry). Coordinates are a map's: y
       grows north, so the TopLeft anchor is the north-west corner. Angles in cycles. New help patch
-      HowTo Make a shape. Coordinate (FromVector2) and ToVector2: the bridge to a mouse, Skia or
-      Stride (a Vector2 is single precision, about a metre coarse on map coordinates). 65 nodes.
+      HowTo Make a shape. Coordinate (FromVector2): a position from a mouse, Skia or Stride
+      becomes a coordinate, losing nothing; positions stay coordinates (double). 64 nodes.
       A drawn Geometry IOBox now keeps its view while you edit, so a wider rectangle looks wider
       and a bigger circle bigger; a dot grid and a label like 4 × 2 · grid 1 give the real size.
       BREAKING: Read WKT and Write WKT are now FromWKT and ToWKT, in the same category, with no
