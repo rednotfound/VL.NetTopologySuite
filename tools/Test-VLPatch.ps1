@@ -70,7 +70,9 @@ foreach ($file in $targets) {
         $problems.Add("XML does not parse: " + ($message -replace '\s+', ' ').Trim())
     }
 
-    $allIds = @(([regex]'Id="([^"]+)"').Matches($raw) | ForEach-Object { $_.Groups[1].Value })
+    # \b, so SlotId="..." is not counted: several Pads bound to one Slot all carry its SlotId, and
+    # without the boundary that read as a duplicate ID (first seen 2026-11-08, Inspect a geometry).
+    $allIds = @(([regex]'\bId="([^"]+)"').Matches($raw) | ForEach-Object { $_.Groups[1].Value })
     $illegal = @($allIds | Where-Object { $_ -notmatch '^[A-V][0-9A-Za-z]{21}$' })
     if ($illegal.Count) { $problems.Add("illegal IDs: $($illegal -join ', ')") }
     $dupes = @($allIds | Group-Object | Where-Object Count -gt 1 | ForEach-Object Name)
