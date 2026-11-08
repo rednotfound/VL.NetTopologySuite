@@ -4,7 +4,7 @@
     <id>VL.NetTopologySuite</id>
     <!-- The WORKING version: always one ahead of what is on nuget.org, so a local repack can never be
          mistaken for the published package in a NuGet cache. Managed in step with VL.Mapsui. -->
-    <version>0.0.5-alpha</version>
+    <version>0.0.6-alpha</version>
     <title>VL.NetTopologySuite — NetTopologySuite geometry nodes for vvvv gamma</title>
     <authors>VL.NetTopologySuite Contributors</authors>
     <owners>VL.NetTopologySuite Contributors</owners>
@@ -29,6 +29,8 @@
     </description>
     <summary>NetTopologySuite geometry as composable nodes for vvvv gamma.</summary>
     <releaseNotes>
+      0.0.6-alpha - In development, not published.
+
       0.0.5-alpha (2026-11-08) - 16 new nodes, 56 in all. Tier 1 of the coverage plan:
       Touches, Crosses, Overlaps, Covers, CoveredBy, Relate, IsWithinDistance, SymmetricDifference,
       ConvexHull, Reverse (NetTopologySuite.Operation); Envelope, InteriorPoint, Boundary, IsSimple,

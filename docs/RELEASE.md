@@ -334,6 +334,19 @@ and a second run from nuget.org passed 15 of 15 with the signature check. So: an
 that names Stride is a rerun first, and a package problem only if it repeats. Working version
 `0.0.5-alpha`; tier 1 lands there.
 
+## `0.0.5-alpha` — 2026-11-08
+
+Tier 1 (15 nodes), `Outlines`, and the HDE companion that draws a Geometry in the editor; 56
+nodes. The maintainer went through all 16 help patches in the GUI first; `Normalize-HelpPatches`
+set the dependency back to `0.0.0`, and `Test-VLPatch` found three problems, two of them the
+checker's own (a `SlotId` counted as an `Id`; the maintainer's sample WKT strings beside an input
+read as dangling, now a warning for String constants only) and one real (High help flags carried
+along when a node is copied into another patch). Gate green at `b8daac6`, the nupkg opened and its
+16 patches compared with the tree before the tag. Browser upload; install-back from nuget.org green
+on the first run. One thing the release could not fix: the README packed into it still said tier 1
+was "not yet on nuget.org", so the package page reads stale until `0.0.6-alpha` - update the
+README's status line *before* packing, next time. Working version `0.0.6-alpha`.
+
 ## Updating a vvvv that already has the previous version
 
 `nuget install VL.NetTopologySuite -pre` again, in vvvv's command line; the nugets folder then

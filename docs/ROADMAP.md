@@ -8,9 +8,10 @@ comment; the work is deciding whether they earn a node, not writing them.
 
 ---
 
-## Now — 0.0.4-alpha on nuget.org, 0.0.5-alpha in the tree
+## Now — 0.0.5-alpha on nuget.org, 0.0.6-alpha in the tree
 
-**2026-11-08: `0.0.5-alpha` packed and tagged locally, the upload is the maintainer's.** After the
+**2026-11-08: `0.0.5-alpha` released** - browser upload by the maintainer, installed back from
+nuget.org alone (signed, 16 of 16 patches compiled from that install). After the
 maintainer's GUI pass over all 16 patches; the gate green from the feed and from an install. The
 same day the maintainer rethought how nodes should be shaped: **VL's organisation, the map's
 coordinates** - shapes by Position/Size/Anchor as in VL.Skia, `Vector2` in, `FromWKT` / `ToWKT`

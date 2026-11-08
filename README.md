@@ -2,13 +2,13 @@
 
 **NetTopologySuite made natural inside [vvvv gamma](https://vvvv.org).** Not another GIS framework.
 
-> **Status: `0.0.4-alpha` on nuget.org since 2026-10-18 — a prerelease, early, and it works.**
+> **Status: `0.0.5-alpha` on nuget.org since 2026-11-08 — a prerelease, early, and it works.**
 > 56 nodes in six categories, 151 tests, 16 help patches, every node opens one on **F1**. Every
 > category has been seen running in vvvv gamma 7.4, all sixteen help patches have been seen running
 > in the editor (fifteen of them reviewed by hand by the maintainer), and the published package was
 > installed back from nuget.org alone, its help patches compiled from that install and one of them
-> run in vvvv from it. The fifteen tier-1 nodes of 2026-11-07 and the drawn previews below are in
-> the tree for `0.0.5-alpha`, not yet on nuget.org.
+> run in vvvv from it. The fifteen tier-1 nodes of 2026-11-07 and the drawn previews below are
+> part of `0.0.5-alpha`.
 >
 > **Since 2026-11-07 a Geometry draws itself in the editor**, the way a GIS draws it: hover any
 > Geometry pin, or make an IOBox of one, and you see a polygon filled semi-transparently with its
@@ -75,7 +75,7 @@ shows the version actually loaded. Two things to know:
 - **Within about 30 minutes of a release the command can silently do nothing**: NuGet caches each
   package's version list for 30 minutes, so a list fetched before the release still says the old
   version is the latest, and the install reports it as already present. Either wait, or ask for the
-  version by name, `nuget install VL.NetTopologySuite -version 0.0.4-alpha`, or delete the one
+  version by name, `nuget install VL.NetTopologySuite -version 0.0.5-alpha`, or delete the one
   cache file `list_vl.nettopologysuite_index.dat` under `%LOCALAPPDATA%\NuGet\v3-cache` — it is
   only a cache. (Measured on 2026-10-17, an hour after a release.)
 - **What changed between versions** is in the release notes on the
@@ -370,7 +370,7 @@ to the repository's help folder, so a patch saved in vvvv is the one git sees.
 
 To use the working tree instead of the published package, point vvvv at the staged folder:
 `vvvv.exe MyPatch.vl --package-repositories <repo>\dist;<repo>\deps`. The working version is
-always one ahead of the published one (`0.0.5-alpha` while `0.0.4-alpha` is on nuget.org), so the
+always one ahead of the published one (`0.0.6-alpha` while `0.0.5-alpha` is on nuget.org), so the
 two can never be mistaken for each other in a NuGet cache.
 
 ---

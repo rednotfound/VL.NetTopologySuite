@@ -8,17 +8,18 @@ Guidance for Claude Code (claude.ai/code) working in this repository.
 as nodes for [vvvv gamma](https://vvvv.org). One package, one library — geometry creation,
 inspection, spatial operations and WKT. Nothing about maps, rendering or reprojection.
 
-**Current state (2026-10-18): `0.0.4-alpha` is on nuget.org** — `0.0.1-alpha` on 2026-09-26,
+**Current state (2026-11-08): `0.0.5-alpha` is on nuget.org** — `0.0.1-alpha` on 2026-09-26,
 `0.0.2-alpha` (the category rename to `NetTopologySuite.*`) on 2026-10-17, `0.0.3-alpha`
 (`GetAttribute`, the version VL.NetTopologySuite.GeoJSON depends on) and `0.0.4-alpha` (the tooltip
-rewrite, no node changed) on 2026-10-18, all by the maintainer's browser upload, all installed back
-from nuget.org alone with `Test-Install -FromNuGetOrg`. **The working version is now `0.0.5-alpha`**,
+rewrite, no node changed) on 2026-10-18, `0.0.5-alpha` (tier 1, `Outlines`, the drawn previews) on
+2026-11-08, all by the maintainer's browser upload, all installed back
+from nuget.org alone with `Test-Install -FromNuGetOrg`. **The working version is now `0.0.6-alpha`**,
 always one ahead of the published one. **Every version is a prerelease** (`-alpha` suffix, installed with
 `-pre`), managed in step with VL.Mapsui and the family — the maintainer's rule, 2026-09-25. The
 process and its rules are in [docs/RELEASE.md](docs/RELEASE.md): the maintainer performs the
 irreversible step, and nuget.org's 2026 policy (API keys 30 days at most, Trusted Publishing for CI,
 browser upload for manual) is written there. Never push to nuget.org without the user's explicit
-go; a publish cannot be undone.** 56 public nodes in six categories (40 published as of `0.0.4-alpha`; the 15 of tier 1 and `Outlines` landed in the tree on 2026-11-07 for `0.0.5-alpha`) — `NetTopologySuite.Network` (`Network` +
+go; a publish cannot be undone.** 56 public nodes in six categories (all 56 published as of `0.0.5-alpha`; `0.0.6-alpha` is the VL-shaped rethink: shapes, `Vector2`, `FromWKT`) — `NetTopologySuite.Network` (`Network` +
 `ShortestPath`, an algorithm of ours, promoted from `NetTopologySuite.Experimental.Network` by
 `docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 151
 tests, 16 help patches.** All fifteen of the first wave were (re)written on 2026-09-24 in the community's measured style
