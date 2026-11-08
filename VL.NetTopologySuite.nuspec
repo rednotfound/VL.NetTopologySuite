@@ -29,14 +29,15 @@
     </description>
     <summary>NetTopologySuite geometry as composable nodes for vvvv gamma.</summary>
     <releaseNotes>
-      0.0.5-alpha - In development, not published. Tier 1 of the coverage plan, 15 new nodes:
+      0.0.5-alpha (2026-11-08) - 16 new nodes, 56 in all. Tier 1 of the coverage plan:
       Touches, Crosses, Overlaps, Covers, CoveredBy, Relate, IsWithinDistance, SymmetricDifference,
       ConvexHull, Reverse (NetTopologySuite.Operation); Envelope, InteriorPoint, Boundary, IsSimple,
-      NumPoints, Outlines (NetTopologySuite.Geometry). 56 nodes. New help patch HowTo Wrap points in
-      a hull; six patches extended. A Geometry now draws itself in the editor the way a GIS draws it:
-      hover a Geometry pin or make an IOBox of one and you see filled polygons with their holes,
-      lines, point markers, a map pin for a point, a Feature with every attribute listed under it
-      (VL.NetTopologySuite.HDE.vl, editor only).
+      NumPoints (NetTopologySuite.Geometry). And Outlines (NetTopologySuite.Geometry): one polyline
+      per ring or line, and every point. A Geometry now draws itself in the editor the way a GIS
+      draws it: hover a Geometry pin or make an IOBox of one and you see filled polygons with their
+      holes, lines, point markers, a map pin for a point, a Feature with every attribute listed under
+      it (VL.NetTopologySuite.HDE.vl, editor only). Every help patch shows its geometry that way;
+      new help patch HowTo Wrap points in a hull, six patches extended.
 
       0.0.4-alpha (2026-10-18) - Tooltips rewritten to be short: every node now shows a one-line
       summary, a sentence or two of usage and a line per pin on hover, instead of design notes.
