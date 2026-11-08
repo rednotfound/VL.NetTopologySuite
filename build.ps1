@@ -132,6 +132,11 @@ foreach ($pkg in $Packages) {
     $stale = @(
         Join-Path $env:USERPROFILE ".nuget\packages\$($meta.id.ToLowerInvariant())\$($meta.version)"
         Join-Path (Split-Path (& (Join-Path $RepoRoot 'tools\Find-Vvvv.ps1')) -Parent) "package-cache\$($meta.id).$($meta.version)"
+        # The editor-only companion compiles to its own folder, and vvvv recompiles it only when
+        # the .HDE.vl itself changes - not when the dll it calls does. On 2026-11-08 a companion
+        # compiled while a node it used was unresolvable stayed cached that way after the dll was
+        # fixed, and drew the old, broken picture with nothing in the log.
+        Join-Path (Split-Path (& (Join-Path $RepoRoot 'tools\Find-Vvvv.ps1')) -Parent) "package-cache\$($meta.id)_HDE_Plugin.$($meta.version)"
     )
     foreach ($dir in $stale) {
         # Named targets only, and each must look like the package it claims to be.
