@@ -364,6 +364,17 @@ once, and re-run the overlap check.
 Ordered by how likely something is to need them. Since 2026-10-18 the coverage tiers above give the
 order; these rows keep the reasoning for each item.
 
+**Help patch layout, the rest of the list** (2026-11-08, deferred by the maintainer: "剩下的问题都不大，
+今后有时间再看"). The rule is in CLAUDE.md: the featured nodes spread evenly, each with its own inputs,
+drawing and note around it, no shared helper wired into all. Done: `HowTo Make a shape`, `HowTo Inspect
+a geometry`. Candidates found by counting outputs linked to three or more nodes - a count, not a
+verdict, so look at each in vvvv first: `Read and write WKT` (`FromWKT` to 6), `Group geometries`
+(`GeometryCollection` to 6), `Create a linestring` (`LineString` to 4), `Buffer a geometry`, `Work
+with Z`, `Wrap points in a hull`. Open question for the maintainer: whether A and B shared by many
+operations (`Test how geometries relate`, `Combine two geometries`, `Measure distance`) is the same
+problem or the subject of those patches. Move positions only; the values, wiring and notes are the
+maintainer's.
+
 | | |
 |---|---|
 | **WKB** | `Read WKB` / `Write WKB`, plus the hex form PostGIS uses. Genuinely in scope — it is NetTopologySuite's own IO, same as WKT — and deferred only until the core is stable. |
