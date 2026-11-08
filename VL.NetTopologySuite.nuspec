@@ -33,7 +33,8 @@
       describes them: Rectangle (Position, Width, Height, Anchor), Rectangle (Join Points), Circle,
       Ellipse, RegularPolygon, Arc, Sector (NetTopologySuite.Geometry). Coordinates are a map's: y
       grows north, so the TopLeft anchor is the north-west corner. Angles in cycles. New help patch
-      HowTo Make a shape. 63 nodes.
+      HowTo Make a shape. Coordinate (FromVector2) and ToVector2: the bridge to a mouse, Skia or
+      Stride (a Vector2 is single precision, about a metre coarse on map coordinates). 65 nodes.
 
       0.0.5-alpha (2026-11-08) - 16 new nodes, 56 in all. Tier 1 of the coverage plan:
       Touches, Crosses, Overlaps, Covers, CoveredBy, Relate, IsWithinDistance, SymmetricDifference,

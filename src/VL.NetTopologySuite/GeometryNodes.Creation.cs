@@ -85,6 +85,47 @@ public static partial class GeometryNodes
         z = coordinate?.Z ?? double.NaN;
     }
 
+    // ── Vector2, VL's own position ────────────────────────────────────────────
+
+    // The bridge to everything in VL that speaks Vector2: a mouse, Skia, Stride, CircleSpread.
+    // Conversion nodes rather than Vector2 pins on every node - the maintainer's choice of
+    // 2026-11-08, ARCHITECTURE "Nodes in VL's shape, coordinates in the map's". Vector2 is Float32,
+    // and a Float32 map coordinate is about a metre coarse (measured that day: a step of 1.5e-5
+    // degrees at Tokyo's longitude, 1 m at a Web Mercator easting of 15,550,000). So the nodes keep
+    // Coordinate (double) and the precision loss happens here, visibly, where a screen meets a map.
+    //
+    // Named after VL's own pattern for a value made from another representation (FromHSL,
+    // FromPolar), with the result type as the node: Coordinate (FromVector2). ToVector2 is the way
+    // back, as VL's ToVector2 nodes are. A new Coordinate each time, so nothing is shared.
+
+    /// <summary>
+    /// Makes a coordinate from a Vector2: X from X, Y from Y.
+    /// </summary>
+    /// <remarks>
+    /// A Vector2 is single precision: about a metre coarse on map coordinates, plenty on a screen.
+    /// Y stays Y: on a map it grows north, on a screen it grows down.
+    /// </remarks>
+    /// <param name="vector">The position, from a mouse, Skia or anything else in VL.</param>
+    /// <returns>A coordinate at the same X and Y.</returns>
+    [Name("Coordinate (FromVector2)")]
+    public static Coordinate CoordinateFromVector2([Pin(Name = "Vector")] Stride.Core.Mathematics.Vector2 vector)
+        => new Coordinate(vector.X, vector.Y);
+
+    /// <summary>
+    /// Turns a coordinate into a Vector2, for Skia, Stride and the rest of VL.
+    /// </summary>
+    /// <remarks>
+    /// A Vector2 is single precision: about a metre coarse on map coordinates, plenty on a screen.
+    /// Z is dropped.
+    /// </remarks>
+    /// <param name="coordinate">The coordinate to turn.</param>
+    /// <returns>X and Y as a Vector2, or zero when nothing is connected.</returns>
+    [Name("ToVector2")]
+    public static Stride.Core.Mathematics.Vector2 ToVector2(Coordinate? coordinate)
+        => coordinate is null
+            ? Stride.Core.Mathematics.Vector2.Zero
+            : new Stride.Core.Mathematics.Vector2((float)coordinate.X, (float)coordinate.Y);
+
     // ── The factory ───────────────────────────────────────────────────────────
 
     // Leaving a Factory pin unconnected uses a shared default with SRID 0 - NetTopologySuite's own

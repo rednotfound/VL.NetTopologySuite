@@ -112,9 +112,14 @@ nodes are NTS's answer behind VL's question, which is exactly the job this packa
   (Position, Size, Rotation, Resolution), `RegularPolygon` (Position, Radius, Sides, Rotation),
   `Arc` and `Sector` (Position, Radius, Start, Sweep). Angles in cycles, as in VL; a circle is a
   polygon, so it needs a segment count where Skia does not.
-- **`Vector2` in and out.** `Point`, `LineString`, `Polygon` and every shape node take `Vector2`
-  (and `Spread<Vector2>`) as well as `Coordinate`; `ToVector2` hands coordinates back. The copying
-  rule does not change: a `Vector2` is a value, so it is copied by construction.
+- **Positions are `Coordinate`; `Vector2` comes through two conversion nodes.** Planned first as
+  `Vector2` pins on every node, and measured before it was built: `Vector2` is Float32, and a
+  Float32 map coordinate is about a metre coarse (a step of 1.5e-5 degrees at Tokyo's longitude,
+  1.4 m; a step of 1 m at a Web Mercator easting of 15,550,000). Stride's `Double2` exists and
+  appears in no shipped help patch. The maintainer chose `Coordinate` (double) everywhere, with
+  `Coordinate (FromVector2)` and `ToVector2` as the bridge to a mouse, Skia or Stride - so the
+  precision is lost in one visible place, where a screen meets a map, and nowhere else. A shape
+  takes Width and Height as doubles for the same reason, where Skia takes a `Vector2` Size.
 - **`Read WKT` → `FromWKT`, `Write WKT` → `ToWKT`, no alias.** The maintainer: *"Read WKT 可以不留
   了"*. Two names for one node clutter the NodeBrowser, and this package has never carried
   compatibility aliases. It breaks every patch that uses them (the 16 help patches, VL.Overworld,
