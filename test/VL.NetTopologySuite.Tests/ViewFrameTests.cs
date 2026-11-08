@@ -25,10 +25,10 @@ public class ViewFrameTests
     [InlineData(4, 2)]
     [InlineData(1, 3)]
     [InlineData(10, 0)]
-    public void A_fresh_view_is_square_and_the_shape_fills_it_to_the_headroom(double w, double h)
+    public void A_fresh_view_is_4_by_3_and_the_shape_fills_it_to_the_headroom(double w, double h)
     {
-        // The maintainer, 2026-11-08: the shape used about half of the box; 1.6 headroom was half
-        // of that, the editor's LayerViewer margin the other half (it shows a square, so ours is).
+        // The maintainer, 2026-11-08: the shape used about half of the box, then: why are the
+        // strips left and right empty? The view has the widget's 4:3 (MapLayerViewer fits it).
         var view = ViewFrame.Next(null, Box(0, 0, w, h));
         Assert.Equal(ViewFrame.Aspect, view.Width / view.Height, 9);
         Assert.Equal(1 / ViewFrame.Headroom, ViewFrame.Fill(view, Box(0, 0, w, h)), 9);
@@ -55,7 +55,7 @@ public class ViewFrameTests
     [Fact]
     public void The_view_refits_when_the_shape_shrinks_below_a_third()
     {
-        var view = ViewFrame.Next(null, Box(-2, -2, 2, 2));   // 5 x 5 around a 4 x 4
+        var view = ViewFrame.Next(null, Box(-2, -2, 2, 2));   // 6.67 x 5 around a 4 x 4
         Assert.Same(view, ViewFrame.Next(view, Box(-0.9, -0.9, 0.9, 0.9)));
         Assert.NotSame(view, ViewFrame.Next(view, Box(-0.7, -0.7, 0.7, 0.7)));
     }
@@ -99,7 +99,7 @@ public class ViewFrameTests
         var view = ViewFrame.Next(null, null);
         ViewFrame.Layout(view, null, out _, out _, out var grid, out _, out var label, out _, out _, out _);
         Assert.Equal(1, view.Width, 9);
-        Assert.Equal(1, view.Height, 9);
+        Assert.Equal(0.75, view.Height, 9);
         Assert.StartsWith("grid ", label);
         Assert.NotEmpty(grid);
     }
@@ -107,15 +107,28 @@ public class ViewFrameTests
     [Fact]
     public void The_label_sits_in_the_bottom_left_corner_with_no_dots_under_it()
     {
-        var shape = Box(0, 0, 4, 2);
+        var shape = Box(0, 0, 2000, 3000);                   // the maintainer's tall rectangle
         var view = ViewFrame.Next(null, shape);
         ViewFrame.Layout(view, shape, out _, out _, out var grid, out _, out var label, out var at, out var box, out var text);
-        Assert.Equal(text, box.Y, 5);                       // a box exactly the text's height
+        var right = at.X + ViewFrame.LabelWidth(label, text);
+        Assert.Equal(text, box.Y, 2);                        // a box the text's height and width
+        Assert.Equal(right - at.X, box.X, 2);
         Assert.True(at.X > view.MinX && at.X < view.MinX + view.Width * 0.05);
-        Assert.True(-at.Y > view.MinY && -at.Y < view.MinY + view.Height * 0.05);
-        Assert.True(-at.Y + text <= shape.MinY);            // below the freshly fitted shape
-        var right = at.X + label.Length * text * 0.6;
+        Assert.True(-at.Y > view.MinY && -at.Y + text <= shape.MinY);   // below the shape, inside the view
         Assert.DoesNotContain(grid, p => p.X >= at.X && p.X <= right && -p.Y <= -at.Y + text);
+    }
+
+    [Fact]
+    public void The_grid_fills_the_view_beside_a_tall_shape()
+    {
+        // The maintainer, 2026-11-08: why are the strips left and right empty?
+        var shape = Box(0, 0, 2, 3);
+        var view = ViewFrame.Next(null, shape);
+        ViewFrame.Layout(view, shape, out _, out _, out var grid, out _, out _, out _, out _, out _);
+        var step = ViewFrame.Step(view.Width);
+        Assert.Contains(grid, p => p.X < view.MinX + step);
+        Assert.Contains(grid, p => p.X > view.MaxX - step);
+        Assert.All(grid, p => Assert.True(view.Contains(p.X, -p.Y)));
     }
 
     [Fact]

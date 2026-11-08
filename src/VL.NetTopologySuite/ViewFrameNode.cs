@@ -74,12 +74,13 @@ public sealed class ViewFrameNode
 
 internal static class ViewFrame
 {
-    // The editor's LayerViewer draws into a fixed 1.6 x 1.2 widget and makes our bounds square
-    // (FixAspectRatio, reference 1 x 1, FitOut, then Scale 1.05; read out of
-    // HDE.WidgetsAndViewers.vl). Measured on screen 2026-11-08: a 4:3 view came out at 59% of the
-    // widget's width and height, a square one at 95% of its height. So the view is square, and
-    // the strips left and right of it are LayerViewer's.
-    internal const double Aspect = 1;
+    // The viewer's widget is 4:3 (1.6 x 1.2). The editor's own LayerViewer squares whatever bounds
+    // it gets (FixAspectRatio, reference 1 x 1), so a square view was the most it could fill and
+    // the strips left and right stayed empty; a grid drawn into them only widened the bounds and
+    // zoomed everything out (measured 2026-11-08: the circle went from 310 to 240 pixels). So
+    // GeometryViewer uses MapLayerViewer, LayerViewer copied into the HDE document with its fit
+    // set to 4:3 and no margin, and the view here is 4:3: the frame IS the area shown.
+    internal const double Aspect = 4.0 / 3.0;
 
     // A fresh view gives the shape 1 / Headroom of the view in its binding direction, so it can
     // grow by a quarter before the view moves; the view re-fits when the shape fills less than
@@ -127,6 +128,10 @@ internal static class ViewFrame
         return nice * magnitude;
     }
 
+    // An estimate of the label's width: measured on screen, the font runs about 0.55 of its size
+    // per character.
+    internal static double LabelWidth(string label, double textSize) => label.Length * textSize * 0.55;
+
     internal static string Format(double value)
         => value.ToString("G4", CultureInfo.InvariantCulture);
 
@@ -148,11 +153,11 @@ internal static class ViewFrame
         // freshly fitted shape (a tenth of the height), in a box its own height and about its own
         // width: the Text layer centres the text in that box (seen 2026-11-08: with a box of zero
         // width, half the label hung out of the view). Map coordinates here; Skia's below.
-        var text = view.Height * 0.075;
+        var text = view.Height * 0.065;
         var margin = view.Height * 0.02;
         var left = view.MinX + margin;
         var bottom = view.MinY + margin;
-        var right = left + label.Length * text * 0.6;
+        var right = left + LabelWidth(label, text);
         var top = bottom + text;
         textSize = (float)text;
         labelPosition = new Vector2((float)left, (float)-bottom);

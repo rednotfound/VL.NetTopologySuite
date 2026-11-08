@@ -825,13 +825,19 @@ invisible Rectangle), so `GeometryViewer` now draws inside a frame decided by `V
   `4 × 2 · grid 1`: the absolute size, which a map shows with a scale bar and which no amount of
   fitting can show. The label sits in the bottom-left corner, in the margin below a freshly fitted
   shape, and the grid leaves a hole for it.
-- **Square, and as full as LayerViewer allows.** The first version (1.6 headroom) used about half
-  the box, which the maintainer saw at once. LayerViewer draws into a fixed 1.6 × 1.2 widget and
-  squares the bounds it is given before fitting them, so a 4:3 view came out *smaller* (59% of the
-  widget) and a square one fills 95% of its height; the strips left and right are its own. Using
-  all of the widget would mean replacing LayerViewer with our own `LayerWidget` pipeline.
+- **4:3, filling the whole widget.** The first version (1.6 headroom) used about half the box,
+  which the maintainer saw at once, and then asked why the strips left and right stayed empty.
+  The editor's `LayerViewer` draws into a fixed 1.6 × 1.2 widget and *squares* the bounds it is
+  given (bounds → Scale 1.05 → FixAspectRatio 1,1 FitOut → ToQuadTransformation → Invert → × 2 →
+  InViewport): a 4:3 view came out smaller (59% of the widget), a square one filled 95% of its
+  height and nothing more, and a grid drawn into the strips only widened the bounds and zoomed out
+  (every Skia layer tried counts toward the bounds; only `Text` reports just its box). So
+  `GeometryViewer` draws through `MapLayerViewer`: `LayerViewer` copied verbatim into the HDE
+  document, with the reference size 4,3, the scaling 8/3,2 and no margin. That copy uses three
+  VL.Skia internals and resolves only because the document's VL.Skia dependency is
+  `IsFriend="true"`, as in VL.HDE's own. `PointViewer` still uses the editor's `LayerViewer`.
 
-The arithmetic is C# (`ViewFrameNode.cs`, 17 tests, the stickiness negative-tested) rather than
+The arithmetic is C# (`ViewFrameNode.cs`, 18 tests, the stickiness negative-tested) rather than
 patch logic, because the companion cannot be compiled by `vvvvc` and conditions in hand-written
 patch XML are where mistakes hide. It is a node, so it is public, and it carries
 `[Smell(SymbolSmell.Hidden)]` so the NodeBrowser does not list it - not `Internal`, which was
