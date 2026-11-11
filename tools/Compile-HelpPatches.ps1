@@ -156,6 +156,7 @@ $OurNodes = @{
     'Envelope'           = 'GeometryNodes\.Envelope\('
     'Boundary'           = 'GeometryNodes\.Boundary\('
     'Outlines'           = 'GeometryNodes\.Outlines\('
+    'SetSRID'            = 'GeometryNodes\.SetSRID\('
     # NetTopologySuite.Feature
     'Feature'            = 'FeatureNodes\.Feature\('
     'GetAttribute'       = 'FeatureNodes\.GetAttribute\('

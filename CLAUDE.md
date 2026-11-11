@@ -22,10 +22,12 @@ irreversible step, and nuget.org's 2026 policy (API keys 30 days at most, Truste
 browser upload for manual) is written there. Never push to nuget.org without the user's explicit
 go; a publish cannot be undone.** 64 public nodes in six categories (all published as of `0.0.6-alpha`, the VL-shaped rethink: seven shape nodes, `Coordinate (FromVector2)` (its `ToVector2` was dropped the same day: the one node that lost precision silently), and `Read WKT` / `Write WKT` renamed `FromWKT` / `ToWKT` with no alias, all on 2026-11-08) — `NetTopologySuite.Network` (`Network` +
 `ShortestPath`, an algorithm of ours, promoted from `NetTopologySuite.Experimental.Network` by
-`docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 274
-tests, 18 help patches.** **65 since 2026-11-11: `GeometryEditor`, a geometry drawn by hand in an
-editor-extension window** ([below](#the-geometry-editor-a-window-of-our-own-in-the-editor);
-unpublished, in the working `0.0.7-alpha`). All fifteen of the first wave were (re)written on 2026-09-24 in the community's measured style
+`docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 279
+tests, 19 help patches.** **66 since 2026-11-11: `GeometryEditor`, a geometry drawn by hand in an
+editor-extension window** ([below](#the-geometry-editor-a-window-of-our-own-in-the-editor)), **and
+`SetSRID`**, the label verb, paired with VL.PROJ's `Reproject` (`D:\2026_Projects\vl-proj`, the
+family's sixth package): it says what CRS the numbers are in and moves nothing. Both are
+unpublished, in the working `0.0.7-alpha`. All fifteen of the first wave were (re)written on 2026-09-24 in the community's measured style
 ([docs/HELP-PATCH-STYLE.md](docs/HELP-PATCH-STYLE.md)), every one seen in the GUI, every node opens one
 on **F1** (help flags, audited by `Test-VLPatch`), and `HowTo Find the shortest path` draws its town with
 VL.Skia through ForEach and Cache regions. The
@@ -210,8 +212,8 @@ have the same problem; the `x = 940` column is the old way, not the rule.
 
 | | proves | state |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ 274 tests, ~400 ms, no network |
-| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 20 documents (incl. the HDE companion), 65 of 65 nodes flagged for F1 |
+| `dotnet test` | the arithmetic is right | ✅ 279 tests, ~400 ms, no network |
+| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 20 documents (incl. the HDE companion), 66 of 66 nodes flagged for F1 |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 17 help patches, 2026-11-08; `HowTo Draw a geometry` 2026-11-11 |
 | `tools\Test-Install.ps1` | the **packed** package installs from `dist\feed` with its dependencies, and every help patch inside the install compiles with that install as the only repository | ✅ 2026-09-25, first pass |
@@ -318,7 +320,7 @@ vl-nettopologysuite/
 │   ├── InputSets.cs                   # the rebuild-detection rule SpatialIndex and Network share
 │   ├── GeometryNodes.Creation.cs      # NetTopologySuite.Geometry - Coordinate, Coordinate (FromVector2) .. GeometryCollection
 │   ├── GeometryNodes.Shapes.cs        # NetTopologySuite.Geometry - Rectangle, Rectangle (Join Points), Circle, Ellipse, RegularPolygon, Arc, Sector
-│   ├── GeometryNodes.Inspection.cs    # NetTopologySuite.Geometry - Area, IsValid, Bounds, Coordinates, Outlines, Envelope, Boundary, InteriorPoint, NumPoints, IsSimple …
+│   ├── GeometryNodes.Inspection.cs    # NetTopologySuite.Geometry - SRID, SetSRID, Area, IsValid, Bounds, Coordinates, Outlines, Envelope, Boundary, InteriorPoint, NumPoints, IsSimple …
 │   ├── OperationNodes.cs              # NetTopologySuite.Operation - Buffer, ConvexHull, Reverse, four overlays, eight predicates + Relate, Distance, Nearest Points, IsWithinDistance
 │   ├── IONodes.cs                     # NetTopologySuite.IO - FromWKT, ToWKT (Read WKT, Write WKT until 0.0.6)
 │   ├── FeatureNodes.cs                # NetTopologySuite.Feature - Feature, Split, GetAttribute (the whole category: a feature is a container)
@@ -335,8 +337,8 @@ vl-nettopologysuite/
 │   ├── SketchSession.cs               # the tools as a state machine, no Skia (internal, tested)
 │   ├── GeometrySketch.cs              # a drawing as parts (point / line / polygon with holes) <-> WKT (internal, tested)
 │   └── SketchView.cs                  # the window's view: geometry <-> pixels, zoom, pan, grid step (internal, tested)
-├── test/VL.NetTopologySuite.Tests/    # 274 xunit tests, no network, no vvvv
-├── help/VL.NetTopologySuite/          # 18 help patches + Help.xml (ordering and tags)
+├── test/VL.NetTopologySuite.Tests/    # 279 xunit tests, no network, no vvvv
+├── help/VL.NetTopologySuite/          # 19 help patches + Help.xml (ordering and tags)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
 ├── docs/ARCHITECTURE.md               # why each node exists, what stays raw, the boundary
 ├── docs/HELP-PATCH-STYLE.md           # the community's help style, measured; help flags; the Skia recipe

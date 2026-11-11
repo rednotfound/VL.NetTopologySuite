@@ -57,6 +57,30 @@ public static partial class GeometryNodes
     [Name("SRID")]
     public static int SRID(Geometry? geometry) => geometry?.SRID ?? 0;
 
+    // The other verb (2026-11-11, agreed with the maintainer while designing VL.PROJ): SetSRID says
+    // which reference system a geometry's numbers ALREADY are in, and moves nothing. VL.PROJ's
+    // Reproject is the one that changes the numbers. PostGIS draws the same line (ST_SetSRID /
+    // ST_Transform) and QGIS too ("does not alter the underlying data source"): two nodes that
+    // cannot be confused, never one with a mode. It lives here because it is pure NTS.
+    //
+    // A deep copy made by the target SRID's shared factory, not a mutation of Geometry.SRID: the
+    // input is never touched (the copying rule, MutationTests), and the result's FACTORY carries
+    // the SRID too, so any NTS operation downstream - which builds its result with the factory -
+    // keeps the label.
+
+    /// <summary>
+    /// Says which coordinate reference system a geometry's numbers are in. Moves nothing.
+    /// </summary>
+    /// <remarks>
+    /// The SRID is an EPSG code, for example 4326 for longitude and latitude, 28992 for the Dutch grid.
+    /// To change the numbers into another system, use Reproject from VL.PROJ.
+    /// </remarks>
+    /// <param name="geometry">The geometry.</param>
+    /// <param name="srid">The EPSG code its coordinates are in. 0 means unset.</param>
+    /// <returns>A copy with that SRID and the same coordinates.</returns>
+    public static Geometry? SetSRID(Geometry? geometry, [Pin(Name = "SRID")] int srid)
+        => geometry is null ? null : Defaults.FactoryFor(srid).CreateGeometry(geometry);
+
     // ── Validity ──────────────────────────────────────────────────────────────
 
     // Three outputs rather than one, because NTS hands over the reason and the location for free and
