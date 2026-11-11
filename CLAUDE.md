@@ -22,8 +22,10 @@ irreversible step, and nuget.org's 2026 policy (API keys 30 days at most, Truste
 browser upload for manual) is written there. Never push to nuget.org without the user's explicit
 go; a publish cannot be undone.** 64 public nodes in six categories (all published as of `0.0.6-alpha`, the VL-shaped rethink: seven shape nodes, `Coordinate (FromVector2)` (its `ToVector2` was dropped the same day: the one node that lost precision silently), and `Read WKT` / `Write WKT` renamed `FromWKT` / `ToWKT` with no alias, all on 2026-11-08) — `NetTopologySuite.Network` (`Network` +
 `ShortestPath`, an algorithm of ours, promoted from `NetTopologySuite.Experimental.Network` by
-`docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 202
-tests, 17 help patches.** All fifteen of the first wave were (re)written on 2026-09-24 in the community's measured style
+`docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 274
+tests, 18 help patches.** **65 since 2026-11-11: `GeometryEditor`, a geometry drawn by hand in an
+editor-extension window** ([below](#the-geometry-editor-a-window-of-our-own-in-the-editor);
+unpublished, in the working `0.0.7-alpha`). All fifteen of the first wave were (re)written on 2026-09-24 in the community's measured style
 ([docs/HELP-PATCH-STYLE.md](docs/HELP-PATCH-STYLE.md)), every one seen in the GUI, every node opens one
 on **F1** (help flags, audited by `Test-VLPatch`), and `HowTo Find the shortest path` draws its town with
 VL.Skia through ForEach and Cache regions. The
@@ -208,15 +210,16 @@ have the same problem; the `x = 940` column is the old way, not the rule.
 
 | | proves | state |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ 202 tests, ~400 ms, no network |
-| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 19 documents (incl. the HDE companion) |
+| `dotnet test` | the arithmetic is right | ✅ 274 tests, ~400 ms, no network |
+| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 20 documents (incl. the HDE companion), 65 of 65 nodes flagged for F1 |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
-| `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 17 help patches, 2026-11-08 |
+| `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 17 help patches, 2026-11-08; `HowTo Draw a geometry` 2026-11-11 |
 | `tools\Test-Install.ps1` | the **packed** package installs from `dist\feed` with its dependencies, and every help patch inside the install compiles with that install as the only repository | ✅ 2026-09-25, first pass |
 | the vvvv **NodeBrowser** | **which category a node is in** | ✅ 2026-10-17: typing `NetTopologySuite` lists the category folder `NetTopologySuite` and the package; its nodes sit under `NetTopologySuite.Geometry` … `.Network` (was `NTS` until that day) |
 | the vvvv **GUI, running** | the patch computes the right value | ✅ 2026-08-14, vvvv 7.4; all 15 help patches 2026-09-24, reviewed by the maintainer 2026-09-25; the six tier-1 patches 2026-11-07 |
 | **F1 on a node** | the node carries a High help flag in a patch vvvv has indexed | ✅ 2026-09-24, all 39 nodes then; the 17 since (`GetAttribute`, tier 1, `Outlines`) are flagged and audited by `Test-VLPatch`, F1 not yet pressed on them |
 | **a Geometry IOBox draws** | the HDE companion registered its viewers in the editor | ✅ 2026-11-07, probes with polygon-with-hole, multipolygon, line, point, multipoint, mixed collection, lon/lat polygon, a feature with attributes, all drawn GIS-style; then every help patch got a column of drawn IOBoxes (`x = 940`) and all 16 were captured again |
+| **the Geometry Editor window** | the extension runs, its window edits the selected node, the edit is saved | ✅ 2026-11-11, by the maintainer on a probe: Ctrl+Shift+W opens it, every tool, Snap, MULTI/collection output, the new WKT read back out of the saved `.vl`. Ctrl+Z on a stroke not yet confirmed |
 
 **The last three rows are three different claims, and this is where a false proof lives.** Learned
 here, at the cost of nearly writing down a wrong conclusion:
@@ -309,7 +312,7 @@ value, close. In vvvv, having a patch open means having it running — there is 
 ```
 vl-nettopologysuite/
 ├── VL.NetTopologySuite.vl / .nuspec   # the package. .vl is hand-edited, never regenerated
-├── VL.NetTopologySuite.HDE.vl         # editor-only companion: Geometry/Point viewers for tooltips and IOBoxes
+├── VL.NetTopologySuite.HDE.vl         # editor-only companion: Geometry/Point/Feature viewers, and the Geometry Editor window (Application)
 ├── src/VL.NetTopologySuite/
 │   ├── Defaults.cs                    # ⭐ the default factory and the defensive copying
 │   ├── InputSets.cs                   # the rebuild-detection rule SpatialIndex and Network share
@@ -325,9 +328,15 @@ vl-nettopologysuite/
 │   ├── NetworkNode.cs                 # NetTopologySuite.Network - Network (process node)
 │   ├── NetworkNodes.cs                # NetTopologySuite.Network - ShortestPath
 │   ├── ViewFrameNode.cs               # NetTopologySuite.Viewer (hidden) - ViewFrame, the Geometry IOBox's view (process node)
-│   └── ViewFrame.cs                   # its arithmetic: the sticky view, grid, label, widget transform (internal)
-├── test/VL.NetTopologySuite.Tests/    # 202 xunit tests, no network, no vvvv
-├── help/VL.NetTopologySuite/          # 17 help patches + Help.xml (ordering and tags)
+│   ├── ViewFrame.cs                   # its arithmetic: the sticky view, grid, label, widget transform (internal)
+│   ├── GeometryEditorNode.cs          # NetTopologySuite.Geometry - GeometryEditor (process node): WKT pin in, geometry out, writes the pin back
+│   ├── GeometryEditorWindowNode.cs    # NetTopologySuite.Viewer (hidden) - GeometryEditorWindow, the window's canvas for the HDE Application
+│   ├── GeometryEditorLayer.cs         # that canvas: toolbar, grid, drawing, mouse and keys (Skia ILayer, internal)
+│   ├── SketchSession.cs               # the tools as a state machine, no Skia (internal, tested)
+│   ├── GeometrySketch.cs              # a drawing as parts (point / line / polygon with holes) <-> WKT (internal, tested)
+│   └── SketchView.cs                  # the window's view: geometry <-> pixels, zoom, pan, grid step (internal, tested)
+├── test/VL.NetTopologySuite.Tests/    # 274 xunit tests, no network, no vvvv
+├── help/VL.NetTopologySuite/          # 18 help patches + Help.xml (ordering and tags)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
 ├── docs/ARCHITECTURE.md               # why each node exists, what stays raw, the boundary
 ├── docs/HELP-PATCH-STYLE.md           # the community's help style, measured; help flags; the Skia recipe
@@ -481,6 +490,58 @@ The rules that matter when touching it:
 - The document depends on `VL.HDE`, `VL.Skia`, `NetTopologySuite` and `NetTopologySuite.Features`
   (for the `Geometry` / `Point` / `Feature` type arguments) and on this package at `0.0.0`. `VL.HDE` is *not* a nuspec dependency: every vvvv
   carries it, and an exported app never loads the companion.
+
+## The Geometry Editor: a window of our own in the editor
+
+**`GeometryEditor`** (2026-11-11) is a geometry drawn by hand. The maintainer's reason: nobody should
+have to type WKT. Select the node, press **Ctrl+Shift+W**, and a window opens with a toolbar:
+Select V, Point P, Line L, Polygon A, Hole H, Snap S, Fit F, Delete. The window writes the drawing
+back into the node's `WKT` pin, so the drawing is text in the `.vl`: saved with the patch, readable,
+and still typeable. In an exported app the node outputs what its pin says. The full design is in
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#geometryeditor--drawing-in-a-window-of-the-editor).
+The maintainer saw the whole chain work, including the saved `.vl`.
+
+**The research behind it:** what a package may do to the editor, measured in the 7.4 install. There
+are three mechanisms, and all are public:
+1. `RegisterViewer`: read-only IOBox and tooltip views (ours, Fuse, Elementa, OpenCV).
+2. A window from an `Application` in the `.HDE.vl` (`Command` → `WindowFactory` → `SkiaWindow`),
+   the shape of VL.HDE's `Template.HDE.vl` and VL.Kairos's keyframe editor.
+3. Writing into the document: `IDevSession.Current.CurrentSolution.SetPinValue(...).Confirm(...)`,
+   as VL.Stride's `RenderWindow` and CoreLib's `PersistentState` do.
+
+**Not possible:** an editable IOBox editor, because `EditorFactory` / `IValueEditor` in
+`VL.UI.Forms` are internal. That is why this is a window and not a drawable IOBox.
+
+What this cost, so it is not paid again:
+
+- **The `Application` must sit in the document's ROOT patch, outside the `FullCategory` canvas.**
+  Inside it, it is the ordinary definition `NetTopologySuite.HDE.Application`. vvvv never runs it,
+  there is no menu entry, and the log shows no error. The proof that it runs is the log line
+  `Starting VL.NetTopologySuite.HDE`.
+- **vvvv 7.4's Quad menu has no "Extensions" item.** The Gray Book's editor-extensions page says it
+  has; it is out of date. The command was found in the menus by the maintainer.
+- **Pick a shortcut from the Gray Book SOURCE**, `reference/hde/keyboard-shortcuts.md` in
+  github `vvvv/The-Gray-Book`. The site URL `hde/shortcuts.html` is a 404. Two tries failed first:
+  - Alt+G opens Windows 11's AI assistant before vvvv sees the key.
+  - Ctrl+Shift+G is vvvv's "group to process node".
+
+  Three keys are combined with one `|` node plus an `Input 3` pin, as in `VL.UI.NewCSharp.HDE.vl`.
+- **The output pins are `Result`, not `Output`.** The fluent rule above bit twice in one change, in
+  the probe and in the HDE document. The HDE log said only "has errors"; `vvvvc` on the probe
+  named the pin.
+- **`VL.Core.Skia` needs `ExcludeAssets="runtime;native"`.** With `runtime` alone, libSkiaSharp
+  for every platform still landed in `bin\runtimes`. VL.Core moved from 2025.7.2 to 2025.7.4 with
+  it, in the test project too.
+- **Hit-test at the real mouse, place at the snapped point.** With Snap on, nothing could be
+  selected, because the snapped point was hit-tested too. A single click on an edge in Select used
+  to insert a vertex ("in Select mode I can still draw"); inserting is now a double-click. Both are
+  tests in `SketchSessionTests`.
+- The window needs no `vvvvc`-able document. The ladder is: tests (model, session, view) →
+  `Test-VLPatch` → a probe in `scratch\` compiled by `vvvvc` → the GUI.
+
+**Coordinates are plain numbers.** The window does not know degrees from metres. CRS is the next
+chapter, and it belongs in a separate package (see ROADMAP, "CRS transformation"). The editor will
+follow it: units on the grid, and a lon/lat aspect.
 
 ## Node documentation is a tooltip
 

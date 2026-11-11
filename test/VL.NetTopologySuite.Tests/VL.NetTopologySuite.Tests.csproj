@@ -21,7 +21,7 @@
       excludes VL.Core because vvvv supplies its own copy; a test host supplies nothing, and
       without it every test fails on a missing assembly before reaching an assertion.
     -->
-    <PackageReference Include="VL.Core" Version="2025.7.2" />
+    <PackageReference Include="VL.Core" Version="2025.7.4" />
     <ProjectReference Include="..\..\src\VL.NetTopologySuite\VL.NetTopologySuite.csproj" />
   </ItemGroup>
 

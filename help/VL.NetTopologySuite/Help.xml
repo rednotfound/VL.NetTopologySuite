@@ -14,6 +14,7 @@
 	</Topic>
 	<Topic title="Making geometry">
 		<VLDocument link="HowTo Make a shape.vl" tags="shape,rectangle,box,circle,ellipse,polygon,hexagon,regularpolygon,arc,sector,pie,anchor,position,size,radius,skia" />
+		<VLDocument link="HowTo Draw a geometry.vl" tags="draw,editor,geometryeditor,sketch,mouse,window,extension,wkt,polygon,hole,multipolygon,collection,snap,shortcut" />
 		<VLDocument link="HowTo Create a point.vl" tags="coordinate,point,geometry,create,srid,factory,nts,netTopologySuite" />
 		<VLDocument link="HowTo Create a linestring.vl" tags="linestring,line,path,coordinates,cons,spread,length,reverse,geometry,create" />
 		<VLDocument link="HowTo Create a polygon.vl" tags="polygon,linearring,ring,shell,holes,closed,valid,area,geometry" />

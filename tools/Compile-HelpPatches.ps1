@@ -188,6 +188,8 @@ $OurNodes = @{
     # NetTopologySuite.Network
     'Network'            = 'new\s+[\w\.]*NetworkNode\('
     'ShortestPath'       = 'NetworkNodes\.ShortestPath\('
+    # NetTopologySuite.Geometry - drawn in the editor (2026-11-11)
+    'GeometryEditor'     = 'new\s+[\w\.]*GeometryEditorNode\('
 }
 
 # Process nodes must be constructed in __Create__ and only updated in Update - built per frame
@@ -196,6 +198,7 @@ $OurNodes = @{
 $OurProcessNodes = @{
     'SpatialIndex' = 'SpatialIndexNode'
     'Network'      = 'NetworkNode'
+    'GeometryEditor' = 'GeometryEditorNode'
 }
 
 # Every node the patch takes from THIS package, by name. Anchored on LastDependency so that a

@@ -19,6 +19,8 @@ than reading them.
 - [Node categories](#node-categories)
 - [Decisions, per node](#decisions-per-node)
 - [Where a feature lives](#where-a-feature-lives)
+- [Drawing without a renderer — the HDE companion](#drawing-without-a-renderer--the-hde-companion)
+- [GeometryEditor — drawing in a window of the editor](#geometryeditor--drawing-in-a-window-of-the-editor)
 - [What stays raw](#what-stays-raw)
 - [The package boundary](#the-package-boundary)
 - [Relationship with the sibling repositories](#relationship-with-the-sibling-repositories)
@@ -853,6 +855,96 @@ patch XML are where mistakes hide. It is a node, so it is public, and it carries
 `[Smell(SymbolSmell.Hidden)]` so the NodeBrowser does not list it - not `Internal`, which was
 tried first and makes a node unresolvable from any other document. Its outputs are in Skia space
 (y down), like everything else the viewer draws.
+
+## GeometryEditor — drawing in a window of the editor
+
+The maintainer, 2026-11-11: *nobody should have to type WKT; let me draw it, and take the result
+from a pin*. The question that came first was whether a package may extend the editor that far,
+and if not, why not.
+
+### What a package may do to the editor, measured
+
+Measured in the vvvv 7.4 install (the `*.HDE.vl` documents it ships, VL.HDE.dll and VL.Core.dll by
+reflection), in four community packs on this machine, and on nuget.org (eleven `*.HDE` packages).
+Three public mechanisms:
+
+| mechanism | public API | who uses it |
+|---|---|---|
+| a drawn, read-only view of a value | `RegisterViewer` + `IValueViewer<T>` | Fuse, Elementa, OpenCV, our viewers |
+| a window of the package's own | an `Application` in `<Pkg>.HDE.vl`: `Command` (menu entry + shortcut) → `WindowFactory` → `SkiaWindow`; `HDE.API.CurrentSelection` for what is selected | VL.HDE's `Template.HDE.vl`, VL.Kairos (keyframe editor), VL.Audio, Inspector |
+| writing into the document | `IDevSession.Current.CurrentSolution.SetPinValue(path, pin, value).Confirm(kind)` (VL.Core, `VL.Lang.PublicAPI`) | VL.Stride `RenderWindow` (its bounds), CoreLib `PersistentState`, VL.ImGui |
+
+One thing is **not** possible: an *editable* IOBox for our own type. The IOBox editors
+(`EditorFactory`, `IValueEditor`, `ValueEditor<T>` in `VL.UI.Forms`) are internal, and the
+Inspector's per-type editors are a fixed list. Nothing here is a question of permission. The
+editor simply offers no extension point there. Reaching the internal types by reflection would
+work until the next vvvv release, and that is not how packages are written
+([memory: follow the usual pattern]). So the editor is a window.
+
+### The shape: a node in the patch, a window in the editor
+
+- **`GeometryEditor`** ([ProcessNode], `NetTopologySuite.Geometry`) has one input, `WKT`. It
+  outputs the geometry and `Is Editable`. The drawing *is* that pin's value: text in the `.vl`,
+  saved with the patch, typeable by hand, and the same in an exported app, where there is no
+  editor. The window writes it with `SetPinValue(NodeContext.Path.Stack, "WKT", wkt)` and
+  `Confirm(SolutionUpdateKind.DontCompile)`. `DontCompile` is every flag but `AffectCompilation`,
+  so the write enters the undo history. It is the same value `RenderWindow` uses. The pin must
+  stay unconnected, because a link overrides the pin's own value. The node does not re-read a
+  value that equals what it last wrote, so a part in progress keeps its kind.
+- **The window** is an `Application` in `VL.NetTopologySuite.HDE.vl`:
+  `Command` ("Geometry Editor", Ctrl+Shift+W) → `ForEach` → `EnsureWindow`, and
+  `WindowFactory` → `SkiaWindow` whose input is the hidden node `GeometryEditorWindow`. The
+  selection's elements carry `Element.UniqueId`, and each `GeometryEditor` knows its own id from
+  `NodeContext.Path`. A static registry pairs them. The two properties are read by name, because
+  `ILiveElement` lives in an editor assembly this runtime package does not reference. When they
+  do not match, the window keeps the editor it showed last, or takes the one made last.
+- **The canvas is C#**: `GeometryEditorLayer`, a Skia `ILayer`. This is the maintainer's choice,
+  over patching it in the HDE document (which `vvvvc` cannot compile) or a separate `.HDE`
+  package. It is why the package now references `VL.Core.Skia` (compile-time only,
+  `ExcludeAssets="runtime;native"`).
+
+### The model: a drawing is parts
+
+The first version that morning drew one part without holes. The maintainer asked the same day for
+every geometry type the package has, so `GeometrySketch` is a list of parts. A part is a point,
+a line or a polygon, and a polygon is a shell plus holes. The type written follows the parts:
+
+| parts | written as |
+|---|---|
+| one | `POINT` / `LINESTRING` / `POLYGON` |
+| several of one kind | `MULTIPOINT` / `MULTILINESTRING` / `MULTIPOLYGON` |
+| different kinds | `GEOMETRYCOLLECTION` |
+
+What was *read* also keeps its container. A MULTIPOLYGON stays Multi when parts are deleted down
+to one, because a patch downstream may expect the type. A collection stays a collection. Every
+editable WKT round-trips exactly.
+
+Not editable, and shown read-only so nothing is lost:
+- Geometry with Z: the window is 2D, and the writer would drop Z.
+- A collection holding a multi-geometry or another collection: flattening would change its
+  structure.
+- `LINEARRING`: an implementation type.
+
+`SketchSession` holds the tools as a state machine without Skia:
+- **Select** never adds geometry. It drags a vertex or a shape, double-clicks an edge to insert a
+  vertex, right-clicks a vertex to delete it, and Del deletes the selected shape.
+- **Point / Line / Polygon / Hole** draw. A part being drawn is previewed only. It is committed
+  when finished (double-click, Enter, right-click, clicking the first vertex, or switching tool),
+  so one stroke is one undo step and a half-drawn shape never reaches the document. A finished
+  part that is not its kind yet is discarded with a hint.
+- Deleting a vertex that would leave a ring below its kind removes the ring or the part, never
+  turns a polygon into a line.
+
+Hit-testing uses the real mouse position. New and moved vertices use the snapped one: with Snap
+on, hit-testing the snapped point missed everything. Model, session and view are covered by
+`GeometrySketchTests`, `SketchSessionTests` and `SketchViewTests`.
+
+### What it does not know yet
+
+Units. The grid is in plain coordinate units, so a lon/lat drawing is in degrees, unscaled for
+latitude. That waits for the CRS chapter ([ROADMAP](ROADMAP.md)): reprojection stays out of this
+package (see [What this will never contain](#what-this-will-never-contain)). The editor will learn
+to show what the units are and to draw lon/lat at the right aspect.
 
 ## What stays raw
 
