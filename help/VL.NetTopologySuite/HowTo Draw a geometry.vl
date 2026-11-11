@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document xmlns:p="property" xmlns:r="reflection" Id="BMvJ4a6kv0xPvdX36PKKEt" LanguageVersion="2025.7.4" Version="0.128">
+  <NugetDependency Id="U4tRnb6m5MP7h2HdY28qaA" Location="VL.CoreLib" Version="2025.7.4" />
+  <Patch Id="KBZNrxOJhkdwFeV7WA6L9c">
+    <Canvas Id="BQKsnM9Yz14MYdiFrDTHlN" DefaultCategory="Main" BordersChecked="false" CanvasType="FullCategory" />
+    <!--
+
+    ************************ Application ************************
+
+-->
+    <Node Name="Application" Bounds="100,100" Id="EsagAxfVQCsS6ODOpWhWgf">
+      <p:NodeReference>
+        <Choice Kind="ContainerDefinition" Name="Process" />
+        <CategoryReference Kind="Category" Name="Primitive" />
+      </p:NodeReference>
+      <Patch Id="Afy1MBzLfmToT0hZyaJgAm">
+        <Canvas Id="BPueJa42Gkugs6SH6u4Cp9" CanvasType="Group">
+          <Pad Id="Sw1rJnGrFQ8UIp4PyQ6A7H" Bounds="60,40,450,41" ShowValueBox="true" isIOBox="true" Value="Draw it with GeometryEditor!">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">20</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="PizQsFkkcU0mLrckMZFmUI" Bounds="60,95,480,46" ShowValueBox="true" isIOBox="true" Value="Select the node and press Ctrl+Shift+W. A window opens: draw in it, and the patch follows.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="60,180,110,19" Id="Fcm41JLNVWJYvIY7MRVj3N">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="ProcessAppFlag" Name="GeometryEditor" />
+              <PinReference Kind="InputPin" Name="WKT" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="Fz2kprebqCu8Ui3fLNsTtJ" Name="WKT" Kind="InputPin" DefaultValue="POLYGON ((0 0, 4 0, 4 3, 0 3, 0 0), (1 1, 2 1, 2 2, 1 2, 1 1))">
+              <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+                <Choice Kind="TypeFlag" Name="String" />
+              </p:TypeAnnotation>
+            </Pin>
+            <Pin Id="AnBfWxwQer9frWmPZfJJ04" Name="Result" Kind="OutputPin" />
+            <Pin Id="Po8ak14nynZKvir6btkNe6" Name="Is Editable" Kind="OutputPin" />
+          </Node>
+          <Pad Id="OS3mTnodikCBguOB6o3Lc3" Bounds="580,172,320,26" ShowValueBox="true" isIOBox="true" Value="&lt; Select me, then Ctrl+Shift+W.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="DHyiGLw2iL0qcrl26GW7SC" Comment="" Bounds="60,220,240,170" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="Nrhqw4nGiYaezA6MRs4PFc" Comment="Is Editable" Bounds="340,220,35,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="ALg5dN8BMgRUZg9d70I7gl" Bounds="580,220,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Tools: Select V, Point P, Line L, Polygon A, Hole H. Snap S puts new points on the grid.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="NiyCfpDnihnItSPNb41Kvj" Bounds="580,290,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Draw two polygons and it is a MULTIPOLYGON; add a line and it is a GEOMETRYCOLLECTION.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="HgJ2EteFtQdbOWMBrjN9Ar" Bounds="580,360,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; Is Editable is false for geometry with Z or nested collections: shown, not changed.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="60,420,45,19" Id="MI90EFJsHkVv4Qhbj0bb3D">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="ToWKT" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="AnuVzQt5Ibv5TGrUJOUuiu" Name="Geometry" Kind="InputPin" />
+            <Pin Id="KlG9ekB9fQoKZa8liNUmly" Name="Include Z" Kind="InputPin" />
+            <Pin Id="DKE1ADMb4H6bVwgfDBdJ48" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="HbnwQ34cff4ixeql2Z3FrQ" Comment="WKT" Bounds="60,460,480,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="Lt9fNCNwcGiOUQA8GRnFfe" Bounds="580,420,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; The drawing lives on the WKT pin and is saved with the patch. Leave that pin unconnected. Ctrl+Z undoes a stroke.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="HJqBBUnCQrB2rZyXBSWdXy" Bounds="580,500,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; Coordinates are plain numbers here: on lon/lat data one unit is a degree.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+        </Canvas>
+        <Patch Id="LOpwDF05xj53EkzlPiqGFu" Name="Create" />
+        <Patch Id="HGvmtkCVEuNhBqpOEruQ8y" Name="Update" />
+        <ProcessDefinition Id="RsH0ShLIcQxErmVpchs5dA">
+          <Fragment Id="QKBUUkBfQP3gzVXaIlH3rB" Patch="LOpwDF05xj53EkzlPiqGFu" Enabled="true" />
+          <Fragment Id="MW8468BADRRQB9JWT1ODX9" Patch="HGvmtkCVEuNhBqpOEruQ8y" Enabled="true" />
+        </ProcessDefinition>
+        <Link Id="VDH9jk5w0xqxJYdrKr2tgN" Ids="AnBfWxwQer9frWmPZfJJ04,DHyiGLw2iL0qcrl26GW7SC" />
+        <Link Id="CXQFwWmvRBqtSane21utkC" Ids="Po8ak14nynZKvir6btkNe6,Nrhqw4nGiYaezA6MRs4PFc" />
+        <Link Id="GnCpuQD809Y9P2Dtpi2Sph" Ids="AnBfWxwQer9frWmPZfJJ04,AnuVzQt5Ibv5TGrUJOUuiu" />
+        <Link Id="SWg30zwjzLCsB8UEh3TJMJ" Ids="DKE1ADMb4H6bVwgfDBdJ48,HbnwQ34cff4ixeql2Z3FrQ" />
+      </Patch>
+    </Node>
+  </Patch>
+  <NugetDependency Id="Q825TloDC4jmSCK7mXXR8N" Location="VL.NetTopologySuite" Version="0.0.0" />
+</Document>
