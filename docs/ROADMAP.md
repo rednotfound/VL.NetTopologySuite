@@ -8,7 +8,42 @@ comment; the work is deciding whether they earn a node, not writing them.
 
 ---
 
-## Now — 0.0.5-alpha on nuget.org, 0.0.6-alpha in the tree
+## Now: 0.0.6-alpha on nuget.org, 0.0.7-alpha in the tree
+
+**2026-11-11: `GeometryEditor`, a geometry drawn by hand in a window of the editor.** The
+maintainer asked first what a package may do to the editor itself. The answer was measured, and
+it is in ARCHITECTURE, "GeometryEditor":
+- A package may add a window, read the selection, and write into the document, all through
+  public API.
+- It may not make an IOBox editable for its own type, because those classes are internal.
+
+The result:
+- The node `GeometryEditor`: a WKT pin in, the geometry out.
+- An `Application` in the HDE document: a "Geometry Editor" window on Ctrl+Shift+W. Its toolbar
+  draws points, lines, polygons and holes. Several shapes make a MULTI geometry or a collection.
+  It has Snap to grid.
+- The window writes the drawing back into the node's pin with `SetPinValue`, so it is saved with
+  the patch.
+
+The maintainer saw the whole chain work in the GUI, including the saved `.vl`. Also: 72 new
+tests, `HowTo Draw a geometry`, VL.Core 2025.7.4, and `VL.Core.Skia` as a compile-time reference.
+
+**Next, by the maintainer's word the same day: coordinate systems.** The editor's grid is plain
+numbers. It does not know a degree from a metre, and real data comes in a CRS. NetTopologySuite
+carries only an SRID label (see "The factory, and why SRID is 0"). Reprojection was decided long
+ago to live outside this package: see Never, "CRS transformation", and the focused `VL.ProjNet`
+named there. Two steps:
+1. Research the CRS landscape first: geographic vs projected, EPSG, datums, and the .NET libraries
+   (ProjNet, the PROJ bindings).
+2. A sibling repository for the transformation. Then the editor learns units, a lon/lat aspect,
+   and perhaps a basemap through VL.Mapsui.
+
+Small follow-ups for the editor:
+- Confirm Ctrl+Z on a stroke in the GUI.
+- Offer the drawn shapes (`Rectangle`, `Circle` …) as tools.
+- Holes are not checked for lying inside their shell. `IsValid` downstream says so.
+
+## Before that: 0.0.5-alpha on nuget.org, 0.0.6-alpha in the tree
 
 **2026-11-08: `0.0.5-alpha` released** - browser upload by the maintainer, installed back from
 nuget.org alone (signed, 16 of 16 patches compiled from that install). After the
