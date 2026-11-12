@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using NetTopologySuite.Geometries;
 
 namespace VL.NetTopologySuite;
@@ -34,6 +35,20 @@ namespace VL.NetTopologySuite;
 //
 // A part being drawn is only previewed and committed when finished, so one stroke is one undo step
 // and a half-drawn part never reaches the document. A move is previewed and committed on Done.
+//
+// Box selection (2026-11-12, the maintainer: "很多时候就是要框选来删除的"). The two choices were
+// theirs:
+//   - A left drag on empty space draws a box, as in JOSM, Figma and Illustrator. Before this, the
+//     same drag panned the view like a web map. Panning is now the right or middle drag, and the
+//     wheel zooms.
+//   - What the box takes depends on the selection, as in JOSM and QGIS's vertex tool. With one shape
+//     selected, it takes that shape's points. When it catches none of them, or nothing was
+//     selected, it takes every shape lying wholly inside it.
+// The box is a WINDOW selection: a shape only partly inside is not taken, because the box is
+// mostly used for deleting, and a shape grazed by the box edge should not vanish.
+// Several shapes can be moved (Move) and deleted together. Several points can be deleted together,
+// unless that would leave a line under 2 points or a ring under 3; the action then stays disabled
+// and says which, in the same style as the single-point rule.
 
 /// <summary>A tool of the geometry editor window.</summary>
 internal enum SketchTool
@@ -67,6 +82,8 @@ internal enum SketchAction
     Hole,
     DeleteShape,
     DeletePoint,
+    DeleteShapes,
+    DeletePoints,
     Done,
     Cancel,
     Finish,
@@ -94,8 +111,11 @@ internal sealed class SketchSession
     private GeometrySketch? _beforeDrawing;
 
     // A left press in Select: what it landed on, where, and whether it has become a drag.
-    private enum Press { None, Vertex, Insert, MoveShape, Pan }
+    private enum Press { None, Vertex, Insert, MoveShape, Box }
     private Press _press;
+    private Coordinate? _boxTo;
+    private bool _boxForPoints;
+    private bool _boxOnBody;
     private VertexRef _pressRef;
     private Coordinate? _pressAt;
     private Coordinate? _dragLast;
@@ -117,6 +137,22 @@ internal sealed class SketchSession
     /// <summary>The selected vertex of the selected part, null when none.</summary>
     public VertexRef? SelectedVertex { get; private set; }
 
+    // Several shapes (SelectedPart is then -1) or several points of SelectedPart, from a box; empty
+    // otherwise. Never a single one: one shape or point caught by a box becomes the plain selection.
+    private List<int> _parts = new();
+    private List<VertexRef> _points = new();
+
+    /// <summary>The shapes a box selected, when it caught two or more; empty otherwise.</summary>
+    public IReadOnlyList<int> SelectedParts => _parts;
+
+    /// <summary>The points of the selected shape a box selected, when it caught two or more; empty otherwise.</summary>
+    public IReadOnlyList<VertexRef> SelectedPoints => _points;
+
+    /// <summary>The selection box being dragged, in geometry units; null when there is none.</summary>
+    public Envelope? Box => _press == Press.Box && _dragging && _pressAt is not null && _boxTo is not null
+        ? new Envelope(_pressAt, _boxTo)
+        : null;
+
     /// <summary>A one-off message (why something was refused), shown instead of the hint until the next input.</summary>
     public string? Message { get; private set; }
 
@@ -124,8 +160,11 @@ internal sealed class SketchSession
 
     public bool IsMoving => _moving;
 
-    /// <summary>True while a left press on empty space is held: the layer pans the view with it.</summary>
-    public bool WantsPan => _press == Press.Pan;
+    private void ClearMany()
+    {
+        _parts = new();
+        _points = new();
+    }
 
     /// <summary>True while a part is being drawn, dragged or moved: the node's sketch is not taken then.</summary>
     public bool IsBusy => _drawPart >= 0 || _moving || (_press is Press.Vertex or Press.Insert or Press.MoveShape && _dragging);
@@ -156,6 +195,7 @@ internal sealed class SketchSession
             // not the shape the user picked.
             SelectedPart = -1;
             SelectedVertex = null;
+            ClearMany();
         }
         Validate();
     }
@@ -164,6 +204,8 @@ internal sealed class SketchSession
     {
         if (SelectedPart >= _sketch.PartCount) SelectedPart = -1;
         if (SelectedVertex is { } v && (SelectedPart != v.Part || !Exists(_sketch, v))) SelectedVertex = null;
+        if (_parts.Any(p => p < 0 || p >= _sketch.PartCount)) _parts = new();
+        if (_points.Any(p => p.Part != SelectedPart || !Exists(_sketch, p))) _points = new();
     }
 
     private static bool Exists(GeometrySketch s, VertexRef v)
@@ -192,6 +234,7 @@ internal sealed class SketchSession
         {
             SelectedPart = -1;
             SelectedVertex = null;
+            ClearMany();
         }
         return outcome;
     }
@@ -248,6 +291,7 @@ internal sealed class SketchSession
                 _press = Press.Vertex;
                 _pressRef = v;
                 SelectedVertex = v;
+                _points = new();
                 return SketchOutcome.None;
             }
             if (NearestMidpointIn(SelectedPart, at, tolerance) is { } m)
@@ -259,25 +303,70 @@ internal sealed class SketchSession
         }
 
         var part = _sketch.PartAt(at, tolerance);
-        if (part >= 0)
+        if (part >= 0 && part != SelectedPart)
         {
-            // Selecting, or clicking the body of the selected part: never a move (rule 3).
-            if (part != SelectedPart) SelectedPart = part;
+            // Selecting another part: never a move (rule 3).
+            SelectedPart = part;
             SelectedVertex = null;
+            ClearMany();
             _press = Press.None;
             return SketchOutcome.None;
         }
 
-        SelectedPart = -1;
-        SelectedVertex = null;
-        _press = Press.Pan;
+        // Empty space, or the body of the selected part: a box may start here. A click without a
+        // drag decides on release (LeftUp): on empty space it deselects, on the body it keeps the
+        // part and drops a selected point.
+        _press = Press.Box;
+        _boxTo = at.Copy();
+        _boxForPoints = SelectedPart >= 0;
+        _boxOnBody = part >= 0;
         return SketchOutcome.None;
+    }
+
+    // A box released: the selected part's points inside it, or else every part wholly inside it.
+    private void SelectInBox(Envelope box)
+    {
+        if (_boxForPoints && SelectedPart >= 0 && SelectedPart < _sketch.PartCount)
+        {
+            var part = _sketch.Part(SelectedPart);
+            var inside = new List<VertexRef>();
+            for (var r = 0; r < part.RingCount; r++)
+            {
+                var ring = part.Ring(r);
+                for (var i = 0; i < ring.Length; i++)
+                    if (box.Covers(ring[i])) inside.Add(new VertexRef(SelectedPart, r, i));
+            }
+            if (inside.Count > 0)
+            {
+                SelectedVertex = inside.Count == 1 ? inside[0] : null;
+                _points = inside.Count > 1 ? inside : new();
+                return;
+            }
+        }
+
+        var parts = new List<int>();
+        for (var p = 0; p < _sketch.PartCount; p++)
+            if (_sketch.Part(p).ToGeometry(Defaults.Factory) is { IsEmpty: false } g && box.Covers(g.EnvelopeInternal))
+                parts.Add(p);
+        SelectedVertex = null;
+        _points = new();
+        SelectedPart = parts.Count == 1 ? parts[0] : -1;
+        _parts = parts.Count > 1 ? parts : new();
     }
 
     public SketchOutcome Move(Coordinate at, Coordinate? place = null)
     {
         place ??= at;
-        if (_press is Press.None or Press.Pan || _pressAt is null) return SketchOutcome.None;
+        if (_press is Press.None || _pressAt is null) return SketchOutcome.None;
+
+        if (_press == Press.Box)
+        {
+            // The box follows the real mouse, not the snapped point.
+            if (!_dragging && at.Distance(_pressAt) <= _threshold) return SketchOutcome.None;
+            _dragging = true;
+            _boxTo = at.Copy();
+            return SketchOutcome.None;
+        }
 
         if (!_dragging)
         {
@@ -297,24 +386,44 @@ internal sealed class SketchSession
             case Press.Vertex:
                 _sketch = _sketch.Move(_pressRef, place);
                 return SketchOutcome.Preview;
-            case Press.MoveShape when SelectedPart >= 0 && _dragLast is not null:
-                _sketch = _sketch.MovePart(SelectedPart, place.X - _dragLast.X, place.Y - _dragLast.Y);
+            case Press.MoveShape when _dragLast is not null && MovedParts.Count > 0:
+                foreach (var p in MovedParts)
+                    _sketch = _sketch.MovePart(p, place.X - _dragLast.X, place.Y - _dragLast.Y);
                 _dragLast = place.Copy();
                 return SketchOutcome.Preview;
         }
         return SketchOutcome.None;
     }
 
+    /// <summary>The parts a Move moves: the box's several, or the one selected.</summary>
+    public IReadOnlyList<int> MovedParts => _parts.Count > 0 ? _parts : SelectedPart >= 0 ? new[] { SelectedPart } : System.Array.Empty<int>();
+
     public SketchOutcome LeftUp()
     {
         var press = _press;
         var dragging = _dragging;
+        var box = Box;
         _press = Press.None;
         _dragging = false;
         _pressAt = null;
+        _boxTo = null;
 
         switch (press)
         {
+            case Press.Box when dragging && box is not null:
+                SelectInBox(box);
+                return SketchOutcome.None;
+            case Press.Box when _boxOnBody:
+                // A click on the selected part's body: the part stays selected, its points do not.
+                SelectedVertex = null;
+                _points = new();
+                return SketchOutcome.None;
+            case Press.Box:
+                // A click on empty space: nothing selected.
+                SelectedPart = -1;
+                SelectedVertex = null;
+                ClearMany();
+                return SketchOutcome.None;
             case Press.Insert when !dragging:
                 // A click on "+": a point at the middle of that edge, selected.
                 _sketch = _sketch.Insert(_pressRef, MidpointOf(_pressRef));
@@ -373,6 +482,14 @@ internal sealed class SketchSession
     public SketchOutcome Escape()
     {
         Message = null;
+        if (_press == Press.Box)
+        {
+            // A box being dragged (or the mouse lost mid-box): drop it, keep the selection.
+            _press = Press.None;
+            _dragging = false;
+            _boxTo = null;
+            return SketchOutcome.None;
+        }
         if (_dragging && _beforeDrag is not null)
         {
             _sketch = _beforeDrag;
@@ -390,8 +507,13 @@ internal sealed class SketchSession
             Validate();
             return SketchOutcome.Preview;
         }
-        if (SelectedVertex is not null) SelectedVertex = null;
-        else SelectedPart = -1;
+        if (_points.Count > 0) _points = new();
+        else if (SelectedVertex is not null) SelectedVertex = null;
+        else
+        {
+            SelectedPart = -1;
+            _parts = new();
+        }
         return SketchOutcome.None;
     }
 
@@ -402,8 +524,61 @@ internal sealed class SketchSession
     public SketchOutcome Delete()
     {
         if (_drawPart >= 0 || _moving) return SketchOutcome.None;
+        if (_points.Count > 0) return DeletePoints();
         if (SelectedVertex is not null) return DeletePoint();
+        if (_parts.Count > 0) return DeleteShapes();
         return DeleteShape();
+    }
+
+    /// <summary>Removes the points a box selected, unless that would leave a line or ring too short.</summary>
+    public SketchOutcome DeletePoints()
+    {
+        Message = null;
+        if (_points.Count == 0 || _drawPart >= 0 || _moving) return SketchOutcome.None;
+        if (WhyNotDeletePoints() is { } reason)
+        {
+            Message = reason;
+            return SketchOutcome.None;
+        }
+        // Highest index first in each ring, so the indices still to remove stay valid.
+        foreach (var v in _points.OrderByDescending(v => v.Ring).ThenByDescending(v => v.Index))
+            _sketch = _sketch.Remove(v);
+        _points = new();
+        SelectedVertex = null;
+        Validate();
+        return Committed();
+    }
+
+    private string? WhyNotDeletePoints()
+    {
+        if (_points.Count == 0 || SelectedPart < 0) return null;
+        var part = _sketch.Part(SelectedPart);
+        foreach (var ring in _points.GroupBy(v => v.Ring))
+        {
+            var left = part.VertexCount(ring.Key) - ring.Count();
+            var reason = part.Kind switch
+            {
+                PartKind.Line when left < 2 => "A line needs at least 2 points. To remove it, delete the whole shape.",
+                PartKind.Polygon when left < 3 && ring.Key == 0 => "A polygon needs at least 3 points. To remove it, delete the whole shape.",
+                PartKind.Polygon when left < 3 => "A hole needs at least 3 points.",
+                _ => null,
+            };
+            if (reason is not null) return reason;
+        }
+        return null;
+    }
+
+    /// <summary>Removes the shapes a box selected.</summary>
+    public SketchOutcome DeleteShapes()
+    {
+        Message = null;
+        if (_parts.Count == 0 || _drawPart >= 0 || _moving) return SketchOutcome.None;
+        foreach (var p in _parts.OrderByDescending(p => p))
+            _sketch = _sketch.RemovePart(p);
+        _parts = new();
+        SelectedPart = -1;
+        SelectedVertex = null;
+        return Committed();
     }
 
     /// <summary>Removes the selected point, unless that would leave the part less than its kind.</summary>
@@ -453,10 +628,11 @@ internal sealed class SketchSession
     public SketchOutcome StartMove()
     {
         Message = null;
-        if (SelectedPart < 0 || _drawPart >= 0 || _moving) return SketchOutcome.None;
+        if (MovedParts.Count == 0 || _drawPart >= 0 || _moving) return SketchOutcome.None;
         _moving = true;
         _beforeMove = _sketch;
         SelectedVertex = null;
+        _points = new();
         return SketchOutcome.None;
     }
 
@@ -514,6 +690,7 @@ internal sealed class SketchSession
         _redo.Push(_committed);
         _sketch = _committed = _undo.Pop();
         SelectedVertex = null;
+        ClearMany();
         Validate();
         return SketchOutcome.Commit;
     }
@@ -526,6 +703,7 @@ internal sealed class SketchSession
         _undo.Push(_committed);
         _sketch = _committed = _redo.Pop();
         SelectedVertex = null;
+        ClearMany();
         Validate();
         return SketchOutcome.Commit;
     }
@@ -537,6 +715,8 @@ internal sealed class SketchSession
         SketchAction.Hole => StartHole(),
         SketchAction.DeleteShape => DeleteShape(),
         SketchAction.DeletePoint => DeletePoint(),
+        SketchAction.DeleteShapes => DeleteShapes(),
+        SketchAction.DeletePoints => DeletePoints(),
         SketchAction.Done => DoneMove(),
         SketchAction.Cancel => _moving ? CancelMove() : Escape(),
         SketchAction.Finish => Enter(),
@@ -566,7 +746,20 @@ internal sealed class SketchSession
             list.Add(new(SketchAction.Cancel, "Cancel", true));
             return list;
         }
-        if (_tool != SketchTool.Select || SelectedPart < 0) return list;
+        if (_tool != SketchTool.Select) return list;
+        if (_parts.Count > 0)
+        {
+            list.Add(new(SketchAction.Move, "Move", true));
+            list.Add(new(SketchAction.DeleteShapes, $"Delete {_parts.Count} shapes", true));
+            return list;
+        }
+        if (SelectedPart < 0) return list;
+        if (_points.Count > 0)
+        {
+            var reason = WhyNotDeletePoints();
+            list.Add(new(SketchAction.DeletePoints, $"Delete {_points.Count} points", reason is null, reason));
+            return list;
+        }
 
         if (SelectedVertex is { } v && Exists(_sketch, v))
         {
@@ -603,9 +796,11 @@ internal sealed class SketchSession
                 SketchTool.Line => "Click to start a line",
                 SketchTool.Polygon => "Click to start a polygon",
                 SketchTool.Hole => "Click inside the polygon to start the hole · Esc cancels",
+                _ when _parts.Count > 0 => $"{_parts.Count} shapes selected · Delete removes them · Move moves them · Esc deselects",
+                _ when _points.Count > 0 => $"{_points.Count} points selected · Delete removes them · Esc deselects",
                 _ when SelectedVertex is not null => "Delete removes this point · drag to move it · Esc deselects",
-                _ when SelectedPart >= 0 => "Drag a point to reshape · click or drag + to add a point · Move to move the whole shape",
-                _ => "Click a shape to select it · drag empty space to pan · wheel zooms",
+                _ when SelectedPart >= 0 => "Drag a point to reshape · click or drag + to add a point · drag a box to select points",
+                _ => "Click a shape to select it · drag a box to select several · right-drag pans · wheel zooms",
             };
         }
     }

@@ -506,6 +506,9 @@ from a survey of 15 map and vector editors:
 - A drag needs 6 px.
 - An action bar sits beside the selection, and a disabled action says why.
 - A status bar shows the next step and the coordinates.
+- A left drag on empty space draws a selection box (2026-11-12, the maintainer's choice; panning moved to
+  the right and middle button). With a shape selected it takes that shape's points, otherwise every
+  shape wholly inside it; several shapes move and delete together, several points delete together.
 
 All of it is in `SketchSession` and `SketchSessionTests`. The maintainer: "好很多了". The window writes the drawing
 back into the node's `WKT` pin, so the drawing is text in the `.vl`: saved with the patch, readable,
