@@ -24,7 +24,8 @@ namespace VL.NetTopologySuite;
 //                Done · Cancel, Done · Back one point · Cancel - disabled ones grey, their reason in
 //                the status bar when hovered
 //   status bar   left: what can be done now (SketchSession.HintText); right: the mouse position in
-//                the geometry's units, its SRID, the type and the point count
+//                the geometry's units (lon / lat on a geographic SRID), its CRS label (CrsHints),
+//                the type and the point count. On lon/lat the view draws x shrunk by cos(latitude)
 //
 // Pointer: a left drag on empty space pans (like every web map), as do right- and middle-drags; the
 // wheel zooms about the cursor; a right-click without a drag finishes drawing or deletes a vertex.
@@ -72,6 +73,7 @@ internal sealed class GeometryEditorLayer : ILayer
     private GeometryEditorNode? _target;
     private SketchView _view;
     private bool _fitted;
+    private int _fittedSrid;
     private bool _snap;
     private Vector2 _size = new(800, 600);
     private Vector2 _mouse;
@@ -132,11 +134,14 @@ internal sealed class GeometryEditorLayer : ILayer
 
         var target = _target;
         if (target is not null) _session.Sync(target.Sketch);
+        if (target is not null && target.Srid != _fittedSrid) _fitted = false; // degrees <-> metres changes the aspect
 
         if (!_fitted)
         {
             var g = target?.Geometry;
-            _view = SketchView.Fit(g is null || g.IsEmpty ? null : g.EnvelopeInternal, new Vector2(_size.X, _size.Y - (ToolbarHeight + StatusHeight) * _scaling));
+            var degrees = target is not null && CrsHints.UnitsOf(target.Srid) == CrsHints.Units.Degrees;
+            _view = SketchView.Fit(g is null || g.IsEmpty ? null : g.EnvelopeInternal, new Vector2(_size.X, _size.Y - (ToolbarHeight + StatusHeight) * _scaling), degrees);
+            _fittedSrid = target?.Srid ?? 0;
             _fitted = true;
         }
 
@@ -174,11 +179,13 @@ internal sealed class GeometryEditorLayer : ILayer
         var step = _view.GridStep(40 * _scaling);
         var decimals = Math.Clamp((int)Math.Ceiling(-Math.Log10(step)) + 1, 0, 8);
         var f = "F" + decimals.ToString(CultureInfo.InvariantCulture);
-        var srid = target.Geometry.SRID > 0 ? $"EPSG:{target.Geometry.SRID}" : "SRID unset";
+        var srid = CrsHints.Label(target.Srid);
+        var degrees = CrsHints.UnitsOf(target.Srid) == CrsHints.Units.Degrees;
         var s = _session.Sketch;
         var type = target.IsEditable ? s.ToGeometry().GeometryType.ToUpperInvariant() : target.Geometry.GeometryType.ToUpperInvariant();
         var points = target.IsEditable ? s.VertexCount : target.Geometry.NumPoints;
-        return $"x {at.X.ToString(f, CultureInfo.InvariantCulture)}  y {at.Y.ToString(f, CultureInfo.InvariantCulture)} · {srid} · {type} · {points} points";
+        var (xName, yName) = degrees ? ("lon", "lat") : ("x", "y");
+        return $"{xName} {at.X.ToString(f, CultureInfo.InvariantCulture)}  {yName} {at.Y.ToString(f, CultureInfo.InvariantCulture)} · {srid} · {type} · {points} points";
     }
 
     private void DrawGrid(SKCanvas canvas)
@@ -457,9 +464,10 @@ internal sealed class GeometryEditorLayer : ILayer
 
     // ---- what the mouse is over -------------------------------------------------------------
 
-    private double Tolerance => HitPixels * _scaling / _view.PixelsPerUnit;
+    // Along x, the axis with fewer pixels per unit on lon/lat, so a vertex is never harder to hit there.
+    private double Tolerance => HitPixels * _scaling / _view.PixelsPerUnitX;
 
-    private double DragThreshold => DragPixels * _scaling / _view.PixelsPerUnit;
+    private double DragThreshold => DragPixels * _scaling / _view.PixelsPerUnitX;
 
     private Coordinate MouseInGeometry => _view.ToGeometry(_mouse, _size);
 

@@ -558,9 +558,7 @@ What this cost, so it is not paid again:
 - The window needs no `vvvvc`-able document. The ladder is: tests (model, session, view) →
   `Test-VLPatch` → a probe in `scratch\` compiled by `vvvvc` → the GUI.
 
-**Coordinates are plain numbers.** The window does not know degrees from metres. CRS is the next
-chapter, and it belongs in a separate package (see ROADMAP, "CRS transformation"). The editor will
-follow it: units on the grid, and a lon/lat aspect.
+**The SRID pin labels the numbers (2026-11-12, step 1 of the SRID plan).** `GeometryEditor` has an`nSRID` input; the output carries it, and the window reads it through `CrsHints` (a short table of`ncommon EPSG codes, no CRS database): lon/lat is drawn with x shrunk by cos(latitude), so a square`nblock looks square, and the status bar says `EPSG:4326 · degrees` and `lon` / `lat`. A code not in the`ntable says `units unknown`, never a guess. Step 2: VL.PROJ, when installed, answers for every code`nthrough a service it registers (AssemblyInitializer), this package referencing nothing of ours.`nStep 3: a basemap in the window.
 
 ## Node documentation is a tooltip
 

@@ -106,7 +106,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="HJqBBUnCQrB2rZyXBSWdXy" Bounds="580,500,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; Coordinates are plain numbers here: on lon/lat data one unit is a degree.">
+          <Pad Id="HJqBBUnCQrB2rZyXBSWdXy" Bounds="580,500,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; SRID labels the numbers. 4326 is lon/lat: the window draws it at true proportions.">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
