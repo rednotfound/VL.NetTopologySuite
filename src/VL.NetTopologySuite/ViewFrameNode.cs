@@ -32,6 +32,11 @@ namespace VL.NetTopologySuite;
 // y-up (a map's); GeometryViewer negates y before drawing, and so does this, in one place.
 //
 // The arithmetic is ViewFrame (ViewFrame.cs), internal and tested; this class only holds the state.
+//
+// Drawn (2026-11-12): on a longitude/latitude SRID the viewer draws THIS geometry, x shrunk by
+// cos(latitude) as GeometryEditor's window does, and the label prints the real size in degrees.
+// The shrink is kept with the view and re-fitted only when it changes by more than 2%, so a shape
+// moving north does not make the frame twitch; the copy is cached per input reference.
 
 /// <summary>
 /// The frame, grid and size label a Geometry IOBox draws in. Used by the editor's viewer.
@@ -41,11 +46,14 @@ namespace VL.NetTopologySuite;
 public sealed class ViewFrameNode
 {
     Envelope? _view;
+    double _xScale = 1;
+    Geometry? _input, _drawn;
 
     /// <summary>
     /// Keeps the view while the geometry fits it, and lays out the grid and the label.
     /// </summary>
     /// <param name="geometry">The geometry being shown.</param>
+    /// <param name="drawn">The geometry to draw: on longitude and latitude, narrowed to its true proportions.</param>
     /// <param name="grid">The grid points inside the view, in Skia space.</param>
     /// <param name="dotSize">The size of a grid dot.</param>
     /// <param name="label">The geometry's width and height, and the grid step.</param>
@@ -56,6 +64,7 @@ public sealed class ViewFrameNode
     /// <param name="translation">Moves the view into the viewer's widget.</param>
     public void Update(
         Geometry? geometry,
+        out Geometry? drawn,
         out Spread<Vector2> grid,
         out float dotSize,
         out string label,
@@ -65,10 +74,25 @@ public sealed class ViewFrameNode
         out Vector2 scaling,
         out Vector2 translation)
     {
-        var shape = geometry is null || geometry.IsEmpty ? null : geometry.EnvelopeInternal;
+        var xScale = ViewFrame.XScaleOf(geometry);
+        if (Math.Abs(xScale - _xScale) > 0.02 * _xScale)
+        {
+            _xScale = xScale;
+            _view = null;
+            _input = null;
+        }
+        if (!ReferenceEquals(geometry, _input))
+        {
+            _input = geometry;
+            _drawn = geometry is null ? null : ViewFrame.Squeeze(geometry, _xScale);
+        }
+        drawn = _drawn;
+
+        var shape = drawn is null || drawn.IsEmpty ? null : drawn.EnvelopeInternal;
         _view = ViewFrame.Next(_view, shape);
         ViewFrame.Layout(_view, shape, out grid, out dotSize,
-            out label, out labelPosition, out labelSize, out textSize);
+            out label, out labelPosition, out labelSize, out textSize,
+            _xScale, ViewFrame.UnitOf(geometry?.SRID ?? 0));
         ViewFrame.ToWidget(_view, out scaling, out translation);
     }
 }

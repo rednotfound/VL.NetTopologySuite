@@ -68,7 +68,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="Jz6P9O3jjo26B1qctNA3HH" Comment="" Bounds="60,240,240,170" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="BgbRswjOIWxXo0SWfyeQA2" Bounds="340,300,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; A degree east is shorter than a degree north here. The window draws that; this box draws the plain numbers.">
+          <Pad Id="BgbRswjOIWxXo0SWfyeQA2" Bounds="340,300,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; A degree east is shorter than a degree north here, so this box and the window both narrow it: the block is square.">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
