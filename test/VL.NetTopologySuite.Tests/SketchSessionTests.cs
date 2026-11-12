@@ -86,15 +86,123 @@ public class SketchSessionTests
     }
 
     [Fact]
-    public void Pressing_empty_space_deselects_and_asks_the_window_to_pan()
+    public void A_click_on_empty_space_deselects()
     {
         var s = With(Square);
         Click(s, 1, 1);
-        s.LeftDown(C(9, 9), Tol);
-        Assert.True(s.WantsPan);
+        Assert.Equal(0, s.SelectedPart);
+        Click(s, 9, 9);
         Assert.Equal(-1, s.SelectedPart);
+    }
+
+    // ---- box selection (2026-11-12: "很多时候就是要框选来删除的") --------------------------------
+
+    private const string ThreeSquares = "MULTIPOLYGON (((0 0, 1 0, 1 1, 0 1, 0 0)), ((3 0, 4 0, 4 1, 3 1, 3 0)), ((6 0, 7 0, 7 1, 6 1, 6 0)))";
+
+    [Fact]
+    public void A_box_on_empty_space_selects_the_shapes_wholly_inside_it()
+    {
+        var s = With(ThreeSquares);
+        s.LeftDown(C(-1, -1), Tol);
+        s.Move(C(2, 2));
+        Assert.NotNull(s.Box);                       // drawn while dragging
+        s.Move(C(4.5, 2));
         s.LeftUp();
-        Assert.False(s.WantsPan);
+        Assert.Null(s.Box);
+        Assert.Equal(new[] { 0, 1 }, s.SelectedParts);
+        Assert.Equal(-1, s.SelectedPart);
+        Assert.Equal(ThreeSquares, s.Sketch.ToWKT()); // selecting changes nothing
+    }
+
+    [Fact]
+    public void A_shape_only_partly_inside_the_box_is_not_taken()
+    {
+        var s = With(ThreeSquares);
+        Drag(s, -1, -1, 3.5, 2);                     // the second square is half inside
+        Assert.Empty(s.SelectedParts);
+        Assert.Equal(0, s.SelectedPart);             // one shape caught: the plain selection
+    }
+
+    [Fact]
+    public void Delete_removes_every_boxed_shape_in_one_undo_step()
+    {
+        var s = With(ThreeSquares);
+        Drag(s, -1, -1, 4.5, 2);
+        Assert.Contains(s.Actions(), a => a.Action == SketchAction.DeleteShapes && a.Label == "Delete 2 shapes" && a.Enabled);
+        Assert.Equal(SketchOutcome.Commit, s.Delete());
+        Assert.Equal("MULTIPOLYGON (((6 0, 7 0, 7 1, 6 1, 6 0)))", s.Sketch.ToWKT()); // the container stays
+        Assert.Empty(s.SelectedParts);
+        s.Undo();
+        Assert.Equal(ThreeSquares, s.Sketch.ToWKT());
+    }
+
+    [Fact]
+    public void Move_moves_every_boxed_shape_together()
+    {
+        var s = With(ThreeSquares);
+        Drag(s, -1, -1, 4.5, 2);
+        s.Run(SketchAction.Move);
+        Drag(s, 9, 9, 9, 19);                        // anywhere: in move mode every drag moves
+        Assert.Equal(SketchOutcome.Commit, s.Run(SketchAction.Done));
+        Assert.Equal("MULTIPOLYGON (((0 10, 1 10, 1 11, 0 11, 0 10)), ((3 10, 4 10, 4 11, 3 11, 3 10)), ((6 0, 7 0, 7 1, 6 1, 6 0)))", s.Sketch.ToWKT());
+        Assert.Equal(new[] { 0, 1 }, s.SelectedParts); // still selected after the move
+    }
+
+    private const string Hexagon = "POLYGON ((0 0, 2 0, 3 1, 2 2, 0 2, -1 1, 0 0))";
+
+    [Fact]
+    public void With_a_shape_selected_the_box_takes_its_points_and_Delete_removes_them()
+    {
+        var s = With(Hexagon);
+        Click(s, 1, 1);
+        Drag(s, 1.5, -0.5, 3.5, 1.5);                // around (2 0) and (3 1), starting on the body
+        Assert.Equal(2, s.SelectedPoints.Count);
+        Assert.Equal(0, s.SelectedPart);
+        Assert.Equal(SketchOutcome.Commit, s.Delete());
+        Assert.Equal("POLYGON ((0 0, 2 2, 0 2, -1 1, 0 0))", s.Sketch.ToWKT());
+    }
+
+    [Fact]
+    public void Boxed_points_are_refused_when_too_few_would_be_left_and_the_reason_is_shown()
+    {
+        var s = With(Square);
+        Click(s, 1, 1);
+        Drag(s, 1.5, -1, 3, 3);                       // (2 0) and (2 2): a square would become a segment
+        var delete = Assert.Single(s.Actions());
+        Assert.Equal(SketchAction.DeletePoints, delete.Action);
+        Assert.False(delete.Enabled);
+        Assert.Contains("at least 3 points", delete.Reason);
+        Assert.Equal(SketchOutcome.None, s.Delete());
+        Assert.Equal(Square, s.Sketch.ToWKT());
+    }
+
+    [Fact]
+    public void A_box_that_catches_none_of_the_selected_shape_s_points_selects_shapes_instead()
+    {
+        var s = With(ThreeSquares);
+        Click(s, 0.5, 0.5);                           // the first square selected
+        Drag(s, 2.5, -1, 7.5, 2);                     // around the other two only
+        Assert.Equal(new[] { 1, 2 }, s.SelectedParts);
+    }
+
+    [Fact]
+    public void Esc_drops_the_box_selection()
+    {
+        var s = With(ThreeSquares);
+        Drag(s, -1, -1, 4.5, 2);
+        s.Escape();
+        Assert.Empty(s.SelectedParts);
+        Assert.Equal(-1, s.SelectedPart);
+    }
+
+    [Fact]
+    public void A_box_smaller_than_the_threshold_is_a_click()
+    {
+        var s = With(ThreeSquares);
+        Click(s, 0.5, 0.5);
+        Drag(s, 9, 9, 9.03, 9.03);
+        Assert.Equal(-1, s.SelectedPart);             // a click on empty space: deselected
+        Assert.Empty(s.SelectedParts);
     }
 
     // ---- "+" handles -------------------------------------------------------------------------

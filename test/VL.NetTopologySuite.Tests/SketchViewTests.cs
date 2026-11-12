@@ -73,4 +73,37 @@ public class SketchViewTests
     [InlineData(1, 40, 50)]
     public void The_grid_step_is_1_2_or_5_times_a_power_of_ten(double pixelsPerUnit, double minPixels, double expected)
         => Assert.Equal(expected, new SketchView(0, 0, pixelsPerUnit).GridStep(minPixels), 9);
+    [Fact]
+    public void On_lon_lat_a_square_block_is_drawn_square()
+    {
+        // 0.01 degrees of longitude at 52 N is 0.00616 degrees' worth of northward distance.
+        var lat = 52.0;
+        var k = System.Math.Cos(lat * System.Math.PI / 180);
+        var block = new Envelope(4.36, 4.36 + 0.01, lat, lat + 0.01 * k);
+        var v = SketchView.Fit(block, Window, degrees: true);
+        var a = v.ToPixels(new Coordinate(block.MinX, block.MinY), Window);
+        var b = v.ToPixels(new Coordinate(block.MaxX, block.MaxY), Window);
+        Assert.Equal(System.Math.Abs(b.X - a.X), System.Math.Abs(b.Y - a.Y), 1);
+    }
+
+    [Fact]
+    public void Metres_are_not_shrunk()
+        => Assert.Equal(1, SketchView.Fit(new Envelope(0, 10, 52, 62), Window).XScale);
+
+    [Fact]
+    public void Lon_lat_round_trips_and_pans_with_the_shrink()
+    {
+        var v = SketchView.Fit(new Envelope(4.3, 4.4, 52.0, 52.1), Window, degrees: true);
+        Assert.True(v.XScale < 0.7);
+        var c = v.ToGeometry(new Vector2(123, 456), Window);
+        var p = v.ToPixels(c, Window);
+        Assert.Equal(123, p.X, 3);
+        Assert.Equal(456, p.Y, 3);
+        var panned = v.Pan(new Vector2(50, 0));
+        Assert.Equal(p.X + 50, panned.ToPixels(c, Window).X, 3);
+    }
+
+    [Fact]
+    public void Near_a_pole_the_shrink_stops_at_a_twentieth()
+        => Assert.Equal(0.05, SketchView.XScaleAt(90), 9);
 }

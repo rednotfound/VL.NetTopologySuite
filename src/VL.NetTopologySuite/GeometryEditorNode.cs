@@ -64,6 +64,7 @@ public sealed class GeometryEditorNode : IDisposable
     private GeometrySketch _sketch = GeometrySketch.Empty;
     private Geometry _geometry = GeometrySketch.Empty.ToGeometry();
     private bool _editable = true;
+    private int _srid;
 
     /// <summary>Makes the editor node.</summary>
     public GeometryEditorNode(NodeContext nodeContext)
@@ -79,12 +80,20 @@ public sealed class GeometryEditorNode : IDisposable
     /// Outputs the geometry drawn in the editor window.
     /// </summary>
     /// <param name="wkt">The drawing as WKT. The editor window writes it; you may type it too.</param>
+    /// <param name="srid">The EPSG code the drawing's numbers are in, 0 for unset. On 4326 the window draws longitude and latitude at true proportions.</param>
     /// <param name="isEditable">False when the WKT holds something the window cannot edit, such as a polygon with holes.</param>
     /// <returns>The geometry.</returns>
-    public Geometry Update([Pin(Name = WktPinName)] string? wkt, out bool isEditable)
+    public Geometry Update([Pin(Name = WktPinName)] string? wkt, [Pin(Name = "SRID")] int srid, out bool isEditable)
     {
         lock (Gate)
         {
+            if (srid != _srid)
+            {
+                // A label only: the numbers stay, the output is rebuilt with the new SRID's factory.
+                _srid = srid;
+                _seenAny = false;
+                _written = null;
+            }
             if (!_seenAny || wkt != _seenWkt)
             {
                 _seenAny = true;
@@ -104,15 +113,19 @@ public sealed class GeometryEditorNode : IDisposable
         {
             _editable = true;
             _sketch = sketch;
-            _geometry = sketch.ToGeometry();
+            _geometry = sketch.ToGeometry(Factory);
         }
         else
         {
             _editable = false;
             _sketch = GeometrySketch.Empty;
-            _geometry = IONodes.FromWKT(wkt, null, out _);
+            _geometry = IONodes.FromWKT(wkt, Factory, out _);
         }
     }
+
+    private global::NetTopologySuite.Geometries.GeometryFactory Factory => Defaults.FactoryFor(_srid);
+
+    internal int Srid { get { lock (Gate) return _srid; } }
 
     internal bool IsEditable { get { lock (Gate) return _editable; } }
 
@@ -127,7 +140,7 @@ public sealed class GeometryEditorNode : IDisposable
         {
             if (!_editable) return;
             _sketch = sketch;
-            _geometry = sketch.ToGeometry();
+            _geometry = sketch.ToGeometry(Factory);
         }
     }
 
@@ -139,7 +152,7 @@ public sealed class GeometryEditorNode : IDisposable
         {
             if (!_editable) return;
             _sketch = sketch;
-            _geometry = sketch.ToGeometry();
+            _geometry = sketch.ToGeometry(Factory);
             wkt = sketch.ToWKT();
             if (wkt == _seenWkt) return;
             _written = wkt;

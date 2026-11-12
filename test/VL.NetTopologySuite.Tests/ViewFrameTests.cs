@@ -145,10 +145,47 @@ public class ViewFrameTests
     public void The_node_keeps_its_view_between_frames()
     {
         var node = new ViewFrameNode();
-        node.Update(GeometryNodes.Rectangle(new Coordinate(0, 0), 4, 2), out _, out _, out _, out _, out _, out _, out var s1, out var t1);
-        node.Update(GeometryNodes.Rectangle(new Coordinate(0, 0), 5, 2), out _, out _, out var label, out _, out _, out _, out var s2, out var t2);
+        node.Update(GeometryNodes.Rectangle(new Coordinate(0, 0), 4, 2), out _, out _, out _, out _, out _, out _, out _, out var s1, out var t1);
+        node.Update(GeometryNodes.Rectangle(new Coordinate(0, 0), 5, 2), out _, out _, out _, out var label, out _, out _, out _, out var s2, out var t2);
         Assert.Equal(s1, s2);                        // the same zoom and offset: the view stayed
         Assert.Equal(t1, t2);
         Assert.StartsWith("5 × 2", label);
+    }
+
+    [Fact]
+    public void On_lon_lat_a_square_block_is_drawn_square_and_labelled_in_degrees()
+    {
+        // The maintainer, 2026-11-12: the IOBox should draw what the editor window draws.
+        var k = System.Math.Cos(52.0 * System.Math.PI / 180);
+        var block = Defaults.FactoryFor(4326).ToGeometry(new Envelope(4.355, 4.365, 52.0, 52.0 + 0.01 * k));
+        var xScale = ViewFrame.XScaleOf(block);
+        var drawn = ViewFrame.Squeeze(block, xScale);
+        Assert.Equal(1, drawn.EnvelopeInternal.Width / drawn.EnvelopeInternal.Height, 3); // cos is taken at the centre, 52.003
+        Assert.Equal(0.01, block.EnvelopeInternal.Width, 9); // the input is not touched
+
+        var view = ViewFrame.Next(null, drawn.EnvelopeInternal);
+        ViewFrame.Layout(view, drawn.EnvelopeInternal, out _, out _, out var label, out _, out _, out _, xScale, ViewFrame.UnitOf(4326));
+        Assert.StartsWith("0.01° × 0.006157°", label);
+    }
+
+    [Fact]
+    public void Without_a_geographic_SRID_nothing_is_squeezed()
+    {
+        var g = Defaults.FactoryFor(28992).ToGeometry(new Envelope(0, 10, 52, 62));
+        Assert.Equal(1, ViewFrame.XScaleOf(g));
+        Assert.Same(g, ViewFrame.Squeeze(g, 1));
+        Assert.Equal(" m", ViewFrame.UnitOf(28992));
+        Assert.Equal("", ViewFrame.UnitOf(0));
+    }
+
+    [Fact]
+    public void The_lon_lat_grid_has_the_same_step_in_degrees_both_ways()
+    {
+        var k = 0.5;
+        var view = ViewFrame.Fit(new Envelope(0, 1, 0, 2)); // drawn space
+        ViewFrame.Layout(view, null, out var grid, out _, out _, out _, out _, out _, k, "°");
+        var xs = grid.Select(v => v.X).Distinct().OrderBy(x => x).ToArray();
+        var ys = grid.Select(v => v.Y).Distinct().OrderBy(y => y).ToArray();
+        Assert.Equal((ys[1] - ys[0]) * k, xs[1] - xs[0], 5);
     }
 }

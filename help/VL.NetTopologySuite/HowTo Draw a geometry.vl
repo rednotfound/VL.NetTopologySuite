@@ -59,7 +59,7 @@
           </Pad>
           <Pad Id="DHyiGLw2iL0qcrl26GW7SC" Comment="" Bounds="60,220,240,170" ShowValueBox="true" isIOBox="true" />
           <Pad Id="Nrhqw4nGiYaezA6MRs4PFc" Comment="Is Editable" Bounds="340,220,35,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="ALg5dN8BMgRUZg9d70I7gl" Bounds="580,220,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Click a shape, then drag its points or the + between them. Move, Hole and Delete appear beside it.">
+          <Pad Id="ALg5dN8BMgRUZg9d70I7gl" Bounds="580,220,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Click a shape, then drag its points or the +. Drag a box to select several shapes, or several points.">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -106,7 +106,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="HJqBBUnCQrB2rZyXBSWdXy" Bounds="580,500,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; Coordinates are plain numbers here: on lon/lat data one unit is a degree.">
+          <Pad Id="HJqBBUnCQrB2rZyXBSWdXy" Bounds="580,500,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; SRID labels the numbers. 4326 is lon/lat: the window draws it at true proportions.">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>

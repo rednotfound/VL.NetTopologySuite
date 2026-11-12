@@ -664,6 +664,7 @@
                 <Choice Kind="ProcessAppFlag" Name="ViewFrame" />
               </p:NodeReference>
               <Pin Id="Agm1B2XSz49vKfjWO8QfzH" Name="Geometry" Kind="InputPin" />
+              <Pin Id="UeMfKMqJRb3fzfGb8jwwcM" Name="Drawn" Kind="OutputPin" />
               <Pin Id="V3Hkwvx53rwfFAnZ5KJSvf" Name="Grid" Kind="OutputPin" />
               <Pin Id="VzWIS4LN4HRmdK47Vy1JTt" Name="Dot Size" Kind="OutputPin" />
               <Pin Id="MhxKty5toPsh2KVDeobyU6" Name="Label" Kind="OutputPin" />
@@ -842,8 +843,8 @@
           <Link Id="VpRcf9dOFe6uMiE0Sdp0le" Ids="L3TmLqEWFYJDQAXdDnCvwq,NM07dlTL4TVWyqMxWdy6Ez" IsHidden="true" />
           <Link Id="Cw3dhuQG8MD23RUrOjr7jt" Ids="P4yqvbjWp3avCkHzWDTGZv,MdtEWJG1RWN6G6GeAlzJpZ" IsHidden="true" />
           <Link Id="BdVGomtpBG3dxEBqXDucMX" Ids="SwbjZiRB4PFZVLgAAanrpY,I20cLcR8GvCtyLz3HVwgvp" IsHidden="true" />
-          <Link Id="KV2Q63ppl44Vahvn2LqDjX" Ids="NM07dlTL4TVWyqMxWdy6Ez,VmcezNwIZqLa3rHip2l71i" />
-          <Link Id="KEY4GmBNUUOEXPkpK6BHtF" Ids="NM07dlTL4TVWyqMxWdy6Ez,LePfHvSGdKLvKcCX3100ms" />
+          <Link Id="KV2Q63ppl44Vahvn2LqDjX" Ids="UeMfKMqJRb3fzfGb8jwwcM,VmcezNwIZqLa3rHip2l71i" />
+          <Link Id="KEY4GmBNUUOEXPkpK6BHtF" Ids="UeMfKMqJRb3fzfGb8jwwcM,LePfHvSGdKLvKcCX3100ms" />
           <Link Id="VHoRJfgPTw5p7iVgMhZn5A" Ids="UqAks85WrEMiW0ay49Uk4v,Ml7590EAoZGM5zl7Qkjxtn" />
           <Link Id="EtIX8vSVkHepN4Lpmaoc5y" Ids="V6LMUeAErqVyQwttqjSYKn,VIhf8kI2fY6lahgWl0eQau" />
           <Link Id="K3sZTA1ITGa9HUg3xixpsZ" Ids="JFPjo8SKfHUG6BrsnM4I45,PtexflDN4x3j8S6jBmmQA0" />

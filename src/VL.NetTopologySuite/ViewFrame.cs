@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Utilities;
 using Stride.Core.Mathematics;
 using VL.Lib.Collections;
 
@@ -82,19 +83,43 @@ internal static class ViewFrame
     // per character.
     internal static double LabelWidth(string label, double textSize) => label.Length * textSize * 0.55;
 
+    // On longitude/latitude (2026-11-12, the maintainer: "so ordinary people understand it") the
+    // IOBox draws what GeometryEditor's window draws: x shrunk by cos(latitude), so a square block
+    // looks square. Done to the geometry, not the transform, so strokes and markers stay round.
+    internal static double XScaleOf(Geometry? geometry)
+        => geometry is { IsEmpty: false } && CrsHints.UnitsOf(geometry.SRID) == CrsHints.Units.Degrees
+            ? SketchView.XScaleAt(geometry.EnvelopeInternal.Centre.Y)
+            : 1;
+
+    // A copy with x multiplied by xScale; the geometry itself when xScale is 1.
+    internal static Geometry Squeeze(Geometry geometry, double xScale)
+        => xScale == 1 ? geometry : AffineTransformation.ScaleInstance(xScale, 1).Transform(geometry);
+
+    // The unit the label prints after each number.
+    internal static string UnitOf(int srid) => CrsHints.UnitsOf(srid) switch
+    {
+        CrsHints.Units.Degrees => "°",
+        CrsHints.Units.Metres => " m",
+        _ => "",
+    };
+
     internal static string Format(double value)
         => value.ToString("G4", CultureInfo.InvariantCulture);
 
     internal static void Layout(
         Envelope view, Envelope? shape,
         out Spread<Vector2> grid, out float dotSize,
-        out string label, out Vector2 labelPosition, out Vector2 labelSize, out float textSize)
+        out string label, out Vector2 labelPosition, out Vector2 labelSize, out float textSize,
+        double xScale = 1, string unit = "")
     {
-        var step = Step(view.Width);
+        // view and shape are in DRAWN space (x already multiplied by xScale, see Squeeze); the grid
+        // and the label are in the geometry's own units, so x is divided back.
+        var step = xScale == 1 ? Step(view.Width) : Step(view.Height * Aspect);
+        var stepX = step * xScale;
 
         label = shape is null
-            ? $"grid {Format(step)}"
-            : $"{Format(shape.Width)} × {Format(shape.Height)} · grid {Format(step)}";
+            ? $"grid {Format(step)}{unit}"
+            : $"{Format(shape.Width / xScale)}{unit} × {Format(shape.Height)}{unit} · grid {Format(step)}{unit}";
 
         // The label sits in the bottom-left corner, inside the margin Headroom leaves below a
         // freshly fitted shape (a tenth of the height), in a box its own height and about its own
@@ -112,12 +137,12 @@ internal static class ViewFrame
 
         // Grid dots everywhere in the view except under the label.
         var builder = new SpreadBuilder<Vector2>();
-        var x0 = Math.Ceiling(view.MinX / step);
+        var x0 = Math.Ceiling(view.MinX / stepX);
         var y0 = Math.Ceiling(view.MinY / step);
-        for (var i = x0; i * step <= view.MaxX && i - x0 < 40; i++)
+        for (var i = x0; i * stepX <= view.MaxX && i - x0 < 40; i++)
             for (var j = y0; j * step <= view.MaxY && j - y0 < 40; j++)
             {
-                double x = i * step, y = j * step;
+                double x = i * stepX, y = j * step;
                 if (x >= left - margin && x <= right + margin && y <= top + margin)
                     continue;
                 builder.Add(new Vector2((float)x, (float)-y));

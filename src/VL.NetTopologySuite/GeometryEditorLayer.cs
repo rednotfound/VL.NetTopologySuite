@@ -24,9 +24,11 @@ namespace VL.NetTopologySuite;
 //                Done · Cancel, Done · Back one point · Cancel - disabled ones grey, their reason in
 //                the status bar when hovered
 //   status bar   left: what can be done now (SketchSession.HintText); right: the mouse position in
-//                the geometry's units, its SRID, the type and the point count
+//                the geometry's units (lon / lat on a geographic SRID), its CRS label (CrsHints),
+//                the type and the point count. On lon/lat the view draws x shrunk by cos(latitude)
 //
-// Pointer: a left drag on empty space pans (like every web map), as do right- and middle-drags; the
+// Pointer: a left drag on empty space draws a selection box (SketchSession, 2026-11-12); right- and
+// middle-drags pan; the
 // wheel zooms about the cursor; a right-click without a drag finishes drawing or deletes a vertex.
 // Every drag waits for DragPixels of movement, so a click never moves anything.
 //
@@ -72,6 +74,7 @@ internal sealed class GeometryEditorLayer : ILayer
     private GeometryEditorNode? _target;
     private SketchView _view;
     private bool _fitted;
+    private int _fittedSrid;
     private bool _snap;
     private Vector2 _size = new(800, 600);
     private Vector2 _mouse;
@@ -132,11 +135,14 @@ internal sealed class GeometryEditorLayer : ILayer
 
         var target = _target;
         if (target is not null) _session.Sync(target.Sketch);
+        if (target is not null && target.Srid != _fittedSrid) _fitted = false; // degrees <-> metres changes the aspect
 
         if (!_fitted)
         {
             var g = target?.Geometry;
-            _view = SketchView.Fit(g is null || g.IsEmpty ? null : g.EnvelopeInternal, new Vector2(_size.X, _size.Y - (ToolbarHeight + StatusHeight) * _scaling));
+            var degrees = target is not null && CrsHints.UnitsOf(target.Srid) == CrsHints.Units.Degrees;
+            _view = SketchView.Fit(g is null || g.IsEmpty ? null : g.EnvelopeInternal, new Vector2(_size.X, _size.Y - (ToolbarHeight + StatusHeight) * _scaling), degrees);
+            _fittedSrid = target?.Srid ?? 0;
             _fitted = true;
         }
 
@@ -174,11 +180,13 @@ internal sealed class GeometryEditorLayer : ILayer
         var step = _view.GridStep(40 * _scaling);
         var decimals = Math.Clamp((int)Math.Ceiling(-Math.Log10(step)) + 1, 0, 8);
         var f = "F" + decimals.ToString(CultureInfo.InvariantCulture);
-        var srid = target.Geometry.SRID > 0 ? $"EPSG:{target.Geometry.SRID}" : "SRID unset";
+        var srid = CrsHints.Label(target.Srid);
+        var degrees = CrsHints.UnitsOf(target.Srid) == CrsHints.Units.Degrees;
         var s = _session.Sketch;
         var type = target.IsEditable ? s.ToGeometry().GeometryType.ToUpperInvariant() : target.Geometry.GeometryType.ToUpperInvariant();
         var points = target.IsEditable ? s.VertexCount : target.Geometry.NumPoints;
-        return $"x {at.X.ToString(f, CultureInfo.InvariantCulture)}  y {at.Y.ToString(f, CultureInfo.InvariantCulture)} · {srid} · {type} · {points} points";
+        var (xName, yName) = degrees ? ("lon", "lat") : ("x", "y");
+        return $"{xName} {at.X.ToString(f, CultureInfo.InvariantCulture)}  {yName} {at.Y.ToString(f, CultureInfo.InvariantCulture)} · {srid} · {type} · {points} points";
     }
 
     private void DrawGrid(SKCanvas canvas)
@@ -207,10 +215,11 @@ internal sealed class GeometryEditorLayer : ILayer
     private void DrawSketch(SKCanvas canvas, GeometrySketch sketch)
     {
         // The part's old place while moving, dashed, for comparison.
-        if (_session.BeforeMove is { } before && _session.SelectedPart >= 0 && _session.SelectedPart < before.PartCount)
+        if (_session.BeforeMove is { } before)
+        foreach (var moved in _session.MovedParts.Where(m => m < before.PartCount))
         {
             using var ghost = new SKPaint { Color = Orange.WithAlpha(120), Style = SKPaintStyle.Stroke, StrokeWidth = 1.5f * _scaling, IsAntialias = true, PathEffect = SKPathEffect.CreateDash(new[] { 5 * _scaling, 4 * _scaling }, 0) };
-            using var path = PathOf(before.Part(_session.SelectedPart));
+            using var path = PathOf(before.Part(moved));
             canvas.DrawPath(path, ghost);
         }
 
@@ -218,7 +227,7 @@ internal sealed class GeometryEditorLayer : ILayer
         var drawing = _session.DrawingRing;
         for (var p = 0; p < sketch.PartCount; p++)
         {
-            var selected = p == _session.SelectedPart || drawing?.Part == p;
+            var selected = p == _session.SelectedPart || drawing?.Part == p || _session.SelectedParts.Contains(p);
             DrawPart(canvas, sketch.Part(p), selected, p == hoveredPart);
         }
 
@@ -232,6 +241,17 @@ internal sealed class GeometryEditorLayer : ILayer
             foreach (var (insert, at) in _session.Midpoints())
                 DrawPlus(canvas, _view.ToPixels(at, _size), hovered is { } h && h.Plus && h.Ref == insert);
             DrawVertices(canvas, sketch, handlesOf, hovered);
+        }
+
+        if (_session.Box is { } box)
+        {
+            var a = _view.ToPixels(new Coordinate(box.MinX, box.MaxY), _size);
+            var b = _view.ToPixels(new Coordinate(box.MaxX, box.MinY), _size);
+            var rect = new SKRect(a.X, a.Y, b.X, b.Y);
+            using var boxFill = new SKPaint { Color = LightBlue.WithAlpha(40), Style = SKPaintStyle.Fill };
+            using var boxLine = new SKPaint { Color = LightBlue, Style = SKPaintStyle.Stroke, StrokeWidth = _scaling, IsAntialias = true, PathEffect = SKPathEffect.CreateDash(new[] { 5 * _scaling, 3 * _scaling }, 0) };
+            canvas.DrawRect(rect, boxFill);
+            canvas.DrawRect(rect, boxLine);
         }
     }
 
@@ -299,9 +319,10 @@ internal sealed class GeometryEditorLayer : ILayer
                 var v = new VertexRef(partIndex, ring, i);
                 var c = _view.ToPixels(vertices[i], _size);
                 var isSelected = _session.SelectedVertex == v;
+                var isPicked = _session.SelectedPoints.Contains(v);
                 var isHovered = hovered is { } h && !h.Plus && h.Ref == v;
-                fill.Color = isSelected || isHovered ? Orange : SKColors.White;
-                var radius = r * (isSelected ? 1.5f : isHovered ? 1.25f : 1f);
+                fill.Color = isSelected || isPicked || isHovered ? Orange : SKColors.White;
+                var radius = r * (isSelected ? 1.5f : isPicked || isHovered ? 1.25f : 1f);
                 canvas.DrawCircle(c.X, c.Y, radius, fill);
                 canvas.DrawCircle(c.X, c.Y, radius, ringPaint);
                 if (isSelected)
@@ -382,7 +403,7 @@ internal sealed class GeometryEditorLayer : ILayer
             _actionBar.Add(new Button
             {
                 Label = a.Label, IsOn = _ => false, IsEnabled = _ => a.Enabled, Reason = _ => a.Reason,
-                Danger = action is SketchAction.DeleteShape or SketchAction.DeletePoint,
+                Danger = action is SketchAction.DeleteShape or SketchAction.DeletePoint or SketchAction.DeleteShapes or SketchAction.DeletePoints,
                 Press = l => l.Apply(l._session.Run(action)),
             });
         }
@@ -406,11 +427,11 @@ internal sealed class GeometryEditorLayer : ILayer
     private SKRect? AnchorBox()
     {
         var s = _session.Sketch;
-        var part = _session.DrawingRing?.Part ?? _session.SelectedPart;
-        if (part < 0 || part >= s.PartCount) return null;
-        var g = s.Part(part).ToGeometry(Defaults.Factory);
-        if (g is null || g.IsEmpty) return null;
-        var e = g.EnvelopeInternal;
+        var parts = _session.DrawingRing is { } d ? new[] { d.Part } : _session.MovedParts;
+        var e = new Envelope();
+        foreach (var part in parts.Where(p => p >= 0 && p < s.PartCount))
+            if (s.Part(part).ToGeometry(Defaults.Factory) is { IsEmpty: false } g) e.ExpandToInclude(g.EnvelopeInternal);
+        if (e.IsNull) return null;
         var a = _view.ToPixels(new Coordinate(e.MinX, e.MaxY), _size);
         var b = _view.ToPixels(new Coordinate(e.MaxX, e.MinY), _size);
         return new SKRect(a.X, a.Y, b.X, b.Y);
@@ -457,9 +478,10 @@ internal sealed class GeometryEditorLayer : ILayer
 
     // ---- what the mouse is over -------------------------------------------------------------
 
-    private double Tolerance => HitPixels * _scaling / _view.PixelsPerUnit;
+    // Along x, the axis with fewer pixels per unit on lon/lat, so a vertex is never harder to hit there.
+    private double Tolerance => HitPixels * _scaling / _view.PixelsPerUnitX;
 
-    private double DragThreshold => DragPixels * _scaling / _view.PixelsPerUnit;
+    private double DragThreshold => DragPixels * _scaling / _view.PixelsPerUnitX;
 
     private Coordinate MouseInGeometry => _view.ToGeometry(_mouse, _size);
 
@@ -491,7 +513,7 @@ internal sealed class GeometryEditorLayer : ILayer
     {
         if (_session.Tool != SketchTool.Select || _session.IsMoving || _leftDown || OverUi) return -1;
         var part = _session.Sketch.PartAt(MouseInGeometry, Tolerance);
-        return part == _session.SelectedPart ? -1 : part;
+        return part == _session.SelectedPart || _session.SelectedParts.Contains(part) ? -1 : part;
     }
 
     // The handle of the selected part under the mouse: a vertex, or a "+".
@@ -581,7 +603,7 @@ internal sealed class GeometryEditorLayer : ILayer
                 return true;
 
             case MouseMoveNotification:
-                if (_rightDown || _middleDown || (_leftDown && _session.WantsPan))
+                if (_rightDown || _middleDown)
                 {
                     if (!_panning && Vector2.Distance(_mouse, _pressAt) > DragPixels * _scaling) _panning = true;
                     if (_panning)

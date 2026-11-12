@@ -8,37 +8,51 @@ namespace VL.NetTopologySuite;
 // and back. A centre in geometry units and a scale in pixels per unit; the window's own size is
 // passed in each time, so a resized window keeps the same centre and scale. Tested by
 // SketchViewTests; the layer only holds one.
+//
+// XScale (2026-11-12, step 1 of the SRID plan): on longitude/latitude a degree east is shorter
+// than a degree north by cos(latitude), so x is drawn shrunk by that factor and a square block in
+// Delft looks square, not 1.6 times too wide. 1 for metres or unknown units. The layer sets it from
+// the SRID (CrsHints) and the centre's latitude when it fits the view; panning keeps it.
 
 /// <summary>Geometry coordinates to window pixels and back.</summary>
-internal readonly record struct SketchView(double CentreX, double CentreY, double PixelsPerUnit)
+internal readonly record struct SketchView(double CentreX, double CentreY, double PixelsPerUnit, double XScale = 1)
 {
     /// <summary>How much of the window a fitted shape fills.</summary>
     public const double Fill = 0.8;
 
     /// <summary>A view that shows <paramref name="envelope"/> filling <see cref="Fill"/> of the window.</summary>
-    public static SketchView Fit(Envelope? envelope, Vector2 windowSize)
+    public static SketchView Fit(Envelope? envelope, Vector2 windowSize, bool degrees = false)
     {
         var side = Math.Max(1.0, Math.Min(windowSize.X, windowSize.Y));
         if (envelope is null || envelope.IsNull)
             return new SketchView(0, 0, side * Fill / 2); // nothing yet: -1 .. 1 fills the window
 
-        var extent = Math.Max(envelope.Width, envelope.Height);
+        var xScale = degrees ? XScaleAt(envelope.Centre.Y) : 1;
+        var width = envelope.Width * xScale;
+        var extent = Math.Max(width, envelope.Height);
         if (extent <= 0) // one point, or several on one spot
-            return new SketchView(envelope.Centre.X, envelope.Centre.Y, side * Fill / 2);
+            return new SketchView(envelope.Centre.X, envelope.Centre.Y, side * Fill / 2, xScale);
 
         // Fit both sides: the window is not square.
         var scale = Math.Min(
-            windowSize.X * Fill / Math.Max(envelope.Width, extent * 1e-9),
+            windowSize.X * Fill / Math.Max(width, extent * 1e-9),
             windowSize.Y * Fill / Math.Max(envelope.Height, extent * 1e-9));
-        return new SketchView(envelope.Centre.X, envelope.Centre.Y, scale);
+        return new SketchView(envelope.Centre.X, envelope.Centre.Y, scale, xScale);
     }
 
+    /// <summary>cos(latitude), kept above 0.05 so a pole or a bad number cannot flatten the view.</summary>
+    public static double XScaleAt(double latitude)
+        => double.IsFinite(latitude) ? Math.Max(0.05, Math.Cos(Math.Clamp(latitude, -90, 90) * Math.PI / 180)) : 1;
+
+    /// <summary>Pixels per unit along x: smaller than along y on longitude/latitude.</summary>
+    public double PixelsPerUnitX => PixelsPerUnit * XScale;
+
     public Vector2 ToPixels(Coordinate c, Vector2 windowSize) => new(
-        (float)((c.X - CentreX) * PixelsPerUnit + windowSize.X / 2),
+        (float)((c.X - CentreX) * PixelsPerUnitX + windowSize.X / 2),
         (float)(-(c.Y - CentreY) * PixelsPerUnit + windowSize.Y / 2));
 
     public Coordinate ToGeometry(Vector2 pixels, Vector2 windowSize) => new(
-        CentreX + (pixels.X - windowSize.X / 2) / PixelsPerUnit,
+        CentreX + (pixels.X - windowSize.X / 2) / PixelsPerUnitX,
         CentreY - (pixels.Y - windowSize.Y / 2) / PixelsPerUnit);
 
     /// <summary>Zooms by <paramref name="factor"/>, keeping the point under <paramref name="pixels"/> still.</summary>
@@ -51,13 +65,13 @@ internal readonly record struct SketchView(double CentreX, double CentreY, doubl
         return new SketchView(
             CentreX + (anchor.X - CentreX) * k,
             CentreY + (anchor.Y - CentreY) * k,
-            scale);
+            scale, XScale);
     }
 
     /// <summary>Moves the view so the content follows a drag of <paramref name="deltaPixels"/>.</summary>
     public SketchView Pan(Vector2 deltaPixels) => this with
     {
-        CentreX = CentreX - deltaPixels.X / PixelsPerUnit,
+        CentreX = CentreX - deltaPixels.X / PixelsPerUnitX,
         CentreY = CentreY + deltaPixels.Y / PixelsPerUnit,
     };
 
