@@ -1,33 +1,39 @@
+using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 
 namespace VL.NetTopologySuite;
 
 // The editing rules of GeometryEditor's window as a state machine, in geometry coordinates, with no
 // Skia and no vvvv - so every gesture is a test (SketchSessionTests). GeometryEditorLayer turns
-// pixels into coordinates, calls this, and passes the outcome to the node: Preview shows a sketch
-// at once, Commit also writes it into the document (one undo step).
+// pixels into coordinates, calls this, draws what it says, and passes the outcome to the node:
+// Preview shows a sketch at once, Commit also writes it into the document.
 //
-// The tools (2026-11-11, the maintainer: every geometry the package has must be drawable, with a
-// small toolbar):
+// Redesigned 2026-11-12 after the maintainer found two things: adding a point to an edge was lost,
+// and "I wanted to add a point and moved the whole shape instead". The cause was one Select tool in
+// which the same left-drag meant select / move vertex / move shape / insert, depending on a few
+// pixels of hit-testing. A survey of 15 editors (Mapbox GL Draw, iD, QGIS, ArcGIS, Leaflet-Geoman,
+// OpenLayers, JOSM, Figma, Illustrator, Inkscape, Excalidraw, tldraw, draw.io, PowerPoint, Keynote;
+// the maintainer's design page, 2026-11-12) gave the rules, each used by several of them:
 //
-//   Select   drag a vertex; double-click an edge to insert one; drag a part's body to move it;
-//            right-click a vertex to delete it; Delete removes the selected part
-//   Point    every click adds a point part
-//   Line     click, click, ... ; double-click, Enter or right-click finishes; Esc cancels;
-//            Backspace takes the last vertex back
-//   Polygon  the same, and clicking the first vertex again closes it
-//   Hole     click inside a polygon, then draw the hole like a polygon
+//   1. Select first, then edit. Vertex handles exist only on the SELECTED part; an unselected part
+//      shows its outline and cannot be reshaped by a stray click.
+//   2. Adding a point is a "+" handle at the middle of each edge of the selected part: click it to
+//      add a point there, or drag it to pull the new point out.
+//   3. Moving a whole part is its own mode, entered with Move (or M) and left with Done / Enter
+//      or Cancel / Esc. Dragging a part's body otherwise does nothing.
+//   4. A drag starts only past a threshold (6 px from the layer; JOSM 5 px, Excalidraw 10 px), so
+//      a click never moves anything.
+//   5. Actions sit next to the selection (Actions()), and one that cannot be done stays, disabled,
+//      with the reason - a triangle's vertex cannot be deleted, rather than the triangle vanishing.
+//   6. One line of hint says what can be done now (HintText).
+//   7. Undo / Redo of every committed edit, in the window itself.
 //
-// A part being drawn is only previewed; it is committed when finished, so a whole line is one undo
-// step and a half-drawn polygon never reaches the document. A finished part that is not yet its
-// kind (a line of one vertex, a polygon or hole of two) is discarded with a hint.
+// Decisions the maintainer took on the design page: after finishing a line or polygon the tool goes
+// back to Select with the new part selected (Point stays, for placing many); dragging empty space
+// pans the view; dragging a selected part's body does NOT move it.
 //
-// Deleting a vertex that would leave a ring too small to be its kind takes the ring along (a hole
-// of two vertices, a polygon of two), or the part: otherwise the written type would change under
-// the user (a two-vertex polygon is written as a LINESTRING).
-//
-// In the drawing tools a click near an existing vertex lands exactly on it, so parts can share
-// corners. Grid snapping is the layer's (it knows the grid).
+// A part being drawn is only previewed and committed when finished, so one stroke is one undo step
+// and a half-drawn part never reaches the document. A move is previewed and committed on Done.
 
 /// <summary>A tool of the geometry editor window.</summary>
 internal enum SketchTool
@@ -36,6 +42,8 @@ internal enum SketchTool
     Point,
     Line,
     Polygon,
+
+    /// <summary>Drawing a hole in a polygon; entered from that polygon's Hole action, not the toolbar.</summary>
     Hole,
 }
 
@@ -52,22 +60,52 @@ internal enum SketchOutcome
     Commit,
 }
 
+/// <summary>An action the window offers next to the selection.</summary>
+internal enum SketchAction
+{
+    Move,
+    Hole,
+    DeleteShape,
+    DeletePoint,
+    Done,
+    Cancel,
+    Finish,
+    BackOnePoint,
+}
+
+/// <summary>An action as the floating bar shows it: enabled, or disabled with the reason.</summary>
+internal readonly record struct ActionState(SketchAction Action, string Label, bool Enabled, string? Reason = null);
+
 /// <summary>The editing state of the geometry editor window.</summary>
 internal sealed class SketchSession
 {
     private GeometrySketch _sketch = GeometrySketch.Empty;
     private SketchTool _tool = SketchTool.Select;
 
+    // History: the last state written into the document, and what came before and after it.
+    private GeometrySketch _committed = GeometrySketch.Empty;
+    private readonly Stack<GeometrySketch> _undo = new();
+    private readonly Stack<GeometrySketch> _redo = new();
+
     // A part or hole being drawn: which part, which ring, and the sketch before it began (Esc).
     private int _drawPart = -1;
     private int _drawRing = -1;
+    private int _holeTarget = -1;
     private GeometrySketch? _beforeDrawing;
 
-    // A drag in the Select tool: a vertex, or a whole part; and the sketch it started from.
-    private VertexRef? _dragVertex;
-    private int _dragPart = -1;
+    // A left press in Select: what it landed on, where, and whether it has become a drag.
+    private enum Press { None, Vertex, Insert, MoveShape, Pan }
+    private Press _press;
+    private VertexRef _pressRef;
+    private Coordinate? _pressAt;
     private Coordinate? _dragLast;
+    private double _threshold;
+    private bool _dragging;
     private GeometrySketch? _beforeDrag;
+
+    // Move mode: entered with the Move action, the part follows every drag until Done or Cancel.
+    private bool _moving;
+    private GeometrySketch? _beforeMove;
 
     public GeometrySketch Sketch => _sketch;
 
@@ -76,96 +114,223 @@ internal sealed class SketchSession
     /// <summary>The selected part, -1 when none.</summary>
     public int SelectedPart { get; private set; } = -1;
 
-    /// <summary>A short message for the status line, or null.</summary>
-    public string? Hint { get; private set; }
+    /// <summary>The selected vertex of the selected part, null when none.</summary>
+    public VertexRef? SelectedVertex { get; private set; }
 
-    /// <summary>True while a part is being drawn or something is being dragged.</summary>
-    public bool IsBusy => _drawPart >= 0 || _dragVertex is not null || _dragPart >= 0;
+    /// <summary>A one-off message (why something was refused), shown instead of the hint until the next input.</summary>
+    public string? Message { get; private set; }
 
     public bool IsDrawing => _drawPart >= 0;
+
+    public bool IsMoving => _moving;
+
+    /// <summary>True while a left press on empty space is held: the layer pans the view with it.</summary>
+    public bool WantsPan => _press == Press.Pan;
+
+    /// <summary>True while a part is being drawn, dragged or moved: the node's sketch is not taken then.</summary>
+    public bool IsBusy => _drawPart >= 0 || _moving || (_press is Press.Vertex or Press.Insert or Press.MoveShape && _dragging);
 
     /// <summary>The ring being drawn, for the rubber band; null when not drawing.</summary>
     public (int Part, int Ring)? DrawingRing => _drawPart >= 0 ? (_drawPart, _drawRing) : null;
 
-    /// <summary>The vertex being dragged, null when none.</summary>
-    public VertexRef? DraggedVertex => _dragVertex;
+    /// <summary>The sketch before the move began, for the ghost outline; null when not moving.</summary>
+    public GeometrySketch? BeforeMove => _moving ? _beforeMove : null;
+
+    public bool CanUndo => _undo.Count > 0 && !_moving && _drawPart < 0;
+
+    public bool CanRedo => _redo.Count > 0 && !_moving && _drawPart < 0;
 
     /// <summary>Takes the sketch the node holds now, unless a gesture is in progress.</summary>
     public void Sync(GeometrySketch sketch)
     {
         if (IsBusy || ReferenceEquals(sketch, _sketch)) return;
         _sketch = sketch;
-        if (SelectedPart >= sketch.PartCount) SelectedPart = -1;
+        if (!ReferenceEquals(sketch, _committed))
+        {
+            // Changed outside the window (typed WKT, Ctrl+Z in the patch): this window's history no
+            // longer describes the document, so it starts again from here.
+            _committed = sketch;
+            _undo.Clear();
+            _redo.Clear();
+            // ...and its selection pointed into the old content: index 0 of a different shape is
+            // not the shape the user picked.
+            SelectedPart = -1;
+            SelectedVertex = null;
+        }
+        Validate();
     }
 
-    /// <summary>Changes the tool, finishing a part being drawn.</summary>
+    private void Validate()
+    {
+        if (SelectedPart >= _sketch.PartCount) SelectedPart = -1;
+        if (SelectedVertex is { } v && (SelectedPart != v.Part || !Exists(_sketch, v))) SelectedVertex = null;
+    }
+
+    private static bool Exists(GeometrySketch s, VertexRef v)
+        => v.Part >= 0 && v.Part < s.PartCount
+        && v.Ring >= 0 && v.Ring < s.Part(v.Part).RingCount
+        && v.Index >= 0 && v.Index < s.Part(v.Part).VertexCount(v.Ring);
+
+    private SketchOutcome Committed()
+    {
+        if (ReferenceEquals(_sketch, _committed)) return SketchOutcome.None;
+        _undo.Push(_committed);
+        _redo.Clear();
+        _committed = _sketch;
+        return SketchOutcome.Commit;
+    }
+
+    /// <summary>Changes the tool, finishing a part being drawn and keeping a move.</summary>
     public SketchOutcome SetTool(SketchTool tool)
     {
-        var outcome = _drawPart >= 0 ? Finish() : SketchOutcome.None;
+        Message = null;
+        var outcome = SketchOutcome.None;
+        if (_drawPart >= 0) outcome = Finish();
+        if (_moving) outcome = Max(outcome, DoneMove());
         _tool = tool;
-        Hint = null;
+        if (tool != SketchTool.Select)
+        {
+            SelectedPart = -1;
+            SelectedVertex = null;
+        }
         return outcome;
     }
 
+    private static SketchOutcome Max(SketchOutcome a, SketchOutcome b) => (SketchOutcome)System.Math.Max((int)a, (int)b);
+
     // ---- pointer ---------------------------------------------------------------------------
 
-    // Two positions per press (2026-11-11, the maintainer: with Snap on nothing could be selected):
-    // AT is where the mouse really is, and decides what is hit; PLACE is where a new or moved vertex
-    // goes - the same point, or rounded to the grid when the window's Snap is on. Hit-testing with
-    // the snapped point missed everything a few pixels away from a grid dot.
+    // Two positions per press (2026-11-11): AT is where the mouse really is and decides what is hit;
+    // PLACE is where a new or moved vertex goes - the same point, or the grid point with Snap on.
+    // dragThreshold is in geometry units (the layer converts its 6 pixels); a press becomes a drag
+    // only once the mouse is that far from where it went down.
 
     /// <summary>A left press at <paramref name="at"/>; a vertex it creates goes to <paramref name="place"/> (default: at).</summary>
-    public SketchOutcome LeftDown(Coordinate at, double tolerance, Coordinate? place = null)
+    public SketchOutcome LeftDown(Coordinate at, double tolerance, Coordinate? place = null, double dragThreshold = -1)
     {
-        Hint = null;
+        Message = null;
         place ??= at;
+        _threshold = dragThreshold > 0 ? dragThreshold : tolerance * 0.66;
+        _pressAt = at.Copy();
+        _dragging = false;
+        _beforeDrag = _sketch;
+
         switch (_tool)
         {
             case SketchTool.Select:
                 return SelectDown(at, place, tolerance);
 
             case SketchTool.Point:
+                _press = Press.None;
                 _sketch = _sketch.AddPart(PartKind.Point, Snapped(at, place, tolerance));
                 SelectedPart = _sketch.PartCount - 1;
-                return SketchOutcome.Commit;
+                return Committed();
 
-            case SketchTool.Line:
-            case SketchTool.Polygon:
-            case SketchTool.Hole:
+            default:
+                _press = Press.None;
                 return DrawDown(at, place, tolerance);
         }
+    }
+
+    private SketchOutcome SelectDown(Coordinate at, Coordinate place, double tolerance)
+    {
+        if (_moving)
+        {
+            _press = Press.MoveShape;
+            _dragLast = place.Copy();
+            return SketchOutcome.None;
+        }
+
+        if (SelectedPart >= 0)
+        {
+            if (NearestVertexIn(SelectedPart, at, tolerance) is { } v)
+            {
+                _press = Press.Vertex;
+                _pressRef = v;
+                SelectedVertex = v;
+                return SketchOutcome.None;
+            }
+            if (NearestMidpointIn(SelectedPart, at, tolerance) is { } m)
+            {
+                _press = Press.Insert;
+                _pressRef = m;
+                return SketchOutcome.None;
+            }
+        }
+
+        var part = _sketch.PartAt(at, tolerance);
+        if (part >= 0)
+        {
+            // Selecting, or clicking the body of the selected part: never a move (rule 3).
+            if (part != SelectedPart) SelectedPart = part;
+            SelectedVertex = null;
+            _press = Press.None;
+            return SketchOutcome.None;
+        }
+
+        SelectedPart = -1;
+        SelectedVertex = null;
+        _press = Press.Pan;
         return SketchOutcome.None;
     }
 
-    public SketchOutcome Move(Coordinate at)
+    public SketchOutcome Move(Coordinate at, Coordinate? place = null)
     {
-        if (_dragVertex is { } v)
+        place ??= at;
+        if (_press is Press.None or Press.Pan || _pressAt is null) return SketchOutcome.None;
+
+        if (!_dragging)
         {
-            _sketch = _sketch.Move(v, at);
-            return SketchOutcome.Preview;
+            if (at.Distance(_pressAt) <= _threshold) return SketchOutcome.None;
+            _dragging = true;
+            if (_press == Press.Insert)
+            {
+                // Pulling a "+" out: the new vertex exists from here on and follows the mouse.
+                _sketch = _sketch.Insert(_pressRef, place);
+                SelectedVertex = _pressRef;
+                _press = Press.Vertex;
+            }
         }
-        if (_dragPart >= 0 && _dragLast is not null)
+
+        switch (_press)
         {
-            _sketch = _sketch.MovePart(_dragPart, at.X - _dragLast.X, at.Y - _dragLast.Y);
-            _dragLast = at.Copy();
-            return SketchOutcome.Preview;
+            case Press.Vertex:
+                _sketch = _sketch.Move(_pressRef, place);
+                return SketchOutcome.Preview;
+            case Press.MoveShape when SelectedPart >= 0 && _dragLast is not null:
+                _sketch = _sketch.MovePart(SelectedPart, place.X - _dragLast.X, place.Y - _dragLast.Y);
+                _dragLast = place.Copy();
+                return SketchOutcome.Preview;
         }
         return SketchOutcome.None;
     }
 
     public SketchOutcome LeftUp()
     {
-        if (_dragVertex is null && _dragPart < 0) return SketchOutcome.None;
-        var changed = !ReferenceEquals(_sketch, _beforeDrag);
-        _dragVertex = null;
-        _dragPart = -1;
-        _dragLast = null;
-        _beforeDrag = null;
-        return changed ? SketchOutcome.Commit : SketchOutcome.None;
+        var press = _press;
+        var dragging = _dragging;
+        _press = Press.None;
+        _dragging = false;
+        _pressAt = null;
+
+        switch (press)
+        {
+            case Press.Insert when !dragging:
+                // A click on "+": a point at the middle of that edge, selected.
+                _sketch = _sketch.Insert(_pressRef, MidpointOf(_pressRef));
+                SelectedVertex = _pressRef;
+                return Committed();
+            case Press.Vertex when dragging:
+                return Committed();
+            case Press.MoveShape:
+                return SketchOutcome.None; // previewed; the move is kept with Done
+        }
+        return SketchOutcome.None;
     }
 
     /// <summary>
-    /// A double-click: finishes a part being drawn; in Select, on an edge, inserts a vertex there.
+    /// A double-click: finishes a part being drawn; in Select, on an edge of the selected part,
+    /// inserts a vertex there (the expert route; the "+" handles are the main one).
     /// </summary>
     public SketchOutcome DoubleClick(Coordinate at, double tolerance, Coordinate? place = null)
     {
@@ -175,94 +340,352 @@ internal sealed class SketchSession
             DropTrailingDuplicates(tolerance);
             return Finish();
         }
-        // Inserting is a double-click, not a click (2026-11-11, the maintainer: "in Select I can
-        // still draw") - a single click on an edge selects, as everywhere else.
-        if (_tool != SketchTool.Select || IsBusy) return SketchOutcome.None;
-        if (_sketch.NearestVertex(at, tolerance) is not null) return SketchOutcome.None;
-        if (_sketch.NearestEdge(at, tolerance) is not { } e) return SketchOutcome.None;
+        if (_tool != SketchTool.Select || _moving || SelectedPart < 0) return SketchOutcome.None;
+        if (NearestVertexIn(SelectedPart, at, tolerance) is not null) return SketchOutcome.None;
+        if (NearestEdgeIn(SelectedPart, at, tolerance) is not { } e) return SketchOutcome.None;
         _sketch = _sketch.Insert(e, place ?? at);
-        SelectedPart = e.Part;
-        return SketchOutcome.Commit;
+        SelectedVertex = e;
+        return Committed();
     }
 
-    /// <summary>A right-click (without a drag): finishes drawing, or in Select deletes the vertex under it.</summary>
+    /// <summary>A right-click (without a drag): finishes drawing, or deletes the vertex of the selected part under it.</summary>
     public SketchOutcome RightClick(Coordinate at, double tolerance)
     {
+        Message = null;
         if (_drawPart >= 0) return Finish();
-        if (_tool != SketchTool.Select) return SketchOutcome.None;
-        if (_sketch.NearestVertex(at, tolerance) is not { } v) return SketchOutcome.None;
-        _sketch = RemoveVertexKeepingKind(_sketch, v);
-        if (SelectedPart >= _sketch.PartCount) SelectedPart = -1;
-        return SketchOutcome.Commit;
+        if (_tool != SketchTool.Select || _moving || SelectedPart < 0) return SketchOutcome.None;
+        if (NearestVertexIn(SelectedPart, at, tolerance) is not { } v) return SketchOutcome.None;
+        SelectedVertex = v;
+        return DeletePoint();
     }
 
-    // ---- keys ------------------------------------------------------------------------------
+    // ---- keys and actions -------------------------------------------------------------------
 
-    /// <summary>Enter: finishes drawing.</summary>
-    public SketchOutcome Enter() => _drawPart >= 0 ? Finish() : SketchOutcome.None;
+    /// <summary>Enter: finishes drawing, or keeps a move.</summary>
+    public SketchOutcome Enter()
+    {
+        if (_drawPart >= 0) return Finish();
+        if (_moving) return DoneMove();
+        return SketchOutcome.None;
+    }
 
-    /// <summary>Escape: drops the part being drawn, or the selection.</summary>
+    /// <summary>Escape: undoes the gesture in progress, or steps the selection back.</summary>
     public SketchOutcome Escape()
     {
-        Hint = null;
+        Message = null;
+        if (_dragging && _beforeDrag is not null)
+        {
+            _sketch = _beforeDrag;
+            _press = Press.None;
+            _dragging = false;
+            Validate();
+            return SketchOutcome.Preview;
+        }
+        if (_moving) return CancelMove();
         if (_drawPart >= 0)
         {
             _sketch = _beforeDrawing ?? _sketch;
             EndDrawing();
+            if (_tool == SketchTool.Hole) _tool = SketchTool.Select;
+            Validate();
             return SketchOutcome.Preview;
         }
-        SelectedPart = -1;
+        if (SelectedVertex is not null) SelectedVertex = null;
+        else SelectedPart = -1;
         return SketchOutcome.None;
     }
 
-    /// <summary>Backspace: takes the last vertex of the part being drawn back.</summary>
-    public SketchOutcome Backspace()
-    {
-        if (_drawPart >= 0)
-        {
-            var count = _sketch.Part(_drawPart).VertexCount(_drawRing);
-            if (count <= 1) return Escape();
-            _sketch = _sketch.RemoveLast(_drawPart, _drawRing);
-            return SketchOutcome.Preview;
-        }
-        return Delete();
-    }
+    /// <summary>Backspace: takes the last drawn point back while drawing, otherwise deletes like Delete.</summary>
+    public SketchOutcome Backspace() => _drawPart >= 0 ? BackOnePoint() : Delete();
 
-    /// <summary>Delete: removes the selected part.</summary>
+    /// <summary>Delete: removes the selected point, or the selected part when no point is selected.</summary>
     public SketchOutcome Delete()
     {
-        if (_drawPart >= 0 || SelectedPart < 0) return SketchOutcome.None;
+        if (_drawPart >= 0 || _moving) return SketchOutcome.None;
+        if (SelectedVertex is not null) return DeletePoint();
+        return DeleteShape();
+    }
+
+    /// <summary>Removes the selected point, unless that would leave the part less than its kind.</summary>
+    public SketchOutcome DeletePoint()
+    {
+        Message = null;
+        if (SelectedVertex is not { } v || !Exists(_sketch, v)) return SketchOutcome.None;
+        if (WhyNotDeletePoint(v) is { } reason)
+        {
+            Message = reason;
+            return SketchOutcome.None;
+        }
+        _sketch = _sketch.Remove(v); // a point part's only vertex takes the part along
+        SelectedVertex = null;
+        Validate();
+        return Committed();
+    }
+
+    // Refused, not "helpfully" turned into deleting the whole part (the 2026-11-11 rule did that):
+    // a beginner who wants one point gone should not see the whole shape vanish. The reason says
+    // what to do instead.
+    private string? WhyNotDeletePoint(VertexRef v)
+    {
+        var part = _sketch.Part(v.Part);
+        var count = part.VertexCount(v.Ring);
+        return part.Kind switch
+        {
+            PartKind.Line when count <= 2 => "A line needs at least 2 points. To remove it, delete the whole shape.",
+            PartKind.Polygon when count <= 3 && v.Ring == 0 => "A polygon needs at least 3 points. To remove it, delete the whole shape.",
+            PartKind.Polygon when count <= 3 => "A hole needs at least 3 points.",
+            _ => null,
+        };
+    }
+
+    /// <summary>Removes the selected part.</summary>
+    public SketchOutcome DeleteShape()
+    {
+        Message = null;
+        if (SelectedPart < 0 || _drawPart >= 0 || _moving) return SketchOutcome.None;
         _sketch = _sketch.RemovePart(SelectedPart);
         SelectedPart = -1;
+        SelectedVertex = null;
+        return Committed();
+    }
+
+    /// <summary>Enters move mode for the selected part.</summary>
+    public SketchOutcome StartMove()
+    {
+        Message = null;
+        if (SelectedPart < 0 || _drawPart >= 0 || _moving) return SketchOutcome.None;
+        _moving = true;
+        _beforeMove = _sketch;
+        SelectedVertex = null;
+        return SketchOutcome.None;
+    }
+
+    /// <summary>Keeps the move and leaves move mode.</summary>
+    public SketchOutcome DoneMove()
+    {
+        if (!_moving) return SketchOutcome.None;
+        _moving = false;
+        _beforeMove = null;
+        _press = Press.None;
+        _dragging = false;
+        return Committed();
+    }
+
+    /// <summary>Puts the part back where it was and leaves move mode.</summary>
+    public SketchOutcome CancelMove()
+    {
+        if (!_moving) return SketchOutcome.None;
+        _sketch = _beforeMove ?? _sketch;
+        _moving = false;
+        _beforeMove = null;
+        _press = Press.None;
+        _dragging = false;
+        return SketchOutcome.Preview;
+    }
+
+    /// <summary>Starts drawing a hole in the selected polygon.</summary>
+    public SketchOutcome StartHole()
+    {
+        Message = null;
+        if (SelectedPart < 0 || _sketch.Part(SelectedPart).Kind != PartKind.Polygon || _drawPart >= 0 || _moving) return SketchOutcome.None;
+        _holeTarget = SelectedPart;
+        _tool = SketchTool.Hole;
+        SelectedVertex = null;
+        return SketchOutcome.None;
+    }
+
+    /// <summary>Takes the last drawn point back (the Back button while drawing).</summary>
+    public SketchOutcome BackOnePoint()
+    {
+        if (_drawPart < 0) return SketchOutcome.None;
+        var count = _sketch.Part(_drawPart).VertexCount(_drawRing);
+        if (count <= 1) return Escape();
+        _sketch = _sketch.RemoveLast(_drawPart, _drawRing);
+        return SketchOutcome.Preview;
+    }
+
+    /// <summary>Undoes the last committed edit. While drawing it takes the last point back.</summary>
+    public SketchOutcome Undo()
+    {
+        Message = null;
+        if (_drawPart >= 0) return BackOnePoint();
+        if (_moving) return CancelMove();
+        if (_undo.Count == 0) return SketchOutcome.None;
+        _redo.Push(_committed);
+        _sketch = _committed = _undo.Pop();
+        SelectedVertex = null;
+        Validate();
         return SketchOutcome.Commit;
     }
 
-    // ---- the tools -------------------------------------------------------------------------
-
-    // Select never adds geometry: a press picks a vertex to drag, or a shape to select and drag.
-    private SketchOutcome SelectDown(Coordinate at, Coordinate place, double tolerance)
+    /// <summary>Redoes the last undone edit.</summary>
+    public SketchOutcome Redo()
     {
-        _beforeDrag = _sketch;
-        if (_sketch.NearestVertex(at, tolerance) is { } v)
-        {
-            _dragVertex = v;
-            SelectedPart = v.Part;
-            return SketchOutcome.None;
-        }
-        var part = _sketch.PartAt(at, tolerance);
-        SelectedPart = part;
-        if (part >= 0)
-        {
-            _dragPart = part;
-            // Deltas are taken between PLACED positions, so a shape dragged with Snap moves in grid steps.
-            _dragLast = place.Copy();
-        }
-        else
-        {
-            _beforeDrag = null;
-        }
-        return SketchOutcome.None;
+        Message = null;
+        if (_drawPart >= 0 || _moving || _redo.Count == 0) return SketchOutcome.None;
+        _undo.Push(_committed);
+        _sketch = _committed = _redo.Pop();
+        SelectedVertex = null;
+        Validate();
+        return SketchOutcome.Commit;
     }
+
+    /// <summary>Runs an action of the floating bar.</summary>
+    public SketchOutcome Run(SketchAction action) => action switch
+    {
+        SketchAction.Move => StartMove(),
+        SketchAction.Hole => StartHole(),
+        SketchAction.DeleteShape => DeleteShape(),
+        SketchAction.DeletePoint => DeletePoint(),
+        SketchAction.Done => DoneMove(),
+        SketchAction.Cancel => _moving ? CancelMove() : Escape(),
+        SketchAction.Finish => Enter(),
+        SketchAction.BackOnePoint => BackOnePoint(),
+        _ => SketchOutcome.None,
+    };
+
+    // ---- what the window shows --------------------------------------------------------------
+
+    /// <summary>The actions to offer next to the selection now, in order.</summary>
+    public IReadOnlyList<ActionState> Actions()
+    {
+        var list = new List<ActionState>();
+        if (_drawPart >= 0)
+        {
+            var part = _sketch.Part(_drawPart);
+            var count = part.VertexCount(_drawRing);
+            var needed = part.Kind == PartKind.Line ? 2 : 3;
+            list.Add(new(SketchAction.Finish, "Done", count >= needed, count >= needed ? null : $"Needs at least {needed} points."));
+            list.Add(new(SketchAction.BackOnePoint, "Back one point", count > 1));
+            list.Add(new(SketchAction.Cancel, "Cancel", true));
+            return list;
+        }
+        if (_moving)
+        {
+            list.Add(new(SketchAction.Done, "Done", true));
+            list.Add(new(SketchAction.Cancel, "Cancel", true));
+            return list;
+        }
+        if (_tool != SketchTool.Select || SelectedPart < 0) return list;
+
+        if (SelectedVertex is { } v && Exists(_sketch, v))
+        {
+            var reason = WhyNotDeletePoint(v);
+            list.Add(new(SketchAction.DeletePoint, "Delete point", reason is null, reason));
+            return list;
+        }
+        list.Add(new(SketchAction.Move, "Move", true));
+        if (_sketch.Part(SelectedPart).Kind == PartKind.Polygon) list.Add(new(SketchAction.Hole, "Hole", true));
+        list.Add(new(SketchAction.DeleteShape, "Delete", true));
+        return list;
+    }
+
+    /// <summary>One line: what can be done now.</summary>
+    public string HintText
+    {
+        get
+        {
+            if (Message is not null) return Message;
+            if (_moving) return "Drag to move the whole shape · Enter or Done keeps it · Esc puts it back";
+            if (_drawPart >= 0)
+            {
+                var part = _sketch.Part(_drawPart);
+                var count = part.VertexCount(_drawRing);
+                if (part.Kind == PartKind.Line)
+                    return count < 2 ? "Click to add the next point · Esc cancels"
+                                     : "Click to add points · double-click or Enter finishes · Backspace takes a point back · Esc cancels";
+                return count < 3 ? "Click to add the next point · Esc cancels"
+                                 : "Click the first point or press Enter to close · Backspace takes a point back · Esc cancels";
+            }
+            return _tool switch
+            {
+                SketchTool.Point => "Click to place a point · V to select",
+                SketchTool.Line => "Click to start a line",
+                SketchTool.Polygon => "Click to start a polygon",
+                SketchTool.Hole => "Click inside the polygon to start the hole · Esc cancels",
+                _ when SelectedVertex is not null => "Delete removes this point · drag to move it · Esc deselects",
+                _ when SelectedPart >= 0 => "Drag a point to reshape · click or drag + to add a point · Move to move the whole shape",
+                _ => "Click a shape to select it · drag empty space to pan · wheel zooms",
+            };
+        }
+    }
+
+    /// <summary>The "+" handles of the selected part: where each sits, and the vertex it inserts.</summary>
+    public IEnumerable<(VertexRef Insert, Coordinate At)> Midpoints()
+    {
+        if (SelectedPart < 0 || _drawPart >= 0 || _moving || _tool != SketchTool.Select) yield break;
+        foreach (var insert in EdgesOf(SelectedPart))
+            yield return (insert, MidpointOf(insert));
+    }
+
+    // ---- geometry helpers -------------------------------------------------------------------
+
+    // Each edge of a part, as the VertexRef a vertex inserted on it would get (its end vertex's index;
+    // the closing edge of a polygon ring has index = vertex count).
+    private IEnumerable<VertexRef> EdgesOf(int partIndex)
+    {
+        var part = _sketch.Part(partIndex);
+        if (part.Kind == PartKind.Point) yield break;
+        for (var r = 0; r < part.RingCount; r++)
+        {
+            var n = part.VertexCount(r);
+            if (n < 2) continue;
+            var edges = part.Kind == PartKind.Polygon && n >= 3 ? n : n - 1;
+            for (var i = 1; i <= edges; i++) yield return new VertexRef(partIndex, r, i);
+        }
+    }
+
+    private Coordinate MidpointOf(VertexRef insert)
+    {
+        var ring = _sketch.Part(insert.Part).Ring(insert.Ring);
+        var a = ring[insert.Index - 1];
+        var b = ring[insert.Index % ring.Length];
+        return new Coordinate((a.X + b.X) / 2, (a.Y + b.Y) / 2);
+    }
+
+    private VertexRef? NearestVertexIn(int partIndex, Coordinate at, double tolerance)
+    {
+        VertexRef? best = null;
+        var bestDistance = tolerance;
+        var part = _sketch.Part(partIndex);
+        for (var r = 0; r < part.RingCount; r++)
+        {
+            var ring = part.Ring(r);
+            for (var i = 0; i < ring.Length; i++)
+            {
+                var d = ring[i].Distance(at);
+                if (d <= bestDistance) { best = new VertexRef(partIndex, r, i); bestDistance = d; }
+            }
+        }
+        return best;
+    }
+
+    private VertexRef? NearestMidpointIn(int partIndex, Coordinate at, double tolerance)
+    {
+        VertexRef? best = null;
+        var bestDistance = tolerance;
+        foreach (var e in EdgesOf(partIndex))
+        {
+            var d = MidpointOf(e).Distance(at);
+            if (d <= bestDistance) { best = e; bestDistance = d; }
+        }
+        return best;
+    }
+
+    private VertexRef? NearestEdgeIn(int partIndex, Coordinate at, double tolerance)
+    {
+        VertexRef? best = null;
+        var bestDistance = tolerance;
+        foreach (var e in EdgesOf(partIndex))
+        {
+            var ring = _sketch.Part(e.Part).Ring(e.Ring);
+            var d = new LineSegment(ring[e.Index - 1], ring[e.Index % ring.Length]).Distance(at);
+            if (d <= bestDistance) { best = e; bestDistance = d; }
+        }
+        return best;
+    }
+
+    // ---- drawing ----------------------------------------------------------------------------
 
     private SketchOutcome DrawDown(Coordinate at, Coordinate place, double tolerance)
     {
@@ -271,10 +694,12 @@ internal sealed class SketchSession
             var start = Snapped(at, place, tolerance);
             if (_tool == SketchTool.Hole)
             {
-                var polygon = _sketch.PolygonAt(at);
-                if (polygon < 0)
+                var polygon = _holeTarget >= 0 && _holeTarget < _sketch.PartCount ? _holeTarget : _sketch.PolygonAt(at);
+                var inside = polygon >= 0 && _sketch.Part(polygon).ToGeometry(Defaults.Factory) is Polygon p
+                             && p.Contains(Defaults.Factory.CreatePoint(at.Copy()));
+                if (!inside)
                 {
-                    Hint = "Click inside a polygon to start a hole.";
+                    Message = "Click inside the polygon to start the hole.";
                     return SketchOutcome.None;
                 }
                 _beforeDrawing = _sketch;
@@ -308,26 +733,32 @@ internal sealed class SketchSession
         var part = _sketch.Part(_drawPart);
         var count = part.VertexCount(_drawRing);
         var needed = part.Kind == PartKind.Line ? 2 : 3;
+        var backToSelect = _tool is SketchTool.Line or SketchTool.Polygon or SketchTool.Hole;
         if (count < needed)
         {
-            Hint = part.Kind == PartKind.Line
+            Message = part.Kind == PartKind.Line
                 ? "A line needs 2 points - discarded."
                 : _drawRing > 0 ? "A hole needs 3 points - discarded." : "A polygon needs 3 points - discarded.";
             _sketch = _beforeDrawing ?? _sketch;
             EndDrawing();
-            if (SelectedPart >= _sketch.PartCount) SelectedPart = -1;
+            if (_tool == SketchTool.Hole) _tool = SketchTool.Select;
+            Validate();
             return SketchOutcome.Preview;
         }
         var finished = _drawPart;
         EndDrawing();
+        // The maintainer's choice: back to Select with the new part selected, ready to adjust.
+        if (backToSelect) _tool = SketchTool.Select;
         SelectedPart = finished;
-        return SketchOutcome.Commit;
+        SelectedVertex = null;
+        return Committed();
     }
 
     private void EndDrawing()
     {
         _drawPart = -1;
         _drawRing = -1;
+        _holeTarget = -1;
         _beforeDrawing = null;
     }
 
@@ -345,15 +776,4 @@ internal sealed class SketchSession
     // at the placed position (the grid point when Snap is on).
     private Coordinate Snapped(Coordinate at, Coordinate place, double tolerance)
         => _sketch.NearestVertex(at, tolerance) is { } v ? _sketch[v] : place.Copy();
-
-    internal static GeometrySketch RemoveVertexKeepingKind(GeometrySketch sketch, VertexRef v)
-    {
-        var part = sketch.Part(v.Part);
-        var count = part.VertexCount(v.Ring);
-        var minimum = part.Kind switch { PartKind.Point => 1, PartKind.Line => 2, _ => 3 };
-        // Removing would leave the ring below its kind: the ring (a hole) or the part goes instead.
-        return count - 1 < minimum && count - 1 > 0
-            ? sketch.RemoveRing(v.Part, v.Ring)
-            : sketch.Remove(v);
-    }
 }

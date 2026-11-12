@@ -48,8 +48,21 @@ public class NodeDocsTests
         Assert.True(File.Exists(xml), $"no XML documentation next to {assembly.Location}");
 
         var exported = assembly.GetExportedTypes().ToDictionary(t => t.FullName!.Replace('+', '.'));
+        var members = XDocument.Load(xml).Descendants("member").ToList();
 
-        foreach (var member in XDocument.Load(xml).Descendants("member"))
+        // Presence, not only form (2026-11-12): a // comment pasted between "/// <summary>" and its
+        // text made the compiler drop GeometryEditor's whole doc comment as badly formed XML, so the
+        // node had NO tooltip summary for a day - and the checks below, which only look at what is
+        // there, passed. Every exported type must carry a summary.
+        var summarised = members
+            .Where(m => m.Element("summary") is { } s && s.Value.Trim().Length > 0)
+            .Select(m => (string)m.Attribute("name")!)
+            .ToHashSet();
+        foreach (var name in exported.Keys)
+            if (!summarised.Contains("T:" + name))
+                yield return $"T:{name}: no summary - the tooltip is empty (a broken /// block is dropped whole)";
+
+        foreach (var member in members)
         {
             var id = (string)member.Attribute("name")!;
             if (!IsPublic(id, exported))
