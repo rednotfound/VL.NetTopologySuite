@@ -561,7 +561,11 @@ What this cost, so it is not paid again:
 - The window needs no `vvvvc`-able document. The ladder is: tests (model, session, view) →
   `Test-VLPatch` → a probe in `scratch\` compiled by `vvvvc` → the GUI.
 
-**The SRID pin labels the numbers (2026-11-12, step 1 of the SRID plan).** `GeometryEditor` has an`nSRID` input; the output carries it, and the window reads it through `CrsHints` (a short table of`ncommon EPSG codes, no CRS database): lon/lat is drawn with x shrunk by cos(latitude), so a square`nblock looks square, and the status bar says `EPSG:4326 · degrees` and `lon` / `lat`. A code not in the`ntable says `units unknown`, never a guess. Step 2: VL.PROJ, when installed, answers for every code`nthrough a service it registers (AssemblyInitializer), this package referencing nothing of ours.`nStep 3: a basemap in the window.
+**The SRID pin labels the numbers (2026-11-12, step 1 of the SRID plan).** `GeometryEditor` has an`nSRID` input; the output carries it, and the window reads it through `CrsHints` (a short table of`ncommon EPSG codes, no CRS database): lon/lat is drawn with x shrunk by cos(latitude), so a square`nblock looks square, and the status bar says `EPSG:4326 · degrees` and `lon` / `lat`. A code not in the`ntable says `units unknown`, never a guess. Step 2: VL.PROJ, when installed, answers for every code`nthrough a service it registers. **Done 2026-11-12:** `ICrsCatalog` (hidden smell) is defined here,
+VL.PROJ's AssemblyInitializer registers PROJ's catalogue in `AppHost.Global`'s services (global, because
+the window and IOBox run in the HDE's own app host), and `CrsHints` asks it first and caches each answer.
+This package still references nothing of ours. Seen in vvvv: SRID 2263 (not in the table) read
+`EPSG:2263 NAD83 / New York Long Island (ftUS) · US survey foot` with a VL.PROJ patch open in another tab.`nStep 3: a basemap in the window.
 
 ## Node documentation is a tooltip
 

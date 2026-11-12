@@ -1,20 +1,45 @@
+using System;
+using System.Collections.Concurrent;
+using VL.Core;
+
 namespace VL.NetTopologySuite;
 
-// What GeometryEditor's window needs to know about an SRID to draw it honestly: are its numbers
-// degrees of longitude/latitude (then x is drawn shrunk by cos(latitude), so shapes have their true
-// proportions) or metres, or unknown. 2026-11-12, step 1 of the SRID plan agreed with the maintainer.
+// What GeometryEditor's window and the Geometry IOBox need to know about an SRID to draw it
+// honestly: are its numbers degrees of longitude/latitude (then x is drawn shrunk by cos(latitude),
+// so shapes have their true proportions) or metres, or something else, and what is it called.
 //
-// This package references nothing of ours and carries no CRS database (an SRID is a label here;
-// transformation and the EPSG catalogue are VL.PROJ's). So this is a SHORT list of the codes people
-// meet - the CRS research's table, vl-proj/docs/CRS-RESEARCH.md - and everything else is "unknown",
-// said as such, never guessed. Step 2 lets VL.PROJ, when installed, answer for every code through a
-// service it registers (the AssemblyInitializer pattern of VL.IO.Redis, VL.Skia, VL.Stride).
+// Two sources, the better first (2026-11-12, steps 1 and 2 of the SRID plan):
+//   1. A registered ICrsCatalog - VL.PROJ's, PROJ's whole EPSG database - when one is loaded.
+//      Asked once per code and catalogue; the answers are cached, a miss included.
+//   2. A SHORT built-in list of the codes people meet (the CRS research's table, vl-proj/docs/
+//      CRS-RESEARCH.md). Everything else is "unknown", said as such, never guessed.
+// See ICrsCatalog.cs for why the catalogue is looked up in AppHost.Global.
 
-/// <summary>What a common EPSG code's coordinates are, without a CRS database.</summary>
+/// <summary>What an EPSG code's coordinates are: from a registered catalogue, else a short built-in table.</summary>
 internal static class CrsHints
 {
     /// <summary>The unit of a CRS's coordinates.</summary>
-    public enum Units { Unknown, Degrees, Metres }
+    public enum Units { Unknown, Degrees, Metres, Other }
+
+    /// <summary>What is known about one code.</summary>
+    public readonly record struct Description(string? Name, Units Units, string UnitName);
+
+    /// <summary>For tests: a catalogue used instead of the registered one.</summary>
+    internal static ICrsCatalog? CatalogOverride { get; set; }
+
+    private static readonly ConcurrentDictionary<(ICrsCatalog, int), Description?> FromCatalog = new();
+
+    // The registered catalogue, or null. Outside vvvv (tests, an exported app without VL.PROJ)
+    // there may be no global app host or no registration; that is not an error.
+    private static ICrsCatalog? Catalog
+    {
+        get
+        {
+            if (CatalogOverride is { } c) return c;
+            try { return AppHost.Global?.Services.GetService(typeof(ICrsCatalog)) as ICrsCatalog; }
+            catch (Exception) { return null; }
+        }
+    }
 
     // Geographic (longitude/latitude in degrees): WGS 84 (2D, 3D), ETRS89, NAD27, NAD83, GDA94,
     // GDA2020, CGCS2000, JGD2000, JGD2011/2024, Amersfoort, OSGB36, ED50, RGF93, SIRGAS 2000, Xian 1980,
@@ -25,12 +50,34 @@ internal static class CrsHints
         4214, 4301,
     };
 
-    public static Units UnitsOf(int srid)
+    /// <summary>What is known about <paramref name="srid"/>: the catalogue's answer, else the table's.</summary>
+    public static Description Describe(int srid)
     {
-        if (srid <= 0) return Units.Unknown;
-        if (System.Array.IndexOf(Geographic, srid) >= 0) return Units.Degrees;
-        return IsProjectedInMetres(srid) ? Units.Metres : Units.Unknown;
+        if (srid <= 0) return new(null, Units.Unknown, "");
+        if (Catalog is { } catalog && FromCatalog.GetOrAdd((catalog, srid), Ask) is { } known)
+            return known;
+        if (Array.IndexOf(Geographic, srid) >= 0) return new(null, Units.Degrees, "degree");
+        return IsProjectedInMetres(srid) ? new(null, Units.Metres, "metre") : new(null, Units.Unknown, "");
     }
+
+    private static Description? Ask((ICrsCatalog Catalog, int Srid) key)
+    {
+        try
+        {
+            if (!key.Catalog.TryDescribe(key.Srid, out var name, out var geographic, out var unit)) return null;
+            var units = geographic ? Units.Degrees
+                : unit.StartsWith("metre", StringComparison.OrdinalIgnoreCase) || unit.StartsWith("meter", StringComparison.OrdinalIgnoreCase) ? Units.Metres
+                : unit.Length > 0 ? Units.Other
+                : Units.Unknown;
+            return new(string.IsNullOrWhiteSpace(name) ? null : name, units, unit);
+        }
+        catch (Exception)
+        {
+            return null; // a catalogue that throws knows nothing; the table answers
+        }
+    }
+
+    public static Units UnitsOf(int srid) => Describe(srid).Units;
 
     // Projected, in metres: Web Mercator (and its old 900913), World Mercator, RD New (+ NAP),
     // Lambert-93, British National Grid, LAEA/LCC Europe, ETRS89 and WGS 84 UTM zones, Japan Plane
@@ -47,13 +94,21 @@ internal static class CrsHints
         _ => false,
     };
 
-    /// <summary>A short label for the status bar: "EPSG:28992 · metres", "SRID unset".</summary>
-    public static string Label(int srid) => srid <= 0
-        ? "SRID unset"
-        : UnitsOf(srid) switch
+    /// <summary>
+    /// A short label for the status bar: "EPSG:28992 Amersfoort / RD New · metres" with a catalogue,
+    /// "EPSG:28992 · metres" from the table, "SRID unset".
+    /// </summary>
+    public static string Label(int srid, bool named = true)
+    {
+        if (srid <= 0) return "SRID unset";
+        var d = Describe(srid);
+        var name = d.Name is null || !named ? $"EPSG:{srid}" : $"EPSG:{srid} {d.Name}";
+        return d.Units switch
         {
-            Units.Degrees => $"EPSG:{srid} · degrees",
-            Units.Metres => $"EPSG:{srid} · metres",
-            _ => $"EPSG:{srid} · units unknown",
+            Units.Degrees => $"{name} · degrees",
+            Units.Metres => $"{name} · metres",
+            Units.Other => $"{name} · {d.UnitName}",
+            _ => $"{name} · units unknown",
         };
+    }
 }
