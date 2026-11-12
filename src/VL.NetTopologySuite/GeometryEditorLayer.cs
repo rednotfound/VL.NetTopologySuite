@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using NetTopologySuite.Geometries;
 using SkiaSharp;
@@ -10,55 +11,62 @@ using VL.Skia;
 
 namespace VL.NetTopologySuite;
 
-// The canvas of GeometryEditor's window: a toolbar, a dot grid, the target editor's sketch, and the
-// translation of mouse and keys into SketchSession calls. The editing rules are SketchSession's;
-// this class only maps pixels to geometry (SketchView), draws, and hands the outcome to the node:
-// Preview -> GeometryEditorNode.Preview, Commit -> GeometryEditorNode.Commit (written back).
+// The canvas of GeometryEditor's window. The editing rules are SketchSession's (see its header for
+// the 2026-11-12 redesign and the editors it was taken from); this class maps pixels to geometry
+// (SketchView), draws what the session says, and hands outcomes to the node: Preview ->
+// GeometryEditorNode.Preview, Commit -> GeometryEditorNode.Commit (written into the document).
 //
-// Everything is drawn in window PIXELS (the layer resets the canvas matrix), so the window's Space
-// setting does not matter; mouse positions are scaled from the notification's client area to the
-// viewport, which covers DPI scaling.
+// What is on screen:
+//   toolbar      Select V · Point P · Line L · Polygon A | Undo · Redo | Snap S · Fit F
+//   canvas       unselected shapes as outlines; the selected one with its vertices and a "+" at the
+//                middle of every edge; the selected vertex larger, orange, ringed in white
+//   action bar   next to the selection or the shape being drawn: Move · Hole · Delete, Delete point,
+//                Done · Cancel, Done · Back one point · Cancel - disabled ones grey, their reason in
+//                the status bar when hovered
+//   status bar   left: what can be done now (SketchSession.HintText); right: the mouse position in
+//                the geometry's units, its SRID, the type and the point count
 //
-// Toolbar (also keys): Select V, Point P, Line L, Polygon A, Hole H | Snap S, Fit F, Delete Del.
-// Right-drag or middle-drag pans, the wheel zooms about the cursor; a right-click without a drag
-// is the session's (finish drawing / delete a vertex). Snap rounds every new or moved vertex to
-// the grid shown, so a drawing made with it has short WKT (the first one was all 16-digit numbers).
+// Pointer: a left drag on empty space pans (like every web map), as do right- and middle-drags; the
+// wheel zooms about the cursor; a right-click without a drag finishes drawing or deletes a vertex.
+// Every drag waits for DragPixels of movement, so a click never moves anything.
 //
-// Colours are the GeometryViewer's (Leaflet's #3388ff), so the window and the IOBox agree; the
-// selected part is drawn orange.
+// Everything is drawn in window PIXELS (the canvas matrix is reset), so the window's Space setting
+// does not matter; mouse positions are scaled from the notification's client area to the viewport,
+// which covers DPI scaling. Colours are the GeometryViewer's (Leaflet's #3388ff); selection is orange.
 
 /// <summary>The drawing canvas of the geometry editor window.</summary>
 internal sealed class GeometryEditorLayer : ILayer
 {
     private const float HitPixels = 9;
-    private const float ClickSlopPixels = 4;
+    private const float DragPixels = 6;
     private const float ToolbarHeight = 30;
+    private const float StatusHeight = 24;
 
     private static readonly SKColor Blue = new(0x33, 0x88, 0xff);
+    private static readonly SKColor LightBlue = new(0x9c, 0xc4, 0xff);
     private static readonly SKColor Orange = new(0xff, 0x99, 0x22);
+    private static readonly SKColor Green = new(0x7f, 0xe0, 0xa1);
     private static readonly SKColor Background = new(0x26, 0x26, 0x26);
-    private static readonly SKColor ButtonFill = new(0x3a, 0x3a, 0x3a);
-    private static readonly SKColor ButtonActive = new(0x33, 0x88, 0xff);
+    private static readonly SKColor Panel = new(0x3a, 0x3a, 0x3a);
+    private static readonly SKColor PanelHover = new(0x50, 0x50, 0x50);
+    private static readonly SKColor StatusBack = new(0x1c, 0x1c, 0x1c);
+    private static readonly SKColor Danger = new(0xff, 0x8f, 0x70);
 
-    private sealed record Button(string Label, string Key, Action<GeometryEditorLayer> Press, Func<GeometryEditorLayer, bool> IsOn)
+    // A button: the toolbar's and the action bar's are the same shape.
+    private sealed class Button
     {
+        public required string Label;
+        public string Key = "";
+        public required Func<GeometryEditorLayer, bool> IsOn;
+        public required Func<GeometryEditorLayer, bool> IsEnabled;
+        public required Action<GeometryEditorLayer> Press;
+        public Func<GeometryEditorLayer, string?> Reason = _ => null;
+        public bool Danger;
         public SKRect Rect;
     }
 
-    private readonly List<Button> _buttons = new()
-    {
-        Tool("Select", "V", SketchTool.Select),
-        Tool("Point", "P", SketchTool.Point),
-        Tool("Line", "L", SketchTool.Line),
-        Tool("Polygon", "A", SketchTool.Polygon),
-        Tool("Hole", "H", SketchTool.Hole),
-        new("Snap", "S", l => l._snap = !l._snap, l => l._snap),
-        new("Fit", "F", l => l._fitted = false, _ => false),
-        new("Delete", "Del", l => l.Apply(l._session.Delete()), _ => false),
-    };
-
-    private static Button Tool(string label, string key, SketchTool tool)
-        => new(label, key, l => l.Apply(l._session.SetTool(tool)), l => l._session.Tool == tool);
+    private readonly List<Button> _toolbar;
+    private readonly List<Button> _actionBar = new();
 
     private readonly SketchSession _session = new();
     private GeometryEditorNode? _target;
@@ -68,13 +76,34 @@ internal sealed class GeometryEditorLayer : ILayer
     private Vector2 _size = new(800, 600);
     private Vector2 _mouse;
     private float _scaling = 1;
+    private string? _note; // a reason shown after pressing a disabled button
 
-    // Panning with the right or middle button; a right press that does not move is a click.
-    private bool _rightDown;
-    private bool _middleDown;
-    private bool _panning;
-    private Vector2 _pressAt;
-    private Vector2 _lastPan;
+    // Panning: a left press the session hands back (empty space), or a right / middle press.
+    private bool _leftDown, _rightDown, _middleDown, _panning;
+    private Vector2 _pressAt, _lastPan;
+
+    public GeometryEditorLayer()
+    {
+        _toolbar = new()
+        {
+            Tool("Select", "V", SketchTool.Select),
+            Tool("Point", "P", SketchTool.Point),
+            Tool("Line", "L", SketchTool.Line),
+            Tool("Polygon", "A", SketchTool.Polygon),
+            new Button { Label = "Undo", Key = "Ctrl+Z", IsOn = _ => false, IsEnabled = l => l._session.CanUndo, Press = l => l.Apply(l._session.Undo()) },
+            new Button { Label = "Redo", Key = "Ctrl+Y", IsOn = _ => false, IsEnabled = l => l._session.CanRedo, Press = l => l.Apply(l._session.Redo()) },
+            new Button { Label = "Snap", Key = "S", IsOn = l => l._snap, IsEnabled = _ => true, Press = l => l._snap = !l._snap },
+            new Button { Label = "Fit", Key = "F", IsOn = _ => false, IsEnabled = _ => true, Press = l => l._fitted = false },
+        };
+    }
+
+    private static Button Tool(string label, string key, SketchTool tool) => new()
+    {
+        Label = label, Key = key,
+        IsOn = l => l._session.Tool == tool || (tool == SketchTool.Polygon && l._session.Tool == SketchTool.Hole),
+        IsEnabled = l => l.Editable,
+        Press = l => l.Apply(l._session.SetTool(tool)),
+    };
 
     public GeometryEditorNode? Target
     {
@@ -82,13 +111,15 @@ internal sealed class GeometryEditorLayer : ILayer
         set
         {
             if (ReferenceEquals(value, _target)) return;
-            if (_session.IsDrawing) Apply(_session.Escape()); // a half-drawn part belongs to the old target
+            if (_session.IsDrawing || _session.IsMoving) Apply(_session.Escape()); // belongs to the old target
             _target = value;
             _fitted = false;
         }
     }
 
     public RectangleF? Bounds => null;
+
+    private bool Editable => _target is { IsEditable: true };
 
     // ---- drawing ----------------------------------------------------------------------------
 
@@ -105,7 +136,7 @@ internal sealed class GeometryEditorLayer : ILayer
         if (!_fitted)
         {
             var g = target?.Geometry;
-            _view = SketchView.Fit(g is null || g.IsEmpty ? null : g.EnvelopeInternal, _size);
+            _view = SketchView.Fit(g is null || g.IsEmpty ? null : g.EnvelopeInternal, new Vector2(_size.X, _size.Y - (ToolbarHeight + StatusHeight) * _scaling));
             _fitted = true;
         }
 
@@ -114,72 +145,40 @@ internal sealed class GeometryEditorLayer : ILayer
         canvas.Translate(viewport.Left, viewport.Top);
         canvas.ClipRect(new SKRect(0, 0, _size.X, _size.Y));
         canvas.Clear(Background);
-
         DrawGrid(canvas);
 
         if (target is null)
         {
             DrawToolbar(canvas);
-            DrawLine(canvas, 0, "No GeometryEditor yet: place one in a patch and select it.");
+            DrawStatus(canvas, "No GeometryEditor yet: place one in a patch and select it.", "");
             canvas.Restore();
             return;
         }
 
-        if (target.IsEditable)
-            DrawSketch(canvas, _session.Sketch);
-        else
-            DrawReadOnly(canvas, target.Geometry);
+        if (target.IsEditable) DrawSketch(canvas, _session.Sketch);
+        else DrawReadOnly(canvas, target.Geometry);
 
         DrawToolbar(canvas);
-        DrawLine(canvas, 0, target.IsEditable ? Summary(_session.Sketch) : "Shown only: geometry with Z, nested collections and LINEARRING are not editable here.");
-        DrawLine(canvas, 1, _session.Hint ?? HelpFor(_session.Tool, _session.IsDrawing));
-        var wkt = target.IsEditable ? _session.Sketch.ToWKT() : "";
-        if (wkt.Length > 180) wkt = wkt.Substring(0, 177) + "...";
-        DrawLine(canvas, -1, wkt);
+        if (target.IsEditable) DrawActionBar(canvas);
 
+        var left = !target.IsEditable
+            ? "Shown only: geometry with Z, nested collections and LINEARRING are not editable here."
+            : HoveredReason() ?? _note ?? _session.HintText;
+        DrawStatus(canvas, left, StatusRight(target));
         canvas.Restore();
     }
 
-    private static string Summary(GeometrySketch s)
+    private string StatusRight(GeometryEditorNode target)
     {
-        var type = s.ToGeometry().GeometryType.ToUpperInvariant();
-        return $"{type} · {s.PartCount} part{(s.PartCount == 1 ? "" : "s")} · {s.VertexCount} vertices";
-    }
-
-    private static string HelpFor(SketchTool tool, bool drawing) => tool switch
-    {
-        SketchTool.Select => "click to select · drag a vertex or a shape · double-click an edge to add a vertex · Del deletes the selected vertex, or the shape",
-        SketchTool.Point => "click to add a point",
-        SketchTool.Line when drawing => "click to add · double-click, Enter or right-click to finish · Backspace undoes a point · Esc cancels",
-        SketchTool.Line => "click to start a line",
-        SketchTool.Polygon when drawing => "click to add · click the first point, double-click or Enter to close · Backspace · Esc cancels",
-        SketchTool.Polygon => "click to start a polygon",
-        SketchTool.Hole when drawing => "click to add · click the first point, double-click or Enter to close · Esc cancels",
-        _ => "click inside a polygon to start a hole in it",
-    };
-
-    private void DrawToolbar(SKCanvas canvas)
-    {
-        using var fill = new SKPaint { Style = SKPaintStyle.Fill, IsAntialias = true };
-        using var text = new SKPaint { Color = SKColors.White, TextSize = 12 * _scaling, IsAntialias = true };
-        using var keyText = new SKPaint { Color = new SKColor(255, 255, 255, 140), TextSize = 10 * _scaling, IsAntialias = true };
-        var x = 8 * _scaling;
-        var y = 6 * _scaling;
-        var h = (ToolbarHeight - 8) * _scaling;
-        for (var i = 0; i < _buttons.Count; i++)
-        {
-            var b = _buttons[i];
-            if (i == 5) x += 10 * _scaling; // a gap between the tools and the toggles
-            var w = text.MeasureText(b.Label) + keyText.MeasureText(b.Key) + 22 * _scaling;
-            b.Rect = new SKRect(x, y, x + w, y + h);
-            var hovered = b.Rect.Contains(_mouse.X, _mouse.Y);
-            fill.Color = b.IsOn(this) ? ButtonActive : hovered ? new SKColor(0x50, 0x50, 0x50) : ButtonFill;
-            canvas.DrawRoundRect(b.Rect, 4 * _scaling, 4 * _scaling, fill);
-            var baseline = y + h / 2 + 4 * _scaling;
-            canvas.DrawText(b.Label, x + 8 * _scaling, baseline, text);
-            canvas.DrawText(b.Key, x + 12 * _scaling + text.MeasureText(b.Label), baseline, keyText);
-            x += w + 5 * _scaling;
-        }
+        var at = MouseInGeometry;
+        var step = _view.GridStep(40 * _scaling);
+        var decimals = Math.Clamp((int)Math.Ceiling(-Math.Log10(step)) + 1, 0, 8);
+        var f = "F" + decimals.ToString(CultureInfo.InvariantCulture);
+        var srid = target.Geometry.SRID > 0 ? $"EPSG:{target.Geometry.SRID}" : "SRID unset";
+        var s = _session.Sketch;
+        var type = target.IsEditable ? s.ToGeometry().GeometryType.ToUpperInvariant() : target.Geometry.GeometryType.ToUpperInvariant();
+        var points = target.IsEditable ? s.VertexCount : target.Geometry.NumPoints;
+        return $"x {at.X.ToString(f, CultureInfo.InvariantCulture)}  y {at.Y.ToString(f, CultureInfo.InvariantCulture)} · {srid} · {type} · {points} points";
     }
 
     private void DrawGrid(SKCanvas canvas)
@@ -207,72 +206,125 @@ internal sealed class GeometryEditorLayer : ILayer
 
     private void DrawSketch(SKCanvas canvas, GeometrySketch sketch)
     {
-        for (var p = 0; p < sketch.PartCount; p++)
-            DrawPart(canvas, sketch.Part(p), p == _session.SelectedPart);
-
-        // The rubber band from the last vertex to the mouse while drawing.
-        if (_session.DrawingRing is { } d)
+        // The part's old place while moving, dashed, for comparison.
+        if (_session.BeforeMove is { } before && _session.SelectedPart >= 0 && _session.SelectedPart < before.PartCount)
         {
-            var ring = sketch.Part(d.Part).Ring(d.Ring);
-            if (ring.Length > 0)
-            {
-                using var band = new SKPaint { Color = Orange.WithAlpha(180), Style = SKPaintStyle.Stroke, StrokeWidth = 1.5f * _scaling, IsAntialias = true, PathEffect = SKPathEffect.CreateDash(new[] { 6 * _scaling, 4 * _scaling }, 0) };
-                var last = _view.ToPixels(ring[^1], _size);
-                canvas.DrawLine(last.X, last.Y, _mouse.X, _mouse.Y, band);
-                if (sketch.Part(d.Part).Kind == PartKind.Polygon && ring.Length >= 2)
-                {
-                    var first = _view.ToPixels(ring[0], _size);
-                    canvas.DrawLine(_mouse.X, _mouse.Y, first.X, first.Y, band);
-                }
-            }
+            using var ghost = new SKPaint { Color = Orange.WithAlpha(120), Style = SKPaintStyle.Stroke, StrokeWidth = 1.5f * _scaling, IsAntialias = true, PathEffect = SKPathEffect.CreateDash(new[] { 5 * _scaling, 4 * _scaling }, 0) };
+            using var path = PathOf(before.Part(_session.SelectedPart));
+            canvas.DrawPath(path, ghost);
         }
 
-        // Vertices on top, the one under the mouse (or being dragged) highlighted.
-        var hovered = _session.DraggedVertex ?? sketch.NearestVertex(MouseInGeometry, Tolerance);
-        using var ringPaint = new SKPaint { Color = Blue, Style = SKPaintStyle.Stroke, StrokeWidth = 1.5f * _scaling, IsAntialias = true };
-        using var fill = new SKPaint { Style = SKPaintStyle.Fill, IsAntialias = true };
-        var r = 4.5f * _scaling;
+        var hoveredPart = HoveredPart();
+        var drawing = _session.DrawingRing;
         for (var p = 0; p < sketch.PartCount; p++)
         {
-            var part = sketch.Part(p);
-            ringPaint.Color = p == _session.SelectedPart ? Orange : Blue;
-            for (var ring = 0; ring < part.RingCount; ring++)
+            var selected = p == _session.SelectedPart || drawing?.Part == p;
+            DrawPart(canvas, sketch.Part(p), selected, p == hoveredPart);
+        }
+
+        if (drawing is { } d) DrawRubberBand(canvas, sketch, d.Part, d.Ring);
+
+        // Handles only on the selected part (or the one being drawn): vertices, then the "+".
+        var handlesOf = drawing?.Part ?? (_session.Tool == SketchTool.Select ? _session.SelectedPart : -1);
+        if (handlesOf >= 0 && handlesOf < sketch.PartCount)
+        {
+            var hovered = HoveredHandle();
+            foreach (var (insert, at) in _session.Midpoints())
+                DrawPlus(canvas, _view.ToPixels(at, _size), hovered is { } h && h.Plus && h.Ref == insert);
+            DrawVertices(canvas, sketch, handlesOf, hovered);
+        }
+    }
+
+    private void DrawPart(SKCanvas canvas, SketchPart part, bool selected, bool hovered)
+    {
+        var colour = selected ? Orange : hovered ? LightBlue : Blue;
+        using var fill = new SKPaint { Color = colour.WithAlpha(hovered && !selected ? (byte)90 : (byte)64), Style = SKPaintStyle.Fill, IsAntialias = true };
+        using var stroke = new SKPaint { Color = colour, Style = SKPaintStyle.Stroke, StrokeWidth = (hovered && !selected ? 3 : 2) * _scaling, IsAntialias = true };
+        if (part.Kind == PartKind.Point)
+        {
+            // Points are always visible as markers: there is no outline to show otherwise.
+            var c = _view.ToPixels(part.Ring(0)[0], _size);
+            using var white = new SKPaint { Color = SKColors.White, Style = SKPaintStyle.Fill, IsAntialias = true };
+            canvas.DrawCircle(c.X, c.Y, 5.5f * _scaling, selected ? fill : white);
+            canvas.DrawCircle(c.X, c.Y, 5.5f * _scaling, stroke);
+            return;
+        }
+        using var path = PathOf(part);
+        if (part.Kind == PartKind.Polygon) canvas.DrawPath(path, fill);
+        canvas.DrawPath(path, stroke);
+    }
+
+    private SKPath PathOf(SketchPart part)
+    {
+        var path = new SKPath { FillType = SKPathFillType.EvenOdd };
+        for (var ring = 0; ring < part.RingCount; ring++)
+            AddPoly(path, part.Ring(ring), part.Kind == PartKind.Polygon && part.VertexCount(ring) >= 3);
+        return path;
+    }
+
+    private void DrawRubberBand(SKCanvas canvas, GeometrySketch sketch, int partIndex, int ringIndex)
+    {
+        var part = sketch.Part(partIndex);
+        var ring = part.Ring(ringIndex);
+        if (ring.Length == 0) return;
+        using var band = new SKPaint { Color = Orange.WithAlpha(180), Style = SKPaintStyle.Stroke, StrokeWidth = 1.5f * _scaling, IsAntialias = true, PathEffect = SKPathEffect.CreateDash(new[] { 6 * _scaling, 4 * _scaling }, 0) };
+        var last = _view.ToPixels(ring[^1], _size);
+        canvas.DrawLine(last.X, last.Y, _mouse.X, _mouse.Y, band);
+        if (part.Kind != PartKind.Polygon) return;
+        var first = _view.ToPixels(ring[0], _size);
+        if (ring.Length >= 2) canvas.DrawLine(_mouse.X, _mouse.Y, first.X, first.Y, band);
+        if (ring.Length >= 3)
+        {
+            // "Click here to close": the first point ringed in green, labelled.
+            using var close = new SKPaint { Color = Green, Style = SKPaintStyle.Stroke, StrokeWidth = 2 * _scaling, IsAntialias = true };
+            canvas.DrawCircle(first.X, first.Y, 11 * _scaling, close);
+            using var text = new SKPaint { Color = Green, TextSize = 11 * _scaling, IsAntialias = true };
+            canvas.DrawText("click to close", first.X + 14 * _scaling, first.Y + 18 * _scaling, text);
+        }
+    }
+
+    private void DrawVertices(SKCanvas canvas, GeometrySketch sketch, int partIndex, (VertexRef Ref, bool Plus)? hovered)
+    {
+        var part = sketch.Part(partIndex);
+        if (part.Kind == PartKind.Point && _session.SelectedVertex is null) return; // the marker is the vertex
+        using var ringPaint = new SKPaint { Color = Orange, Style = SKPaintStyle.Stroke, StrokeWidth = 1.5f * _scaling, IsAntialias = true };
+        using var fill = new SKPaint { Style = SKPaintStyle.Fill, IsAntialias = true };
+        using var halo = new SKPaint { Color = SKColors.White, Style = SKPaintStyle.Stroke, StrokeWidth = 2 * _scaling, IsAntialias = true };
+        var r = 4.5f * _scaling;
+        for (var ring = 0; ring < part.RingCount; ring++)
+        {
+            var vertices = part.Ring(ring);
+            for (var i = 0; i < vertices.Length; i++)
             {
-                var vertices = part.Ring(ring);
-                for (var i = 0; i < vertices.Length; i++)
+                var v = new VertexRef(partIndex, ring, i);
+                var c = _view.ToPixels(vertices[i], _size);
+                var isSelected = _session.SelectedVertex == v;
+                var isHovered = hovered is { } h && !h.Plus && h.Ref == v;
+                fill.Color = isSelected || isHovered ? Orange : SKColors.White;
+                var radius = r * (isSelected ? 1.5f : isHovered ? 1.25f : 1f);
+                canvas.DrawCircle(c.X, c.Y, radius, fill);
+                canvas.DrawCircle(c.X, c.Y, radius, ringPaint);
+                if (isSelected)
                 {
-                    var c = _view.ToPixels(vertices[i], _size);
-                    var isHovered = hovered is { } h && h.Part == p && h.Ring == ring && h.Index == i;
-                    var isSelected = _session.SelectedVertex is { } s && s.Part == p && s.Ring == ring && s.Index == i;
-                    fill.Color = isHovered || isSelected ? Orange : SKColors.White;
-                    var radius = (part.Kind == PartKind.Point ? r * 1.3f : r) * (isSelected ? 1.5f : 1f);
-                    canvas.DrawCircle(c.X, c.Y, radius, fill);
-                    canvas.DrawCircle(c.X, c.Y, radius, ringPaint);
-                    if (isSelected) // a white ring around it: the one Delete will remove
-                    {
-                        using var halo = new SKPaint { Color = SKColors.White, Style = SKPaintStyle.Stroke, StrokeWidth = 2 * _scaling, IsAntialias = true };
-                        canvas.DrawCircle(c.X, c.Y, radius + 3 * _scaling, halo);
-                    }
+                    canvas.DrawCircle(c.X, c.Y, radius + 3 * _scaling, halo);
+                    using var text = new SKPaint { Color = new SKColor(255, 255, 255, 170), TextSize = 10.5f * _scaling, IsAntialias = true };
+                    canvas.DrawText(FormatCoordinate(vertices[i]), c.X + radius + 8 * _scaling, c.Y + 22 * _scaling, text);
                 }
             }
         }
     }
 
-    private void DrawPart(SKCanvas canvas, SketchPart part, bool selected)
+    private void DrawPlus(SKCanvas canvas, Vector2 at, bool hovered)
     {
-        var colour = selected ? Orange : Blue;
-        using var fill = new SKPaint { Color = colour.WithAlpha(64), Style = SKPaintStyle.Fill, IsAntialias = true };
-        using var stroke = new SKPaint { Color = colour, Style = SKPaintStyle.Stroke, StrokeWidth = 2 * _scaling, IsAntialias = true };
-        if (part.Kind == PartKind.Point) return; // drawn as a vertex marker
-
-        using var path = new SKPath { FillType = SKPathFillType.EvenOdd };
-        for (var ring = 0; ring < part.RingCount; ring++)
-        {
-            var close = part.Kind == PartKind.Polygon && part.VertexCount(ring) >= 3;
-            AddPoly(path, part.Ring(ring), close);
-        }
-        if (part.Kind == PartKind.Polygon) canvas.DrawPath(path, fill);
-        canvas.DrawPath(path, stroke);
+        var r = (hovered ? 7.5f : 6f) * _scaling;
+        using var fill = new SKPaint { Color = Orange.WithAlpha(hovered ? (byte)230 : (byte)90), Style = SKPaintStyle.Fill, IsAntialias = true };
+        using var stroke = new SKPaint { Color = Orange, Style = SKPaintStyle.Stroke, StrokeWidth = _scaling, IsAntialias = true };
+        using var cross = new SKPaint { Color = SKColors.White, Style = SKPaintStyle.Stroke, StrokeWidth = 1.5f * _scaling, IsAntialias = true };
+        canvas.DrawCircle(at.X, at.Y, r, fill);
+        canvas.DrawCircle(at.X, at.Y, r, stroke);
+        var a = r * 0.55f;
+        canvas.DrawLine(at.X - a, at.Y, at.X + a, at.Y, cross);
+        canvas.DrawLine(at.X, at.Y - a, at.X, at.Y + a, cross);
     }
 
     private void DrawReadOnly(SKCanvas canvas, Geometry geometry)
@@ -307,19 +359,107 @@ internal sealed class GeometryEditorLayer : ILayer
         if (close) path.Close();
     }
 
-    // Row 0 and 1 under the toolbar, row -1 at the bottom.
-    private void DrawLine(SKCanvas canvas, int row, string text)
+    // ---- toolbar, action bar, status bar ----------------------------------------------------
+
+    private void DrawToolbar(SKCanvas canvas)
     {
-        if (string.IsNullOrEmpty(text)) return;
-        using var paint = new SKPaint { Color = new SKColor(255, 255, 255, 200), TextSize = 12 * _scaling, IsAntialias = true };
-        var line = 17 * _scaling;
-        var y = row >= 0 ? (ToolbarHeight + 14) * _scaling + line * row : _size.Y - 10 * _scaling;
-        canvas.DrawText(text, 10 * _scaling, y, paint);
+        var x = 8 * _scaling;
+        for (var i = 0; i < _toolbar.Count; i++)
+        {
+            if (i is 4 or 6) x += 10 * _scaling; // groups: tools | history | view
+            x = DrawButton(canvas, _toolbar[i], x, 6 * _scaling) + 5 * _scaling;
+        }
     }
 
-    // ---- input ------------------------------------------------------------------------------
+    private void DrawActionBar(SKCanvas canvas)
+    {
+        _actionBar.Clear();
+        var actions = _session.Actions();
+        if (actions.Count == 0) return;
+        foreach (var a in actions)
+        {
+            var action = a.Action;
+            _actionBar.Add(new Button
+            {
+                Label = a.Label, IsOn = _ => false, IsEnabled = _ => a.Enabled, Reason = _ => a.Reason,
+                Danger = action is SketchAction.DeleteShape or SketchAction.DeletePoint,
+                Press = l => l.Apply(l._session.Run(action)),
+            });
+        }
+
+        // Next to what it acts on: above and to the right of the selection's box, kept on screen.
+        using var measure = new SKPaint { TextSize = 12 * _scaling };
+        var width = _actionBar.Sum(b => measure.MeasureText(b.Label) + 18 * _scaling) + 5 * _scaling * (_actionBar.Count - 1) + 8 * _scaling;
+        var h = (ToolbarHeight - 8) * _scaling;
+        var box = AnchorBox();
+        var x = box is { } bb ? bb.Right + 10 * _scaling : _size.X - width - 10 * _scaling;
+        var y = box is { } bt ? bt.Top - h - 10 * _scaling : (ToolbarHeight + 8) * _scaling;
+        x = Math.Clamp(x, 8 * _scaling, Math.Max(8 * _scaling, _size.X - width - 8 * _scaling));
+        y = Math.Clamp(y, (ToolbarHeight + 6) * _scaling, Math.Max((ToolbarHeight + 6) * _scaling, _size.Y - (StatusHeight + 8) * _scaling - h - 8 * _scaling));
+
+        using var back = new SKPaint { Color = new SKColor(0x2e, 0x2e, 0x2e), Style = SKPaintStyle.Fill, IsAntialias = true };
+        canvas.DrawRoundRect(new SKRect(x - 4 * _scaling, y - 4 * _scaling, x + width, y + h + 4 * _scaling), 7 * _scaling, 7 * _scaling, back);
+        foreach (var b in _actionBar) x = DrawButton(canvas, b, x, y) + 5 * _scaling;
+    }
+
+    // The pixel box of the selected part, or of the part being drawn; null when neither.
+    private SKRect? AnchorBox()
+    {
+        var s = _session.Sketch;
+        var part = _session.DrawingRing?.Part ?? _session.SelectedPart;
+        if (part < 0 || part >= s.PartCount) return null;
+        var g = s.Part(part).ToGeometry(Defaults.Factory);
+        if (g is null || g.IsEmpty) return null;
+        var e = g.EnvelopeInternal;
+        var a = _view.ToPixels(new Coordinate(e.MinX, e.MaxY), _size);
+        var b = _view.ToPixels(new Coordinate(e.MaxX, e.MinY), _size);
+        return new SKRect(a.X, a.Y, b.X, b.Y);
+    }
+
+    private float DrawButton(SKCanvas canvas, Button b, float x, float y)
+    {
+        using var text = new SKPaint { TextSize = 12 * _scaling, IsAntialias = true };
+        using var keyText = new SKPaint { Color = new SKColor(255, 255, 255, 120), TextSize = 10 * _scaling, IsAntialias = true };
+        using var fill = new SKPaint { Style = SKPaintStyle.Fill, IsAntialias = true };
+        var enabled = b.IsEnabled(this);
+        var h = (ToolbarHeight - 8) * _scaling;
+        var keyWidth = b.Key.Length > 0 ? keyText.MeasureText(b.Key) + 6 * _scaling : 0;
+        var w = text.MeasureText(b.Label) + keyWidth + 18 * _scaling;
+        b.Rect = new SKRect(x, y, x + w, y + h);
+        var hovered = b.Rect.Contains(_mouse.X, _mouse.Y);
+        fill.Color = b.IsOn(this) ? Blue : hovered && enabled ? PanelHover : Panel;
+        canvas.DrawRoundRect(b.Rect, 4 * _scaling, 4 * _scaling, fill);
+        text.Color = !enabled ? new SKColor(255, 255, 255, 90) : b.Danger ? Danger : SKColors.White;
+        var baseline = y + h / 2 + 4 * _scaling;
+        canvas.DrawText(b.Label, x + 9 * _scaling, baseline, text);
+        if (b.Key.Length > 0) canvas.DrawText(b.Key, x + 15 * _scaling + text.MeasureText(b.Label), baseline, keyText);
+        return x + w;
+    }
+
+    private void DrawStatus(SKCanvas canvas, string left, string right)
+    {
+        var top = _size.Y - StatusHeight * _scaling;
+        using var back = new SKPaint { Color = StatusBack, Style = SKPaintStyle.Fill };
+        canvas.DrawRect(new SKRect(0, top, _size.X, _size.Y), back);
+        using var leftPaint = new SKPaint { Color = new SKColor(230, 230, 230), TextSize = 12 * _scaling, IsAntialias = true };
+        using var rightPaint = new SKPaint { Color = new SKColor(170, 170, 170), TextSize = 11.5f * _scaling, IsAntialias = true };
+        var baseline = top + StatusHeight * _scaling / 2 + 4 * _scaling;
+        var rightWidth = right.Length > 0 ? rightPaint.MeasureText(right) : 0;
+        canvas.Save();
+        canvas.ClipRect(new SKRect(0, top, _size.X - rightWidth - 20 * _scaling, _size.Y));
+        canvas.DrawText(left, 10 * _scaling, baseline, leftPaint);
+        canvas.Restore();
+        if (right.Length > 0) canvas.DrawText(right, _size.X - rightWidth - 10 * _scaling, baseline, rightPaint);
+    }
+
+    private string? HoveredReason()
+        => _actionBar.Concat(_toolbar).FirstOrDefault(b => b.Rect.Contains(_mouse.X, _mouse.Y) && !b.IsEnabled(this))?.Reason(this);
+
+    // ---- what the mouse is over -------------------------------------------------------------
 
     private double Tolerance => HitPixels * _scaling / _view.PixelsPerUnit;
+
+    private double DragThreshold => DragPixels * _scaling / _view.PixelsPerUnit;
 
     private Coordinate MouseInGeometry => _view.ToGeometry(_mouse, _size);
 
@@ -335,6 +475,49 @@ internal sealed class GeometryEditorLayer : ILayer
         }
     }
 
+    private string FormatCoordinate(Coordinate c)
+    {
+        var step = _view.GridStep(40 * _scaling);
+        var decimals = Math.Clamp((int)Math.Ceiling(-Math.Log10(step)) + 1, 0, 8);
+        var f = "F" + decimals.ToString(CultureInfo.InvariantCulture);
+        return c.X.ToString(f, CultureInfo.InvariantCulture) + ", " + c.Y.ToString(f, CultureInfo.InvariantCulture);
+    }
+
+    private bool OverUi => _mouse.Y < ToolbarHeight * _scaling || _mouse.Y > _size.Y - StatusHeight * _scaling
+                           || _actionBar.Any(b => b.Rect.Contains(_mouse.X, _mouse.Y));
+
+    // In Select, nothing pressed: the part a click would select, for its hover highlight.
+    private int HoveredPart()
+    {
+        if (_session.Tool != SketchTool.Select || _session.IsMoving || _leftDown || OverUi) return -1;
+        var part = _session.Sketch.PartAt(MouseInGeometry, Tolerance);
+        return part == _session.SelectedPart ? -1 : part;
+    }
+
+    // The handle of the selected part under the mouse: a vertex, or a "+".
+    private (VertexRef Ref, bool Plus)? HoveredHandle()
+    {
+        if (_session.Tool != SketchTool.Select || _session.IsMoving || OverUi) return null;
+        var at = MouseInGeometry;
+        var tol = Tolerance;
+        var s = _session.Sketch;
+        if (_session.SelectedPart >= 0 && _session.SelectedPart < s.PartCount)
+        {
+            var part = s.Part(_session.SelectedPart);
+            for (var r = 0; r < part.RingCount; r++)
+            {
+                var ring = part.Ring(r);
+                for (var i = 0; i < ring.Length; i++)
+                    if (ring[i].Distance(at) <= tol) return (new VertexRef(_session.SelectedPart, r, i), false);
+            }
+        }
+        foreach (var (insert, mid) in _session.Midpoints())
+            if (mid.Distance(at) <= tol) return (insert, true);
+        return null;
+    }
+
+    // ---- input ------------------------------------------------------------------------------
+
     public bool Notify(INotification notification, CallerInfo caller)
     {
         _scaling = Math.Max(1f, caller.Scaling);
@@ -349,11 +532,9 @@ internal sealed class GeometryEditorLayer : ILayer
             return OnMouse(mouse);
         }
         if (notification is KeyDownNotification key)
-            return OnKey(key.KeyCode);
+            return OnKey(key);
         return false;
     }
-
-    private bool Editable => _target is { IsEditable: true };
 
     private bool OnMouse(MouseNotification mouse)
     {
@@ -365,20 +546,25 @@ internal sealed class GeometryEditorLayer : ILayer
 
             case MouseDownNotification down when (down.Buttons & MouseButtons.Left) != 0:
                 {
-                    var button = _buttons.FirstOrDefault(b => b.Rect.Contains(_mouse.X, _mouse.Y));
+                    _note = null;
+                    var button = _toolbar.Concat(_actionBar).FirstOrDefault(b => b.Rect.Contains(_mouse.X, _mouse.Y));
                     if (button is not null)
                     {
-                        button.Press(this);
+                        if (button.IsEnabled(this)) button.Press(this);
+                        else _note = button.Reason(this);
                         return true;
                     }
-                    if (!Editable) return false;
+                    if (!Editable || OverUi) return false;
+                    _leftDown = true;
+                    _panning = false;
+                    _pressAt = _lastPan = _mouse;
                     // The real mouse decides what is hit, the snapped point where a vertex goes.
-                    Apply(_session.LeftDown(MouseInGeometry, Tolerance, Placed));
+                    Apply(_session.LeftDown(MouseInGeometry, Tolerance, Placed, DragThreshold));
                     return true;
                 }
 
             case MouseClickNotification click when (click.Buttons & MouseButtons.Left) != 0 && click.ClickCount == 2:
-                if (!Editable) return false;
+                if (!Editable || OverUi) return false;
                 Apply(_session.DoubleClick(MouseInGeometry, Tolerance, Placed));
                 return true;
 
@@ -395,9 +581,9 @@ internal sealed class GeometryEditorLayer : ILayer
                 return true;
 
             case MouseMoveNotification:
-                if (_rightDown || _middleDown)
+                if (_rightDown || _middleDown || (_leftDown && _session.WantsPan))
                 {
-                    if (!_panning && Vector2.Distance(_mouse, _pressAt) > ClickSlopPixels) _panning = true;
+                    if (!_panning && Vector2.Distance(_mouse, _pressAt) > DragPixels * _scaling) _panning = true;
                     if (_panning)
                     {
                         _view = _view.Pan(_mouse - _lastPan);
@@ -405,11 +591,13 @@ internal sealed class GeometryEditorLayer : ILayer
                     }
                     return true;
                 }
-                if (Editable) Apply(_session.Move(Placed));
+                if (Editable) Apply(_session.Move(MouseInGeometry, Placed));
                 return true;
 
             case MouseUpNotification up when (up.Buttons & MouseButtons.Left) != 0:
-                if (Editable) Apply(_session.LeftUp());
+                if (_leftDown && Editable) Apply(_session.LeftUp());
+                _leftDown = false;
+                _panning = false;
                 return true;
 
             case MouseUpNotification up when (up.Buttons & MouseButtons.Right) != 0:
@@ -424,44 +612,45 @@ internal sealed class GeometryEditorLayer : ILayer
                 return true;
 
             case MouseLostNotification:
-                // The window lost the mouse mid-gesture: keep what was dragged so far.
-                if (Editable) Apply(_session.LeftUp());
-                _rightDown = _middleDown = _panning = false;
+                // The window lost the mouse mid-gesture: give the gesture back rather than half-apply it.
+                if (_leftDown && Editable) Apply(_session.Escape());
+                _leftDown = _rightDown = _middleDown = _panning = false;
                 return false;
         }
         return false;
     }
 
-    private bool OnKey(Keys key)
+    private bool OnKey(KeyDownNotification key)
     {
-        var button = _buttons.FirstOrDefault(b => KeyOf(b) == key);
-        if (button is not null)
+        var code = key.KeyCode;
+        _note = null;
+        if (key.CtrlKey)
         {
-            if (Editable || button.Label is "Fit" or "Snap") button.Press(this);
-            return true;
+            if (code == Keys.Z && !key.ShiftKey) { Apply(_session.Undo()); return true; }
+            if (code == Keys.Y || (code == Keys.Z && key.ShiftKey)) { Apply(_session.Redo()); return true; }
+            return false;
+        }
+        switch (code)
+        {
+            case Keys.F: _fitted = false; return true;
+            case Keys.S: _snap = !_snap; return true;
         }
         if (!Editable) return false;
-        switch (key)
+        switch (code)
         {
+            case Keys.V: Apply(_session.SetTool(SketchTool.Select)); return true;
+            case Keys.P: Apply(_session.SetTool(SketchTool.Point)); return true;
+            case Keys.L: Apply(_session.SetTool(SketchTool.Line)); return true;
+            case Keys.A: Apply(_session.SetTool(SketchTool.Polygon)); return true;
+            case Keys.M: Apply(_session.StartMove()); return true;
+            case Keys.H: Apply(_session.StartHole()); return true;
             case Keys.Enter: Apply(_session.Enter()); return true;
             case Keys.Escape: Apply(_session.Escape()); return true;
             case Keys.Back: Apply(_session.Backspace()); return true;
+            case Keys.Delete: Apply(_session.Delete()); return true;
         }
         return false;
     }
-
-    private static Keys KeyOf(Button b) => b.Key switch
-    {
-        "V" => Keys.V,
-        "P" => Keys.P,
-        "L" => Keys.L,
-        "A" => Keys.A,
-        "H" => Keys.H,
-        "S" => Keys.S,
-        "F" => Keys.F,
-        "Del" => Keys.Delete,
-        _ => Keys.None,
-    };
 
     private void Apply(SketchOutcome outcome)
     {

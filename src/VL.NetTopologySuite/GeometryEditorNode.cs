@@ -34,12 +34,15 @@ namespace VL.NetTopologySuite;
 // Live instances are listed in a static registry keyed by the node's UniqueId, which is how the
 // window (GeometryEditorWindowNode) finds the one selected in the patch editor.
 
-/// <summary>
 // The shortcut, Ctrl+Shift+W (W for WKT), was the third try on 2026-11-11: Alt+G opens Windows 11's
 // AI assistant before vvvv sees it, and Ctrl+Shift+G is vvvv's own "group nodes to a process node".
 // Checked against the Gray Book's reference/hde/keyboard-shortcuts.md (github vvvv/The-Gray-Book),
 // which lists Ctrl+Shift+ O P S E N D L G X T K F C and not W.
+// (This comment once sat INSIDE the /// summary below and cut it off: the node had no tooltip
+// summary from 2026-11-11 to 2026-11-12, and NodeDocsTests, which checks length and form, not
+// presence, passed. It now also fails on a public type with no summary.)
 
+/// <summary>
 /// A geometry you draw in the editor: select the node and press Ctrl+Shift+W.
 /// </summary>
 /// <remarks>
