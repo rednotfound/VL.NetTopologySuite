@@ -170,17 +170,22 @@ internal sealed class GeometryEditorLayer : ILayer
         var left = !target.IsEditable
             ? "Shown only: geometry with Z, nested collections and LINEARRING are not editable here."
             : HoveredReason() ?? _note ?? _session.HintText;
-        DrawStatus(canvas, left, StatusRight(target));
+        // The CRS name (from VL.PROJ's catalogue) can be long; when the right side would crowd the hint
+        // to a few words, the name goes and the code and units stay (seen 2026-11-12 with EPSG:2263).
+        var right = StatusRight(target, named: true);
+        using (var measure = new SKPaint { TextSize = 11.5f * _scaling })
+            if (measure.MeasureText(right) > _size.X * 0.5f) right = StatusRight(target, named: false);
+        DrawStatus(canvas, left, right);
         canvas.Restore();
     }
 
-    private string StatusRight(GeometryEditorNode target)
+    private string StatusRight(GeometryEditorNode target, bool named)
     {
         var at = MouseInGeometry;
         var step = _view.GridStep(40 * _scaling);
         var decimals = Math.Clamp((int)Math.Ceiling(-Math.Log10(step)) + 1, 0, 8);
         var f = "F" + decimals.ToString(CultureInfo.InvariantCulture);
-        var srid = CrsHints.Label(target.Srid);
+        var srid = CrsHints.Label(target.Srid, named);
         var degrees = CrsHints.UnitsOf(target.Srid) == CrsHints.Units.Degrees;
         var s = _session.Sketch;
         var type = target.IsEditable ? s.ToGeometry().GeometryType.ToUpperInvariant() : target.Geometry.GeometryType.ToUpperInvariant();
