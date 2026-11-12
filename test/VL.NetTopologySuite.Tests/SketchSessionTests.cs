@@ -279,6 +279,111 @@ public class SketchSessionTests
         Assert.Equal("POLYGON ((0 0, 9 0, 9 9, 0 9, 0 0))", s.Sketch.ToWKT());
     }
 
+    // ---- deleting a selected vertex (2026-11-12, the maintainer: "I can select a point and move
+    // it, but not delete it") --------------------------------------------------------------------
+
+    [Fact]
+    public void Clicking_a_vertex_selects_it_and_Delete_removes_only_that_vertex()
+    {
+        var s = With("POLYGON ((0 0, 2 0, 2 2, 0 2, 0 0))");
+        s.LeftDown(C(2, 2), Tol);
+        s.LeftUp();
+        Assert.Equal(new VertexRef(0, 0, 2), s.SelectedVertex);
+        Assert.Equal(SketchOutcome.Commit, s.Delete());
+        Assert.Equal("POLYGON ((0 0, 2 0, 0 2, 0 0))", s.Sketch.ToWKT());
+        Assert.Null(s.SelectedVertex);
+    }
+
+    [Fact]
+    public void Backspace_outside_drawing_deletes_the_selected_vertex_too()
+    {
+        var s = With("LINESTRING (0 0, 1 0, 2 0)");
+        s.LeftDown(C(1, 0), Tol);
+        s.LeftUp();
+        Assert.Equal(SketchOutcome.Commit, s.Backspace());
+        Assert.Equal("LINESTRING (0 0, 2 0)", s.Sketch.ToWKT());
+    }
+
+    [Fact]
+    public void Clicking_a_shape_s_body_selects_the_shape_not_a_vertex_and_Delete_removes_the_shape()
+    {
+        var s = With("MULTIPOLYGON (((0 0, 4 0, 4 4, 0 4, 0 0)), ((9 9, 10 9, 10 10, 9 9)))");
+        s.LeftDown(C(2, 2), Tol);
+        s.LeftUp();
+        Assert.Null(s.SelectedVertex);
+        Assert.Equal(0, s.SelectedPart);
+        s.Delete();
+        Assert.Equal("MULTIPOLYGON (((9 9, 10 9, 10 10, 9 9)))", s.Sketch.ToWKT());
+    }
+
+    [Fact]
+    public void Deleting_a_selected_vertex_of_a_triangle_removes_the_triangle()
+    {
+        var s = With("MULTIPOLYGON (((0 0, 2 0, 2 2, 0 0)), ((5 5, 6 5, 6 6, 5 5)))");
+        s.LeftDown(C(2, 0), Tol);
+        s.LeftUp();
+        s.Delete();
+        Assert.Equal("MULTIPOLYGON (((5 5, 6 5, 6 6, 5 5)))", s.Sketch.ToWKT());
+    }
+
+    [Fact]
+    public void Clicking_empty_space_clears_the_selection_and_Delete_then_does_nothing()
+    {
+        var s = With("POLYGON ((0 0, 2 0, 2 2, 0 0))");
+        s.LeftDown(C(2, 2), Tol);
+        s.LeftUp();
+        s.LeftDown(C(9, 9), Tol);
+        s.LeftUp();
+        Assert.Null(s.SelectedVertex);
+        Assert.Equal(SketchOutcome.None, s.Delete());
+        Assert.Equal("POLYGON ((0 0, 2 0, 2 2, 0 0))", s.Sketch.ToWKT());
+    }
+
+    [Fact]
+    public void A_dragged_vertex_stays_selected_and_can_be_deleted_after()
+    {
+        var s = With("POLYGON ((0 0, 2 0, 2 2, 0 2, 0 0))");
+        s.LeftDown(C(2, 2), Tol);
+        s.Move(C(3, 3));
+        s.LeftUp();
+        Assert.Equal(new VertexRef(0, 0, 2), s.SelectedVertex);
+        s.Delete();
+        Assert.Equal("POLYGON ((0 0, 2 0, 0 2, 0 0))", s.Sketch.ToWKT());
+    }
+
+    [Fact]
+    public void A_vertex_inserted_by_double_click_is_selected_so_one_Delete_takes_it_back()
+    {
+        var s = With("POLYGON ((0 0, 2 0, 2 2, 0 0))");
+        s.DoubleClick(C(1, 0.01), Tol);
+        Assert.Equal(new VertexRef(0, 0, 1), s.SelectedVertex);
+        s.Delete();
+        Assert.Equal("POLYGON ((0 0, 2 0, 2 2, 0 0))", s.Sketch.ToWKT());
+    }
+
+    [Fact]
+    public void A_selected_vertex_that_no_longer_exists_after_an_undo_is_dropped()
+    {
+        var s = With("POLYGON ((0 0, 2 0, 2 2, 0 2, 0 0))");
+        s.LeftDown(C(0, 2), Tol);
+        s.LeftUp();
+        Assert.Equal(new VertexRef(0, 0, 3), s.SelectedVertex);
+        Assert.True(GeometrySketch.TryFromWKT("POLYGON ((0 0, 2 0, 2 2, 0 0))", out var smaller));
+        s.Sync(smaller); // what Ctrl+Z in the patch looks like from here
+        Assert.Null(s.SelectedVertex);
+        Assert.Equal(SketchOutcome.Commit, s.Delete()); // the shape is still selected, so Delete takes it
+    }
+
+    [Fact]
+    public void Changing_tool_drops_the_selected_vertex()
+    {
+        var s = With("POLYGON ((0 0, 2 0, 2 2, 0 0))");
+        s.LeftDown(C(2, 2), Tol);
+        s.LeftUp();
+        s.SetTool(SketchTool.Line);
+        Assert.Null(s.SelectedVertex);
+    }
+
     [Fact]
     public void A_sketch_arriving_from_the_node_is_not_taken_mid_gesture()
     {

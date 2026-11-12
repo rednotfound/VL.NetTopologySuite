@@ -11,7 +11,8 @@ namespace VL.NetTopologySuite;
 // small toolbar):
 //
 //   Select   drag a vertex; double-click an edge to insert one; drag a part's body to move it;
-//            right-click a vertex to delete it; Delete removes the selected part
+//            click a vertex and Delete removes it, click a body and Delete removes the part;
+//            right-click a vertex deletes it too
 //   Point    every click adds a point part
 //   Line     click, click, ... ; double-click, Enter or right-click finishes; Esc cancels;
 //            Backspace takes the last vertex back
@@ -76,6 +77,13 @@ internal sealed class SketchSession
     /// <summary>The selected part, -1 when none.</summary>
     public int SelectedPart { get; private set; } = -1;
 
+    // A vertex selected by clicking it in Select (2026-11-12, the maintainer: "I can select a point
+    // and move it, but not delete it"). Delete/Backspace then remove THAT vertex, not the whole
+    // shape; only a shape selected by its body is deleted whole. The right-click delete stays.
+
+    /// <summary>The selected vertex, null when none (a shape may still be selected by its body).</summary>
+    public VertexRef? SelectedVertex { get; private set; }
+
     /// <summary>A short message for the status line, or null.</summary>
     public string? Hint { get; private set; }
 
@@ -96,13 +104,20 @@ internal sealed class SketchSession
         if (IsBusy || ReferenceEquals(sketch, _sketch)) return;
         _sketch = sketch;
         if (SelectedPart >= sketch.PartCount) SelectedPart = -1;
+        if (SelectedVertex is { } v && !Exists(sketch, v)) SelectedVertex = null; // e.g. after Ctrl+Z
     }
+
+    private static bool Exists(GeometrySketch s, VertexRef v)
+        => v.Part >= 0 && v.Part < s.PartCount
+        && v.Ring >= 0 && v.Ring < s.Part(v.Part).RingCount
+        && v.Index >= 0 && v.Index < s.Part(v.Part).VertexCount(v.Ring);
 
     /// <summary>Changes the tool, finishing a part being drawn.</summary>
     public SketchOutcome SetTool(SketchTool tool)
     {
         var outcome = _drawPart >= 0 ? Finish() : SketchOutcome.None;
         _tool = tool;
+        SelectedVertex = null;
         Hint = null;
         return outcome;
     }
@@ -182,6 +197,7 @@ internal sealed class SketchSession
         if (_sketch.NearestEdge(at, tolerance) is not { } e) return SketchOutcome.None;
         _sketch = _sketch.Insert(e, place ?? at);
         SelectedPart = e.Part;
+        SelectedVertex = e; // selected, so a mistaken insert is one Delete away
         return SketchOutcome.Commit;
     }
 
@@ -193,6 +209,7 @@ internal sealed class SketchSession
         if (_sketch.NearestVertex(at, tolerance) is not { } v) return SketchOutcome.None;
         _sketch = RemoveVertexKeepingKind(_sketch, v);
         if (SelectedPart >= _sketch.PartCount) SelectedPart = -1;
+        SelectedVertex = null;
         return SketchOutcome.Commit;
     }
 
@@ -212,10 +229,11 @@ internal sealed class SketchSession
             return SketchOutcome.Preview;
         }
         SelectedPart = -1;
+        SelectedVertex = null;
         return SketchOutcome.None;
     }
 
-    /// <summary>Backspace: takes the last vertex of the part being drawn back.</summary>
+    /// <summary>Backspace: takes the last vertex of the part being drawn back, or deletes like Delete.</summary>
     public SketchOutcome Backspace()
     {
         if (_drawPart >= 0)
@@ -228,12 +246,22 @@ internal sealed class SketchSession
         return Delete();
     }
 
-    /// <summary>Delete: removes the selected part.</summary>
+    /// <summary>Delete: removes the selected vertex, or, with only a shape selected, the whole shape.</summary>
     public SketchOutcome Delete()
     {
-        if (_drawPart >= 0 || SelectedPart < 0) return SketchOutcome.None;
+        if (_drawPart >= 0) return SketchOutcome.None;
+        if (SelectedVertex is { } v && Exists(_sketch, v))
+        {
+            // The same rule as the right-click: a ring left too small to be its kind goes along.
+            _sketch = RemoveVertexKeepingKind(_sketch, v);
+            SelectedVertex = null;
+            if (SelectedPart >= _sketch.PartCount) SelectedPart = -1;
+            return SketchOutcome.Commit;
+        }
+        if (SelectedPart < 0) return SketchOutcome.None;
         _sketch = _sketch.RemovePart(SelectedPart);
         SelectedPart = -1;
+        SelectedVertex = null;
         return SketchOutcome.Commit;
     }
 
@@ -247,10 +275,12 @@ internal sealed class SketchSession
         {
             _dragVertex = v;
             SelectedPart = v.Part;
+            SelectedVertex = v;
             return SketchOutcome.None;
         }
         var part = _sketch.PartAt(at, tolerance);
         SelectedPart = part;
+        SelectedVertex = null; // a shape's body, or empty space: no vertex is selected
         if (part >= 0)
         {
             _dragPart = part;

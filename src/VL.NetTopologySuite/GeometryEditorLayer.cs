@@ -148,7 +148,7 @@ internal sealed class GeometryEditorLayer : ILayer
 
     private static string HelpFor(SketchTool tool, bool drawing) => tool switch
     {
-        SketchTool.Select => "click to select · drag a vertex or a shape · double-click an edge to add a vertex · right-click a vertex to delete it · Del deletes the shape",
+        SketchTool.Select => "click to select · drag a vertex or a shape · double-click an edge to add a vertex · Del deletes the selected vertex, or the shape",
         SketchTool.Point => "click to add a point",
         SketchTool.Line when drawing => "click to add · double-click, Enter or right-click to finish · Backspace undoes a point · Esc cancels",
         SketchTool.Line => "click to start a line",
@@ -243,10 +243,16 @@ internal sealed class GeometryEditorLayer : ILayer
                 {
                     var c = _view.ToPixels(vertices[i], _size);
                     var isHovered = hovered is { } h && h.Part == p && h.Ring == ring && h.Index == i;
-                    fill.Color = isHovered ? Orange : SKColors.White;
-                    var radius = part.Kind == PartKind.Point ? r * 1.3f : r;
+                    var isSelected = _session.SelectedVertex is { } s && s.Part == p && s.Ring == ring && s.Index == i;
+                    fill.Color = isHovered || isSelected ? Orange : SKColors.White;
+                    var radius = (part.Kind == PartKind.Point ? r * 1.3f : r) * (isSelected ? 1.5f : 1f);
                     canvas.DrawCircle(c.X, c.Y, radius, fill);
                     canvas.DrawCircle(c.X, c.Y, radius, ringPaint);
+                    if (isSelected) // a white ring around it: the one Delete will remove
+                    {
+                        using var halo = new SKPaint { Color = SKColors.White, Style = SKPaintStyle.Stroke, StrokeWidth = 2 * _scaling, IsAntialias = true };
+                        canvas.DrawCircle(c.X, c.Y, radius + 3 * _scaling, halo);
+                    }
                 }
             }
         }
