@@ -925,15 +925,34 @@ Not editable, and shown read-only so nothing is lost:
   structure.
 - `LINEARRING`: an implementation type.
 
-`SketchSession` holds the tools as a state machine without Skia:
-- **Select** never adds geometry. It drags a vertex or a shape, double-clicks an edge to insert a
-  vertex, right-clicks a vertex to delete it, and Del deletes the selected shape.
-- **Point / Line / Polygon / Hole** draw. A part being drawn is previewed only. It is committed
-  when finished (double-click, Enter, right-click, clicking the first vertex, or switching tool),
-  so one stroke is one undo step and a half-drawn shape never reaches the document. A finished
-  part that is not its kind yet is discarded with a hint.
-- Deleting a vertex that would leave a ring below its kind removes the ring or the part, never
-  turns a polygon into a line.
+`SketchSession` holds the tools as a state machine without Skia. It was redesigned on 2026-11-12,
+after the maintainer moved a whole shape by accident while trying to add a point. The first Select
+tool decided between select, drag vertex, drag shape and insert by a few pixels of hit-testing.
+The rules now come from a survey of 15 editors (Mapbox GL Draw, iD, QGIS, ArcGIS, Leaflet-Geoman,
+OpenLayers, JOSM, Figma, Illustrator, Inkscape, Excalidraw, tldraw, draw.io, PowerPoint, Keynote),
+shown to the maintainer as a design page and approved:
+- **Select first, then edit.** Only the selected part shows its vertices and a "+" at the middle of
+  every edge. An unselected part cannot be reshaped by a stray press, and a press on its vertex only
+  selects it.
+- **"+" adds a point.** A click puts one at the midpoint and selects it; a drag pulls it out. A
+  double-click on an edge remains as the expert route.
+- **Moving a whole part is a mode.** The Move action (or M) enters it. Dragging moves the part,
+  with its old place drawn dashed. Done or Enter keeps the move; Cancel or Esc restores. Outside
+  that mode, dragging a body does nothing.
+- **A drag starts past 6 px** (JOSM uses 5 px, Excalidraw 10 px). A click never moves anything.
+- **Actions beside the selection.** `Actions()` gives Move · Hole · Delete, Delete point,
+  Done · Cancel, or Done · Back one point · Cancel. A disabled action carries its reason: a
+  triangle's point is refused ("needs at least 3 points"), rather than the 2026-11-11 rule of
+  quietly deleting the whole part.
+- **One hint line** (`HintText`) says what can be done now. The status bar adds x / y, the SRID,
+  the type and the point count.
+- **Undo / Redo in the window**, of every committed edit. A change from outside the window (typed
+  WKT, Ctrl+Z in the patch) starts the history again and clears the selection.
+- **Point / Line / Polygon / Hole** draw. A part being drawn is previewed only, and committed when
+  finished, so one stroke is one undo step. A finished line or polygon returns the tool to Select
+  with the part selected, as the maintainer chose. Point stays, for placing many. Hole is entered
+  from a selected polygon's Hole action.
+- **Dragging empty space pans**, like a web map.
 
 Hit-testing uses the real mouse position. New and moved vertices use the snapped one: with Snap
 on, hit-testing the snapped point missed everything. Model, session and view are covered by

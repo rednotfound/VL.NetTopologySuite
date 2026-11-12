@@ -497,7 +497,17 @@ The rules that matter when touching it:
 
 **`GeometryEditor`** (2026-11-11) is a geometry drawn by hand. The maintainer's reason: nobody should
 have to type WKT. Select the node, press **Ctrl+Shift+W**, and a window opens with a toolbar:
-Select V, Point P, Line L, Polygon A, Hole H, Snap S, Fit F, Delete. The window writes the drawing
+Select V, Point P, Line L, Polygon A | Undo, Redo | Snap S, Fit F. **Redesigned 2026-11-12 to be
+foolproof**, after the maintainer moved a whole shape while trying to add a point. The rules come
+from a survey of 15 map and vector editors:
+- Select first, then edit: vertices and a "+" at every edge's middle appear only on the selected
+  shape.
+- Moving a whole shape needs the Move action.
+- A drag needs 6 px.
+- An action bar sits beside the selection, and a disabled action says why.
+- A status bar shows the next step and the coordinates.
+
+All of it is in `SketchSession` and `SketchSessionTests`. The maintainer: "好很多了". The window writes the drawing
 back into the node's `WKT` pin, so the drawing is text in the `.vl`: saved with the patch, readable,
 and still typeable. In an exported app the node outputs what its pin says. The full design is in
 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#geometryeditor--drawing-in-a-window-of-the-editor).
@@ -535,9 +545,16 @@ What this cost, so it is not paid again:
   for every platform still landed in `bin\runtimes`. VL.Core moved from 2025.7.2 to 2025.7.4 with
   it, in the test project too.
 - **Hit-test at the real mouse, place at the snapped point.** With Snap on, nothing could be
-  selected, because the snapped point was hit-tested too. A single click on an edge in Select used
-  to insert a vertex ("in Select mode I can still draw"); inserting is now a double-click. Both are
-  tests in `SketchSessionTests`.
+  selected, because the snapped point was hit-tested too.
+- **One left button must not mean several things by a few pixels.** The first Select tool
+  selected, dragged a vertex, dragged the whole shape and (by double-click) inserted a point,
+  depending on where the press landed. Fixing one case at a time broke another: "in Select mode I
+  can still draw", then adding points was lost, then a whole shape moved by accident. The 2026-11-12
+  redesign separates them by state (select first), by handle ("+") and by mode (Move), as every
+  editor surveyed does. The design page is https://claude.ai/artifact/99NHSoZ7h2WKseabz6dFqH.
+- **A `//` comment pasted inside a `///` block drops the whole doc comment** as badly formed XML.
+  GeometryEditor had no tooltip summary for a day. `NodeDocsTests` now also fails on an exported
+  type with no summary.
 - The window needs no `vvvvc`-able document. The ladder is: tests (model, session, view) →
   `Test-VLPatch` → a probe in `scratch\` compiled by `vvvvc` → the GUI.
 

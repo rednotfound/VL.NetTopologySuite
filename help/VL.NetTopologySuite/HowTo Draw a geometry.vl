@@ -59,7 +59,7 @@
           </Pad>
           <Pad Id="DHyiGLw2iL0qcrl26GW7SC" Comment="" Bounds="60,220,240,170" ShowValueBox="true" isIOBox="true" />
           <Pad Id="Nrhqw4nGiYaezA6MRs4PFc" Comment="Is Editable" Bounds="340,220,35,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="ALg5dN8BMgRUZg9d70I7gl" Bounds="580,220,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Tools: Select V, Point P, Line L, Polygon A, Hole H. Snap S puts new points on the grid.">
+          <Pad Id="ALg5dN8BMgRUZg9d70I7gl" Bounds="580,220,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Click a shape, then drag its points or the + between them. Move, Hole and Delete appear beside it.">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
