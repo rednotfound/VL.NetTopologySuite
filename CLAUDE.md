@@ -431,7 +431,13 @@ The rules that matter when touching it:
 - **Three viewers.** `GeometryViewer` for every Geometry: `Outlines` sorts it into Rings, Lines and
   Points; all rings are folded into ONE path by a ForEach **accumulator** (a Top border point linked
   to a Bottom one with `IsFeedback="true"`, the pattern of VL.Skia's `HowTo Compose PathEffects`),
-  `SetFillType` EvenOdd cuts the holes, one `DrawPath` fills at 0.25 alpha and one strokes; lines
+  and one `DrawPath` strokes it. **The fill is `GeometryFill`** (`GeometryFillNode.cs`, hidden, since
+  2026-11-14): one EvenOdd path PER POLYGON at 0.25 alpha, so holes are cut and two polygons that
+  overlap read darker. Until then that one path was also filled EvenOdd, which cut the overlap of
+  separate polygons out like a hole - the maintainer saw A and B of a GeometryCollection drawn as if
+  a SymmetricDifference had been taken. Two traps on the way, both named by `vvvvc` on a probe
+  (the HDE log said nothing): VL.Skia's `Fill` outputs `SkiaPaint`, not `SKPaint`, so the node takes
+  a colour; and its output pin is `Result` (the fluent rule again). Lines
   are stroked; points become `Circle` markers with radius 2% of the bounds' larger side; all of it
   goes through `Group` and a `TransformSRT` into a `LayerWidget` (see the sticky view below).
   `PointViewer` for a lone Point draws a map pin (head, tip, white eye) at a fixed size, through
