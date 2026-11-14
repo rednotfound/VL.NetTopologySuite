@@ -1,4 +1,7 @@
-﻿using NetTopologySuite.Geometries;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using NetTopologySuite.Geometries;
 using VL.Core.Import;
 
 namespace VL.NetTopologySuite;
@@ -26,6 +29,9 @@ namespace VL.NetTopologySuite;
 // merely number it. Disjoint is still deliberately absent: it is Intersects with a Not after it,
 // and a node a patch can already build from two nodes is a help patch, not a node.
 //
+// Tier 2 (2026-11-14) adds Simplify and Union (Spread) here, and Translate, Rotate and Scale in
+// OperationNodes.Affine.cs - the same class, split by topic.
+//
 // Geometry-in, geometry-out nodes hand back what NTS builds and do not copy whole geometries. Some
 // NTS results share Coordinate objects with their input (ConvexHull's ring is made of the input's
 // own coordinate instances); that is safe here because every node that hands coordinates OUT
@@ -36,7 +42,7 @@ namespace VL.NetTopologySuite;
 /// Spatial operations: geometry in, geometry out.
 /// </summary>
 [Name("Operation")]
-public static class OperationNodes
+public static partial class OperationNodes
 {
     // ── Constructive ──────────────────────────────────────────────────────────
 
@@ -126,6 +132,66 @@ public static class OperationNodes
     /// </remarks>
     public static Geometry? Union(Geometry? a, Geometry? b)
         => a is null ? b : b is null ? a : a.Union(b);
+
+    // Tier 2, 2026-11-14. Many geometries merged at once - the parcels of a district into its
+    // outline, a spread of buffers into one area. NTS's UnaryUnionOp does it in one pass (cascaded,
+    // through an STRtree), where folding Union over the spread would redo the whole merged area
+    // for every item. The name follows VL's convention for the spread version of a two-input node.
+    //
+    // Nulls in the spread are skipped. An empty spread gives an empty GeometryCollection, never null:
+    // empty in, empty out, as everywhere in this package. Mixed SRIDs do not throw - the result
+    // takes the first geometry's factory, so SetSRID first if the spread came from different places.
+
+    /// <summary>
+    /// Merges a whole spread of geometries into one.
+    /// </summary>
+    /// <remarks>
+    /// Faster than chaining Union, and the same result: overlapping areas become one area.
+    /// An empty spread gives an empty geometry.
+    /// </remarks>
+    /// <param name="input">The geometries to merge. Missing ones are skipped.</param>
+    /// <returns>One geometry covering all of them.</returns>
+    [Name("Union (Spread)")]
+    public static Geometry UnionSpread(IEnumerable<Geometry?>? input)
+    {
+        var parts = input?.Where(g => g is not null).Cast<Geometry>().ToList();
+        if (parts is null || parts.Count == 0)
+            return Defaults.Factory.CreateGeometryCollection();
+        return global::NetTopologySuite.Operation.Union.UnaryUnionOp.Union(parts);
+    }
+
+    // Tier 2, 2026-11-14. Fewer vertices, same shape within a tolerance - a coastline cut down for
+    // drawing, a GPS track thinned out. One node with a switch, as Shapely's
+    // simplify(tolerance, preserve_topology=True) has, rather than PostGIS's two functions: one
+    // name to find, and the safe behaviour by default.
+    //
+    // Preserve Topology on: NTS's TopologyPreservingSimplifier. Rings never cross each other or
+    // themselves and no ring vanishes, so a polygon with holes stays valid with all its holes.
+    // Off: DouglasPeuckerSimplifier, faster and stronger - small rings and holes can disappear, and
+    // a polygon may come back as fewer parts.
+    //
+    // The tolerance is a distance in the geometry's own units, as Buffer's is: no vertex moves
+    // further than that from the original line. A negative tolerance is taken as 0 (NTS throws on
+    // it), and 0 leaves the shape as it is.
+
+    /// <summary>
+    /// Removes vertices that a tolerance says are not needed.
+    /// </summary>
+    /// <remarks>
+    /// The tolerance is in the geometry's own units, as for Buffer.
+    /// With Preserve Topology off it is faster, but holes and small parts can disappear.
+    /// </remarks>
+    /// <param name="geometry">The geometry to simplify.</param>
+    /// <param name="tolerance">How far the result may stray from the original, in coordinate units.</param>
+    /// <param name="preserveTopology">Keep every ring and hole, and keep rings from crossing.</param>
+    public static Geometry? Simplify(Geometry? geometry, double tolerance = 0, bool preserveTopology = true)
+    {
+        if (geometry is null) return null;
+        var t = Math.Max(0, tolerance);
+        return preserveTopology
+            ? global::NetTopologySuite.Simplify.TopologyPreservingSimplifier.Simplify(geometry, t)
+            : global::NetTopologySuite.Simplify.DouglasPeuckerSimplifier.Simplify(geometry, t);
+    }
 
     /// <summary>
     /// Returns what is left of A once B is cut out of it.

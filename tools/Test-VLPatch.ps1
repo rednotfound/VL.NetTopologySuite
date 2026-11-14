@@ -263,6 +263,43 @@ foreach ($file in $targets) {
         }
     }
 
+    # LAYOUT, measured from the maintainer's hand edits (2026-11-14). Twenty patches were compared
+    # before and after the maintainer re-arranged them in vvvv (commits 65d8118, 6ce539c, f3c0b36,
+    # 7188671): every link that ran UPWARD was turned downward (1-7 per patch before, 0 after), and
+    # every drawn result in the old far column (x = 940, 880-1160 px from its node) was brought next
+    # to the node that makes it (200-400 px). Calibrated against the patches as they are now: none of
+    # the maintainer's arrangements trips either check (the most upward link is 19 px, a box beside
+    # its node on the same row). Warnings, like the label check: a generated patch should show none,
+    # and a hand-arranged one is the maintainer's call.
+    try { $layoutDoc = [xml]($raw.TrimStart([char]0xFEFF)) } catch { $layoutDoc = $null }
+    # Help patches only: the HDE document's accumulator loops back upward by design (IsFeedback).
+    if ($layoutDoc -and $rel -like 'help\*') {
+        $owner = @{}
+        foreach ($e in $layoutDoc.SelectNodes('//*[local-name()="Node" or local-name()="Pad" or local-name()="ControlPoint"]')) {
+            $bb = "$($e.Bounds)" -split ','
+            if ($bb.Count -lt 2 -or -not $e.Id) { continue }
+            $w = if ($bb.Count -ge 4) { [double]$bb[2] } else { 0 }; $h = if ($bb.Count -ge 4) { [double]$bb[3] } else { 0 }
+            $el = [pscustomobject]@{ Id = $e.Id; Kind = $e.LocalName; X = [double]$bb[0]; Y = [double]$bb[1]; W = $w; H = $h
+                Drawn = ($e.LocalName -eq 'Pad' -and -not $e.GetAttribute('Value') -and $h -ge 60) }
+            $owner[$e.Id] = $el
+            foreach ($p in $e.SelectNodes('./*[local-name()="Pin"]')) { $owner[$p.Id] = $el }
+        }
+        foreach ($l in $layoutDoc.SelectNodes('//*[local-name()="Link"]')) {
+            $ids = $l.Ids -split ','
+            $src = $owner[$ids[0]]; $dst = $owner[$ids[-1]]
+            if (-not $src -or -not $dst -or $src.Id -eq $dst.Id) { continue }
+            $rise = ($src.Y + $src.H) - $dst.Y
+            if ($rise -gt 20) {
+                Write-Host ("  warn  layout: a link runs {0} px UPWARD, from the {1} at {2},{3} to the {4} at {5},{6} - data flows down" -f
+                    [int]$rise, $src.Kind, $src.X, $src.Y, $dst.Kind, $dst.X, $dst.Y) -ForegroundColor DarkYellow
+            }
+            if ($dst.Drawn -and ([math]::Abs($dst.X - $src.X) -gt 300 -or ($dst.Y - ($src.Y + $src.H)) -gt 300)) {
+                Write-Host ("  warn  layout: the drawn IOBox at {0},{1} is far from the {2} at {3},{4} that feeds it - put the result beside its node" -f
+                    $dst.X, $dst.Y, $src.Kind, $src.X, $src.Y) -ForegroundColor DarkYellow
+            }
+        }
+    }
+
     # An annotation Pad whose text does not FIT its box overflows onto the canvas and lands on top
     # of the nodes and labels underneath. `Bounds` is not a clip rectangle. Found by opening a patch
     # and seeing a note spill across three other labels; nothing static complained, because to every
@@ -397,6 +434,7 @@ if (-not $Path) {
         'NetTopologySuite.Operation|Distance', 'NetTopologySuite.Operation|Nearest Points', 'NetTopologySuite.Operation|Intersects', 'NetTopologySuite.Operation|Contains', 'NetTopologySuite.Operation|Within',
         'NetTopologySuite.Operation|SymmetricDifference', 'NetTopologySuite.Operation|ConvexHull', 'NetTopologySuite.Operation|Reverse', 'NetTopologySuite.Operation|IsWithinDistance',
         'NetTopologySuite.Operation|Touches', 'NetTopologySuite.Operation|Crosses', 'NetTopologySuite.Operation|Overlaps', 'NetTopologySuite.Operation|Covers', 'NetTopologySuite.Operation|CoveredBy', 'NetTopologySuite.Operation|Relate',
+        'NetTopologySuite.Operation|Simplify', 'NetTopologySuite.Operation|Union (Spread)', 'NetTopologySuite.Operation|Translate', 'NetTopologySuite.Operation|Rotate', 'NetTopologySuite.Operation|Scale',
         'NetTopologySuite.Index|SpatialIndex', 'NetTopologySuite.Index|Query', 'NetTopologySuite.Network|Network', 'NetTopologySuite.Network|ShortestPath')
     # The table above is written by hand, so a node added to the package and not to the table was
     # invisible to this audit: "56 of 56" while seven new shape nodes sat in the tree (2026-11-08).

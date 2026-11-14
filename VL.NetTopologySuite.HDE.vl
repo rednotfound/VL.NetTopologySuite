@@ -226,22 +226,6 @@
               </Pin>
               <Pin Id="PaZKa5iZTgBC51FOG4ocJa" Name="Output" Kind="OutputPin" />
             </Node>
-            <Node Bounds="400,100,45,19" Id="POoDUmo38NIvBo6rofiZZ8">
-              <p:NodeReference LastCategoryFullName="Graphics.Skia.Paint" LastDependency="VL.Skia.vl">
-                <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-                <Choice Kind="ProcessAppFlag" Name="Fill" />
-                <PinReference Kind="InputPin" Name="Color" />
-              </p:NodeReference>
-              <Pin Id="QaZQWG2TQIUxN6TGYNTRFW" Name="Node Context" Kind="InputPin" IsHidden="true" />
-              <Pin Id="LJuKxcHgqL8rNZcsPPaJxT" Name="Input" Kind="InputPin" />
-              <Pin Id="BUtiG4lIDSAHTaNZ1egcHh" Name="Color" Kind="InputPin" DefaultValue="0.2, 0.53, 1, 0.25">
-                <p:TypeAnnotation LastCategoryFullName="Color" LastDependency="CoreLibBasics.vl">
-                  <Choice Kind="TypeFlag" Name="RGBA" />
-                </p:TypeAnnotation>
-              </Pin>
-              <Pin Id="KqN8NMyEsKUmn4msCAiJnj" Name="Shader" Kind="InputPin" />
-              <Pin Id="CvI31I664UMRjdcW8eIQCX" Name="Output" Kind="OutputPin" />
-            </Node>
             <Node Bounds="400,140,105,19" Id="MyQvOhVv95umu0aROtvssd">
               <p:NodeReference LastCategoryFullName="Graphics.Skia.Paint" LastDependency="VL.Skia.vl">
                 <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
@@ -410,16 +394,19 @@
               </Pin>
               <Pin Id="OdOIHQMdE0FeJcGLjLfk2t" Name="Output" Kind="OutputPin" />
             </Node>
-            <Node Bounds="100,560,70,19" Id="P5WtLBADz4UTOCb3QQ2xp1">
-              <p:NodeReference LastCategoryFullName="Graphics.Skia.Layers" LastDependency="VL.Skia.vl">
+            <Node Bounds="100,560,90,19" Id="VWENtkkWiKtU6ISR4Jhz3P">
+              <p:NodeReference LastCategoryFullName="NetTopologySuite.Viewer" LastDependency="VL.NetTopologySuite.vl">
                 <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
-                <Choice Kind="ProcessAppFlag" Name="DrawPath" />
+                <Choice Kind="ProcessAppFlag" Name="GeometryFill" />
               </p:NodeReference>
-              <Pin Id="RtHm6x1P8RpyVqL7Z4d6IU" Name="Node Context" Kind="InputPin" IsHidden="true" />
-              <Pin Id="IgknQQgNPBmtBNgw2P1yT2" Name="Path" Kind="InputPin" />
-              <Pin Id="AFlQwXAEgxtlO5byXdC4qS" Name="Paint" Kind="InputPin" />
-              <Pin Id="Gug1M8WyAox0ixBSUaNUzg" Name="Enabled" Kind="InputPin" />
-              <Pin Id="OjheWytte3GY7DGHt6QihT" Name="Output" Kind="OutputPin" />
+              <Pin Id="MLufG4SXrH0VGvXQXztijv" Name="Node Context" Kind="InputPin" IsHidden="true" />
+              <Pin Id="VakKzT6zlN2fEYpDSlKZg1" Name="Geometry" Kind="InputPin" />
+              <Pin Id="GA0zexftZFf0ERKoqkbdJz" Name="Color" Kind="InputPin" DefaultValue="0.2, 0.53, 1, 0.25">
+                <p:TypeAnnotation LastCategoryFullName="Color" LastDependency="CoreLibBasics.vl">
+                  <Choice Kind="TypeFlag" Name="RGBA" />
+                </p:TypeAnnotation>
+              </Pin>
+              <Pin Id="LBd1q8yjNjJdAkIjyaCLB8" Name="Result" Kind="OutputPin" />
             </Node>
             <Node Bounds="200,560,70,19" Id="EDaHrwuC7xGDBFjBSkyj2y">
               <p:NodeReference LastCategoryFullName="Graphics.Skia.Layers" LastDependency="VL.Skia.vl">
@@ -868,9 +855,8 @@
           <Link Id="OkSapTk0Gno1lggHkE5Fi4" Ids="Ed9wERjVWhq5mbkpdecsen,BJw0R9RAk9U2uyDlDVBOHs" />
           <Link Id="TtRAZadjHd39vngDHHtewM" Ids="SWyORSeOzLVcjyf9D89Gg8,BJw0R9RAk9U2uyDlDVBOHs" IsFeedback="true" />
           <Link Id="MgX16g0mE2JdO5R4pdl91B" Ids="BJw0R9RAk9U2uyDlDVBOHs,JLLzlxdWUAVeYsBm8yz5K7" />
-          <Link Id="Go1EhA9OHzFDAVFmLVw7NA" Ids="OdOIHQMdE0FeJcGLjLfk2t,IgknQQgNPBmtBNgw2P1yT2" />
+          <Link Id="DytDKJR7qX8eoeo4jxpWJA" Ids="UeMfKMqJRb3fzfGb8jwwcM,VakKzT6zlN2fEYpDSlKZg1" />
           <Link Id="DVSLj4K6GM6ixYlLS0qV8F" Ids="OdOIHQMdE0FeJcGLjLfk2t,Itqu2wkxitU5ciWRRWKAIL" />
-          <Link Id="VxbX9EBpePbJlZFMUzL33M" Ids="CvI31I664UMRjdcW8eIQCX,AFlQwXAEgxtlO5byXdC4qS" />
           <Link Id="OYScuaC4o9mpTq7kbC6D6v" Ids="OUxvnWxWQbahb3spxmqnkV,EJY9p0t3JgHbIwDPQ7een2" />
           <Link Id="UDDBFY4bvYAg8TE3Cfsnis" Ids="QXnSH9GLEuKhsvrM0LhXk5,Ix98vfLJBl82UTO26RXncT" />
           <Link Id="KU5ypcLwXudSeT4lSTV3bD" Ids="TkZGQLoY2w98qObIumFCVs,C8I4UMOEpWkqsIXVcwYv6k" />
@@ -898,7 +884,7 @@
           <Link Id="TEqe02GUaihC40WRCd3C8M" Ids="D8FLIddy2vWh5upWpuN3y0,Kg1am5Y6Xh0iA6GLPszyCE" />
           <Link Id="U4rMc554STE3L3yUGmx647" Ids="NGWOxdJwhUAE5V1plyygRN,PDexG0kHRCHjInISF72bl4" />
           <Link Id="IzbeX4YYGv01WAVTPewtEg" Ids="PDexG0kHRCHjInISF72bl4,SvDPXmA0ai0jUyX049AaHU" />
-          <Link Id="LjwlHrW5pQWp1Npm55muja" Ids="OjheWytte3GY7DGHt6QihT,ABcqrSOQKVRcPyW38uyWMN" />
+          <Link Id="NoqwXpwYr2yvNHTJAqkSZx" Ids="LBd1q8yjNjJdAkIjyaCLB8,ABcqrSOQKVRcPyW38uyWMN" />
           <Link Id="G5khoBfPSerWaVXyw3zKHc" Ids="MwkRNLxEjYaDCLExRzAjmq,EUsr13VjyMFXcbvFuo0Z76" />
           <Link Id="BJ7k8gVwR3f2K8Kd9aGyoQ" Ids="RO1ieudrWoPu4lk3CCe0tb,IWPfV0sHlwwrZN5xzu8NpC" />
           <Link Id="FarlPXdHuJ6pPiolVuQ5ox" Ids="N4kk1dRmI0td578YyLkcVm,Hc9lxRmMKfnfnCm635Zc3v" />
