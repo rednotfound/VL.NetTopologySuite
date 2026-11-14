@@ -147,7 +147,7 @@ internal sealed class GeometryEditorLayer : ILayer
         {
             var g = target?.Geometry;
             var degrees = target is not null && CrsHints.UnitsOf(target.Srid) == CrsHints.Units.Degrees;
-            _view = SketchView.Fit(g is null || g.IsEmpty ? null : g.EnvelopeInternal, new Vector2(_size.X, _size.Y - (ToolbarHeight + StatusHeight) * _scaling), degrees);
+            _view = SketchView.Fit(g is null || g.IsEmpty ? null : g.EnvelopeInternal, new Vector2(_size.X, _size.Y - TopBar - StatusHeight * _scaling), degrees);
             _fittedSrid = target?.Srid ?? 0;
             _fitted = true;
         }
@@ -175,7 +175,7 @@ internal sealed class GeometryEditorLayer : ILayer
 
         var left = !target.IsEditable
             ? "Shown only: geometry with Z, nested collections and LINEARRING are not editable here."
-            : HoveredReason() ?? _note ?? HoveredKey() ?? _session.HintText;
+            : HoveredReason() ?? _note ?? _session.HintText;
         // The CRS name (from VL.PROJ's catalogue) can be long; when the right side would crowd the hint
         // to a few words, the name goes and the code and units stay (seen 2026-11-12 with EPSG:2263).
         var right = StatusRight(target, named: true);
@@ -394,24 +394,49 @@ internal sealed class GeometryEditorLayer : ILayer
     // ---- toolbar, action bar, status bar ----------------------------------------------------
 
     // Ten buttons with their key letters need about 700 px; the window docked beside a patch is
-    // often 600 (2026-11-14, after Rectangle and Circle joined). Too narrow: the letters go, and a
-    // hovered button names its key in the status bar instead.
-    private bool _hideKeys;
+    // often 600 (2026-11-14, after Rectangle and Circle joined). The letters stay (the maintainer:
+    // hiding them lost the shortcuts); a group that does not fit moves to a second row, and the
+    // canvas starts below however many rows there are.
+    private int _toolbarRows = 1;
+
+    private float TopBar => ToolbarHeight * _toolbarRows * _scaling;
+
+    private static readonly int[] GroupStarts = { 0, 6, 8 }; // tools | history | view
 
     private void DrawToolbar(SKCanvas canvas)
     {
-        using (var measure = new SKPaint { TextSize = 12 * _scaling })
-        using (var keys = new SKPaint { TextSize = 10 * _scaling })
-        {
-            var needed = 8 * _scaling + 20 * _scaling + _toolbar.Sum(b => measure.MeasureText(b.Label) + keys.MeasureText(b.Key) + 6 * _scaling + 18 * _scaling + 5 * _scaling);
-            _hideKeys = needed > _size.X - 8 * _scaling;
-        }
         var x = 8 * _scaling;
-        for (var i = 0; i < _toolbar.Count; i++)
+        var row = 0;
+        for (var g = 0; g < GroupStarts.Length; g++)
         {
-            if (i is 6 or 8) x += 10 * _scaling; // groups: tools | history | view
-            x = DrawButton(canvas, _toolbar[i], x, 6 * _scaling) + 5 * _scaling;
+            var end = g + 1 < GroupStarts.Length ? GroupStarts[g + 1] : _toolbar.Count;
+            var groupWidth = 0f;
+            for (var i = GroupStarts[g]; i < end; i++) groupWidth += ButtonWidth(_toolbar[i]) + 5 * _scaling;
+            if (g > 0) x += 10 * _scaling;
+            if (x > 8 * _scaling && x + groupWidth > _size.X - 8 * _scaling)
+            {
+                row++;
+                x = 8 * _scaling;
+            }
+            for (var i = GroupStarts[g]; i < end; i++)
+            {
+                if (x > 8 * _scaling && x + ButtonWidth(_toolbar[i]) > _size.X - 8 * _scaling)
+                {
+                    row++; // even one group is wider than the window
+                    x = 8 * _scaling;
+                }
+                x = DrawButton(canvas, _toolbar[i], x, (6 + ToolbarHeight * row) * _scaling) + 5 * _scaling;
+            }
         }
+        _toolbarRows = row + 1;
+    }
+
+    private float ButtonWidth(Button b)
+    {
+        using var text = new SKPaint { TextSize = 12 * _scaling };
+        using var keyText = new SKPaint { TextSize = 10 * _scaling };
+        var keyWidth = b.Key.Length > 0 ? keyText.MeasureText(b.Key) + 6 * _scaling : 0;
+        return text.MeasureText(b.Label) + keyWidth + 18 * _scaling;
     }
 
     private void DrawActionBar(SKCanvas canvas)
@@ -436,9 +461,9 @@ internal sealed class GeometryEditorLayer : ILayer
         var h = (ToolbarHeight - 8) * _scaling;
         var box = AnchorBox();
         var x = box is { } bb ? bb.Right + 10 * _scaling : _size.X - width - 10 * _scaling;
-        var y = box is { } bt ? bt.Top - h - 10 * _scaling : (ToolbarHeight + 8) * _scaling;
+        var y = box is { } bt ? bt.Top - h - 10 * _scaling : TopBar + 8 * _scaling;
         x = Math.Clamp(x, 8 * _scaling, Math.Max(8 * _scaling, _size.X - width - 8 * _scaling));
-        y = Math.Clamp(y, (ToolbarHeight + 6) * _scaling, Math.Max((ToolbarHeight + 6) * _scaling, _size.Y - (StatusHeight + 8) * _scaling - h - 8 * _scaling));
+        y = Math.Clamp(y, TopBar + 6 * _scaling, Math.Max(TopBar + 6 * _scaling, _size.Y - (StatusHeight + 8) * _scaling - h - 8 * _scaling));
 
         using var back = new SKPaint { Color = new SKColor(0x2e, 0x2e, 0x2e), Style = SKPaintStyle.Fill, IsAntialias = true };
         canvas.DrawRoundRect(new SKRect(x - 4 * _scaling, y - 4 * _scaling, x + width, y + h + 4 * _scaling), 7 * _scaling, 7 * _scaling, back);
@@ -466,7 +491,7 @@ internal sealed class GeometryEditorLayer : ILayer
         using var fill = new SKPaint { Style = SKPaintStyle.Fill, IsAntialias = true };
         var enabled = b.IsEnabled(this);
         var h = (ToolbarHeight - 8) * _scaling;
-        var key = _hideKeys ? "" : b.Key;
+        var key = b.Key;
         var keyWidth = key.Length > 0 ? keyText.MeasureText(key) + 6 * _scaling : 0;
         var w = text.MeasureText(b.Label) + keyWidth + 18 * _scaling;
         b.Rect = new SKRect(x, y, x + w, y + h);
@@ -495,9 +520,6 @@ internal sealed class GeometryEditorLayer : ILayer
         canvas.Restore();
         if (right.Length > 0) canvas.DrawText(right, _size.X - rightWidth - 10 * _scaling, baseline, rightPaint);
     }
-
-    private string? HoveredKey()
-        => _hideKeys ? _toolbar.FirstOrDefault(b => b.Key.Length > 0 && b.Rect.Contains(_mouse.X, _mouse.Y)) is { } b ? $"{b.Label} ({b.Key})" : null : null;
 
     private string? HoveredReason()
         => _actionBar.Concat(_toolbar).FirstOrDefault(b => b.Rect.Contains(_mouse.X, _mouse.Y) && !b.IsEnabled(this))?.Reason(this);
@@ -531,7 +553,7 @@ internal sealed class GeometryEditorLayer : ILayer
         return c.X.ToString(f, CultureInfo.InvariantCulture) + ", " + c.Y.ToString(f, CultureInfo.InvariantCulture);
     }
 
-    private bool OverUi => _mouse.Y < ToolbarHeight * _scaling || _mouse.Y > _size.Y - StatusHeight * _scaling
+    private bool OverUi => _mouse.Y < TopBar || _mouse.Y > _size.Y - StatusHeight * _scaling
                            || _actionBar.Any(b => b.Rect.Contains(_mouse.X, _mouse.Y));
 
     // In Select, nothing pressed: the part a click would select, for its hover highlight.

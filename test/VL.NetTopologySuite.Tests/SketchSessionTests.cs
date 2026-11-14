@@ -469,13 +469,18 @@ public class SketchSessionTests
     // ---- drawing -----------------------------------------------------------------------------
 
     [Fact]
-    public void The_point_tool_commits_every_click_and_stays_for_the_next()
+    public void The_point_tool_places_one_point_and_goes_back_to_Select_like_the_others()
     {
+        // The maintainer, 2026-11-14: placing point after point was too easy to misclick.
         var s = new SketchSession();
         s.SetTool(SketchTool.Point);
         Assert.Equal(SketchOutcome.Commit, Click(s, 1, 1));
-        Assert.Equal(SketchOutcome.Commit, Click(s, 2, 2));
-        Assert.Equal(SketchTool.Point, s.Tool);
+        Assert.Equal(SketchTool.Select, s.Tool);
+        Assert.Equal(0, s.SelectedPart);
+        Assert.Equal(SketchOutcome.None, Click(s, 2, 2)); // a second click places nothing
+        Assert.Equal("POINT (1 1)", s.Sketch.ToWKT());
+        s.SetTool(SketchTool.Point);
+        Click(s, 2, 2);
         Assert.Equal("MULTIPOINT ((1 1), (2 2))", s.Sketch.ToWKT());
     }
 

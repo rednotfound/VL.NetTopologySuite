@@ -513,7 +513,10 @@ from a survey of 15 map and vector editors:
   - Rectangle and Circle are drags. On lon/lat a circle is round on screen, so it is an ellipse in degrees.
   - Space held with a left drag pans, because a touchpad has no right drag.
   - A hole that leaves its polygon or overlaps another hole is refused while it is drawn.
-  - A narrow window drops the toolbar's key letters.
+  - A narrow window wraps the toolbar onto a second row. Hiding the key letters was tried first,
+    and the maintainer rejected it: the shortcuts were gone.
+  - Point places one point and goes back to Select, like every other tool. Until 2026-11-14 it kept
+    placing, and the maintainer found it too easy to misclick.
 
 All of it is in `SketchSession` and `SketchSessionTests`. The maintainer: "好很多了". The window writes the drawing
 back into the node's `WKT` pin, so the drawing is text in the `.vl`: saved with the patch, readable,

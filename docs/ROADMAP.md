@@ -61,6 +61,7 @@ Small follow-ups for the editor. Done 2026-11-14 except the first, which needs t
 - The drawn shapes as tools: Rectangle R and Circle C, each a drag.
 - Holes are checked when drawn: inside the shell, not over another hole.
 - Panning on a touchpad: Space + left drag.
+- Point places one point and returns to Select. A narrow window wraps the toolbar, and the key letters stay.
 
 ## Before that: 0.0.5-alpha on nuget.org, 0.0.6-alpha in the tree
 

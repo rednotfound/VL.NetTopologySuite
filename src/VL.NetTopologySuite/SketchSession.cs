@@ -30,7 +30,8 @@ namespace VL.NetTopologySuite;
 //   7. Undo / Redo of every committed edit, in the window itself.
 //
 // Decisions the maintainer took on the design page: after finishing a line or polygon the tool goes
-// back to Select with the new part selected (Point stays, for placing many); dragging empty space
+// back to Select with the new part selected - Point too since 2026-11-14 (the maintainer: placing
+// point after point by default was too far from the other tools and too easy to misclick); dragging empty space
 // pans the view; dragging a selected part's body does NOT move it.
 //
 // A part being drawn is only previewed and committed when finished, so one stroke is one undo step
@@ -273,7 +274,9 @@ internal sealed class SketchSession
             case SketchTool.Point:
                 _press = Press.None;
                 _sketch = _sketch.AddPart(PartKind.Point, Snapped(at, place, tolerance));
+                _tool = SketchTool.Select; // one point, like every other tool; P again for the next
                 SelectedPart = _sketch.PartCount - 1;
+                SelectedVertex = null;
                 return Committed();
 
             case SketchTool.Rectangle or SketchTool.Circle:
@@ -822,7 +825,7 @@ internal sealed class SketchSession
             }
             return _tool switch
             {
-                SketchTool.Point => "Click to place a point · V to select",
+                SketchTool.Point => "Click to place a point · Esc or V to select",
                 SketchTool.Line => "Click to start a line",
                 SketchTool.Polygon => "Click to start a polygon",
                 SketchTool.Rectangle => "Drag from one corner to the other · Esc cancels",
