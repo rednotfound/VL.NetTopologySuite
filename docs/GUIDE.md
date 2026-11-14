@@ -1,0 +1,449 @@
+# VL.NetTopologySuite — the guide
+
+The long read: how the package thinks, what will bite you, what is verified and how, and how it is
+built. The short one is the [README](../README.md).
+
+**NetTopologySuite made natural inside [vvvv gamma](https://vvvv.org).** Not another GIS framework.
+
+> **Status: `0.0.8-alpha` — a prerelease, early, and it works.**
+> 84 nodes in six categories, 461 tests, 23 help patches, every node opens one on **F1**. Every
+> category has been seen running in vvvv gamma 7.4 and every help patch in the editor. New in
+> `0.0.8-alpha`: **the common operations a geometry library is expected to have** - `Simplify`,
+> `Union (Spread)`, `Translate` / `Rotate` / `Scale`, a point moving along a line with `Interpolate`
+> (feed it an LFO), `Substring`, `Locate`, `Densify`, `MakeValid`, `ConcaveHull`,
+> `MinimumBoundingCircle`, `RandomPoints` with a seed, `Vertices`, and WKB (`FromWKB` / `ToWKB`, with
+> the hex text PostGIS prints). No node fails on a self-crossing polygon, a mixed collection or a
+> half-built spread any more. From `0.0.7-alpha`: **`GeometryEditor`, a geometry drawn by hand** - select the node, press
+> **Ctrl+Shift+W**, and draw points, lines, polygons with holes, rectangles and circles in a window;
+> the drawing is written into the node's `WKT` pin and saved with the patch. And **`SetSRID`**, which
+> says which coordinate system the numbers are in and moves nothing; with SRID 4326 the editor and
+> the drawn IOBox show longitude and latitude at their true proportions. Moving coordinates from one
+> system to another is the job of [VL.PROJ](https://github.com/rednotfound/VL.PROJ)'s `Reproject`.
+>
+> **Since 2026-11-07 a Geometry draws itself in the editor**, the way a GIS draws it: hover any
+> Geometry pin, or make an IOBox of one, and you see a polygon filled semi-transparently with its
+> holes cut out, a line stroked, points as markers and a lone point as a map pin, instead of an
+> object listing; a Feature shows its geometry with every attribute listed under it. No Renderer in
+> the patch. Since `0.0.6-alpha` an IOBox keeps its view while you edit it, so a wider rectangle
+> looks wider and a bigger circle bigger, over a dot grid with a label such as `4 × 2 · grid 1`. It comes from `VL.NetTopologySuite.HDE.vl`, an
+> editor-only companion that registers viewers with vvvv the way VL.Stride and VL.Fuse do; see
+> [docs/ARCHITECTURE.md](ARCHITECTURE.md#drawing-without-a-renderer--the-hde-companion). The table below says
+> exactly what has been shown; the release process and its rules are in
+> [docs/RELEASE.md](RELEASE.md).
+>
+> **[Install and your first geometry](#install-and-your-first-geometry)** is three steps below.
+
+---
+
+## Install and your first geometry
+
+VL.NetTopologySuite is listed at [vvvv.org/packs](https://vvvv.org/packs) and on
+[nuget.org](https://www.nuget.org/packages/VL.NetTopologySuite). Verified in vvvv gamma **7.4**.
+
+**1. Install.** In vvvv gamma 7.x: Quad menu → **Manage Nugets → Commandline**, then
+
+```
+nuget install VL.NetTopologySuite -pre
+```
+
+`-pre` is needed because every version so far is a prerelease; the version moves in step with
+[VL.Mapsui](https://github.com/rednotfound/VL.Mapsui) and the rest of the family. The install
+brings NetTopologySuite 2.6.0 and NetTopologySuite.Features 2.1.0 along — every node here names a
+type from one of them. vvvv gamma 8.0 previews also have **Packman** (Ctrl+F3: Browse → the pack →
+Add, which installs and references it in one step); that path has not been tried with this
+package, and its announcement does not say whether prereleases are listed — if the package does
+not show up there, use the command line above.
+
+**2. See it work.** Press **F1** with nothing selected to open the Help Browser, go to **Learn**
+and find VL.NetTopologySuite. Start with `Explanation Overview of available nodes`, then
+`HowTo Create points, lines and polygons`: two numbers become a `Coordinate` and a `Point`,
+a run of them a `LineString`, four corners a `Polygon`. Every node opens its own help patch with **F1**.
+
+**3. Use it in your own patch.** Installing does not reference a package by itself. In your
+document: **Document menu → Dependencies → NuGets**, right-click **VL.NetTopologySuite** to
+reference it. Then double-click the canvas and type a node name — they are in the `NetTopologySuite`
+categories below. The smallest chain is three nodes and an IOBox:
+
+```
+Coordinate (X, Y)  →  Point  →  ToWKT  →  an IOBox showing POINT (139.7671 35.6812)
+```
+
+From there, `FromWKT` turns any text into geometry, `Buffer` grows it, `Area` measures it, and
+`HowTo Buffer a geometry` shows the four wired together. Coordinates go X first: longitude, then
+latitude.
+
+**4. Updating to a newer version.** Releases are frequent while the package is alpha. Run the same
+command again:
+
+```
+nuget install VL.NetTopologySuite -pre
+```
+
+The nugets folder then holds both versions, and vvvv uses the newest one it finds the next time it
+starts — so close and reopen vvvv, then check **Document menu → Dependencies → NuGets**, which
+shows the version actually loaded. Two things to know:
+
+- **Within about 30 minutes of a release the command can silently do nothing**: NuGet caches each
+  package's version list for 30 minutes, so a list fetched before the release still says the old
+  version is the latest, and the install reports it as already present. Either wait, or ask for the
+  version by name, `nuget install VL.NetTopologySuite -version 0.0.8-alpha`, or delete the one
+  cache file `list_vl.nettopologysuite_index.dat` under `%LOCALAPPDATA%\NuGet\v3-cache` — it is
+  only a cache. (Measured on 2026-10-17, an hour after a release.)
+- **What changed between versions** is in the release notes on the
+  [nuget.org page](https://www.nuget.org/packages/VL.NetTopologySuite) and in
+  [the tags on GitHub](https://github.com/rednotfound/VL.NetTopologySuite/tags). Node names and
+  categories have been stable since `0.0.2-alpha`; before that, the nodes lived under `NTS.*`.
+
+---
+
+## The mental model
+
+```text
+Coordinates
+    ↓
+Geometry
+    ↓
+Spatial operation
+    ↓
+Geometry
+```
+
+Every node hands back a **native NetTopologySuite type** — `Point`, `LineString`, `Polygon`,
+`Geometry` — never a wrapper of our own. So the output of any operation is the input to the next
+one, and a geometry made here goes straight into anything else that speaks NTS:
+
+```text
+VL.NetTopologySuite
+        ↓
+   NTS Geometry
+        ↓
+other packages, such as VL.Mapsui
+```
+
+This package depends on nothing of ours. VL.Mapsui and VL.NetTopologySuite.GeoJSON depend on it —
+so that their help patches, which open features with `Split` and `GetAttribute`, open working — and
+never on each other.
+
+---
+
+## What is verified, and what is not
+
+The kinds of verification prove different things, and being vague about which one you have is how
+a package oversells itself:
+
+| | proves | run |
+|---|---|---|
+| `dotnet test` | the arithmetic is right | ✅ **461 tests**, ~400 ms, no network |
+| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, labels do not collide, every node has an F1 flag | ✅ 25 documents, 84 of 84 nodes flagged |
+| `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
+| `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved** — an unresolved one has its links dropped and vanishes from the generated C#, so the script reads the C# | ✅ all 23 help patches |
+| `tools\Test-Install.ps1` | the **packed** package installs from a feed with its dependencies, and every help patch inside it compiles with that install as the only package repository | ✅ 2026-09-25 |
+| **install from nuget.org** | the published package resolves with its dependencies from nuget.org alone; its 15 shipped help patches compile from that install; `HowTo Find the shortest path` runs in vvvv from it | ✅ 2026-09-26, `0.0.1-alpha` |
+| **the vvvv GUI** | **a node appears under the right category, with the right label, computing the right value** | ✅ every category; all 15 help patches seen 2026-09-24, reviewed by hand 2026-09-25; the sixteenth and the six tier-1 extensions seen 2026-11-07; `GeometryEditor`'s window used by the maintainer 2026-11-11 to 11-14 |
+| **F1 on a node** | the node opens its help patch | ✅ pressed on all 39 nodes 2026-09-24; 84 of 84 carry the flag (`Test-VLPatch`) |
+
+What the GUI showed, category by category:
+
+- **`NetTopologySuite.Geometry` / `NetTopologySuite.IO` / `NetTopologySuite.Operation`** (2026-08-14): `Create a point` outputs
+  `POINT (139.7671 35.6812)`; `Create a polygon` gives a unit square with `Area` 1.00 and an empty
+  validity reason; `Read and write WKT` round-trips a polygon at SRID 0; `Buffer a geometry` takes
+  area 1.00 to 2.20 with a 0.25 buffer, matching 1 + 4×0.25 + ≈π×0.25², and back to 1.00 by
+  intersecting with the original.
+- **`NetTopologySuite.Feature`** (2026-08-23, through VL.Overworld's Tutorial 08, and 2026-09-24 in
+  `HowTo Attach attributes to a geometry`).
+- **`NetTopologySuite.Index`** (2026-08-23, through Tutorial 11): 100,000 points, a mouse-driven query polygon,
+  `Indexes Built` holding at 1 while the mouse moved, indexed and brute-force counts equal.
+- **`NetTopologySuite.Network`** (2026-08-23 through Tutorial 13; 2026-09-24 in `HowTo Find the shortest path`,
+  which draws its town with VL.Skia): `Networks Built` stays at 1 while From and To move, `Found`
+  turns False on an island, the teal path follows the streets.
+- **`[Name]` on a *method* is honoured**, so the nodes render as `FromWKT`, `ToWKT`,
+  `Nearest Points`. Fluent operations get an `Output` pin, the rest get `Result` — confirmed in
+  the generated C#.
+
+Two things the tooling caught that the eye would not:
+
+- **`LastCategoryFullName` in a `.vl` is a hint, not the truth.** Set it to `NTS.Wrong`,
+  recompile, and every node still resolves. A green compile proves a node *exists* and nothing
+  about its category. Only the NodeBrowser does. That is why the GUI has its own row above.
+- **A green `vvvvc` exit code proves nothing either.** An unresolved node has its links dropped
+  silently. `Compile-HelpPatches.ps1` therefore reads the generated `*.vl.1.cs` and looks for each
+  node's call.
+
+---
+
+## The nodes
+
+**Sixty-six**, in six categories. No node takes more than three inputs, except where a fourth
+is a default you will rarely touch.
+
+### `NetTopologySuite.Geometry` — making geometry
+
+| Node | in → out |
+|---|---|
+| `Coordinate` | X, Y → `Coordinate` |
+| `CoordinateZ` | X, Y, Z → `CoordinateZ` |
+| `Split` | `Coordinate` → X, Y, Z |
+| `GeometryFactory` | SRID → `GeometryFactory` |
+| `Point` | `Coordinate` → `Point` |
+| `LineString` | spread of `Coordinate` → `LineString` |
+| `LinearRing` | spread of `Coordinate` → `LinearRing` *(closes the ring for you)* |
+| `Polygon` | `LinearRing` shell, spread of `LinearRing` holes → `Polygon` |
+| `MultiPoint` | spread of `Point` → `MultiPoint` |
+| `MultiLineString` | spread of `LineString` → `MultiLineString` |
+| `MultiPolygon` | spread of `Polygon` → `MultiPolygon` |
+| `GeometryCollection` | spread of `Geometry` → `GeometryCollection` |
+| `Coordinate (FromVector2)` | a `Vector2` from a mouse or Skia → `Coordinate`, exactly |
+
+### `NetTopologySuite.Geometry` — shapes by position and size
+
+The way VL.Skia describes a shape, with a map's coordinates: y grows north, so `TopLeft` is the
+north-west corner; angles are in cycles, counter-clockwise from east. See `HowTo Make a shape`.
+
+| Node | in → out |
+|---|---|
+| `Rectangle` | Position, Width, Height, Anchor → `Polygon` |
+| `Rectangle (Join Points)` | two opposite corners → `Polygon` |
+| `Circle` | Position, Radius, Resolution → `Polygon` |
+| `Ellipse` | Position, Width, Height → `Polygon` |
+| `RegularPolygon` | Position, Radius, Sides, Rotation → `Polygon` |
+| `Arc` | Position, Radius, Start, Sweep → `LineString` |
+| `Sector` | Position, Radius, Start, Sweep → `Polygon` |
+
+### `NetTopologySuite.Geometry` — drawn by hand, and which CRS
+
+| Node | in → out |
+|---|---|
+| `GeometryEditor` | WKT, SRID → `Geometry` *(select it, press Ctrl+Shift+W, draw in the window; it writes the WKT pin)* |
+| `SetSRID` | `Geometry`, SRID → `Geometry` *(a label: which CRS the numbers are in; it moves nothing)* |
+
+The editor's tools: Select V, Point P, Line L, Polygon A, Rectangle R, Circle C, Undo, Redo, Snap S,
+Fit F. A shape is selected first, then edited. In an exported app the node outputs what its pin
+says. See `HowTo Draw a geometry` (with a second editor in longitude and latitude) and
+`HowTo Say which CRS a geometry is in`.
+
+### `NetTopologySuite.Geometry` — reading it back
+
+| Node | in → out |
+|---|---|
+| `GeometryType` | `Geometry` → the OGC name |
+| `IsEmpty` | `Geometry` → bool |
+| `SRID` | `Geometry` → int |
+| `IsValid` | `Geometry` → bool, **reason**, **location** |
+| `Area` | `Geometry` → float |
+| `Length` | `Geometry` → float |
+| `Centroid` | `Geometry` → `Point` |
+| `Bounds` | `Geometry` → MinX, MinY, MaxX, MaxY |
+| `Coordinates` | `Geometry` → spread of `Coordinate` |
+| `Geometries` | `Geometry` → spread of `Geometry` |
+| `NumPoints` | `Geometry` → int *(a closed ring counts its repeated first coordinate)* |
+| `IsSimple` | `Geometry` → bool *(a self-crossing line is valid but not simple)* |
+| `InteriorPoint` | `Geometry` → `Point` *(always on the shape, where `Centroid` may not be)* |
+| `Envelope` | `Geometry` → `Geometry` *(the bounding box as a rectangle polygon; `Bounds` gives the numbers)* |
+| `Boundary` | `Geometry` → `Geometry` *(a polygon's rings as lines, a line's two end points)* |
+| `Vertices` | `Geometry` → `MultiPoint` *(every vertex once, to see them drawn)* |
+| `Outlines` | `Geometry` → **Rings**, **Lines**, **Points** *(every polygon ring, every linestring and every point as coordinates, collections flattened: what a drawing needs, sorted)* |
+
+### `NetTopologySuite.Feature` — attaching data to geometry
+
+| Node | in → out |
+|---|---|
+| `Feature` | `Geometry`, Dictionary of attributes → `Feature` |
+| `Split` | `Feature` → `Geometry`, Dictionary of attributes |
+| `GetAttribute` | `Feature`, name → value, **Success** *(never throws; a missing or null attribute is Success false)* |
+
+The attributes are vvvv's own Dictionary, so `Add`, `Remove`, `TryGetValue`, `Keys`, `Values` and a
+`ForEach` over the pairs work on them, and the GeoJSON reader's features carry the same type.
+**Three nodes are the whole category, on purpose** (2026-11-07): a feature is the transport
+container the map and GeoJSON take - one geometry and a few labels - not a data model. Keep your
+data in your own record, with as many geometries as the thing has, and give that record a
+`ToFeature` operation: Split its fields, pick the geometry that this map layer needs, `Add` the
+labels that should travel - one operation per layer, if the outline and the entrance are drawn
+differently. A dataset holds every geometry a thing has; a feature carries one, because that is
+what GeoJSON and the map take (the survey of PostGIS, OGR, GeoPackage, GeoJSON, Mapsui and NTS is
+in ARCHITECTURE). A table node (`Attributes (Join)`, with a guess inside: `"true"` and
+`true` became one) and a record bridge (`Feature (FromRecord)`, branch `record-bridge`) were built
+that day and taken out the same night; [docs/ARCHITECTURE.md](ARCHITECTURE.md#a-feature-is-a-container-not-a-data-model--built-and-taken-out-2026-11-07) keeps why.
+
+The type is `NetTopologySuite.Features.Feature` — the NTS team's own neutral model, not a wrapper
+of ours. These two moved here from VL.Mapsui on 2026-08-22, because a feature has to be
+constructible without a map engine: VL.NetTopologySuite.GeoJSON reads and writes them, VL.Mapsui
+draws and picks them, and a patch can make one by hand. The reasoning and the field-wide evidence are in
+[docs/ARCHITECTURE.md](ARCHITECTURE.md#where-a-feature-lives).
+
+### `NetTopologySuite.Operation`
+
+`Buffer` · `ConvexHull` · `Reverse` · `Intersection` · `Union` · `Difference` · `SymmetricDifference` · `Distance` · `Nearest Points` · `IsWithinDistance` · `Intersects` · `Contains` · `Within` · `Touches` · `Crosses` · `Overlaps` · `Covers` · `CoveredBy` · `Relate`
+
+Every predicate is false when either input is missing. `Covers` is `Contains` without the boundary
+exception, `Relate` is the nine-character DE-9IM string behind all of them, and `Disjoint` is still
+`Intersects` plus `Not`. The ten nodes after the first nine are tier 1 of the coverage plan
+(2026-11-07) — each one line of NTS's `Geometry` class.
+
+Since `0.0.8-alpha` (tier 2): `Simplify` · `Union (Spread)` · `Translate` · `Rotate` · `Scale` ·
+`Interpolate` · `Substring` · `Locate` · `Densify` · `MakeValid` · `ConcaveHull` ·
+`MinimumBoundingCircle` · `RandomPoints`. A place on a line is a fraction from 0 to 1, rotations
+are in cycles, and `RandomPoints` gives the same points every frame for one `Seed`. A missing input
+gives an empty geometry, never nothing, and no node fails on a self-crossing polygon or a mixed
+`GeometryCollection`: the input is repaired, or the collection taken apart, first.
+
+### `NetTopologySuite.IO`
+
+`FromWKT` · `ToWKT` (until `0.0.6-alpha`: `Read WKT` · `Write WKT`, renamed with no alias - a patch
+made with an older version shows the old node unresolved; put `FromWKT` / `ToWKT` in its place) ·
+`FromWKB` · `ToWKB` · `FromWKB (Hex)` · `ToWKB (Hex)` (since `0.0.8-alpha`: bytes, or the hex text
+PostGIS prints; `Include SRID` writes PostGIS's EWKB)
+
+### `NetTopologySuite.Index` — asking many geometries a question without asking each one
+
+| Node | in → out |
+|---|---|
+| `SpatialIndex` | spread of `Geometry` → `STRtree`, **Count**, **Indexes Built** |
+| `Query` | `STRtree`, search `Geometry` → **Candidates** (spread of `Geometry`), **Candidate Count** |
+
+**The package's first process node** (2026-08-23). An index is built once, held, and rebuilt only
+when the *set of geometry references* changes — never when only the spread wrapper is new, and
+never by comparing coordinates. **Watch Indexes Built: it should reach 1 and stay.** If it climbs
+every frame, the geometries upstream are being re-created every frame and the index is doing
+nothing for you — `FromWKT` upstream does exactly that, and the help patches put it in a `Cache`
+region for that reason.
+
+**Candidates are not results.** `Query` returns the geometries whose *bounding boxes* intersect the
+search geometry's bounding box — NTS's words: *"items whose bounds intersect the given envelope"* —
+and never looks at the geometry itself. Finish with the exact predicate you meant (`Intersects`,
+`Contains`, `Distance`) on the candidates. The index did not answer your question; it narrowed who
+gets asked. Reasoning and the lifecycle contract in
+[docs/ARCHITECTURE.md](ARCHITECTURE.md#spatialindex--query--the-first-process-node).
+
+### `NetTopologySuite.Network` — close does not mean reachable
+
+| Node | in → out |
+|---|---|
+| `Network` | spread of `LineString` → `Network`, **Node Count**, **Edge Count**, **Networks Built** |
+| `ShortestPath` | `Network`, From `Point`, To `Point`, Max Snap Distance → `Path` (`LineString`), **Length**, **Found**, **From Snap Distance**, **To Snap Distance** |
+
+NetTopologySuite ships no shortest-path capability, so this is an algorithm of ours. It was built
+as `NetTopologySuite.Experimental.Network` in 2026-08 for VL.Overworld's Tutorial 13 and **promoted to
+`NetTopologySuite.Network` on 2026-08-28** after a scope review with two real consumers
+([docs/NETWORK-SCOPE-PROPOSAL.md](NETWORK-SCOPE-PROPOSAL.md)).
+
+Connectivity is **exact shared endpoints** — no tolerance, no auto-noding, a crossing is not a
+junction, an interior vertex is shape. Cost is length, edges are undirected, From/To snap to the
+nearest node within `Max Snap Distance` and the snap distances are pins. `Found = false` is a
+result. One sentence of scope, a long non-scope list in [docs/ROADMAP.md](ROADMAP.md), and no
+promise of a routing library.
+
+Everything else NetTopologySuite offers — and it is a large library — stays reachable through VL's
+raw .NET nodes. See [docs/ARCHITECTURE.md](ARCHITECTURE.md#what-stays-raw).
+
+---
+
+## Four things that will bite you
+
+Each is measured, not inherited from documentation.
+
+**1. NTS geometries are not as immutable as everyone says.** Operations return new geometries, but
+coordinate storage is *shared and writable*: NTS's own `factory.CreatePoint(c)` keeps the caller's
+`Coordinate`, and `geometry.Coordinates[0].X = 5` moves the geometry. **This package copies on the
+way in and on the way out**, so it cannot happen through these nodes. It is the main reason they
+exist rather than using VL's reflection nodes on `GeometryFactory` directly.
+
+**2. Units follow the coordinates, and nothing warns you.** `Buffer(geometry, 0.001)` on longitude
+and latitude is a thousandth of a *degree* — about 111 m near the equator, less further from it,
+and not a constant number of metres anywhere. `Area` on lon/lat is in *square degrees*. Project to
+a metric reference system before doing metric work.
+
+**3. An SRID is a label, not a transformation.** Setting it to 4326 does not reproject anything and
+does not check that the numbers are longitude and latitude. The default is **0**, meaning unset,
+which is NTS's own default and the honest one for a library that has not seen your data. Worse:
+mixing SRIDs **never throws** — a 4326 geometry intersected with an SRID 0 one returns 4326 without
+complaint — so a wrong CRS gives a confident wrong answer. Reprojection belongs in a different
+package.
+
+**4. Coordinate order is X first.** Longitude then latitude, which is the opposite of how they are
+usually spoken, and the most common bug in this domain.
+
+---
+
+## Help patches
+
+Twenty, in `help\VL.NetTopologySuite\`, in the order the Help Browser shows them. Press **F1** on
+any node of this package to open the one that teaches it. Since 2026-11-07 every patch also *shows*
+the geometry it talks about, drawn in IOBoxes beside the nodes: the four overlays of two squares
+side by side, A and B of the predicates in one picture, the buffered shape next to the original,
+the town and the path, the feature with its attribute table.
+
+| Topic | Patch |
+|---|---|
+| Overview | `Explanation Overview of available nodes` — every node, one line each |
+| Creating | `HowTo Create points, lines and polygons` · `HowTo Make a shape` · `HowTo Group geometries` · `HowTo Draw a geometry` · `HowTo Work with Z` |
+| Inspecting | `HowTo Inspect a geometry` · `HowTo Say which CRS a geometry is in` |
+| Formats | `HowTo Read and write WKT` · `HowTo Read and write WKB` |
+| Combining and testing | `HowTo Buffer a geometry` · `HowTo Combine two geometries` · `HowTo Test how geometries relate` · `HowTo Measure distance` |
+| Reshaping | `HowTo Simplify and densify a geometry` · `HowTo Fix an invalid geometry` · `HowTo Move, turn and resize a geometry` · `HowTo Walk along a line` · `HowTo Wrap points in a hull` · `HowTo Scatter points in an area` |
+| Features | `HowTo Attach attributes to a geometry` |
+| Index | `HowTo Query many geometries fast` |
+| Network | `HowTo Find the shortest path` — draws its town and the path with VL.Skia |
+
+They are written the way the vvvv community writes help: a one-line heading, the wired nodes, and
+short notes beside them — a style measured over 389 shipped HowTos and nine community packs, in
+[docs/HELP-PATCH-STYLE.md](HELP-PATCH-STYLE.md).
+
+**No numbers in the filenames, deliberately.** The convention across vvvv's own packs is the five
+prefixes — `Explanation`, `HowTo`, `Reference`, `Example`, `Tutorial` — with `Help.xml` doing the
+ordering. These were numbered `01 03 04 06` at first, and every gap read as a broken install.
+`Help.xml` is the only place order lives, and `tools\Test-VLPatch.ps1` checks that it accounts
+for every patch on disk and names none that is missing.
+
+---
+
+## Building it
+
+Needs the .NET 8 SDK and **vvvv gamma 7.2 or newer** (7.4 is what this was built against).
+Everything else — `NuGet.exe`, `vvvvc.exe` — ships inside vvvv.
+
+```powershell
+.\build.ps1                     # build + stage dist\  (refuses to run while vvvv is open)
+dotnet test test\VL.NetTopologySuite.Tests\VL.NetTopologySuite.Tests.csproj
+.\tools\Test-VLPackage.ps1      # static package checks, no vvvv needed
+.\tools\Test-VLPatch.ps1        # structural checks on every .vl, label arithmetic, F1 flags
+.\pack.ps1                      # pack into dist\feed\
+.\tools\Compile-HelpPatches.ps1 # vvvvc on every help patch, then READS the generated C#
+.\tools\Test-Install.ps1        # install the packed package from dist\feed like a user would
+.\tools\Test-Install.ps1 -FromNuGetOrg -Version 0.0.1-alpha   # the PUBLISHED package, from nuget.org alone
+
+# Open a help patch in vvvv with the right package repositories (or double-click Open-HelpPatch.cmd):
+.\tools\Open-HelpPatch.ps1 "Buffer"
+```
+
+`build.ps1` refuses to run while vvvv is open, deliberately: a running vvvv holds the staged
+assemblies, and would not pick up the change anyway. `dist\VL.NetTopologySuite\help` is a junction
+to the repository's help folder, so a patch saved in vvvv is the one git sees.
+
+To use the working tree instead of the published package, point vvvv at the staged folder:
+`vvvv.exe MyPatch.vl --package-repositories <repo>\dist;<repo>\deps`. The working version is
+always one ahead of the published one (`0.0.8-alpha` while `0.0.7-alpha` is on nuget.org), so the
+two can never be mistaken for each other in a NuGet cache.
+
+---
+
+## Documentation
+
+| | |
+|---|---|
+| [docs/RULES.md](RULES.md) | ⭐ the packaging and runtime rules, carried from the sibling repositories. **Read before adding a node.** |
+| [docs/ARCHITECTURE.md](ARCHITECTURE.md) | why each node exists, what stays raw, and the decisions behind both |
+| [docs/AUDIT.md](AUDIT.md) | the audit this package was designed from, including everything measured against NTS |
+| [docs/HELP-PATCH-STYLE.md](HELP-PATCH-STYLE.md) | how vvvv help patches are written, measured from shipped packs, and how F1 finds them |
+| [docs/NETWORK-SCOPE-PROPOSAL.md](NETWORK-SCOPE-PROPOSAL.md) | the review that promoted the network from experimental, and its [evidence](NETWORK-SCOPE-EVIDENCE.md) |
+| [docs/ROADMAP.md](ROADMAP.md) | what is next, what is deliberately absent, and what will never be here |
+| [docs/RELEASE.md](RELEASE.md) | the release checklist, what each step proves, and the decisions still open |
+
+`docs/RULES.md` is not general advice. Every rule in it is followed by what it cost — nine
+releases that installed and contributed zero nodes, and a home network taken down by a node written
+as a `public static` method. It transfers; a link to another repository's copy would not.
+
+---
+
+## Licence
+
+MIT. NetTopologySuite is BSD-3-Clause and is declared as a dependency rather than redistributed.

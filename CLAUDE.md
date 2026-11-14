@@ -314,6 +314,16 @@ The same line already covers the release tag and the nuget.org upload (docs/RELE
 **Never leave vvvv running unattended, and never start it in the background.** Launch, read the
 value, close. In vvvv, having a patch open means having it running — there is no idle state.
 
+## The README is a vvvv library README
+
+**`README.md` follows the template the vvvv libraries share** (the maintainer, 2026-11-14: "好奇怪",
+after it had grown to 446 lines of rationale and verification tables). Measured over the installed
+packs: VL.IO.OSC 13 lines, VL.IO.PLY 20, VL.OpenCV 29, VL.IO.Redis and VL.Audio 36 - a one-line
+description (or a short feature list), "For use with vvvv ...", **Getting started** (the `nuget
+install` line and the Help Browser), Contributing, Credits. It is also the nuget.org package page,
+so its links are absolute GitHub URLs. Everything else - the mental model, what bites, what is
+verified, building - lives in [docs/GUIDE.md](docs/GUIDE.md), the old README moved whole.
+
 ## Repository layout
 
 ```

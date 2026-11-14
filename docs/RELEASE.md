@@ -32,7 +32,7 @@ chain.
 | `Test-Install.ps1 -FromNuGetOrg -Version 0.0.1-alpha` | the same, repeatably, with no local feed and no cache: the installed nupkg carries nuget.org's `.signature.p7s` | ✅ 2026-09-26, 3 packages, 15 of 15 compile; the two guards (non-empty folder, missing `-Version`) negative-tested |
 | listed at vvvv.org/packs | the `VL` tag did its job | ✅ 2026-09-26, both VL.NetTopologySuite and VL.Mapsui appear |
 | GitHub release on the tag | release notes readable without opening the nuspec | ✅ 2026-10-19, the maintainer, in the browser: all four tags (`v0.0.1-alpha` … `v0.0.4-alpha`), each a pre-release, `v0.0.4-alpha` marked latest |
-| the README's install path, walked by the maintainer in vvvv | the one check no script can make: a person follows "Install and your first geometry" against the published package | ⬜ the maintainer (VL.Mapsui's was walked 2026-09-26: "可以用") |
+| the README's install path, walked by the maintainer in vvvv | the one check no script can make: a person follows the README's "Getting started" (and the guide's "Install and your first geometry") against the published package | ⬜ the maintainer (VL.Mapsui's was walked 2026-09-26: "可以用") |
 | working version bumped to `0.0.2-alpha` | a local repack can never be mistaken for the published package | ✅ 2026-09-26 |
 
 **The GitHub release** (repository → Releases → Draft a new release → choose tag `v0.0.1-alpha` →
@@ -260,7 +260,7 @@ git push origin main --tags
 #    browser, at the same sitting as the upload: Releases -> Draft a new release -> choose the EXISTING
 #    tag -> title "VL.NetTopologySuite <version>" -> body = that version's paragraph from the nuspec ->
 #    tick "Set as a pre-release" (every version while alpha) and "Set as the latest release" -> Publish.
-#    The README's update section points users at the tags page, so a tag without a release is a dead
+#    The README links the Releases page (until 2026-11-14 its update section, now in docs/GUIDE.md, did), so a tag without a release is a dead
 #    link for them. The first four were done together on 2026-10-19 after the README said that.
 
 # 8. The same day: bump the working version to 0.0.2-alpha in the nuspec (see Versioning), so a
