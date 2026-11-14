@@ -1227,6 +1227,73 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
+          <Pad Id="IZ7HAXQdMAkAcI1xH5OrbD" Bounds="640,1810,400,30" ShowValueBox="true" isIOBox="true" Value="NetTopologySuite.Operation - along a line">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">14</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="640,1850,90,19" Id="EeCtHaBEfbpxh3ruOXciIA">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Interpolate" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="FbbiYPJvBddrbp5sSDnKOD" Name="Line" Kind="InputPin" />
+            <Pin Id="LqXQCsgNGQiC7ormj2yQW4" Name="Position" Kind="InputPin" />
+            <Pin Id="BX7ppsJljU1ZdhJH928wPy" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="BeAGP2RXNdBBjYo6tjsmmv" Bounds="830,1852,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; The point at a Position from 0 (start) to 1 (end).">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="640,1885,90,19" Id="HMyyVzzpBBmIYtTe0ozUUe">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Substring" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="QMKmAfbAXEkin8rFJY8sYc" Name="Line" Kind="InputPin" />
+            <Pin Id="JrbZio7MkitgPRRRir4T87" Name="Start" Kind="InputPin" />
+            <Pin Id="QDqPotQghkDVhj40UmJEDg" Name="End" Kind="InputPin" />
+            <Pin Id="Dd8CY9Pt9BT57FOvBkFYSd" Name="Output" Kind="OutputPin" />
+          </Node>
+          <Pad Id="S44FXjmjVgqmK2BJRcsdrX" Bounds="830,1887,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; The piece between two Positions.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="640,1920,90,19" Id="VSKfX5C4kaaugYY7qdl2Kp">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Locate" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="ESy2lWbOMRNlQeOEUoRP7D" Name="Line" Kind="InputPin" />
+            <Pin Id="Oy6ObLCv7riSwIVvmX6cSo" Name="Point" Kind="InputPin" />
+            <Pin Id="GSeSKi5LYcd39LbQc886N9" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="TwLMTfYnEJ1yozNhZZjBOB" Bounds="830,1922,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; How far along the nearest place to a Point is, 0 to 1.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
         </Canvas>
         <Patch Id="QOXrUnHDAbnOxiNgCfIC4c" Name="Create" />
         <Patch Id="LshNVEcTy7TgmBOYa4DXLq" Name="Update" />

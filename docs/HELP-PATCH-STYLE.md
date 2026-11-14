@@ -196,7 +196,9 @@ The rules a generated patch follows, then:
 3. **40–50 px between linked rows**; parameter IOBoxes on their own row above the node, each
    above the pin it feeds, 90 px apart so a label does not reach the next box.
 4. **Show input and result together** when the node changes a shape: `Cons` → `GeometryCollection`
-   into one drawn IOBox, or the original in its own box beside the result.
+   into one drawn IOBox, or the original in its own box beside the result. A piece of a line
+   counts: `HowTo Walk along a line` was handed over with the Substring cell drawing only the
+   growing piece, and the maintainer added the whole route in a box beside it (2026-11-14).
 5. **Pick values that read at two decimals.** An IOBox shows `0.125` as `0.12`.
 
 `Test-VLPatch.ps1` warns on the first and on a drawn result more than 300 px from its node, and
