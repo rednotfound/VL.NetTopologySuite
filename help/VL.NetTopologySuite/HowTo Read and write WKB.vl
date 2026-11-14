@@ -1,0 +1,202 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document xmlns:p="property" xmlns:r="reflection" Id="OiLm8U8C9TNCe5gU4bNQLa" LanguageVersion="2025.7.4" Version="0.128">
+  <NugetDependency Id="ToX6OcZ68QoHQpU8eMK4Hr" Location="VL.CoreLib" Version="2025.7.4" />
+  <Patch Id="M4OrDGlmPfbfPpzBkCuFhz">
+    <Canvas Id="IaEC87VSMufBp2j6Ycd82f" DefaultCategory="Main" BordersChecked="false" CanvasType="FullCategory" />
+    <!--
+
+    ************************ Application ************************
+
+-->
+    <Node Name="Application" Bounds="100,100" Id="GF4uDYfVVtASixXtb9fQ55">
+      <p:NodeReference>
+        <Choice Kind="ContainerDefinition" Name="Process" />
+        <CategoryReference Kind="Category" Name="Primitive" />
+      </p:NodeReference>
+      <Patch Id="VqiT4kqhhGhucNXK40PVo7">
+        <Canvas Id="T098nSlDUFs2f9OHcA0Kqo" CanvasType="Group">
+          <Pad Id="B0uj9bgTWUR9csuB9xCpkI" Bounds="60,40,360,41" ShowValueBox="true" isIOBox="true" Value="Use FromWKB and ToWKB!">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">20</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="R8qpaSZzjKoCoAz7gAVWOG" Bounds="60,90,600,46" ShowValueBox="true" isIOBox="true" Value="Well-Known Binary is how a database stores a geometry. PostGIS prints it as hex text: the (Hex) versions read and write that text.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="ONO0aVUInzypUmofYey5TV" Comment="" Bounds="60,170,400,15" ShowValueBox="true" isIOBox="true" Value="0103000020E61000000200000005000000000000000000000000000000000000000000000000000840000000000000000000000000000008400000000000000040000000000000000000000000000000400000000000000000000000000000000005000000000000000000F03F000000000000E03F0000000000000040000000000000E03F0000000000000040000000000000F83F000000000000F03F000000000000F83F000000000000F03F000000000000E03F">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="60,210,100,19" Id="JilmExzxaOLUWRalP0RUHT">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="FromWKB (Hex)" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="Lnxa9r8xZDZV2FcgM9zcKn" Name="Hex" Kind="InputPin" />
+            <Pin Id="EPPYtfePhkUAFXjzi26Xzg" Name="Factory" Kind="InputPin" />
+            <Pin Id="SzXJ4A4CypjlakEXt8zD4L" Name="Result" Kind="OutputPin" />
+            <Pin Id="G5VuQces5PwRSzmCWkJvmj" Name="Success" Kind="OutputPin" />
+          </Node>
+          <Pad Id="TQDZxVKy7owTBOcM6YFjXd" Comment="" Bounds="60,250,180,120" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="280,250,40,19" Id="LFKItgWt9l5Xqk2S0FXQWk">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="SRID" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="M78kXMtOApbd1rgYen7L7e" Name="Geometry" Kind="InputPin" />
+            <Pin Id="DGK1gfATpUakSbBIeeWpEr" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="Dz6KV84pVCFzswt8dw8ABf" Comment="SRID" Bounds="280,290,60,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="I7Cu2w73HWlrs8caQdHLSj" Bounds="60,390,400,62" ShowValueBox="true" isIOBox="true" Value="&lt; FromWKB (Hex), pasted from PostGIS (ST_AsHexEWKB). The SRID inside wins over the Factory's; plain WKB gets the Factory's, 0 when unconnected.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="HRLz8UUK1iS1R7aaDgedu7" Comment="" Bounds="540,170,300,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0 0, 3 0, 3 2, 0 2, 0 0))">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="700,210,100,19" Id="QpXjq64nwogFea4zHdzSyv">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="GeometryFactory" />
+              <PinReference Kind="InputPin" Name="SRID" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="IE8AOzvWgEv0GUZxKJ680p" Name="SRID" Kind="InputPin" DefaultValue="4326">
+              <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+                <Choice Kind="TypeFlag" Name="Integer32" />
+              </p:TypeAnnotation>
+            </Pin>
+            <Pin Id="JDSDVCh0knGvTGK7dernW1" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="540,250,90,19" Id="J7ndjJr4S2fCqDfbDRa5lv">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="FromWKT" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="VweS7y1UHqRKup5osMYPr3" Name="WKT" Kind="InputPin" />
+            <Pin Id="B9pkdMdbF5o88S888gpjBT" Name="Factory" Kind="InputPin" />
+            <Pin Id="CjvbysDQFOjGeUOVhkwZ9x" Name="Result" Kind="OutputPin" />
+            <Pin Id="Fuym9sBmwV0oJ2GOKvWjOa" Name="Success" Kind="OutputPin" />
+          </Node>
+          <Pad Id="CG68wNoUZsxxiKB2BhEzS9" Comment="Include SRID" Bounds="640,290,40,15" ShowValueBox="true" isIOBox="true" Value="True">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Boolean" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="540,330,120,19" Id="OioaxNRmQvbhv9cRuvKtzu">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="ToWKB (Hex)" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="Dl6SXwBQYClM1uSDZ2UyVk" Name="Geometry" Kind="InputPin" />
+            <Pin Id="Iml6cqJDNs0MZMcvMF4iT6" Name="Include SRID" Kind="InputPin" />
+            <Pin Id="Ca75QT9hpsNA22XIivUXF8" Name="Include Z" Kind="InputPin" />
+            <Pin Id="M00gcuDjc104J0sSQbJ26R" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="K6F3NVOYOyTKpR5gWiI2CT" Comment="" Bounds="540,370,400,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="HZfYM2kFU68pvH3zugegpS" Bounds="540,410,400,62" ShowValueBox="true" isIOBox="true" Value="&lt; ToWKB (Hex). Include SRID writes PostGIS's EWKB, so the SRID travels with it - WKT has no place for it. Z is dropped unless Include Z is on.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="MCkt5tgwYJhVKJimkH1bCH" Comment="" Bounds="1020,170,300,15" ShowValueBox="true" isIOBox="true" Value="LINESTRING (0 0, 1 2, 2 1, 3 3)">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="1020,210,90,19" Id="Hzg4ZK8pxrVxXRLegHCtJo">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="FromWKT" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="Iv4MwtF0MhCE0vpp0BgOJQ" Name="WKT" Kind="InputPin" />
+            <Pin Id="MzaXgeph96tC5DUtO4s6cA" Name="Factory" Kind="InputPin" />
+            <Pin Id="OC2Bs1m1zA03pFsXl6CV5r" Name="Result" Kind="OutputPin" />
+            <Pin Id="TAIFALmmrqtE0ZmJk9Pe01" Name="Success" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="1020,250,90,19" Id="HGS4dyelcnpV9fNKGHnHDz">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="ToWKB" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="JObZeRDRgIQx9DAvjnkfz1" Name="Geometry" Kind="InputPin" />
+            <Pin Id="K6IzKo10V6jZLr2zjmRqTr" Name="Include SRID" Kind="InputPin" />
+            <Pin Id="JhtG2qfIaKf5GhEFiDTI0Z" Name="Include Z" Kind="InputPin" />
+            <Pin Id="MhF2ADWbdxjpYFlgAcMM2t" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="LygIZmnuA3ZPIsY4DSr17I" Comment="Bytes" Bounds="1180,250,120,60" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="1020,330,90,19" Id="GjcbfzxjzbEAk9SQ7TjmOr">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="FromWKB" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="AzBkRjR8EOKXoF4DVQkTOK" Name="WKB" Kind="InputPin" />
+            <Pin Id="AdfMemjXhbt7A8PTfU0h9G" Name="Factory" Kind="InputPin" />
+            <Pin Id="ADsAGNnvPyWMsie1us6ILY" Name="Result" Kind="OutputPin" />
+            <Pin Id="FyceIPyJWrrDloLUIVVGm4" Name="Success" Kind="OutputPin" />
+          </Node>
+          <Pad Id="NXpGPYxREPi4b9xQQ0cOiK" Comment="" Bounds="1020,370,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="SbEQf5fIGUFP9lGdMpgQLK" Bounds="1020,510,300,80" ShowValueBox="true" isIOBox="true" Value="&lt; ToWKB and FromWKB, the bytes themselves: for a database column, a file or a message. FromWKB takes them, or a Spread of Byte.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+        </Canvas>
+        <Patch Id="OjvJqfla7Lv77bVO6WiFpE" Name="Create" />
+        <Patch Id="HP5Z3XZsl18Wgt0WJA2Lvk" Name="Update" />
+        <ProcessDefinition Id="U9h4KHmgBSeEaTdk0heD38">
+          <Fragment Id="EnJ42hh2JDOu934dzhSfYL" Patch="OjvJqfla7Lv77bVO6WiFpE" Enabled="true" />
+          <Fragment Id="RJXTXuRGKiYMRv7GI3eQhb" Patch="HP5Z3XZsl18Wgt0WJA2Lvk" Enabled="true" />
+        </ProcessDefinition>
+        <Link Id="VHfcREjvpuOdSMCrST5odF" Ids="ONO0aVUInzypUmofYey5TV,Lnxa9r8xZDZV2FcgM9zcKn" />
+        <Link Id="CtI5352dHidEwzHpnvwZdY" Ids="SzXJ4A4CypjlakEXt8zD4L,TQDZxVKy7owTBOcM6YFjXd" />
+        <Link Id="FZAS1H86HsEwuDmQynPHEX" Ids="SzXJ4A4CypjlakEXt8zD4L,M78kXMtOApbd1rgYen7L7e" />
+        <Link Id="PAk8nto2sRKfu4Y6rhJpYs" Ids="DGK1gfATpUakSbBIeeWpEr,Dz6KV84pVCFzswt8dw8ABf" />
+        <Link Id="DWMmvcCq12YlMsUfrPjy4o" Ids="HRLz8UUK1iS1R7aaDgedu7,VweS7y1UHqRKup5osMYPr3" />
+        <Link Id="VZ9B7yOEKhjGE74tJ3DDIf" Ids="JDSDVCh0knGvTGK7dernW1,B9pkdMdbF5o88S888gpjBT" />
+        <Link Id="RE34G07M9zHNG54wD1g32f" Ids="CjvbysDQFOjGeUOVhkwZ9x,Dl6SXwBQYClM1uSDZ2UyVk" />
+        <Link Id="PKnC5wTIxgKgaOfBXVIOzC" Ids="CG68wNoUZsxxiKB2BhEzS9,Iml6cqJDNs0MZMcvMF4iT6" />
+        <Link Id="C5m0Rh2xlJnBLH0OWDwOTB" Ids="M00gcuDjc104J0sSQbJ26R,K6F3NVOYOyTKpR5gWiI2CT" />
+        <Link Id="JR4LYaSqPYjRAZNfbV6hfM" Ids="MCkt5tgwYJhVKJimkH1bCH,Iv4MwtF0MhCE0vpp0BgOJQ" />
+        <Link Id="Pg8jvNQ855tvlgDmvs67oY" Ids="OC2Bs1m1zA03pFsXl6CV5r,JObZeRDRgIQx9DAvjnkfz1" />
+        <Link Id="MsdNjJupfqbeHBAOpelES8" Ids="MhF2ADWbdxjpYFlgAcMM2t,LygIZmnuA3ZPIsY4DSr17I" />
+        <Link Id="BjrtPBp6fyfCXCCNKDwXDf" Ids="MhF2ADWbdxjpYFlgAcMM2t,AzBkRjR8EOKXoF4DVQkTOK" />
+        <Link Id="SUnQyW6CklOhYoeKVCQnx0" Ids="ADsAGNnvPyWMsie1us6ILY,NXpGPYxREPi4b9xQQ0cOiK" />
+      </Patch>
+    </Node>
+  </Patch>
+  <NugetDependency Id="PXG9gBYvkQTbROAzOj3wza" Location="VL.NetTopologySuite" Version="0.0.0" />
+</Document>

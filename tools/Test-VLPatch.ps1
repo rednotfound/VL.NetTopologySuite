@@ -435,6 +435,7 @@ if (-not $Path) {
         'NetTopologySuite.Operation|SymmetricDifference', 'NetTopologySuite.Operation|ConvexHull', 'NetTopologySuite.Operation|Reverse', 'NetTopologySuite.Operation|IsWithinDistance',
         'NetTopologySuite.Operation|Touches', 'NetTopologySuite.Operation|Crosses', 'NetTopologySuite.Operation|Overlaps', 'NetTopologySuite.Operation|Covers', 'NetTopologySuite.Operation|CoveredBy', 'NetTopologySuite.Operation|Relate',
         'NetTopologySuite.Operation|Simplify', 'NetTopologySuite.Operation|Union (Spread)', 'NetTopologySuite.Operation|Translate', 'NetTopologySuite.Operation|Rotate', 'NetTopologySuite.Operation|Scale',
+        'NetTopologySuite.IO|FromWKB', 'NetTopologySuite.IO|FromWKB (Hex)', 'NetTopologySuite.IO|ToWKB', 'NetTopologySuite.IO|ToWKB (Hex)',
         'NetTopologySuite.Index|SpatialIndex', 'NetTopologySuite.Index|Query', 'NetTopologySuite.Network|Network', 'NetTopologySuite.Network|ShortestPath')
     # The table above is written by hand, so a node added to the package and not to the table was
     # invisible to this audit: "56 of 56" while seven new shape nodes sat in the tree (2026-11-08).

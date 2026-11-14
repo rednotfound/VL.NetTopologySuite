@@ -26,8 +26,9 @@
 		<VLDocument link="HowTo Inspect a geometry.vl" tags="inspect,geometrytype,isempty,srid,area,length,centroid,bounds,envelope,numpoints,issimple,interiorpoint,boundary,outlines,rings,readers,geometry" />
 		<VLDocument link="HowTo Say which CRS a geometry is in.vl" tags="setsrid,srid,crs,epsg,label,coordinatesystem,referencesystem,4326,28992,reproject,proj" />
 	</Topic>
-	<Topic title="Text in, geometry out">
+	<Topic title="Text and bytes in, geometry out">
 		<VLDocument link="HowTo Read and write WKT.vl" tags="wkt,fromwkt,towkt,wellknowntext,read,write,parse,text,srid,io,roundtrip" />
+		<VLDocument link="HowTo Read and write WKB.vl" tags="wkb,ewkb,fromwkb,towkb,wellknownbinary,hex,bytes,binary,postgis,database,blob,bytea,srid,io,roundtrip" />
 	</Topic>
 	<Topic title="Spatial operations">
 		<VLDocument link="HowTo Buffer a geometry.vl" tags="buffer,grow,shrink,offset,intersection,operation,units,segments" />

@@ -316,7 +316,7 @@ The 24 areas and their state:
 | convex / concave hull, minimum bounding circle (`Algorithm`, `Algorithm.Hull`, `Algorithm.Construct`) | ◐ `ConvexHull` since tier 1; concave hull and minimum bounding circle are tier 2 |
 | affine transformation (`Geometries.Utilities`) | ❌ |
 | simplification (`Simplify`) | ❌ |
-| WKB (`IO`) | ❌ |
+| WKB (`IO`) | ✅ 2026-11-14 (`FromWKB`, `ToWKB`, `(Hex)` versions) |
 | GML / KML (`IO.GML2`, `IO.KML`) | ❌ |
 | linear referencing (`LinearReferencing`) | ❌ |
 | union of many (`Operation.Union`) | ❌ |
@@ -380,6 +380,13 @@ unconnected (Shapely's default; PostGIS's (0, 0) swings a map shape far away). H
 a geometry`, `HowTo Move, turn and resize a geometry`, and a Union (Spread) cell in `HowTo Combine
 two geometries`. **Next batch:** WKB, named **`FromWKB` / `ToWKB`** under the 2026-11-08 naming rule
 (not `Read WKB` / `Write WKB` as written above), then linear referencing.
+
+**Second batch done 2026-11-14:** `FromWKB` (takes `IEnumerable<Byte>`, as CoreLib's `FromBytes`
+does) and `ToWKB` (outputs a byte array, as `ToBytes`), plus `FromWKB (Hex)` / `ToWKB (Hex)` for the
+text PostGIS prints, as CoreLib has `ToBytes (Base64)`. EWKB's SRID is read and wins over the
+Factory's; `Include SRID` writes it; `Include Z` as on `ToWKT`. Hex is parsed here, because NTS's
+`HexToBytes` drops an odd last digit silently. Help: `HowTo Read and write WKB`. **Next:** linear
+referencing (`Interpolate`, `Project`, `Substring`).
 
 ### Tier 3 — stateful or advanced
 
@@ -449,7 +456,7 @@ maintainer's.
 
 | | |
 |---|---|
-| **WKB** | `Read WKB` / `Write WKB`, plus the hex form PostGIS uses. Genuinely in scope — it is NetTopologySuite's own IO, same as WKT — and deferred only until the core is stable. |
+| **WKB** | **Done 2026-11-14** as `FromWKB` / `ToWKB` and their `(Hex)` versions (tier 2). |
 | **`ConvexHull`, `Simplify`** | Douglas-Peucker and topology-preserving simplification. Both common enough to expect; both waiting on a use case that says which tolerance semantics matter. |
 | **M ordinates** | `CoordinateM`, `CoordinateZM`, and telling `Write WKT` to emit them. **Measured working** — M survives the default factory intact — so this is a scope decision, not a limitation. XY is stable first, then XYZ, then M. |
 | **Validation detail** | `IsValid` already reports a reason and a location. NTS also offers `IsValidOp` with self-touching-ring tolerance, and `GeometryFixer` for repairing invalid geometry. `GeometryFixer` in particular would be useful and needs thought about whether silently repairing geometry is a thing a node should do. |

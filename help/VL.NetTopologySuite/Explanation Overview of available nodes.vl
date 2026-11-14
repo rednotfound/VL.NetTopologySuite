@@ -1178,6 +1178,55 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
+          <Pad Id="VEAxGRf3fRzwILKrhFNRGG" Bounds="640,1660,400,30" ShowValueBox="true" isIOBox="true" Value="NetTopologySuite.IO - binary">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">14</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="640,1700,90,19" Id="OAHY1kRVLRgFhhPmqso70a">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="FromWKB" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="O9EGy2wVCjMFfVUiXliDeG" Name="WKB" Kind="InputPin" />
+            <Pin Id="UyXZN51BiIyJilDdazCO3b" Name="Factory" Kind="InputPin" />
+            <Pin Id="Jl9KehcwxrjqScMNRDEjUy" Name="Result" Kind="OutputPin" />
+            <Pin Id="KGjHVshIhDFwssDLGKozjN" Name="Success" Kind="OutputPin" />
+          </Node>
+          <Pad Id="DRugbQ8fg5g29MLarBdKeV" Bounds="830,1702,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; Bytes in, Geometry out, PostGIS's EWKB too. FromWKB (Hex) reads the hex text.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="640,1735,90,19" Id="I4d6Q9LVCSiq6V3VFvjYX1">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="ToWKB" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="IfY8oTz6Fc93mZL7USBXhi" Name="Geometry" Kind="InputPin" />
+            <Pin Id="Uqu1So22Inr9ryX85kk5uN" Name="Include SRID" Kind="InputPin" />
+            <Pin Id="GyVkv1lHzBmiAqT5O7gWj1" Name="Include Z" Kind="InputPin" />
+            <Pin Id="V0zmqfkU7m962CmhItradQ" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="OhWuIk37nZtxwJTkUdj4lR" Bounds="830,1737,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; Geometry out as bytes; ToWKB (Hex) as text. Include SRID keeps the SRID.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
         </Canvas>
         <Patch Id="QOXrUnHDAbnOxiNgCfIC4c" Name="Create" />
         <Patch Id="LshNVEcTy7TgmBOYa4DXLq" Name="Update" />

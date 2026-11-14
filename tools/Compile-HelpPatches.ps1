@@ -163,6 +163,10 @@ $OurNodes = @{
     # NetTopologySuite.IO
     'FromWKT'           = 'IONodes\.FromWKT\('
     'ToWKT'          = 'IONodes\.ToWKT\('
+    'FromWKB'            = 'IONodes\.FromWKB\('
+    'FromWKB (Hex)'      = 'IONodes\.FromWKBHex\('
+    'ToWKB'              = 'IONodes\.ToWKB\('
+    'ToWKB (Hex)'        = 'IONodes\.ToWKBHex\('
     # NetTopologySuite.Operation
     'Buffer'             = 'OperationNodes\.Buffer\('
     'Intersection'       = 'OperationNodes\.Intersection\('
