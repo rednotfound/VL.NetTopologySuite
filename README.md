@@ -2,13 +2,15 @@
 
 **NetTopologySuite made natural inside [vvvv gamma](https://vvvv.org).** Not another GIS framework.
 
-> **Status: `0.0.6-alpha` on nuget.org since 2026-11-08 — a prerelease, early, and it works.**
-> 64 nodes in six categories, 202 tests, 17 help patches, every node opens one on **F1**. Every
+> **Status: `0.0.7-alpha` on nuget.org since 2026-11-14 — a prerelease, early, and it works.**
+> 66 nodes in six categories, 335 tests, 20 help patches, every node opens one on **F1**. Every
 > category has been seen running in vvvv gamma 7.4 and every help patch in the editor. New in
-> `0.0.6-alpha`: shapes by position and size the way VL.Skia describes them (`Rectangle`, `Circle`,
-> `Ellipse`, `RegularPolygon`, `Arc`, `Sector` …), and a drawn Geometry IOBox that keeps its view
-> while you edit. **Breaking:** `Read WKT` / `Write WKT` are now `FromWKT` / `ToWKT`, with no alias -
-> a patch made with an older version shows the old node unresolved; put the new one in its place.
+> `0.0.7-alpha`: **`GeometryEditor`, a geometry drawn by hand** - select the node, press
+> **Ctrl+Shift+W**, and draw points, lines, polygons with holes, rectangles and circles in a window;
+> the drawing is written into the node's `WKT` pin and saved with the patch. And **`SetSRID`**, which
+> says which coordinate system the numbers are in and moves nothing; with SRID 4326 the editor and
+> the drawn IOBox show longitude and latitude at their true proportions. Moving coordinates from one
+> system to another is the job of [VL.PROJ](https://github.com/rednotfound/VL.PROJ)'s `Reproject`.
 >
 > **Since 2026-11-07 a Geometry draws itself in the editor**, the way a GIS draws it: hover any
 > Geometry pin, or make an IOBox of one, and you see a polygon filled semi-transparently with its
@@ -76,7 +78,7 @@ shows the version actually loaded. Two things to know:
 - **Within about 30 minutes of a release the command can silently do nothing**: NuGet caches each
   package's version list for 30 minutes, so a list fetched before the release still says the old
   version is the latest, and the install reports it as already present. Either wait, or ask for the
-  version by name, `nuget install VL.NetTopologySuite -version 0.0.6-alpha`, or delete the one
+  version by name, `nuget install VL.NetTopologySuite -version 0.0.7-alpha`, or delete the one
   cache file `list_vl.nettopologysuite_index.dat` under `%LOCALAPPDATA%\NuGet\v3-cache` — it is
   only a cache. (Measured on 2026-10-17, an hour after a release.)
 - **What changed between versions** is in the release notes on the
@@ -123,14 +125,14 @@ a package oversells itself:
 
 | | proves | run |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ **202 tests**, ~400 ms, no network |
-| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, labels do not collide, every node has an F1 flag | ✅ 19 documents, 64 of 64 nodes flagged |
+| `dotnet test` | the arithmetic is right | ✅ **335 tests**, ~400 ms, no network |
+| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, labels do not collide, every node has an F1 flag | ✅ 22 documents, 66 of 66 nodes flagged |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
-| `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved** — an unresolved one has its links dropped and vanishes from the generated C#, so the script reads the C# | ✅ all 17 help patches |
+| `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved** — an unresolved one has its links dropped and vanishes from the generated C#, so the script reads the C# | ✅ all 20 help patches |
 | `tools\Test-Install.ps1` | the **packed** package installs from a feed with its dependencies, and every help patch inside it compiles with that install as the only package repository | ✅ 2026-09-25 |
 | **install from nuget.org** | the published package resolves with its dependencies from nuget.org alone; its 15 shipped help patches compile from that install; `HowTo Find the shortest path` runs in vvvv from it | ✅ 2026-09-26, `0.0.1-alpha` |
-| **the vvvv GUI** | **a node appears under the right category, with the right label, computing the right value** | ✅ every category; all 15 help patches seen 2026-09-24, reviewed by hand 2026-09-25; the sixteenth and the six tier-1 extensions seen 2026-11-07 |
-| **F1 on a node** | the node opens its help patch | ✅ pressed on all 39 nodes 2026-09-24; 55 of 55 carry the flag (`Test-VLPatch`) |
+| **the vvvv GUI** | **a node appears under the right category, with the right label, computing the right value** | ✅ every category; all 15 help patches seen 2026-09-24, reviewed by hand 2026-09-25; the sixteenth and the six tier-1 extensions seen 2026-11-07; `GeometryEditor`'s window used by the maintainer 2026-11-11 to 11-14 |
+| **F1 on a node** | the node opens its help patch | ✅ pressed on all 39 nodes 2026-09-24; 66 of 66 carry the flag (`Test-VLPatch`) |
 
 What the GUI showed, category by category:
 
@@ -163,7 +165,7 @@ Two things the tooling caught that the eye would not:
 
 ## The nodes
 
-**Fifty-six**, in six categories. No node takes more than three inputs, except where a fourth
+**Sixty-six**, in six categories. No node takes more than three inputs, except where a fourth
 is a default you will rarely touch.
 
 ### `NetTopologySuite.Geometry` — making geometry
@@ -198,6 +200,18 @@ north-west corner; angles are in cycles, counter-clockwise from east. See `HowTo
 | `RegularPolygon` | Position, Radius, Sides, Rotation → `Polygon` |
 | `Arc` | Position, Radius, Start, Sweep → `LineString` |
 | `Sector` | Position, Radius, Start, Sweep → `Polygon` |
+
+### `NetTopologySuite.Geometry` — drawn by hand, and which CRS
+
+| Node | in → out |
+|---|---|
+| `GeometryEditor` | WKT, SRID → `Geometry` *(select it, press Ctrl+Shift+W, draw in the window; it writes the WKT pin)* |
+| `SetSRID` | `Geometry`, SRID → `Geometry` *(a label: which CRS the numbers are in; it moves nothing)* |
+
+The editor's tools: Select V, Point P, Line L, Polygon A, Rectangle R, Circle C, Undo, Redo, Snap S,
+Fit F. A shape is selected first, then edited. In an exported app the node outputs what its pin
+says. See `HowTo Draw a geometry`, `HowTo Draw in longitude and latitude` and
+`HowTo Say which CRS a geometry is in`.
 
 ### `NetTopologySuite.Geometry` — reading it back
 
@@ -334,7 +348,7 @@ usually spoken, and the most common bug in this domain.
 
 ## Help patches
 
-Sixteen, in `help\VL.NetTopologySuite\`, in the order the Help Browser shows them. Press **F1** on
+Twenty, in `help\VL.NetTopologySuite\`, in the order the Help Browser shows them. Press **F1** on
 any node of this package to open the one that teaches it. Since 2026-11-07 every patch also *shows*
 the geometry it talks about, drawn in IOBoxes beside the nodes: the four overlays of two squares
 side by side, A and B of the predicates in one picture, the buffered shape next to the original,
@@ -343,8 +357,8 @@ the town and the path, the feature with its attribute table.
 | Topic | Patch |
 |---|---|
 | Start here | `Explanation Overview of available nodes` — every node, one line each |
-| Making geometry | `HowTo Create a point` · `HowTo Create a linestring` · `HowTo Create a polygon` · `HowTo Group geometries` · `HowTo Work with Z` |
-| Looking at geometry | `HowTo Inspect a geometry` |
+| Making geometry | `HowTo Make a shape` · `HowTo Draw a geometry` · `HowTo Draw in longitude and latitude` · `HowTo Create a point` · `HowTo Create a linestring` · `HowTo Create a polygon` · `HowTo Group geometries` · `HowTo Work with Z` |
+| Looking at geometry | `HowTo Inspect a geometry` · `HowTo Say which CRS a geometry is in` |
 | Text in, geometry out | `HowTo Read and write WKT` |
 | Spatial operations | `HowTo Buffer a geometry` · `HowTo Combine two geometries` · `HowTo Test how geometries relate` · `HowTo Measure distance` · `HowTo Wrap points in a hull` |
 | Features | `HowTo Attach attributes to a geometry` |
@@ -388,7 +402,7 @@ to the repository's help folder, so a patch saved in vvvv is the one git sees.
 
 To use the working tree instead of the published package, point vvvv at the staged folder:
 `vvvv.exe MyPatch.vl --package-repositories <repo>\dist;<repo>\deps`. The working version is
-always one ahead of the published one (`0.0.7-alpha` while `0.0.6-alpha` is on nuget.org), so the
+always one ahead of the published one (`0.0.8-alpha` while `0.0.7-alpha` is on nuget.org), so the
 two can never be mistaken for each other in a NuGet cache.
 
 ---

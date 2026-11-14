@@ -29,7 +29,15 @@
     </description>
     <summary>NetTopologySuite geometry as composable nodes for vvvv gamma.</summary>
     <releaseNotes>
-      0.0.7-alpha - In development, not published.
+      0.0.7-alpha (2026-11-14) - 2 new nodes, 66 in all. GeometryEditor (NetTopologySuite.Geometry):
+      a geometry drawn by hand. Select the node and press Ctrl+Shift+W: a window opens with tools for
+      points, lines, polygons with holes, rectangles and circles, box selection, undo and redo, and
+      snapping. The drawing is written into the node's WKT pin, so it is saved with the patch as text.
+      SetSRID (NetTopologySuite.Geometry): says which coordinate system a geometry's numbers are in,
+      and moves nothing. GeometryEditor has an SRID pin too; with SRID 4326 the window and the drawn
+      Geometry IOBox show longitude and latitude at their true proportions, and the window names the
+      CRS and its units. With VL.PROJ installed, any EPSG code is named. New help patches: HowTo Draw
+      a geometry, HowTo Draw in longitude and latitude, HowTo Say which CRS a geometry is in.
 
       0.0.6-alpha (2026-11-08) - 8 new nodes, 64 in all. Shapes by position and size, the way VL.Skia
       describes them: Rectangle (Position, Width, Height, Anchor), Rectangle (Join Points), Circle,

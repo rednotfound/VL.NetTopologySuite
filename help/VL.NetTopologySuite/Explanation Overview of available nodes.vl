@@ -875,6 +875,54 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
+          <Pad Id="T6OCrxRi3oB5wKrCBniKnN" Bounds="640,1290,400,30" ShowValueBox="true" isIOBox="true" Value="NetTopologySuite.Geometry - drawing and CRS">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">14</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="640,1330,110,19" Id="T9Har0jjZmy3qoXDSgArBd">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="ProcessAppFlag" Name="GeometryEditor" />
+              <PinReference Kind="InputPin" Name="WKT" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="RD4wZwJcJ5SB5ZZ2lVqkOm" Name="WKT" Kind="InputPin" />
+            <Pin Id="PKyCY7yEEZK7ZkTo6KDoYJ" Name="Result" Kind="OutputPin" />
+            <Pin Id="UIeNkeSGPOxVXzWlr91e8g" Name="Is Editable" Kind="OutputPin" />
+          </Node>
+          <Pad Id="Sw0fClGzRM09i4SoZ5zpRK" Bounds="830,1332,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; Drawn by hand: select it, press Ctrl+Shift+W.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="640,1365,70,19" Id="RDn1Px6JbeE530yKzXEX4n">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="SetSRID" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="OGp8goOSp9iFX88ew8Teql" Name="Geometry" Kind="InputPin" />
+            <Pin Id="KKL7Kintc15gdKQtJV5ZT5" Name="SRID" Kind="InputPin" />
+            <Pin Id="PZCfoo819ej6FVdtImMTs2" Name="Output" Kind="OutputPin" />
+          </Node>
+          <Pad Id="QkjKYyZx87cuMLUMGA3VKM" Bounds="830,1367,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; Says which CRS the numbers are in. Moves nothing.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
           <Node Bounds="60,885,80,19" Id="FMVmt8BsmIj0HsHkzLxrWa">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
