@@ -13,7 +13,7 @@ namespace VL.NetTopologySuite;
 // it is how a geometry gets into a patch without wiring twenty coordinate nodes, how a help patch
 // shows a shape in one IOBox, and how a result gets checked against a value from another tool.
 //
-// WKB and GeoJSON are deliberately not here. WKB is a reasonable next step. GeoJSON is not: it
+// WKB is in IONodes.WKB.cs (tier 2, 2026-11-14). GeoJSON is deliberately not here: it
 // lives in a separate NuGet package (NetTopologySuite.IO.GeoJSON), it brings a feature model that
 // is not this package's business, and taking it on is the first step towards the generic geospatial
 // file-format package this one is explicitly not trying to be. It has its own package,
@@ -27,10 +27,10 @@ namespace VL.NetTopologySuite;
 // PascalCase identifier; NameAttribute is legal on a method (AttributeUsage All).
 
 /// <summary>
-/// Reads and writes geometry as Well-Known Text.
+/// Reads and writes geometry as Well-Known Text and Well-Known Binary.
 /// </summary>
 [Name("IO")]
-public static class IONodes
+public static partial class IONodes
 {
     // Examples: POINT (13.4 52.5), LINESTRING (0 0, 1 1, 2 0), POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))
     // - note the doubled brackets, which a polygon needs because its outer ring is one of a list.
