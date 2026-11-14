@@ -2,10 +2,15 @@
 
 **NetTopologySuite made natural inside [vvvv gamma](https://vvvv.org).** Not another GIS framework.
 
-> **Status: `0.0.7-alpha` on nuget.org since 2026-11-14 — a prerelease, early, and it works.**
-> 66 nodes in six categories, 335 tests, 20 help patches, every node opens one on **F1**. Every
+> **Status: `0.0.8-alpha` — a prerelease, early, and it works.**
+> 84 nodes in six categories, 461 tests, 23 help patches, every node opens one on **F1**. Every
 > category has been seen running in vvvv gamma 7.4 and every help patch in the editor. New in
-> `0.0.7-alpha`: **`GeometryEditor`, a geometry drawn by hand** - select the node, press
+> `0.0.8-alpha`: **the common operations a geometry library is expected to have** - `Simplify`,
+> `Union (Spread)`, `Translate` / `Rotate` / `Scale`, a point moving along a line with `Interpolate`
+> (feed it an LFO), `Substring`, `Locate`, `Densify`, `MakeValid`, `ConcaveHull`,
+> `MinimumBoundingCircle`, `RandomPoints` with a seed, `Vertices`, and WKB (`FromWKB` / `ToWKB`, with
+> the hex text PostGIS prints). No node fails on a self-crossing polygon, a mixed collection or a
+> half-built spread any more. From `0.0.7-alpha`: **`GeometryEditor`, a geometry drawn by hand** - select the node, press
 > **Ctrl+Shift+W**, and draw points, lines, polygons with holes, rectangles and circles in a window;
 > the drawing is written into the node's `WKT` pin and saved with the patch. And **`SetSRID`**, which
 > says which coordinate system the numbers are in and moves nothing; with SRID 4326 the editor and
@@ -78,7 +83,7 @@ shows the version actually loaded. Two things to know:
 - **Within about 30 minutes of a release the command can silently do nothing**: NuGet caches each
   package's version list for 30 minutes, so a list fetched before the release still says the old
   version is the latest, and the install reports it as already present. Either wait, or ask for the
-  version by name, `nuget install VL.NetTopologySuite -version 0.0.7-alpha`, or delete the one
+  version by name, `nuget install VL.NetTopologySuite -version 0.0.8-alpha`, or delete the one
   cache file `list_vl.nettopologysuite_index.dat` under `%LOCALAPPDATA%\NuGet\v3-cache` — it is
   only a cache. (Measured on 2026-10-17, an hour after a release.)
 - **What changed between versions** is in the release notes on the
@@ -125,14 +130,14 @@ a package oversells itself:
 
 | | proves | run |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ **335 tests**, ~400 ms, no network |
-| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, labels do not collide, every node has an F1 flag | ✅ 22 documents, 66 of 66 nodes flagged |
+| `dotnet test` | the arithmetic is right | ✅ **461 tests**, ~400 ms, no network |
+| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, labels do not collide, every node has an F1 flag | ✅ 25 documents, 84 of 84 nodes flagged |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
-| `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved** — an unresolved one has its links dropped and vanishes from the generated C#, so the script reads the C# | ✅ all 20 help patches |
+| `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved** — an unresolved one has its links dropped and vanishes from the generated C#, so the script reads the C# | ✅ all 23 help patches |
 | `tools\Test-Install.ps1` | the **packed** package installs from a feed with its dependencies, and every help patch inside it compiles with that install as the only package repository | ✅ 2026-09-25 |
 | **install from nuget.org** | the published package resolves with its dependencies from nuget.org alone; its 15 shipped help patches compile from that install; `HowTo Find the shortest path` runs in vvvv from it | ✅ 2026-09-26, `0.0.1-alpha` |
 | **the vvvv GUI** | **a node appears under the right category, with the right label, computing the right value** | ✅ every category; all 15 help patches seen 2026-09-24, reviewed by hand 2026-09-25; the sixteenth and the six tier-1 extensions seen 2026-11-07; `GeometryEditor`'s window used by the maintainer 2026-11-11 to 11-14 |
-| **F1 on a node** | the node opens its help patch | ✅ pressed on all 39 nodes 2026-09-24; 66 of 66 carry the flag (`Test-VLPatch`) |
+| **F1 on a node** | the node opens its help patch | ✅ pressed on all 39 nodes 2026-09-24; 84 of 84 carry the flag (`Test-VLPatch`) |
 
 What the GUI showed, category by category:
 
@@ -232,6 +237,7 @@ says. See `HowTo Draw a geometry` (with a second editor in longitude and latitud
 | `InteriorPoint` | `Geometry` → `Point` *(always on the shape, where `Centroid` may not be)* |
 | `Envelope` | `Geometry` → `Geometry` *(the bounding box as a rectangle polygon; `Bounds` gives the numbers)* |
 | `Boundary` | `Geometry` → `Geometry` *(a polygon's rings as lines, a line's two end points)* |
+| `Vertices` | `Geometry` → `MultiPoint` *(every vertex once, to see them drawn)* |
 | `Outlines` | `Geometry` → **Rings**, **Lines**, **Points** *(every polygon ring, every linestring and every point as coordinates, collections flattened: what a drawing needs, sorted)* |
 
 ### `NetTopologySuite.Feature` — attaching data to geometry
@@ -270,10 +276,19 @@ exception, `Relate` is the nine-character DE-9IM string behind all of them, and 
 `Intersects` plus `Not`. The ten nodes after the first nine are tier 1 of the coverage plan
 (2026-11-07) — each one line of NTS's `Geometry` class.
 
+Since `0.0.8-alpha` (tier 2): `Simplify` · `Union (Spread)` · `Translate` · `Rotate` · `Scale` ·
+`Interpolate` · `Substring` · `Locate` · `Densify` · `MakeValid` · `ConcaveHull` ·
+`MinimumBoundingCircle` · `RandomPoints`. A place on a line is a fraction from 0 to 1, rotations
+are in cycles, and `RandomPoints` gives the same points every frame for one `Seed`. A missing input
+gives an empty geometry, never nothing, and no node fails on a self-crossing polygon or a mixed
+`GeometryCollection`: the input is repaired, or the collection taken apart, first.
+
 ### `NetTopologySuite.IO`
 
 `FromWKT` · `ToWKT` (until `0.0.6-alpha`: `Read WKT` · `Write WKT`, renamed with no alias - a patch
-made with an older version shows the old node unresolved; put `FromWKT` / `ToWKT` in its place)
+made with an older version shows the old node unresolved; put `FromWKT` / `ToWKT` in its place) ·
+`FromWKB` · `ToWKB` · `FromWKB (Hex)` · `ToWKB (Hex)` (since `0.0.8-alpha`: bytes, or the hex text
+PostGIS prints; `Include SRID` writes PostGIS's EWKB)
 
 ### `NetTopologySuite.Index` — asking many geometries a question without asking each one
 

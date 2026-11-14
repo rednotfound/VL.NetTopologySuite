@@ -395,6 +395,21 @@ siblings `VL.NetTopologySuite.GeoJSON` `v0.0.1-alpha` / `v0.0.2-alpha` (its remo
 all) and `VL.Mapsui` `v0.0.2-alpha`, each tag on the commit whose nuspec matched the one downloaded
 from nuget.org.
 
+## `0.0.8-alpha` — 2026-11-14, night
+
+Tier 2: 18 new nodes, 84 in all (the operations a geometry library is expected to have, WKB, and
+`Vertices`), merged as PRs #6-#9, and a whole-package review before packing (two read-only
+reviews, one of the nodes and one of the help against the core and community packs). The review's
+node findings were fixed in `d2717ba` (no node throws, returns null or runs unbounded;
+`ReviewRegressionTests`), its help findings in `c2952f6` and `b584288` (23 patches, nine noun
+topics, all 84 nodes on the Explanation). **Behaviour change worth the release notes:** a node
+whose input is missing now gives an empty geometry instead of null, and `Distance` NaN instead of
+0 when a side is empty. Gate green from a clean build: 461 tests, `Test-VLPackage`,
+`Test-VLPatch`, `pack -NoBuild`, 23 of 23 patches compiled against the nupkg, `Test-Install`; the
+nupkg opened and its 23 patches compared with the tree (the four merged-away patches absent), its
+README and release notes the new ones. GUI: every new or changed patch seen and arranged by the
+maintainer the same evening on the same build.
+
 ## Updating a vvvv that already has the previous version
 
 `nuget install VL.NetTopologySuite -pre` again, in vvvv's command line; the nugets folder then
