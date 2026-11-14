@@ -617,4 +617,89 @@ public class SketchSessionTests
         s.Sync(other);
         Assert.Equal("POINT (7 7)", s.Sketch.ToWKT());
     }
+   // ---- editor follow-ups (2026-11-14) ---------------------------------------------------------
+
+    [Fact]
+    public void A_rectangle_is_one_drag_one_undo_step_and_then_selected()
+    {
+        var s = With("GEOMETRYCOLLECTION EMPTY");
+        s.SetTool(SketchTool.Rectangle);
+        s.LeftDown(C(1, 1), Tol);
+        Assert.Equal(SketchOutcome.Preview, s.Move(C(2, 2)));
+        Assert.Equal(SketchOutcome.Preview, s.Move(C(4, 3)));
+        Assert.Equal(SketchOutcome.Commit, s.LeftUp());
+        var g = s.Sketch.ToGeometry();
+       Assert.Equal(new Envelope(1, 4, 1, 3), g.EnvelopeInternal);
+        Assert.Equal(6, g.Area, 9);
+        Assert.Equal(SketchTool.Select, s.Tool);
+        Assert.Equal(0, s.SelectedPart);
+        s.Undo();
+        Assert.Equal(0, s.Sketch.PartCount);
+    }
+
+    [Fact]
+    public void A_circle_is_dragged_from_its_centre_and_is_round_on_lon_lat_screens()
+    {
+        var s = With("GEOMETRYCOLLECTION EMPTY");
+        s.XScale = 0.5; // a unit of x is drawn half as wide as a unit of y
+        s.SetTool(SketchTool.Circle);
+        Drag(s, 0, 0, 0, 2);                          // radius 2, straight up
+        var e = s.Sketch.ToGeometry().EnvelopeInternal;
+        Assert.Equal(4, e.Height, 6);
+        Assert.Equal(8, e.Width, 6);                  // twice as many x units: round on screen
+        Assert.Equal(0, e.Centre.X, 6);
+        Assert.Equal(SketchTool.Select, s.Tool);
+    }
+
+    [Fact]
+    public void A_click_with_the_rectangle_tool_draws_nothing_and_says_how()
+    {
+        var s = With("GEOMETRYCOLLECTION EMPTY");
+        s.SetTool(SketchTool.Rectangle);
+        Click(s, 1, 1);
+        Assert.Equal(0, s.Sketch.PartCount);
+        Assert.Contains("Drag", s.HintText);
+        Assert.Equal(SketchTool.Rectangle, s.Tool);
+    }
+
+    [Fact]
+    public void Esc_during_a_rectangle_drag_puts_everything_back()
+    {
+        var s = With(Square);
+        s.SetTool(SketchTool.Rectangle);
+        s.LeftDown(C(5, 5), Tol);
+        s.Move(C(8, 8));
+        Assert.Equal(2, s.Sketch.PartCount);
+        s.Escape();
+        Assert.Equal(Square, s.Sketch.ToWKT());
+    }
+
+    [Fact]
+    public void A_hole_crossing_its_polygon_s_edge_is_refused_and_drawing_goes_on()
+    {
+        var s = With("POLYGON ((0 0, 9 0, 9 9, 0 9, 0 0))");
+        Click(s, 5, 5);
+        s.Run(SketchAction.Hole);
+        Click(s, 1, 1);
+        Click(s, 2, 1);
+        Click(s, 2, 2);                               // so far inside
+        s.LeftDown(C(12, 2), Tol); s.LeftUp();        // this point is outside the polygon
+        Assert.Equal(SketchOutcome.None, s.Enter());
+        Assert.Contains("inside its polygon", s.HintText);
+        Assert.True(s.IsDrawing);                     // not discarded
+        s.Backspace();                                // take the outside point back
+        Assert.Equal(SketchOutcome.Commit, s.Enter());
+        Assert.Equal("POLYGON ((0 0, 9 0, 9 9, 0 9, 0 0), (1 1, 2 1, 2 2, 1 1))", s.Sketch.ToWKT());
+    }
+
+    [Fact]
+    public void A_hole_overlapping_another_hole_is_refused()
+    {
+        var s = With("POLYGON ((0 0, 9 0, 9 9, 0 9, 0 0), (1 1, 4 1, 4 4, 1 4, 1 1))");
+        Click(s, 6, 6);
+        s.Run(SketchAction.Hole);
+        Click(s, 5, 5); Click(s, 5, 2); Click(s, 2, 5); // its edge (5 2)-(2 5) runs through the first hole
+        Assert.Equal(SketchOutcome.None, s.Enter());
+        Assert.Contains("another hole", s.HintText);
+    }
 }

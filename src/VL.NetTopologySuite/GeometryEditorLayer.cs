@@ -17,7 +17,9 @@ namespace VL.NetTopologySuite;
 // GeometryEditorNode.Preview, Commit -> GeometryEditorNode.Commit (written into the document).
 //
 // What is on screen:
-//   toolbar      Select V · Point P · Line L · Polygon A | Undo · Redo | Snap S · Fit F
+//   toolbar      Select V · Point P · Line L · Polygon A · Rectangle R · Circle C | Undo · Redo |
+//                Snap S · Fit F. Space held + left drag pans (2026-11-14: a touchpad has no
+//                right or middle drag, and the left drag is the selection box)
 //   canvas       unselected shapes as outlines; the selected one with its vertices and a "+" at the
 //                middle of every edge; the selected vertex larger, orange, ringed in white
 //   action bar   next to the selection or the shape being drawn: Move · Hole · Delete, Delete point,
@@ -83,6 +85,7 @@ internal sealed class GeometryEditorLayer : ILayer
 
     // Panning: a left press the session hands back (empty space), or a right / middle press.
     private bool _leftDown, _rightDown, _middleDown, _panning;
+    private bool _spaceHeld, _spaceDrag;
     private Vector2 _pressAt, _lastPan;
 
     public GeometryEditorLayer()
@@ -93,6 +96,8 @@ internal sealed class GeometryEditorLayer : ILayer
             Tool("Point", "P", SketchTool.Point),
             Tool("Line", "L", SketchTool.Line),
             Tool("Polygon", "A", SketchTool.Polygon),
+            Tool("Rectangle", "R", SketchTool.Rectangle),
+            Tool("Circle", "C", SketchTool.Circle),
             new Button { Label = "Undo", Key = "Ctrl+Z", IsOn = _ => false, IsEnabled = l => l._session.CanUndo, Press = l => l.Apply(l._session.Undo()) },
             new Button { Label = "Redo", Key = "Ctrl+Y", IsOn = _ => false, IsEnabled = l => l._session.CanRedo, Press = l => l.Apply(l._session.Redo()) },
             new Button { Label = "Snap", Key = "S", IsOn = l => l._snap, IsEnabled = _ => true, Press = l => l._snap = !l._snap },
@@ -135,6 +140,7 @@ internal sealed class GeometryEditorLayer : ILayer
 
         var target = _target;
         if (target is not null) _session.Sync(target.Sketch);
+        _session.XScale = _view.XScale; // a circle is drawn round on screen, also on lon/lat
         if (target is not null && target.Srid != _fittedSrid) _fitted = false; // degrees <-> metres changes the aspect
 
         if (!_fitted)
@@ -169,7 +175,7 @@ internal sealed class GeometryEditorLayer : ILayer
 
         var left = !target.IsEditable
             ? "Shown only: geometry with Z, nested collections and LINEARRING are not editable here."
-            : HoveredReason() ?? _note ?? _session.HintText;
+            : HoveredReason() ?? _note ?? HoveredKey() ?? _session.HintText;
         // The CRS name (from VL.PROJ's catalogue) can be long; when the right side would crowd the hint
         // to a few words, the name goes and the code and units stay (seen 2026-11-12 with EPSG:2263).
         var right = StatusRight(target, named: true);
@@ -387,12 +393,23 @@ internal sealed class GeometryEditorLayer : ILayer
 
     // ---- toolbar, action bar, status bar ----------------------------------------------------
 
+    // Ten buttons with their key letters need about 700 px; the window docked beside a patch is
+    // often 600 (2026-11-14, after Rectangle and Circle joined). Too narrow: the letters go, and a
+    // hovered button names its key in the status bar instead.
+    private bool _hideKeys;
+
     private void DrawToolbar(SKCanvas canvas)
     {
+        using (var measure = new SKPaint { TextSize = 12 * _scaling })
+        using (var keys = new SKPaint { TextSize = 10 * _scaling })
+        {
+            var needed = 8 * _scaling + 20 * _scaling + _toolbar.Sum(b => measure.MeasureText(b.Label) + keys.MeasureText(b.Key) + 6 * _scaling + 18 * _scaling + 5 * _scaling);
+            _hideKeys = needed > _size.X - 8 * _scaling;
+        }
         var x = 8 * _scaling;
         for (var i = 0; i < _toolbar.Count; i++)
         {
-            if (i is 4 or 6) x += 10 * _scaling; // groups: tools | history | view
+            if (i is 6 or 8) x += 10 * _scaling; // groups: tools | history | view
             x = DrawButton(canvas, _toolbar[i], x, 6 * _scaling) + 5 * _scaling;
         }
     }
@@ -449,7 +466,8 @@ internal sealed class GeometryEditorLayer : ILayer
         using var fill = new SKPaint { Style = SKPaintStyle.Fill, IsAntialias = true };
         var enabled = b.IsEnabled(this);
         var h = (ToolbarHeight - 8) * _scaling;
-        var keyWidth = b.Key.Length > 0 ? keyText.MeasureText(b.Key) + 6 * _scaling : 0;
+        var key = _hideKeys ? "" : b.Key;
+        var keyWidth = key.Length > 0 ? keyText.MeasureText(key) + 6 * _scaling : 0;
         var w = text.MeasureText(b.Label) + keyWidth + 18 * _scaling;
         b.Rect = new SKRect(x, y, x + w, y + h);
         var hovered = b.Rect.Contains(_mouse.X, _mouse.Y);
@@ -458,7 +476,7 @@ internal sealed class GeometryEditorLayer : ILayer
         text.Color = !enabled ? new SKColor(255, 255, 255, 90) : b.Danger ? Danger : SKColors.White;
         var baseline = y + h / 2 + 4 * _scaling;
         canvas.DrawText(b.Label, x + 9 * _scaling, baseline, text);
-        if (b.Key.Length > 0) canvas.DrawText(b.Key, x + 15 * _scaling + text.MeasureText(b.Label), baseline, keyText);
+        if (key.Length > 0) canvas.DrawText(key, x + 15 * _scaling + text.MeasureText(b.Label), baseline, keyText);
         return x + w;
     }
 
@@ -477,6 +495,9 @@ internal sealed class GeometryEditorLayer : ILayer
         canvas.Restore();
         if (right.Length > 0) canvas.DrawText(right, _size.X - rightWidth - 10 * _scaling, baseline, rightPaint);
     }
+
+    private string? HoveredKey()
+        => _hideKeys ? _toolbar.FirstOrDefault(b => b.Key.Length > 0 && b.Rect.Contains(_mouse.X, _mouse.Y)) is { } b ? $"{b.Label} ({b.Key})" : null : null;
 
     private string? HoveredReason()
         => _actionBar.Concat(_toolbar).FirstOrDefault(b => b.Rect.Contains(_mouse.X, _mouse.Y) && !b.IsEnabled(this))?.Reason(this);
@@ -558,6 +579,11 @@ internal sealed class GeometryEditorLayer : ILayer
                 : mouse.Position;
             return OnMouse(mouse);
         }
+        if (notification is KeyUpNotification up && up.KeyCode == Keys.Space)
+        {
+            _spaceHeld = false;
+            return true;
+        }
         if (notification is KeyDownNotification key)
             return OnKey(key);
         return false;
@@ -579,6 +605,13 @@ internal sealed class GeometryEditorLayer : ILayer
                     {
                         if (button.IsEnabled(this)) button.Press(this);
                         else _note = button.Reason(this);
+                        return true;
+                    }
+                    if (_spaceHeld && !OverUi)
+                    {
+                        _spaceDrag = true;
+                        _panning = true;
+                        _lastPan = _mouse;
                         return true;
                     }
                     if (!Editable || OverUi) return false;
@@ -608,7 +641,7 @@ internal sealed class GeometryEditorLayer : ILayer
                 return true;
 
             case MouseMoveNotification:
-                if (_rightDown || _middleDown)
+                if (_rightDown || _middleDown || _spaceDrag)
                 {
                     if (!_panning && Vector2.Distance(_mouse, _pressAt) > DragPixels * _scaling) _panning = true;
                     if (_panning)
@@ -619,6 +652,11 @@ internal sealed class GeometryEditorLayer : ILayer
                     return true;
                 }
                 if (Editable) Apply(_session.Move(MouseInGeometry, Placed));
+                return true;
+
+            case MouseUpNotification up when (up.Buttons & MouseButtons.Left) != 0 && _spaceDrag:
+                _spaceDrag = false;
+                _panning = false;
                 return true;
 
             case MouseUpNotification up when (up.Buttons & MouseButtons.Left) != 0:
@@ -641,7 +679,7 @@ internal sealed class GeometryEditorLayer : ILayer
             case MouseLostNotification:
                 // The window lost the mouse mid-gesture: give the gesture back rather than half-apply it.
                 if (_leftDown && Editable) Apply(_session.Escape());
-                _leftDown = _rightDown = _middleDown = _panning = false;
+                _leftDown = _rightDown = _middleDown = _panning = _spaceDrag = _spaceHeld = false;
                 return false;
         }
         return false;
@@ -660,6 +698,7 @@ internal sealed class GeometryEditorLayer : ILayer
         switch (code)
         {
             case Keys.F: _fitted = false; return true;
+            case Keys.Space: _spaceHeld = true; return true; // held: a left drag pans
             case Keys.S: _snap = !_snap; return true;
         }
         if (!Editable) return false;
@@ -669,6 +708,8 @@ internal sealed class GeometryEditorLayer : ILayer
             case Keys.P: Apply(_session.SetTool(SketchTool.Point)); return true;
             case Keys.L: Apply(_session.SetTool(SketchTool.Line)); return true;
             case Keys.A: Apply(_session.SetTool(SketchTool.Polygon)); return true;
+            case Keys.R: Apply(_session.SetTool(SketchTool.Rectangle)); return true;
+            case Keys.C: Apply(_session.SetTool(SketchTool.Circle)); return true;
             case Keys.M: Apply(_session.StartMove()); return true;
             case Keys.H: Apply(_session.StartHole()); return true;
             case Keys.Enter: Apply(_session.Enter()); return true;

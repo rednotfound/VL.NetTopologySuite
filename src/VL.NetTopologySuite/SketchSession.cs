@@ -60,6 +60,12 @@ internal enum SketchTool
 
     /// <summary>Drawing a hole in a polygon; entered from that polygon's Hole action, not the toolbar.</summary>
     Hole,
+
+    /// <summary>A rectangle, dragged from one corner to the other.</summary>
+    Rectangle,
+
+    /// <summary>A circle, dragged from the centre outwards.</summary>
+    Circle,
 }
 
 /// <summary>What an input did to the sketch.</summary>
@@ -111,7 +117,8 @@ internal sealed class SketchSession
     private GeometrySketch? _beforeDrawing;
 
     // A left press in Select: what it landed on, where, and whether it has become a drag.
-    private enum Press { None, Vertex, Insert, MoveShape, Box }
+    private enum Press { None, Vertex, Insert, MoveShape, Box, Shape }
+    private Coordinate? _shapeFrom;
     private Press _press;
     private Coordinate? _boxTo;
     private bool _boxForPoints;
@@ -167,7 +174,7 @@ internal sealed class SketchSession
     }
 
     /// <summary>True while a part is being drawn, dragged or moved: the node's sketch is not taken then.</summary>
-    public bool IsBusy => _drawPart >= 0 || _moving || (_press is Press.Vertex or Press.Insert or Press.MoveShape && _dragging);
+    public bool IsBusy => _drawPart >= 0 || _moving || (_press is Press.Vertex or Press.Insert or Press.MoveShape or Press.Shape && _dragging);
 
     /// <summary>The ring being drawn, for the rubber band; null when not drawing.</summary>
     public (int Part, int Ring)? DrawingRing => _drawPart >= 0 ? (_drawPart, _drawRing) : null;
@@ -269,6 +276,11 @@ internal sealed class SketchSession
                 SelectedPart = _sketch.PartCount - 1;
                 return Committed();
 
+            case SketchTool.Rectangle or SketchTool.Circle:
+                _press = Press.Shape;
+                _shapeFrom = place.Copy();
+                return SketchOutcome.None;
+
             default:
                 _press = Press.None;
                 return DrawDown(at, place, tolerance);
@@ -359,6 +371,14 @@ internal sealed class SketchSession
         place ??= at;
         if (_press is Press.None || _pressAt is null) return SketchOutcome.None;
 
+        if (_press == Press.Shape && _shapeFrom is not null && _beforeDrag is not null)
+        {
+            if (!_dragging && at.Distance(_pressAt) <= _threshold) return SketchOutcome.None;
+            _dragging = true;
+            _sketch = ShapePart(_shapeFrom, place) is { } shape ? _beforeDrag.AddPart(shape) : _beforeDrag;
+            return SketchOutcome.Preview;
+        }
+
         if (_press == Press.Box)
         {
             // The box follows the real mouse, not the snapped point.
@@ -410,6 +430,16 @@ internal sealed class SketchSession
 
         switch (press)
         {
+            case Press.Shape when dragging && _beforeDrag is not null && _sketch.PartCount > _beforeDrag.PartCount:
+                // The maintainer's choice for drawn parts: back to Select with it selected.
+                _tool = SketchTool.Select;
+                SelectedPart = _sketch.PartCount - 1;
+                SelectedVertex = null;
+                return Committed();
+            case Press.Shape:
+                _sketch = _beforeDrag ?? _sketch;
+                Message = _tool == SketchTool.Rectangle ? "Drag from one corner to the other to draw a rectangle." : "Drag from the centre outwards to draw a circle.";
+                return dragging ? SketchOutcome.Preview : SketchOutcome.None;
             case Press.Box when dragging && box is not null:
                 SelectInBox(box);
                 return SketchOutcome.None;
@@ -795,12 +825,14 @@ internal sealed class SketchSession
                 SketchTool.Point => "Click to place a point · V to select",
                 SketchTool.Line => "Click to start a line",
                 SketchTool.Polygon => "Click to start a polygon",
+                SketchTool.Rectangle => "Drag from one corner to the other · Esc cancels",
+                SketchTool.Circle => "Drag from the centre outwards · Esc cancels",
                 SketchTool.Hole => "Click inside the polygon to start the hole · Esc cancels",
                 _ when _parts.Count > 0 => $"{_parts.Count} shapes selected · Delete removes them · Move moves them · Esc deselects",
                 _ when _points.Count > 0 => $"{_points.Count} points selected · Delete removes them · Esc deselects",
                 _ when SelectedVertex is not null => "Delete removes this point · drag to move it · Esc deselects",
                 _ when SelectedPart >= 0 => "Drag a point to reshape · click or drag + to add a point · drag a box to select points",
-                _ => "Click a shape to select it · drag a box to select several · right-drag pans · wheel zooms",
+                _ => "Click a shape to select it · drag a box to select several · right-drag or Space+drag pans · wheel zooms",
             };
         }
     }
@@ -940,6 +972,12 @@ internal sealed class SketchSession
             Validate();
             return SketchOutcome.Preview;
         }
+        if (_drawRing > 0 && WhyNotHole(part) is { } holeProblem)
+        {
+            // Kept drawing, not discarded: Backspace takes points back until it fits.
+            Message = holeProblem;
+            return SketchOutcome.None;
+        }
         var finished = _drawPart;
         EndDrawing();
         // The maintainer's choice: back to Select with the new part selected, ready to adjust.
@@ -947,6 +985,68 @@ internal sealed class SketchSession
         SelectedPart = finished;
         SelectedVertex = null;
         return Committed();
+    }
+
+    // A hole must lie inside its shell and must not cross another hole (2026-11-14; until then the
+    // editor accepted it and only IsValid downstream said so). Checked when the hole is finished.
+    private string? WhyNotHole(SketchPart part)
+    {
+        var f = Defaults.Factory;
+        Polygon RingPolygon(int r)
+        {
+            var c = part.Ring(r);
+            return f.CreatePolygon(c.Append(c[0]).ToArray());
+        }
+        try
+        {
+            var hole = RingPolygon(_drawRing);
+            if (!RingPolygon(0).Contains(hole))
+                return "The hole must lie inside its polygon. Backspace takes points back, Esc cancels it.";
+            for (var r = 1; r < part.RingCount; r++)
+                if (r != _drawRing && RingPolygon(r).Intersects(hole))
+                    return "The hole overlaps another hole. Backspace takes points back, Esc cancels it.";
+        }
+        catch (System.Exception)
+        {
+            return "The hole crosses itself. Backspace takes points back, Esc cancels it.";
+        }
+        return null;
+    }
+
+    // ---- rectangle and circle (2026-11-14) ---------------------------------------------------
+
+    // A drag, not clicks: press at one corner (or the centre), release at the other (or the rim).
+    // The part is rebuilt from the sketch before the press on every move, previewed, and committed
+    // on release, so one shape is one undo step. Then back to Select with it selected, as after
+    // Line and Polygon. The corners go where Snap puts them; nothing snaps to existing vertices,
+    // because a box or circle is defined by its extent, not by sharing a corner.
+
+    /// <summary>
+    /// How much narrower a unit of x is drawn than a unit of y (SketchView.XScale): on longitude and
+    /// latitude a circle is drawn round on screen, which in degrees is an ellipse.
+    /// </summary>
+    public double XScale { get; set; } = 1;
+
+    private static Coordinate[] Open(Polygon p)
+    {
+        var c = p.ExteriorRing.Coordinates;
+        return c.Take(c.Length - 1).ToArray(); // the sketch keeps rings unclosed
+    }
+
+    private SketchPart? ShapePart(Coordinate from, Coordinate to)
+    {
+        if (_tool == SketchTool.Rectangle)
+        {
+            var box = GeometryNodes.RectangleJoinPoints(from, to);
+            return box.IsEmpty ? null : GeometrySketch.PolygonPart(Open(box));
+        }
+        var k = XScale > 0 ? XScale : 1;
+        var dx = (to.X - from.X) * k;
+        var dy = to.Y - from.Y;
+        var r = System.Math.Sqrt(dx * dx + dy * dy); // in y units, as it looks on screen
+        if (r <= 0) return null;
+        var circle = GeometryNodes.Ellipse(from, 2 * r / k, 2 * r);
+        return circle.IsEmpty ? null : GeometrySketch.PolygonPart(Open(circle));
     }
 
     private void EndDrawing()

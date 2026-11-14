@@ -497,7 +497,7 @@ The rules that matter when touching it:
 
 **`GeometryEditor`** (2026-11-11) is a geometry drawn by hand. The maintainer's reason: nobody should
 have to type WKT. Select the node, press **Ctrl+Shift+W**, and a window opens with a toolbar:
-Select V, Point P, Line L, Polygon A | Undo, Redo | Snap S, Fit F. **Redesigned 2026-11-12 to be
+Select V, Point P, Line L, Polygon A, Rectangle R, Circle C | Undo, Redo | Snap S, Fit F. **Redesigned 2026-11-12 to be
 foolproof**, after the maintainer moved a whole shape while trying to add a point. The rules come
 from a survey of 15 map and vector editors:
 - Select first, then edit: vertices and a "+" at every edge's middle appear only on the selected
@@ -509,6 +509,11 @@ from a survey of 15 map and vector editors:
 - A left drag on empty space draws a selection box (2026-11-12, the maintainer's choice; panning moved to
   the right and middle button). With a shape selected it takes that shape's points, otherwise every
   shape wholly inside it; several shapes move and delete together, several points delete together.
+- 2026-11-14:
+  - Rectangle and Circle are drags. On lon/lat a circle is round on screen, so it is an ellipse in degrees.
+  - Space held with a left drag pans, because a touchpad has no right drag.
+  - A hole that leaves its polygon or overlaps another hole is refused while it is drawn.
+  - A narrow window drops the toolbar's key letters.
 
 All of it is in `SketchSession` and `SketchSessionTests`. The maintainer: "好很多了". The window writes the drawing
 back into the node's `WKT` pin, so the drawing is text in the `.vl`: saved with the patch, readable,

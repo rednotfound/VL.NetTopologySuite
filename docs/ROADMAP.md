@@ -56,10 +56,11 @@ named there. Two steps:
 2. A sibling repository for the transformation. Then the editor learns units, a lon/lat aspect,
    and perhaps a basemap through VL.Mapsui.
 
-Small follow-ups for the editor:
-- Confirm Ctrl+Z on a stroke in the GUI.
-- Offer the drawn shapes (`Rectangle`, `Circle` …) as tools.
-- Holes are not checked for lying inside their shell. `IsValid` downstream says so.
+Small follow-ups for the editor. Done 2026-11-14 except the first, which needs the maintainer's hand:
+- Confirm Ctrl+Z on a stroke, and box selection, in the GUI.
+- The drawn shapes as tools: Rectangle R and Circle C, each a drag.
+- Holes are checked when drawn: inside the shell, not over another hole.
+- Panning on a touchpad: Space + left drag.
 
 ## Before that: 0.0.5-alpha on nuget.org, 0.0.6-alpha in the tree
 

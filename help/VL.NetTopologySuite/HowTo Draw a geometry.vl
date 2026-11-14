@@ -68,7 +68,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="NiyCfpDnihnItSPNb41Kvj" Bounds="580,290,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Draw two polygons and it is a MULTIPOLYGON; add a line and it is a GEOMETRYCOLLECTION.">
+          <Pad Id="NiyCfpDnihnItSPNb41Kvj" Bounds="580,290,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Rectangle and Circle are drags. Two polygons make a MULTIPOLYGON; add a line and it is a GEOMETRYCOLLECTION.">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
