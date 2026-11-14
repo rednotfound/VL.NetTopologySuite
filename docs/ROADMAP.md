@@ -8,7 +8,7 @@ comment; the work is deciding whether they earn a node, not writing them.
 
 ---
 
-## Now: 0.0.6-alpha on nuget.org, 0.0.7-alpha in the tree
+## Now: 0.0.7-alpha on nuget.org (2026-11-14), 0.0.8-alpha in the tree
 
 **2026-11-12: the editor redesigned, and CRS steps 1 and 2.** All merged (PRs #3, #4 and #5,
 and VL.PROJ's #2):
@@ -23,8 +23,9 @@ and VL.PROJ's #2):
   - ICrsCatalog lets VL.PROJ name any code.
 - **New help patches:** HowTo Say which CRS a geometry is in and HowTo Draw in longitude and latitude.
 - **Next:**
-  - The editor follow-ups below.
-  - The release of 0.0.7-alpha with VL.PROJ 0.0.1-alpha, both decided 2026-11-14.
+  - Done 2026-11-14: the editor follow-ups (Rectangle and Circle drags, the hole check, Space+drag,
+    the wrapping toolbar, one-shot Point) and the release of 0.0.7-alpha.
+  - VL.PROJ 0.0.1-alpha, its first release, now that 0.0.7-alpha is on nuget.org.
   - Then tier 2.
   - The basemap in the window is shelved.
 

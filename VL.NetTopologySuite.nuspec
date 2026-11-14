@@ -4,7 +4,7 @@
     <id>VL.NetTopologySuite</id>
     <!-- The WORKING version: always one ahead of what is on nuget.org, so a local repack can never be
          mistaken for the published package in a NuGet cache. Managed in step with VL.Mapsui. -->
-    <version>0.0.7-alpha</version>
+    <version>0.0.8-alpha</version>
     <title>VL.NetTopologySuite — NetTopologySuite geometry nodes for vvvv gamma</title>
     <authors>VL.NetTopologySuite Contributors</authors>
     <owners>VL.NetTopologySuite Contributors</owners>
@@ -29,6 +29,8 @@
     </description>
     <summary>NetTopologySuite geometry as composable nodes for vvvv gamma.</summary>
     <releaseNotes>
+      0.0.8-alpha - In development, not published.
+
       0.0.7-alpha (2026-11-14) - 2 new nodes, 66 in all. GeometryEditor (NetTopologySuite.Geometry):
       a geometry drawn by hand. Select the node and press Ctrl+Shift+W: a window opens with tools for
       points, lines, polygons with holes, rectangles and circles, box selection, undo and redo, and

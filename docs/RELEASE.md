@@ -374,6 +374,27 @@ the same evening: VL.NetTopologySuite.GeoJSON renames `Read GeoJSON` / `Write Ge
 `FromGeoJSON` / `ToGeoJSON` in the same round, then VL.Mapsui and VL.Overworld change both names
 once and release, in the family's order.
 
+## `0.0.7-alpha` — 2026-11-14
+
+`GeometryEditor` (a geometry drawn by hand in an editor window) and `SetSRID`; 66 nodes, 335 tests,
+20 help patches. `ICrsCatalog` lets VL.PROJ name any EPSG code in the window and the IOBox. The
+pre-release review found two things: the Explanation front door did not list the two new nodes,
+and the README packed into the nupkg still described `0.0.6-alpha` (56 nodes, 16 patches, no
+editor); both fixed in `41cbd11` before packing. Gate green from a clean build, the nupkg opened
+and its 20 patches compared with the tree. The working branch was fast-forwarded into `main`
+locally and tagged; the maintainer pushed `main` and the tag and uploaded in the browser.
+`Test-Install -FromNuGetOrg -Version 0.0.7-alpha` green on the first run once the package was
+indexed (signed, dependencies along, 20 of 20 patches compile). Working version `0.0.8-alpha`.
+
+**GitHub releases, backfilled the same day.** The maintainer noticed the releases page stopped at
+`0.0.4-alpha`. `gh` is installed and logged in on this machine now, so step 7 above can be done
+from a session after the maintainer's push: `gh release create <tag> --verify-tag --prerelease`,
+body = the version's paragraph from the nuspec, the install line and the nuget.org link. Made that
+day: `v0.0.5-alpha`, `v0.0.6-alpha`, `v0.0.7-alpha` here (the last one latest), and in the
+siblings `VL.NetTopologySuite.GeoJSON` `v0.0.1-alpha` / `v0.0.2-alpha` (its remote had no tags at
+all) and `VL.Mapsui` `v0.0.2-alpha`, each tag on the commit whose nuspec matched the one downloaded
+from nuget.org.
+
 ## Updating a vvvv that already has the previous version
 
 `nuget install VL.NetTopologySuite -pre` again, in vvvv's command line; the nugets folder then

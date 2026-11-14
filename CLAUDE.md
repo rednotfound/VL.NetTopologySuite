@@ -8,13 +8,14 @@ Guidance for Claude Code (claude.ai/code) working in this repository.
 as nodes for [vvvv gamma](https://vvvv.org). One package, one library — geometry creation,
 inspection, spatial operations and WKT. Nothing about maps, rendering or reprojection.
 
-**Current state (2026-11-08): `0.0.6-alpha` is on nuget.org** — `0.0.1-alpha` on 2026-09-26,
+**Current state (2026-11-14): `0.0.7-alpha` is on nuget.org** — `0.0.1-alpha` on 2026-09-26,
 `0.0.2-alpha` (the category rename to `NetTopologySuite.*`) on 2026-10-17, `0.0.3-alpha`
 (`GetAttribute`, the version VL.NetTopologySuite.GeoJSON depends on) and `0.0.4-alpha` (the tooltip
 rewrite, no node changed) on 2026-10-18, `0.0.5-alpha` (tier 1, `Outlines`, the drawn previews) and
-`0.0.6-alpha` (shapes, the sticky drawn IOBox, `FromWKT` / `ToWKT`) both on 2026-11-08, all by the
+`0.0.6-alpha` (shapes, the sticky drawn IOBox, `FromWKT` / `ToWKT`) both on 2026-11-08, `0.0.7-alpha`
+(`GeometryEditor`, `SetSRID`, `ICrsCatalog`) on 2026-11-14, all by the
 maintainer's browser upload, all installed back
-from nuget.org alone with `Test-Install -FromNuGetOrg`. **The working version is now `0.0.7-alpha`**,
+from nuget.org alone with `Test-Install -FromNuGetOrg`. **The working version is now `0.0.8-alpha`**,
 always one ahead of the published one. **Every version is a prerelease** (`-alpha` suffix, installed with
 `-pre`), managed in step with VL.Mapsui and the family — the maintainer's rule, 2026-09-25. The
 process and its rules are in [docs/RELEASE.md](docs/RELEASE.md): the maintainer performs the
@@ -27,7 +28,7 @@ tests, 20 help patches (2026-11-14).** **66 since 2026-11-11: `GeometryEditor`, 
 editor-extension window** ([below](#the-geometry-editor-a-window-of-our-own-in-the-editor)), **and
 `SetSRID`**, the label verb, paired with VL.PROJ's `Reproject` (`D:\2026_Projects\vl-proj`, the
 family's sixth package): it says what CRS the numbers are in and moves nothing. Both are
-unpublished, in the working `0.0.7-alpha`. All fifteen of the first wave were (re)written on 2026-09-24 in the community's measured style
+published in `0.0.7-alpha` (2026-11-14). All fifteen of the first wave were (re)written on 2026-09-24 in the community's measured style
 ([docs/HELP-PATCH-STYLE.md](docs/HELP-PATCH-STYLE.md)), every one seen in the GUI, every node opens one
 on **F1** (help flags, audited by `Test-VLPatch`), and `HowTo Find the shortest path` draws its town with
 VL.Skia through ForEach and Cache regions. The
