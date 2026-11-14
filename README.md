@@ -48,8 +48,8 @@ not show up there, use the command line above.
 
 **2. See it work.** Press **F1** with nothing selected to open the Help Browser, go to **Learn**
 and find VL.NetTopologySuite. Start with `Explanation Overview of available nodes`, then
-`HowTo Create a point`: two numbers become a `Coordinate`, a `Point`, and the text
-`POINT (139.7671 35.6812)`. Every node opens its own help patch with **F1**.
+`HowTo Create points, lines and polygons`: two numbers become a `Coordinate` and a `Point`,
+a run of them a `LineString`, four corners a `Polygon`. Every node opens its own help patch with **F1**.
 
 **3. Use it in your own patch.** Installing does not reference a package by itself. In your
 document: **Document menu → Dependencies → NuGets**, right-click **VL.NetTopologySuite** to
@@ -210,7 +210,7 @@ north-west corner; angles are in cycles, counter-clockwise from east. See `HowTo
 
 The editor's tools: Select V, Point P, Line L, Polygon A, Rectangle R, Circle C, Undo, Redo, Snap S,
 Fit F. A shape is selected first, then edited. In an exported app the node outputs what its pin
-says. See `HowTo Draw a geometry`, `HowTo Draw in longitude and latitude` and
+says. See `HowTo Draw a geometry` (with a second editor in longitude and latitude) and
 `HowTo Say which CRS a geometry is in`.
 
 ### `NetTopologySuite.Geometry` — reading it back
@@ -356,14 +356,15 @@ the town and the path, the feature with its attribute table.
 
 | Topic | Patch |
 |---|---|
-| Start here | `Explanation Overview of available nodes` — every node, one line each |
-| Making geometry | `HowTo Make a shape` · `HowTo Draw a geometry` · `HowTo Draw in longitude and latitude` · `HowTo Create a point` · `HowTo Create a linestring` · `HowTo Create a polygon` · `HowTo Group geometries` · `HowTo Work with Z` |
-| Looking at geometry | `HowTo Inspect a geometry` · `HowTo Say which CRS a geometry is in` |
-| Text in, geometry out | `HowTo Read and write WKT` |
-| Spatial operations | `HowTo Buffer a geometry` · `HowTo Combine two geometries` · `HowTo Test how geometries relate` · `HowTo Measure distance` · `HowTo Wrap points in a hull` |
+| Overview | `Explanation Overview of available nodes` — every node, one line each |
+| Creating | `HowTo Create points, lines and polygons` · `HowTo Make a shape` · `HowTo Group geometries` · `HowTo Draw a geometry` · `HowTo Work with Z` |
+| Inspecting | `HowTo Inspect a geometry` · `HowTo Say which CRS a geometry is in` |
+| Formats | `HowTo Read and write WKT` · `HowTo Read and write WKB` |
+| Combining and testing | `HowTo Buffer a geometry` · `HowTo Combine two geometries` · `HowTo Test how geometries relate` · `HowTo Measure distance` |
+| Reshaping | `HowTo Simplify and densify a geometry` · `HowTo Fix an invalid geometry` · `HowTo Move, turn and resize a geometry` · `HowTo Walk along a line` · `HowTo Wrap points in a hull` · `HowTo Scatter points in an area` |
 | Features | `HowTo Attach attributes to a geometry` |
-| Many geometries | `HowTo Query many geometries fast` |
-| Networks | `HowTo Find the shortest path` — draws its town and the path with VL.Skia |
+| Index | `HowTo Query many geometries fast` |
+| Network | `HowTo Find the shortest path` — draws its town and the path with VL.Skia |
 
 They are written the way the vvvv community writes help: a one-line heading, the wired nodes, and
 short notes beside them — a style measured over 389 shipped HowTos and nine community packs, in

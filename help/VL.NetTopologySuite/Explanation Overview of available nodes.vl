@@ -181,7 +181,7 @@
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="MultiPoint" />
             </p:NodeReference>
-            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
             <Pin Id="Tgm2i0UyeP3SzPykeemwAr" Name="Points" Kind="InputPin" />
             <Pin Id="FqSBc5EGKuZQKXiXKvBJbU" Name="Factory" Kind="InputPin" />
             <Pin Id="EFD8dqVOH1GAG2LsT4YFwW" Name="Result" Kind="OutputPin" />
@@ -219,7 +219,7 @@
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="GeometryFactory" />
             </p:NodeReference>
-            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
             <Pin Id="OahPGRRUAaifuwnjUaXURA" Name="SRID" Kind="InputPin" />
             <Pin Id="Sy1vOVhXYV6qFthHPAiMB6" Name="Result" Kind="OutputPin" />
           </Node>

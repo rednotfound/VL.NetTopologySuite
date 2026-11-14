@@ -140,6 +140,68 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
+          <Node Bounds="200,560,100,19" Id="LFHj3J4Sn3x3xINqoSkkwz">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="GeometryFactory" />
+              <PinReference Kind="InputPin" Name="SRID" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="RFlnXUUXDaNZsX1PpWqudG" Name="SRID" Kind="InputPin" DefaultValue="28992">
+              <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+                <Choice Kind="TypeFlag" Name="Integer32" />
+              </p:TypeAnnotation>
+            </Pin>
+            <Pin Id="Imw8BGo2JXxucPKi3xbzGI" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="60,560,70,19" Id="CvXb6nMPvypxtnuQyVCyzU">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Coordinate" />
+              <PinReference Kind="InputPin" Name="Y" />
+              <PinReference Kind="InputPin" Name="X" />
+            </p:NodeReference>
+            <Pin Id="DUl65g0BVwXVT1n3tdNSsY" Name="X" Kind="InputPin" DefaultValue="155000">
+              <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+                <Choice Kind="TypeFlag" Name="Float64" />
+              </p:TypeAnnotation>
+            </Pin>
+            <Pin Id="IesixAuJHAsaAzms6Btwhv" Name="Y" Kind="InputPin" DefaultValue="463000">
+              <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+                <Choice Kind="TypeFlag" Name="Float64" />
+              </p:TypeAnnotation>
+            </Pin>
+            <Pin Id="Nx7ImeGouUim32wdkTLRYh" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="60,610,60,19" Id="Hb7Qsp8P7VtNcqD3CyvNFg">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Point" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="GE4U6Io9lxh3XSY5566HWl" Name="Coordinate" Kind="InputPin" />
+            <Pin Id="BIOTesaJcC8K0IRdmA2aDD" Name="Factory" Kind="InputPin" />
+            <Pin Id="CiK2TIYcqVXSTnD9VnI1iK" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="60,650,40,19" Id="SWwORKlL7gEVGy8ax10Zud">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="SRID" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="Gx6qxPXpeok0IJAuEoM2ky" Name="Geometry" Kind="InputPin" />
+            <Pin Id="ALs2vmB1SxkyYHWkEnbZhU" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="Hm6IlDZl5YjyHwkmXOWmR7" Comment="SRID" Bounds="60,690,60,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="FllxYiJM0fhNsZk9OV317i" Bounds="840,560,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Or label it as it is made: a GeometryFactory into the Factory pin of any creation node.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
         </Canvas>
         <Patch Id="TWlDjXdXTiPgUWBkVzQXjC" Name="Create" />
         <Patch Id="BrdkhVWlMjjgw3kTiwBSKK" Name="Update" />
@@ -155,6 +217,10 @@
         <Link Id="OZUEk9WbibbSTtMbnFKdrP" Ids="VosLw8IqRDYZhstT4lwqDq,AMcgcqo40JFOMGVMHRYj1P" />
         <Link Id="KTLLYaypNhUFi02oDbNC7F" Ids="OZ6xyXFsQ64RiNXHhyo79k,Kbj4dvIXPEMIGqBamucNwu" />
         <Link Id="AGG6cwcqNqHsq6VN1W74sZ" Ids="E6MYRIzOIFziStvulO0NgT,OFhyggOUl5JtI31bS1d4Im" />
+        <Link Id="EbbhK2v6lQBpxzaPa0SvfM" Ids="Nx7ImeGouUim32wdkTLRYh,GE4U6Io9lxh3XSY5566HWl" />
+        <Link Id="LHozlHafWkasVd2gFQF7UH" Ids="Imw8BGo2JXxucPKi3xbzGI,BIOTesaJcC8K0IRdmA2aDD" />
+        <Link Id="GXeyOHmDtMeB3nYs2V2OeL" Ids="CiK2TIYcqVXSTnD9VnI1iK,Gx6qxPXpeok0IJAuEoM2ky" />
+        <Link Id="Mu2SJssgDbaGCEWkKB1k7u" Ids="ALs2vmB1SxkyYHWkEnbZhU,Hm6IlDZl5YjyHwkmXOWmR7" />
       </Patch>
     </Node>
   </Patch>

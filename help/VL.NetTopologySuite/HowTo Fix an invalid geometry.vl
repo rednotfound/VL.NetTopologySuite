@@ -54,7 +54,7 @@
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="IsValid" />
             </p:NodeReference>
-            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
             <Pin Id="Mq1RBIJbiDAG0Acy0SxWqh" Name="Geometry" Kind="InputPin" />
             <Pin Id="SLm4JWcfFJ89Hj5vaMwvEw" Name="Result" Kind="OutputPin" />
             <Pin Id="IrT2AS7Q06XLzWu5X4IwgB" Name="Reason" Kind="OutputPin" />

@@ -16,7 +16,7 @@
       <Patch Id="Afy1MBzLfmToT0hZyaJgAm">
         <Canvas Id="BPueJa42Gkugs6SH6u4Cp9" CanvasType="Group">
           <Pad Id="Sw1rJnGrFQ8UIp4PyQ6A7H" Bounds="60,40,450,41" ShowValueBox="true" isIOBox="true" Value="Draw it with GeometryEditor!">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -25,7 +25,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="PizQsFkkcU0mLrckMZFmUI" Bounds="60,95,480,46" ShowValueBox="true" isIOBox="true" Value="Select the node and press Ctrl+Shift+W. A window opens: draw in it, and the patch follows.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -40,6 +40,7 @@
               <PinReference Kind="InputPin" Name="WKT" />
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="Tv8qhQPIRAMP7QNjCwsfie" Name="Node Context" Kind="InputPin" IsHidden="true" />
             <Pin Id="Fz2kprebqCu8Ui3fLNsTtJ" Name="WKT" Kind="InputPin" DefaultValue="POLYGON ((0 0, 4 0, 4 3, 0 3, 0 0), (1 1, 2 1, 2 2, 1 2, 1 1))">
               <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
                 <Choice Kind="TypeFlag" Name="String" />
@@ -47,9 +48,10 @@
             </Pin>
             <Pin Id="AnBfWxwQer9frWmPZfJJ04" Name="Result" Kind="OutputPin" />
             <Pin Id="Po8ak14nynZKvir6btkNe6" Name="Is Editable" Kind="OutputPin" />
+            <Pin Id="N8Kdjow8K0gN9VHyDoR3Qj" Name="SRID" Kind="InputPin" />
           </Node>
           <Pad Id="OS3mTnodikCBguOB6o3Lc3" Bounds="580,172,320,26" ShowValueBox="true" isIOBox="true" Value="&lt; Select me, then Ctrl+Shift+W.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -60,7 +62,7 @@
           <Pad Id="DHyiGLw2iL0qcrl26GW7SC" Comment="" Bounds="60,220,240,170" ShowValueBox="true" isIOBox="true" />
           <Pad Id="Nrhqw4nGiYaezA6MRs4PFc" Comment="Is Editable" Bounds="340,220,35,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="ALg5dN8BMgRUZg9d70I7gl" Bounds="580,220,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Click a shape, then drag its points or the +. Drag a box to select several shapes, or several points.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -69,7 +71,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="NiyCfpDnihnItSPNb41Kvj" Bounds="580,290,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; Rectangle and Circle are drags. Two polygons make a MULTIPOLYGON; add a line and it is a GEOMETRYCOLLECTION.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -78,7 +80,7 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="HgJ2EteFtQdbOWMBrjN9Ar" Bounds="580,360,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; Is Editable is false for geometry with Z or nested collections: shown, not changed.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -98,7 +100,7 @@
           </Node>
           <Pad Id="HbnwQ34cff4ixeql2Z3FrQ" Comment="WKT" Bounds="60,460,480,15" ShowValueBox="true" isIOBox="true" />
           <Pad Id="Lt9fNCNwcGiOUQA8GRnFfe" Bounds="580,420,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; The drawing lives on the WKT pin and is saved with the patch. Leave that pin unconnected. Ctrl+Z undoes a stroke.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -107,7 +109,76 @@
             </p:ValueBoxSettings>
           </Pad>
           <Pad Id="HJqBBUnCQrB2rZyXBSWdXy" Bounds="580,500,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; SRID labels the numbers. 4326 is lon/lat: the window draws it at true proportions.">
-            <p:TypeAnnotation>
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="QMKYdToiAf7XosgHZne3Wk" Comment="SRID" Bounds="167,610,50,15" ShowValueBox="true" isIOBox="true" Value="4326">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Integer32" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="60,640,110,19" Id="Cbmb9h5q7ikChdbsVPqwhB">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="ProcessAppFlag" Name="GeometryEditor" />
+              <PinReference Kind="InputPin" Name="WKT" />
+            </p:NodeReference>
+            <Pin Id="Pjbcn2ajiJOMCwPUA3L7uU" Name="Node Context" Kind="InputPin" IsHidden="true" />
+            <Pin Id="JveJG3PocfAuWpXMHnGeoG" Name="WKT" Kind="InputPin" DefaultValue="POLYGON ((4.355 52.008, 4.365 52.008, 4.365 52.01416, 4.355 52.01416, 4.355 52.008))">
+              <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+                <Choice Kind="TypeFlag" Name="String" />
+              </p:TypeAnnotation>
+            </Pin>
+            <Pin Id="PNJXJKzpuD41grwJGg1B69" Name="SRID" Kind="InputPin" />
+            <Pin Id="DAMA4OnmzjNarGIkQQSZI5" Name="Result" Kind="OutputPin" />
+            <Pin Id="BxKP7zmU30NPHnf7YqSqew" Name="Is Editable" Kind="OutputPin" />
+          </Node>
+          <Pad Id="JBOcBsJIAUOunWkoKGkIAM" Comment="" Bounds="60,680,240,170" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="340,680,40,19" Id="C8fBmHQsGSrakJDqXQTad2">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="SRID" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="MXqT6HNG1MpbJFUWMTKMmI" Name="Geometry" Kind="InputPin" />
+            <Pin Id="IDzl1AeBXPeE02Mq6oevfo" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="ICrRHVzuZXdibrmCY9xEFR" Comment="SRID" Bounds="340,720,60,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="340,760,40,19" Id="M8s8WB6MSiwSy0Qij3AA3J">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Area" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="SbI1nSoe3kBoiy3NFwyB9E" Name="Geometry" Kind="InputPin" />
+            <Pin Id="B4ajh4tdXKlPaFaUVlYvwa" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="TJUwET7h5y7DyAq6K7K3CF" Comment="Area" Bounds="340,800,80,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="LTj4YvPhO4fTBHMbVKmqww" Bounds="580,640,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; 4326 is WGS 84, what GPS and web maps give. Select me, then Ctrl+Shift+W: the status bar says lon, lat and degrees.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="QaTieqDeXsRFrLNrgLgBXf" Bounds="580,720,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; A degree east is shorter than a degree north here, so the box and the window narrow it: this block is square.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="FoubYfutG9Q9PABYn2eig5" Bounds="580,800,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; Square degrees, not square metres. Reproject (VL.PROJ) to 28992 first to measure.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
             <p:ValueBoxSettings>
@@ -126,6 +197,12 @@
         <Link Id="CXQFwWmvRBqtSane21utkC" Ids="Po8ak14nynZKvir6btkNe6,Nrhqw4nGiYaezA6MRs4PFc" />
         <Link Id="GnCpuQD809Y9P2Dtpi2Sph" Ids="AnBfWxwQer9frWmPZfJJ04,AnuVzQt5Ibv5TGrUJOUuiu" />
         <Link Id="SWg30zwjzLCsB8UEh3TJMJ" Ids="DKE1ADMb4H6bVwgfDBdJ48,HbnwQ34cff4ixeql2Z3FrQ" />
+        <Link Id="E0Tc7zrBmcH13lT6AGNpBC" Ids="QMKYdToiAf7XosgHZne3Wk,PNJXJKzpuD41grwJGg1B69" />
+        <Link Id="BJHBCo45WWWpFD9jxEu85r" Ids="DAMA4OnmzjNarGIkQQSZI5,JBOcBsJIAUOunWkoKGkIAM" />
+        <Link Id="Or9kf72NElUYkN18GotXek" Ids="DAMA4OnmzjNarGIkQQSZI5,MXqT6HNG1MpbJFUWMTKMmI" />
+        <Link Id="QjEsuEY7MGiY0lV7TpOyRt" Ids="IDzl1AeBXPeE02Mq6oevfo,ICrRHVzuZXdibrmCY9xEFR" />
+        <Link Id="DpbRTicyd2kdtri9Zty4g7" Ids="DAMA4OnmzjNarGIkQQSZI5,SbI1nSoe3kBoiy3NFwyB9E" />
+        <Link Id="SVRwCB4NSW2RVSdj9tytK1" Ids="B4ajh4tdXKlPaFaUVlYvwa,TJUwET7h5y7DyAq6K7K3CF" />
       </Patch>
     </Node>
   </Patch>

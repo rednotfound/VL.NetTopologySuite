@@ -24,7 +24,7 @@ browser upload for manual) is written there. Never push to nuget.org without the
 go; a publish cannot be undone.** 64 public nodes in six categories (all published as of `0.0.6-alpha`, the VL-shaped rethink: seven shape nodes, `Coordinate (FromVector2)` (its `ToVector2` was dropped the same day: the one node that lost precision silently), and `Read WKT` / `Write WKT` renamed `FromWKT` / `ToWKT` with no alias, all on 2026-11-08) — `NetTopologySuite.Network` (`Network` +
 `ShortestPath`, an algorithm of ours, promoted from `NetTopologySuite.Experimental.Network` by
 `docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 461
-tests, 26 help patches (2026-11-14).** **84 since tier 2 began on 2026-11-14** (`Simplify`, `Union (Spread)`, `Translate`, `Rotate`, `Scale`, then `FromWKB`, `ToWKB` and their `(Hex)` versions, then `Interpolate`, `Substring`, `Locate`, then `Densify`, `MakeValid`, `ConcaveHull`, `MinimumBoundingCircle`, `RandomPoints` and `Vertices`; unpublished, in `0.0.8-alpha`). **66 since 2026-11-11: `GeometryEditor`, a geometry drawn by hand in an
+tests, 23 help patches (2026-11-14; three Create patches merged and the lon/lat one folded into Draw after the review).** **84 since tier 2 began on 2026-11-14** (`Simplify`, `Union (Spread)`, `Translate`, `Rotate`, `Scale`, then `FromWKB`, `ToWKB` and their `(Hex)` versions, then `Interpolate`, `Substring`, `Locate`, then `Densify`, `MakeValid`, `ConcaveHull`, `MinimumBoundingCircle`, `RandomPoints` and `Vertices`; unpublished, in `0.0.8-alpha`). **66 since 2026-11-11: `GeometryEditor`, a geometry drawn by hand in an
 editor-extension window** ([below](#the-geometry-editor-a-window-of-our-own-in-the-editor)), **and
 `SetSRID`**, the label verb, paired with VL.PROJ's `Reproject` (`D:\2026_Projects\vl-proj`, the
 family's sixth package): it says what CRS the numbers are in and moves nothing. Both are
@@ -218,7 +218,7 @@ captured (`PrintWindow`) before it is handed over.
 | | proves | state |
 |---|---|---|
 | `dotnet test` | the arithmetic is right | ✅ 461 tests, ~400 ms, no network (2026-11-14) |
-| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 28 documents (26 help patches, the package, the HDE companion), 84 of 84 nodes flagged for F1; layout warnings (upward links, a drawn result far from its node) measured from the maintainer's hand edits |
+| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 25 documents (23 help patches, the package, the HDE companion), 84 of 84 nodes flagged for F1; layout warnings (upward links, a drawn result far from its node) measured from the maintainer's hand edits |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 17 help patches, 2026-11-08; `HowTo Draw a geometry` 2026-11-11 |
 | `tools\Test-Install.ps1` | the **packed** package installs from `dist\feed` with its dependencies, and every help patch inside the install compiles with that install as the only repository | ✅ 2026-09-25, first pass |
@@ -280,7 +280,7 @@ dotnet test test\VL.NetTopologySuite.Tests\VL.NetTopologySuite.Tests.csproj
 
 # The only thing that proves a node exists:
 & "C:\Program Files\vvvv\vvvv_gamma_7.4-win-x64\vvvv.exe" `
-    ".\help\VL.NetTopologySuite\HowTo Create a point.vl" --package-repositories .\dist
+    ".\help\VL.NetTopologySuite\HowTo Create points, lines and polygons.vl" --package-repositories .\dist
 ```
 
 **Two rules learned on 2026-09-24, each at a cost.** (1) The user hand-edits help patches in vvvv
@@ -347,7 +347,7 @@ vl-nettopologysuite/
 │   ├── GeometrySketch.cs              # a drawing as parts (point / line / polygon with holes) <-> WKT (internal, tested)
 │   └── SketchView.cs                  # the window's view: geometry <-> pixels, zoom, pan, grid step (internal, tested)
 ├── test/VL.NetTopologySuite.Tests/    # 461 xunit tests, no network, no vvvv
-├── help/VL.NetTopologySuite/          # 26 help patches + Help.xml (ordering and tags)
+├── help/VL.NetTopologySuite/          # 23 help patches + Help.xml (nine noun topics, as the core packs name them)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
 ├── docs/ARCHITECTURE.md               # why each node exists, what stays raw, the boundary
 ├── docs/HELP-PATCH-STYLE.md           # the community's help style, measured; help flags; the Skia recipe
