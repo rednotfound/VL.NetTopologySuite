@@ -10,6 +10,24 @@ comment; the work is deciding whether they earn a node, not writing them.
 
 ## Now: 0.0.6-alpha on nuget.org, 0.0.7-alpha in the tree
 
+**2026-11-12: the editor redesigned, and CRS steps 1 and 2.** All merged (PRs #3, #4 and #5,
+and VL.PROJ's #2):
+- **The redesign, after the maintainer moved a whole shape while adding a point.** Select first,
+  then "+" handles; a Move mode; an action bar that says why an action is disabled; undo and redo;
+  a status bar. A survey of 15 editors set the rules.
+- **Box selection.** A left drag on empty space draws a box; panning moved to the right and middle
+  button.
+- **SetSRID**, and an SRID pin on GeometryEditor.
+  - Lon/lat is drawn at its true proportions, in the window and in the Geometry IOBox.
+  - CrsHints is a short EPSG table.
+  - ICrsCatalog lets VL.PROJ name any code.
+- **New help patches:** HowTo Say which CRS a geometry is in and HowTo Draw in longitude and latitude.
+- **Next:**
+  - The editor follow-ups below.
+  - The release of 0.0.7-alpha with VL.PROJ 0.0.1-alpha, both decided 2026-11-14.
+  - Then tier 2.
+  - The basemap in the window is shelved.
+
 **2026-11-11: `GeometryEditor`, a geometry drawn by hand in a window of the editor.** The
 maintainer asked first what a package may do to the editor itself. The answer was measured, and
 it is in ARCHITECTURE, "GeometryEditor":
@@ -28,7 +46,7 @@ The result:
 The maintainer saw the whole chain work in the GUI, including the saved `.vl`. Also: 72 new
 tests, `HowTo Draw a geometry`, VL.Core 2025.7.4, and `VL.Core.Skia` as a compile-time reference.
 
-**Next, by the maintainer's word the same day: coordinate systems.** The editor's grid is plain
+**Next, by the maintainer's word the same day: coordinate systems** (done: VL.PROJ, 2026-11-11/12). The editor's grid is plain
 numbers. It does not know a degree from a metre, and real data comes in a CRS. NetTopologySuite
 carries only an SRID label (see "The factory, and why SRID is 0"). Reprojection was decided long
 ago to live outside this package: see Never, "CRS transformation", and the focused `VL.ProjNet`
@@ -440,7 +458,7 @@ Recorded as *never* so it stops being re-proposed. The reasoning is in
 | | |
 |---|---|
 | **Rendering, styling, layers, maps** | A different question. `VL.Mapsui` answers it, and this package must not know that maps exist. |
-| **CRS transformation** | ProjNet's job, and a focused `VL.ProjNet` is where it belongs. No node here will ever imply that setting an SRID reprojects anything — because it does not. |
+| **CRS transformation** | VL.PROJ's job (`D:\2026_Projects\vl-proj`, PROJ through SharpProj, since 2026-11-11; ProjNet was measured 177 m off). No node here will ever imply that setting an SRID reprojects anything — because it does not. |
 | **GeoJSON** | Lives in a separate NuGet package, brings a feature model that is not this package's business, and deserves its own focused package. Taking it on is the first step towards becoming a generic geospatial file-format package. |
 | **A `Feature` model of our own** | No `VLFeature`, ever. The cross-package need appeared and was answered on 2026-08-22 by wrapping `NetTopologySuite.Features.Feature` — the NTS team's neutral model — as `NetTopologySuite.Feature`. Wrapping theirs is what keeps us from inventing ours. |
 | **Generalised GIS abstractions** | `IGISGeometry`, `IGeoObject`, `SpatialEntity`, `GISContext`, `GISDocument`. No current problem requires any of them. |

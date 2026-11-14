@@ -22,8 +22,8 @@ irreversible step, and nuget.org's 2026 policy (API keys 30 days at most, Truste
 browser upload for manual) is written there. Never push to nuget.org without the user's explicit
 go; a publish cannot be undone.** 64 public nodes in six categories (all published as of `0.0.6-alpha`, the VL-shaped rethink: seven shape nodes, `Coordinate (FromVector2)` (its `ToVector2` was dropped the same day: the one node that lost precision silently), and `Read WKT` / `Write WKT` renamed `FromWKT` / `ToWKT` with no alias, all on 2026-11-08) — `NetTopologySuite.Network` (`Network` +
 `ShortestPath`, an algorithm of ours, promoted from `NetTopologySuite.Experimental.Network` by
-`docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 279
-tests, 19 help patches.** **66 since 2026-11-11: `GeometryEditor`, a geometry drawn by hand in an
+`docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 329
+tests, 20 help patches (2026-11-14).** **66 since 2026-11-11: `GeometryEditor`, a geometry drawn by hand in an
 editor-extension window** ([below](#the-geometry-editor-a-window-of-our-own-in-the-editor)), **and
 `SetSRID`**, the label verb, paired with VL.PROJ's `Reproject` (`D:\2026_Projects\vl-proj`, the
 family's sixth package): it says what CRS the numbers are in and moves nothing. Both are
@@ -212,8 +212,8 @@ have the same problem; the `x = 940` column is the old way, not the rule.
 
 | | proves | state |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ 279 tests, ~400 ms, no network |
-| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 20 documents (incl. the HDE companion), 66 of 66 nodes flagged for F1 |
+| `dotnet test` | the arithmetic is right | ✅ 329 tests, ~400 ms, no network (2026-11-14) |
+| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 22 documents (20 help patches, the package, the HDE companion), 66 of 66 nodes flagged for F1 |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 17 help patches, 2026-11-08; `HowTo Draw a geometry` 2026-11-11 |
 | `tools\Test-Install.ps1` | the **packed** package installs from `dist\feed` with its dependencies, and every help patch inside the install compiles with that install as the only repository | ✅ 2026-09-25, first pass |
@@ -221,7 +221,7 @@ have the same problem; the `x = 940` column is the old way, not the rule.
 | the vvvv **GUI, running** | the patch computes the right value | ✅ 2026-08-14, vvvv 7.4; all 15 help patches 2026-09-24, reviewed by the maintainer 2026-09-25; the six tier-1 patches 2026-11-07 |
 | **F1 on a node** | the node carries a High help flag in a patch vvvv has indexed | ✅ 2026-09-24, all 39 nodes then; the 17 since (`GetAttribute`, tier 1, `Outlines`) are flagged and audited by `Test-VLPatch`, F1 not yet pressed on them |
 | **a Geometry IOBox draws** | the HDE companion registered its viewers in the editor | ✅ 2026-11-07, probes with polygon-with-hole, multipolygon, line, point, multipoint, mixed collection, lon/lat polygon, a feature with attributes, all drawn GIS-style; then every help patch got a column of drawn IOBoxes (`x = 940`) and all 16 were captured again |
-| **the Geometry Editor window** | the extension runs, its window edits the selected node, the edit is saved | ✅ 2026-11-11, by the maintainer on a probe: Ctrl+Shift+W opens it, every tool, Snap, MULTI/collection output, the new WKT read back out of the saved `.vl`. Ctrl+Z on a stroke not yet confirmed |
+| **the Geometry Editor window** | the extension runs, its window edits the selected node, the edit is saved | ✅ 2026-11-11, by the maintainer on a probe: Ctrl+Shift+W opens it, every tool, Snap, MULTI/collection output, the new WKT read back out of the saved `.vl`; the 2026-11-12 redesign tried by the maintainer ("好很多了"). Not yet by hand: Ctrl+Z on a stroke, box selection |
 
 **The last three rows are three different claims, and this is where a false proof lives.** Learned
 here, at the cost of nearly writing down a wrong conclusion:
@@ -337,8 +337,8 @@ vl-nettopologysuite/
 │   ├── SketchSession.cs               # the tools as a state machine, no Skia (internal, tested)
 │   ├── GeometrySketch.cs              # a drawing as parts (point / line / polygon with holes) <-> WKT (internal, tested)
 │   └── SketchView.cs                  # the window's view: geometry <-> pixels, zoom, pan, grid step (internal, tested)
-├── test/VL.NetTopologySuite.Tests/    # 279 xunit tests, no network, no vvvv
-├── help/VL.NetTopologySuite/          # 19 help patches + Help.xml (ordering and tags)
+├── test/VL.NetTopologySuite.Tests/    # 329 xunit tests, no network, no vvvv
+├── help/VL.NetTopologySuite/          # 20 help patches + Help.xml (ordering and tags)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
 ├── docs/ARCHITECTURE.md               # why each node exists, what stays raw, the boundary
 ├── docs/HELP-PATCH-STYLE.md           # the community's help style, measured; help flags; the Skia recipe
@@ -561,11 +561,17 @@ What this cost, so it is not paid again:
 - The window needs no `vvvvc`-able document. The ladder is: tests (model, session, view) →
   `Test-VLPatch` → a probe in `scratch\` compiled by `vvvvc` → the GUI.
 
-**The SRID pin labels the numbers (2026-11-12, step 1 of the SRID plan).** `GeometryEditor` has an`nSRID` input; the output carries it, and the window reads it through `CrsHints` (a short table of`ncommon EPSG codes, no CRS database): lon/lat is drawn with x shrunk by cos(latitude), so a square`nblock looks square, and the status bar says `EPSG:4326 · degrees` and `lon` / `lat`. A code not in the`ntable says `units unknown`, never a guess. Step 2: VL.PROJ, when installed, answers for every code`nthrough a service it registers. **Done 2026-11-12:** `ICrsCatalog` (hidden smell) is defined here,
+**The SRID pin labels the numbers (2026-11-12, step 1 of the SRID plan).** `GeometryEditor` has an
+`SRID` input; the output carries it, and the window reads it through `CrsHints` (a short table of
+common EPSG codes, no CRS database): lon/lat is drawn with x shrunk by cos(latitude), so a square
+block looks square, and the status bar says `EPSG:4326 · degrees` and `lon` / `lat`. A code not in the
+table says `units unknown`, never a guess. Step 2: VL.PROJ, when installed, answers for every code
+through a service it registers. **Done 2026-11-12:** `ICrsCatalog` (hidden smell) is defined here,
 VL.PROJ's AssemblyInitializer registers PROJ's catalogue in `AppHost.Global`'s services (global, because
 the window and IOBox run in the HDE's own app host), and `CrsHints` asks it first and caches each answer.
 This package still references nothing of ours. Seen in vvvv: SRID 2263 (not in the table) read
-`EPSG:2263 NAD83 / New York Long Island (ftUS) · US survey foot` with a VL.PROJ patch open in another tab.`nStep 3: a basemap in the window.
+`EPSG:2263 NAD83 / New York Long Island (ftUS) · US survey foot` with a VL.PROJ patch open in another tab.
+Step 3, a basemap in the window, is shelved (the maintainer, 2026-11-12: "先放一放").
 
 ## Node documentation is a tooltip
 

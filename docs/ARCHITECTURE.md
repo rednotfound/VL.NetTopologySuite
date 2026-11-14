@@ -217,8 +217,8 @@ geometry intersected with an SRID 0 one returns 4326 without complaint. A wrong 
 produces a confident wrong answer that looks exactly like a right one.
 
 **An SRID is a label, not a transformation.** No node here implies that setting it reprojects
-anything, because it does not. That work belongs in a focused package — `VL.ProjNet` — and is out
-of scope here.
+anything, because it does not. That work belongs in a focused package — VL.PROJ (`D:\2026_Projects\vl-proj`, PROJ through
+SharpProj, 2026-11-11; ProjNet was measured 177 m off) — and is out of scope here.
 
 One wart this package does correct: NTS's `WKTReader` stamps **-1** rather than 0 for "unknown",
 regardless of the factory it was built from, which would give a patch two different numbers both
@@ -1011,7 +1011,7 @@ Apply this whenever considering an addition:
 | How do I create or manipulate geometry? | **here** |
 | How do I attach data to a geometry, or read it back? | **here** — `NetTopologySuite.Feature`, see [Where a feature lives](#where-a-feature-lives) |
 | How do I display this geometry on a map? | `VL.Mapsui` |
-| How do I transform between coordinate reference systems? | a focused package — `VL.ProjNet` |
+| How do I transform between coordinate reference systems? | a focused package — VL.PROJ (`Reproject`) |
 | How do I read this specific geospatial dataset format? | a focused package |
 | Nothing yet — we imagine needing it | **nowhere. Do not build it.** |
 
@@ -1096,7 +1096,7 @@ not being pre-solved here.
 Recorded as *never* rather than *later*, so it stops coming up:
 
 - **Rendering, styling, layers, maps.** A different question, and `VL.Mapsui` answers it.
-- **CRS transformation.** ProjNet's job. Nothing here will imply that setting an SRID reprojects.
+- **CRS transformation.** VL.PROJ's job. Nothing here will imply that setting an SRID reprojects.
 - **A `Feature` model of our own.** No `VLFeature`, ever. The neutral model this package now wraps
   in `NetTopologySuite.Feature` is `NetTopologySuite.Features.Feature` — the NTS team's, not ours — and wrapping
   it is precisely what keeps this package from becoming the definition of the whole domain.
