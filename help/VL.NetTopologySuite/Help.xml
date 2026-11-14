@@ -9,44 +9,45 @@
 	tools\Test-VLPatch.ps1 checks this file against the patches on disk in both directions.
 -->
 <Pack>
-	<Topic title="Start here">
+	<Topic title="Overview">
 		<VLDocument link="Explanation Overview of available nodes.vl" tags="overview,explanation,start,categories,geometry,operation,io,feature,index,network,nts,netTopologySuite" />
 	</Topic>
-	<Topic title="Making geometry">
+	<Topic title="Creating">
+		<VLDocument link="HowTo Create points, lines and polygons.vl" tags="coordinate,point,geometry,create,srid,factory,nts,netTopologySuite,linestring,line,path,coordinates,cons,spread,length,reverse,polygon,linearring,ring,shell,holes,closed,valid,area,fromvector2,vector2,multipoint" />
 		<VLDocument link="HowTo Make a shape.vl" tags="shape,rectangle,box,circle,ellipse,polygon,hexagon,regularpolygon,arc,sector,pie,anchor,position,size,radius,skia" />
-		<VLDocument link="HowTo Draw a geometry.vl" tags="draw,editor,geometryeditor,sketch,mouse,window,extension,wkt,polygon,hole,multipolygon,collection,snap,shortcut" />
-		<VLDocument link="HowTo Draw in longitude and latitude.vl" tags="draw,editor,geometryeditor,srid,crs,epsg,4326,wgs84,lonlat,longitude,latitude,degrees,area,proj" />
-		<VLDocument link="HowTo Create a point.vl" tags="coordinate,point,geometry,create,srid,factory,nts,netTopologySuite" />
-		<VLDocument link="HowTo Create a linestring.vl" tags="linestring,line,path,coordinates,cons,spread,length,reverse,geometry,create" />
-		<VLDocument link="HowTo Create a polygon.vl" tags="polygon,linearring,ring,shell,holes,closed,valid,area,geometry" />
 		<VLDocument link="HowTo Group geometries.vl" tags="geometrycollection,multipoint,multilinestring,multipolygon,collection,group,parts,geometries,cons,spread" />
+		<VLDocument link="HowTo Draw a geometry.vl" tags="draw,editor,geometryeditor,sketch,mouse,window,extension,wkt,polygon,hole,multipolygon,collection,snap,shortcut,srid,crs,epsg,4326,wgs84,lonlat,longitude,latitude,degrees,area,proj" />
 		<VLDocument link="HowTo Work with Z.vl" tags="z,3d,height,coordinatez,split,includez,wkt,ordinate,nan" />
 	</Topic>
-	<Topic title="Looking at geometry">
+	<Topic title="Inspecting">
 		<VLDocument link="HowTo Inspect a geometry.vl" tags="inspect,geometrytype,isempty,srid,area,length,centroid,bounds,envelope,numpoints,issimple,interiorpoint,boundary,outlines,rings,readers,geometry" />
-		<VLDocument link="HowTo Say which CRS a geometry is in.vl" tags="setsrid,srid,crs,epsg,label,coordinatesystem,referencesystem,4326,28992,reproject,proj" />
+		<VLDocument link="HowTo Say which CRS a geometry is in.vl" tags="setsrid,srid,crs,epsg,label,coordinatesystem,referencesystem,4326,28992,reproject,proj,geometryfactory" />
 	</Topic>
-	<Topic title="Text and bytes in, geometry out">
+	<Topic title="Formats">
 		<VLDocument link="HowTo Read and write WKT.vl" tags="wkt,fromwkt,towkt,wellknowntext,read,write,parse,text,srid,io,roundtrip" />
 		<VLDocument link="HowTo Read and write WKB.vl" tags="wkb,ewkb,fromwkb,towkb,wellknownbinary,hex,bytes,binary,postgis,database,blob,bytea,srid,io,roundtrip" />
 	</Topic>
-	<Topic title="Spatial operations">
+	<Topic title="Combining and testing">
 		<VLDocument link="HowTo Buffer a geometry.vl" tags="buffer,grow,shrink,offset,intersection,operation,units,segments" />
-		<VLDocument link="HowTo Combine two geometries.vl" tags="union,unionspread,merge,dissolve,intersection,difference,symmetricdifference,overlay,combine,merge,cut,operation,area" />
+		<VLDocument link="HowTo Combine two geometries.vl" tags="union,unionspread,merge,dissolve,intersection,difference,symmetricdifference,overlay,combine,cut,operation,area" />
 		<VLDocument link="HowTo Test how geometries relate.vl" tags="intersects,contains,within,touches,crosses,overlaps,covers,coveredby,relate,de9im,predicate,inside,overlap,boolean,operation" />
 		<VLDocument link="HowTo Measure distance.vl" tags="distance,nearest,nearestpoints,closest,gap,iswithindistance,measure,operation,units" />
-		<VLDocument link="HowTo Simplify a geometry.vl" tags="simplify,simplification,douglaspeucker,topologypreserving,generalize,generalise,tolerance,vertices,thin,coastline,track,operation" />
+	</Topic>
+	<Topic title="Reshaping">
+		<VLDocument link="HowTo Simplify and densify a geometry.vl" tags="simplify,densify,vertices,segmentize,spacing,simplification,douglaspeucker,topologypreserving,generalize,generalise,tolerance,thin,coastline,track,operation" />
+		<VLDocument link="HowTo Fix an invalid geometry.vl" tags="makevalid,valid,invalid,isvalid,fix,repair,bowtie,selfintersection,hole,geometryfixer,operation" />
 		<VLDocument link="HowTo Move, turn and resize a geometry.vl" tags="translate,rotate,scale,move,turn,resize,mirror,affine,transform,offset,center,cycles,operation" />
 		<VLDocument link="HowTo Walk along a line.vl" tags="interpolate,substring,locate,project,linearreferencing,along,fraction,position,animate,path,route,snap,gps,progress,lfo,operation" />
-		<VLDocument link="HowTo Wrap points in a hull.vl" tags="convexhull,hull,convex,outline,wrap,multipoint,rubberband,operation,area" />
+		<VLDocument link="HowTo Wrap points in a hull.vl" tags="convexhull,concavehull,minimumboundingcircle,boundingcircle,circle,radius,hull,convex,concave,outline,wrap,multipoint,rubberband,operation,area" />
+		<VLDocument link="HowTo Scatter points in an area.vl" tags="randompoints,random,scatter,sample,points,seed,count,inside,area,polygon,particles,trees,operation" />
 	</Topic>
 	<Topic title="Features">
 		<VLDocument link="HowTo Attach attributes to a geometry.vl" tags="feature,attributes,properties,dictionary,add,split,getattribute,attribute,property,geojson,mapsui,ntsfeature" />
 	</Topic>
-	<Topic title="Many geometries">
+	<Topic title="Index">
 		<VLDocument link="HowTo Query many geometries fast.vl" tags="index,spatialindex,strtree,query,candidates,fast,many,performance,envelope,processnode" />
 	</Topic>
-	<Topic title="Networks">
+	<Topic title="Network">
 		<VLDocument link="HowTo Find the shortest path.vl" tags="network,shortestpath,dijkstra,route,path,graph,reachable,found,snap,linestring" />
 	</Topic>
 </Pack>

@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document xmlns:p="property" xmlns:r="reflection" Id="N0xwLCPqALg2iS4w9YRuDL" LanguageVersion="2025.7.4" Version="0.128">
+  <NugetDependency Id="FHItKdAam1IUTX4P8jUia4" Location="VL.CoreLib" Version="2025.7.4" />
+  <Patch Id="Gl8avSjQB7tc8oPNCdyps2">
+    <Canvas Id="VVJsQDIzwaIcxlFiiL84oJ" DefaultCategory="Main" BordersChecked="false" CanvasType="FullCategory" />
+    <!--
+
+    ************************ Application ************************
+
+-->
+    <Node Name="Application" Bounds="100,100" Id="ONYGkbMOswHJTdZK3xvXRO">
+      <p:NodeReference>
+        <Choice Kind="ContainerDefinition" Name="Process" />
+        <CategoryReference Kind="Category" Name="Primitive" />
+      </p:NodeReference>
+      <Patch Id="Rha31lXRsllx0gSky7BfBj">
+        <Canvas Id="IVs71cZKqFwRPsbqOUHGVu" CanvasType="Group">
+          <Pad Id="IBdUdmLbs4sCR05OEDDTUT" Bounds="60,40,285,41" ShowValueBox="true" isIOBox="true" Value="Use RandomPoints!">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">20</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="UNcCxiaCsZyjh59bDVTuup" Bounds="60,90,600,46" ShowValueBox="true" isIOBox="true" Value="Points scattered inside an area: trees in a park, people in a square, particles in a shape. The same Seed gives the same points every frame.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="R0wiol1XwN9j9S3Mk8Ry19" Comment="" Bounds="60,170,300,15" ShowValueBox="true" isIOBox="true" Value="POLYGON ((0 0, 6 0, 6 4, 0 4, 0 0), (2 1, 4 1, 4 3, 2 3, 2 1))">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="60,210,90,19" Id="VFQGMJZvnQk7aIuwbwgf2M">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="FromWKT" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="IYqxCKrX0cWve9DRoFvv87" Name="WKT" Kind="InputPin" />
+            <Pin Id="H0TZlnShUrjjwEGdpDldei" Name="Factory" Kind="InputPin" />
+            <Pin Id="PDbe3QiiiHImqbSRza4IqU" Name="Result" Kind="OutputPin" />
+            <Pin Id="GIr7kby6ikvTqI4OJKLQIO" Name="Success" Kind="OutputPin" />
+          </Node>
+          <Pad Id="N0G2VYtOoavcY6NBJZJdZ8" Comment="Count" Bounds="160,250,50,15" ShowValueBox="true" isIOBox="true" Value="200">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Integer32" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="KSUawO9QqMTgWcuPM4yAwl" Comment="Seed" Bounds="217,280,50,15" ShowValueBox="true" isIOBox="true" Value="0">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Integer32" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="100,310,120,19" Id="UbY4UNzET3Wc4n4UE6Wgly">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="RandomPoints" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="GoRwyOcCQ1hoKY3Ma1d0bk" Name="Area" Kind="InputPin" />
+            <Pin Id="MDdCDw4moCfhJbEJDP2iIE" Name="Count" Kind="InputPin" />
+            <Pin Id="MyEw3yR38TyGpHRT8OhTbC" Name="Seed" Kind="InputPin" />
+            <Pin Id="Bh27Q25agX7ZAtF5EpUm2q" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="60,360,45,19" Id="B8WVrdydaTehZ1DbHRebuk">
+            <p:NodeReference LastCategoryFullName="Collections.Spread" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Cons" />
+              <CategoryReference Kind="RecordType" Name="Spread" NeedsToBeDirectParent="true" />
+            </p:NodeReference>
+            <Pin Id="HcfdRitAMIaF20NV0MovV7" Name="Input" Kind="InputPin" />
+            <Pin Id="MvYJHWfIjxBwQRfA3SjiCq" Name="Input 2" Kind="InputPin" />
+            <Pin Id="U63vTjEk36T9PmjkCW4qAK" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="60,395,140,19" Id="QscfqFukl9argd70p2h1MO">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="GeometryCollection" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="FyMUYGJ8mm3cFKgecMn6w4" Name="Geometries" Kind="InputPin" />
+            <Pin Id="FXGPhH3FYBCLrSytzHGMMf" Name="Factory" Kind="InputPin" />
+            <Pin Id="Dya2i6rqmB0u7hfPlPRI21" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="OWO5R5opZ0yz0A8gZxEIog" Comment="" Bounds="60,435,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="RLSCoHGPkFybvUFuLcvzo5" Bounds="60,570,400,44" ShowValueBox="true" isIOBox="true" Value="&lt; None fall in the hole. Count sets how many, up to 100000; only a polygon has an inside.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="Nc3eNs5zUNZP9J06k3KsJt" Bounds="311,276,224,19" ShowValueBox="true" isIOBox="true" Value="&lt; Change Seed to see a different result.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+        </Canvas>
+        <Patch Id="ABn4zCv6XjPvkLEvjd2u3O" Name="Create" />
+        <Patch Id="QYWaIIRmbY17nZniDzGHtP" Name="Update" />
+        <ProcessDefinition Id="Q6jGMxb7wyZaK5ryTFjUiA">
+          <Fragment Id="Fu3bJCiP4jdb55y56qmth0" Patch="ABn4zCv6XjPvkLEvjd2u3O" Enabled="true" />
+          <Fragment Id="M75gXjdNxMTXSrTndaVVPI" Patch="QYWaIIRmbY17nZniDzGHtP" Enabled="true" />
+        </ProcessDefinition>
+        <Link Id="ThWsOeAV5hyQSVoKCh0KAK" Ids="R0wiol1XwN9j9S3Mk8Ry19,IYqxCKrX0cWve9DRoFvv87" />
+        <Link Id="DRR57Gwv61GUsvm6syeaXQ" Ids="PDbe3QiiiHImqbSRza4IqU,GoRwyOcCQ1hoKY3Ma1d0bk" />
+        <Link Id="RgDUq5Hn53PPUZ7h7XAtH7" Ids="N0G2VYtOoavcY6NBJZJdZ8,MDdCDw4moCfhJbEJDP2iIE" />
+        <Link Id="B87VVEWnlTFwVSYarDji8u" Ids="KSUawO9QqMTgWcuPM4yAwl,MyEw3yR38TyGpHRT8OhTbC" />
+        <Link Id="TIChZVKkCjvch6krNNb4gy" Ids="PDbe3QiiiHImqbSRza4IqU,HcfdRitAMIaF20NV0MovV7" />
+        <Link Id="UAUvAFW1AupUwwaG0gpOXe" Ids="Bh27Q25agX7ZAtF5EpUm2q,MvYJHWfIjxBwQRfA3SjiCq" />
+        <Link Id="Sk4MXfn58rFa5kuYizisgZ" Ids="U63vTjEk36T9PmjkCW4qAK,FyMUYGJ8mm3cFKgecMn6w4" />
+        <Link Id="VICaiv9BW2J8Hzla7SFWJ3" Ids="Dya2i6rqmB0u7hfPlPRI21,OWO5R5opZ0yz0A8gZxEIog" />
+      </Patch>
+    </Node>
+  </Patch>
+  <NugetDependency Id="I9TA7JdAeHu7SVFHUNigxx" Location="VL.NetTopologySuite" Version="0.0.0" />
+</Document>

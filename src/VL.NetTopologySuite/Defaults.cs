@@ -53,6 +53,14 @@ internal static class Defaults
     /// </remarks>
     internal static readonly GeometryFactory Factory = new GeometryFactory(new PrecisionModel(), 0);
 
+    /// <summary>
+    /// The most vertices a node makes in one call. A node runs every frame, and an IOBox being typed
+    /// into passes through any value on the way: a Circle Resolution of ten million took 794 ms, a
+    /// Buffer with a million Segments 566 ms (review, 2026-11-14). Shapes, Buffer, Densify and
+    /// RandomPoints all stop here, and their tooltips say so.
+    /// </summary>
+    internal const int MaxVertices = 100_000;
+
     /// <summary>Resolve a possibly unconnected <c>Factory</c> pin.</summary>
     /// <remarks>
     /// Unconnected is the only thing that can mean "the default" — an empty or zero value cannot,
@@ -154,7 +162,8 @@ internal static class Defaults
 
         var copy = new List<Coordinate>(coordinates is ICollection<Coordinate> c ? c.Count : 4);
         foreach (var coordinate in coordinates)
-            copy.Add(coordinate.Copy());
+            if (coordinate is not null) // a missing one is skipped, not a NullReferenceException (review 2026-11-14)
+                copy.Add(coordinate.Copy());
         return copy.ToArray();
     }
 

@@ -105,8 +105,8 @@ public class Tier2OperationTests
     }
 
     [Fact]
-    public void Simplify_of_nothing_is_nothing()
-        => Assert.Null(OperationNodes.Simplify(null, 1));
+    public void Simplify_of_nothing_is_empty()
+        => Assert.True(OperationNodes.Simplify(null, 1).IsEmpty);
 
     // ── Translate ───────────────────────────────────────────────────────────
 
@@ -128,11 +128,11 @@ public class Tier2OperationTests
     }
 
     [Fact]
-    public void Transforms_of_nothing_are_nothing()
+    public void Transforms_of_nothing_are_empty()
     {
-        Assert.Null(OperationNodes.Translate(null, 1, 1));
-        Assert.Null(OperationNodes.Rotate(null, 0.25));
-        Assert.Null(OperationNodes.Scale(null, 2, 2));
+        Assert.True(OperationNodes.Translate(null, 1, 1).IsEmpty);
+        Assert.True(OperationNodes.Rotate(null, 0.25).IsEmpty);
+        Assert.True(OperationNodes.Scale(null, 2, 2).IsEmpty);
     }
 
     [Fact]

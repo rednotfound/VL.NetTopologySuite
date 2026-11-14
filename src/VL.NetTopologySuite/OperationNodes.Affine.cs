@@ -34,8 +34,8 @@ public static partial class OperationNodes
     /// <param name="geometry">The geometry to move.</param>
     /// <param name="x">How far east to move it. Negative moves west.</param>
     /// <param name="y">How far north to move it. Negative moves south.</param>
-    public static Geometry? Translate(Geometry? geometry, double x = 0, double y = 0)
-        => geometry is null ? null : AffineTransformation.TranslationInstance(x, y).Transform(geometry);
+    public static Geometry Translate(Geometry? geometry, double x = 0, double y = 0)
+        => geometry is null ? Overlays.Nothing() : AffineTransformation.TranslationInstance(x, y).Transform(geometry);
 
     /// <summary>
     /// Turns a geometry around a center.
@@ -47,9 +47,9 @@ public static partial class OperationNodes
     /// <param name="geometry">The geometry to turn.</param>
     /// <param name="rotation">How far to turn, in cycles, counter-clockwise.</param>
     /// <param name="center">The point to turn around. Leave it unconnected to turn in place.</param>
-    public static Geometry? Rotate(Geometry? geometry, double rotation = 0, Coordinate? center = null)
+    public static Geometry Rotate(Geometry? geometry, double rotation = 0, Coordinate? center = null)
     {
-        if (geometry is null) return null;
+        if (geometry is null) return Overlays.Nothing();
         var c = center ?? CenterOf(geometry);
         if (c is null) return geometry.Copy();
         return AffineTransformation.RotationInstance(rotation * 2 * Math.PI, c.X, c.Y).Transform(geometry);
@@ -66,9 +66,9 @@ public static partial class OperationNodes
     /// <param name="x">The factor east-west.</param>
     /// <param name="y">The factor north-south.</param>
     /// <param name="center">The point that stays where it is. Leave it unconnected to resize in place.</param>
-    public static Geometry? Scale(Geometry? geometry, double x = 1, double y = 1, Coordinate? center = null)
+    public static Geometry Scale(Geometry? geometry, double x = 1, double y = 1, Coordinate? center = null)
     {
-        if (geometry is null) return null;
+        if (geometry is null) return Overlays.Nothing();
         var c = center ?? CenterOf(geometry);
         if (c is null) return geometry.Copy();
         return AffineTransformation.ScaleInstance(x, y, c.X, c.Y).Transform(geometry);

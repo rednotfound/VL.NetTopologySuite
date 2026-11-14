@@ -250,11 +250,11 @@
               <Choice Kind="OperationCallFlag" Name="Union (Spread)" />
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
-            <Pin Id="RSmT2T0xgNIqXae4rgVOpg" Name="Input" Kind="InputPin" />
+            <Pin Id="RSmT2T0xgNIqXae4rgVOpg" Name="Geometries" Kind="InputPin" />
             <Pin Id="LLbspgPYdSXt2tCYcWPLjK" Name="Result" Kind="OutputPin" />
           </Node>
           <Pad Id="TZRvRKzDpAXPOGZNNcnbjl" Comment="" Bounds="62,1530,150,120" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="MxofXwO9oVbtUp1csvfu8C" Bounds="491,1490,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Union (Spread) merges a whole spread at once: faster than chaining Union, the same result. Here the four squares of one MultiPolygon, split by Geometries.">
+          <Pad Id="MxofXwO9oVbtUp1csvfu8C" Bounds="491,1490,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Union (Spread) merges a whole spread at once: faster than chaining Union, the same result. Here the four boxes of one MultiPolygon, split by Geometries.">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>

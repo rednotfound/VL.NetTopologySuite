@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using NetTopologySuite.Geometries;
 using VL.Core.Import;
 
@@ -162,18 +164,23 @@ public static partial class GeometryNodes
             ? Defaults.Or(factory).CreatePoint()
             : Defaults.Or(factory).CreatePoint(Defaults.CopyOf(coordinate));
 
-    // Fewer than two coordinates gives an empty LineString; NTS rejects exactly one.
+    // Fewer than two coordinates gives an empty LineString; NTS rejects exactly one ("Invalid number
+    // of points"), and until the review of 2026-11-14 this comment said so while the code let it
+    // throw. A missing coordinate in the spread is skipped (Defaults.CopyOf).
 
     /// <summary>
     /// Makes a line through a sequence of coordinates.
     /// </summary>
     /// <remarks>
-    /// The order of the coordinates is the line's direction.
+    /// The order of the coordinates is the line's direction. Fewer than two give an empty line.
     /// </remarks>
     public static LineString LineString(
         IEnumerable<Coordinate>? coordinates = null,
         GeometryFactory? factory = null)
-        => Defaults.Or(factory).CreateLineString(Defaults.CopyOf(coordinates));
+    {
+        var copy = Defaults.CopyOf(coordinates);
+        return Defaults.Or(factory).CreateLineString(copy.Length < 2 ? [] : copy);
+    }
 
     // The auto-closing is deliberate and is the whole reason this node exists rather than the raw
     // factory method. NTS throws "points must form a closed linestring" on an open ring, and four
@@ -183,21 +190,26 @@ public static partial class GeometryNodes
     // A ring being closed does not make the polygon built from it valid: a ring that crosses itself
     // closes perfectly and produces an invalid polygon.
     //
-    // Three or more distinct coordinates are needed for a usable ring. An empty input gives an empty
-    // ring; too few coordinates is an error NTS reports, because silently inventing a ring would be
-    // worse than saying so.
+    // A ring needs four coordinates once closed (three corners and the repeat). Fewer gives an empty
+    // ring rather than NTS's "Invalid number of points" exception: until the review of 2026-11-14
+    // this comment argued that throwing was better than inventing a ring, but nothing is invented -
+    // the ring is empty - and a node that throws while a spread is being built in a patch is a red
+    // node every frame. IsValid and Area say the rest.
 
     /// <summary>
     /// Makes a closed ring through a sequence of coordinates, the outline a polygon is made of.
     /// </summary>
     /// <remarks>
     /// The ring is closed for you: four corners make a rectangle.
-    /// It needs at least three distinct coordinates; a ring that crosses itself still builds, so check the polygon with IsValid.
+    /// Fewer than three coordinates give an empty ring; a ring that crosses itself still builds, so check the polygon with IsValid.
     /// </remarks>
     public static LinearRing LinearRing(
         IEnumerable<Coordinate>? coordinates = null,
         GeometryFactory? factory = null)
-        => Defaults.Or(factory).CreateLinearRing(Defaults.CopyAndClose(coordinates));
+    {
+        var closed = Defaults.CopyAndClose(coordinates);
+        return Defaults.Or(factory).CreateLinearRing(closed.Length < 4 ? [] : closed);
+    }
 
     // Takes rings, not coordinates. The common path is Coordinates -> LinearRing -> Polygon, one node
     // longer than going straight from coordinates but with two payoffs: Shell and Holes are the same
@@ -275,13 +287,19 @@ public static partial class GeometryNodes
         => Defaults.Or(factory).CreateGeometryCollection(geometries is null ? [] : ToArray(geometries));
 
     /// <summary>
-    /// Materialise a spread into an array without copying twice when it already is one.
+    /// Materialise a spread into an array without copying twice when it already is one, leaving out
+    /// missing items.
     /// </summary>
     /// <remarks>
+    /// A null part is common in a patch - an operation whose input is not connected yet - and NTS
+    /// throws "geometries must not contain null elements" on it (review, 2026-11-14). Skipped, as
+    /// Union (Spread) skips them.
     /// Geometries need no defensive copy the way coordinates do: they are handed on by reference
     /// and none of their own members can be reassigned. Only their coordinate storage is writable,
     /// and that was already copied when they were created.
     /// </remarks>
-    private static T[] ToArray<T>(IEnumerable<T> items)
-        => items as T[] ?? [.. items];
+    private static T[] ToArray<T>(IEnumerable<T> items) where T : class
+        => items is T[] array && Array.IndexOf(array, null) < 0
+            ? array
+            : [.. items.Where(static i => i is not null)];
 }

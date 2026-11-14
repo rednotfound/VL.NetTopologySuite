@@ -221,7 +221,7 @@
             <Pin Id="OXrfqHfnjUPAFVTXtY7Z2S" Name="Result" Kind="OutputPin" />
           </Node>
           <Pad Id="McokZ3O7PKooPXDJazz53f" Comment="" Bounds="1020,435,180,120" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="PBWB4bae0EMiOSBuCy7aft" Bounds="1220,435,240,80" ShowValueBox="true" isIOBox="true" Value="&lt; 2 doubles, -1 mirrors. With Center unconnected it grows in place, around the middle of its box.">
+          <Pad Id="PBWB4bae0EMiOSBuCy7aft" Bounds="1220,435,240,80" ShowValueBox="true" isIOBox="true" Value="&lt; 1.5 grows by half, -1 mirrors. With Center unconnected it grows in place, around the middle of its box.">
             <p:TypeAnnotation>
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>

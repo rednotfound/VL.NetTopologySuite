@@ -78,8 +78,8 @@ public static partial class GeometryNodes
     /// <param name="geometry">The geometry.</param>
     /// <param name="srid">The EPSG code its coordinates are in. 0 means unset.</param>
     /// <returns>A copy with that SRID and the same coordinates.</returns>
-    public static Geometry? SetSRID(Geometry? geometry, [Pin(Name = "SRID")] int srid)
-        => geometry is null ? null : Defaults.FactoryFor(srid).CreateGeometry(geometry);
+    public static Geometry SetSRID(Geometry? geometry, [Pin(Name = "SRID")] int srid)
+        => geometry is null ? Defaults.FactoryFor(srid).CreateGeometryCollection() : Defaults.FactoryFor(srid).CreateGeometry(geometry);
 
     // ── Validity ──────────────────────────────────────────────────────────────
 
@@ -260,6 +260,36 @@ public static partial class GeometryNodes
     /// </remarks>
     public static int NumPoints(Geometry? geometry) => geometry?.NumPoints ?? 0;
 
+    // Every vertex as a point, so a drawn IOBox shows where they are: what Densify adds and Simplify
+    // removes. NTS has no such operation, but GEOS's extractUniquePoints (Shapely's
+    // extract_unique_points) is UniqueCoordinateArrayFilter into a MultiPoint, and so is this: every
+    // repeated coordinate is dropped, the ring-closing one included, in first-seen order. Measured on
+    // 2.6: a square with a triangular hole, 9 coordinates, gives 7 points. Named as QGIS ("Extract
+    // vertices") and ArcGIS ("Feature Vertices To Points") name it; not "Points", which is already
+    // the Outlines output for the point parts. The filter hands back the geometry's own Coordinate
+    // instances, and CreateMultiPointFromCoords copies them into new points (both measured): a copy
+    // here as well was redundant, and a negative test showed it - removing it turned nothing red. The
+    // test that the points own their coordinates stays, to catch NTS changing that. Tier 2,
+    // 2026-11-14, asked for by the maintainer to make Densify visible.
+
+    /// <summary>
+    /// Returns every vertex of the geometry as a point.
+    /// </summary>
+    /// <remarks>
+    /// Each place appears once: a ring's repeated first point, and any point given twice, are dropped.
+    /// Points that differ only in Z count as one place.
+    /// </remarks>
+    public static MultiPoint Vertices(Geometry? geometry)
+    {
+        if (geometry is null)
+            return Defaults.Factory.CreateMultiPoint();
+
+        var unique = global::NetTopologySuite.Utilities.UniqueCoordinateArrayFilter.FilterCoordinates(geometry.Coordinates);
+        var points = geometry.Factory.CreateMultiPointFromCoords(unique);
+        points.SRID = geometry.SRID;
+        return points;
+    }
+
     // Copies, deliberately. NTS's own Geometry.Coordinates hands out LIVE references into the
     // geometry's storage - measured, and writing to one moves the geometry - which would let a
     // downstream node change a geometry another branch of the patch is still using. These are safe
@@ -379,5 +409,20 @@ public static partial class GeometryNodes
     /// A polygon gives its rings as lines, holes included. A line gives its two end points. A point gives nothing.
     /// </remarks>
     public static Geometry Boundary(Geometry? geometry)
-        => geometry is null ? Defaults.Factory.CreateGeometryCollection() : geometry.Boundary;
+    {
+        if (geometry is null)
+            return Defaults.Factory.CreateGeometryCollection();
+
+        // NTS throws "does not support GeometryCollection arguments" on a mixed collection (review,
+        // 2026-11-14): OGC leaves its boundary undefined. Here it is each part's boundary, together.
+        if (geometry.OgcGeometryType != OgcGeometryType.GeometryCollection)
+            return geometry.Boundary;
+
+        var parts = new Geometry[geometry.NumGeometries];
+        for (var i = 0; i < parts.Length; i++)
+            parts[i] = Boundary(geometry.GetGeometryN(i));
+        var boundary = geometry.Factory.BuildGeometry(parts);
+        boundary.SRID = geometry.SRID;
+        return boundary;
+    }
 }
