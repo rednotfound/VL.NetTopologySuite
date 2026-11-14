@@ -408,7 +408,13 @@ whose input is missing now gives an empty geometry instead of null, and `Distanc
 `Test-VLPatch`, `pack -NoBuild`, 23 of 23 patches compiled against the nupkg, `Test-Install`; the
 nupkg opened and its 23 patches compared with the tree (the four merged-away patches absent), its
 README and release notes the new ones. GUI: every new or changed patch seen and arranged by the
-maintainer the same evening on the same build.
+maintainer the same evening on the same build. Merged as PR #10, tagged `v0.0.8-alpha` on the merge
+(the maintainer pushed the tag), uploaded in the browser by the maintainer. nuget.org served the
+flat container before the registration index: `nuget install` said "not found" for some minutes
+after the email, then `Test-Install -FromNuGetOrg -Version 0.0.8-alpha` was green (signed,
+dependencies along, 23 of 23 patches compile). GitHub release made with `gh`. Working version
+`0.0.9-alpha`. The README packed into 0.0.8 is the long one; the short vvvv-library README (PR #11)
+ships with 0.0.9.
 
 ## Updating a vvvv that already has the previous version
 
