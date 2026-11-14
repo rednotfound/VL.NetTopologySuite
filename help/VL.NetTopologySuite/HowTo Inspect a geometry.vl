@@ -88,7 +88,7 @@
             <Pin Id="QuosgCFxWt87mqVOQ54KKu" Name="Result" Kind="OutputPin" />
           </Node>
           <Pad Id="Tbsg60h5aHN8h8YRxz26h6" Comment="SRID" Bounds="360,510,60,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="OTT1KDqv6g3kTtWgtejpwi" Bounds="560,470,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; IsValid is the one reader not shown here - HowTo Create a polygon has it.">
+          <Pad Id="OTT1KDqv6g3kTtWgtejpwi" Bounds="560,470,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; IsValid is in HowTo Fix an invalid geometry, Vertices in HowTo Simplify and densify a geometry.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>

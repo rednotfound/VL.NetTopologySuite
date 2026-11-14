@@ -72,7 +72,7 @@
             <Pin Id="BcaOzGsyG2ye3ewSPZfLUM" Name="Factory" Kind="InputPin" />
             <Pin Id="UiQI9faYoR2Ij2GiIJMMjI" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="TuF85o4jdL9B7D8LGmtCYr" Bounds="580,320,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Factory left unconnected: SRID 0, meaning &quot;unset&quot;. Connect a GeometryFactory node to say 4326. An SRID is a label - it never moves a coordinate.">
+          <Pad Id="TuF85o4jdL9B7D8LGmtCYr" Bounds="580,320,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Factory left unconnected: SRID 0, meaning &quot;unset&quot;. SetSRID labels it 4326, or connect a GeometryFactory. An SRID is a label - it never moves a coordinate.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>

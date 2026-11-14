@@ -72,7 +72,7 @@
             <Pin Id="TVIX7yMkTg9VkQwWF8hIsq" Name="Output" Kind="OutputPin" />
           </Node>
           <Pad Id="IkHE4cEILgJDCX4MeHwctz" Comment="" Bounds="60,440,180,120" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="FdaagwItGsojmfwjR7iOPY" Bounds="260,440,260,62" ShowValueBox="true" isIOBox="true" Value="&lt; Preserve Topology on: the small hole stays and no ring crosses another. Top right: the original, 24 points.">
+          <Pad Id="FdaagwItGsojmfwjR7iOPY" Bounds="260,440,260,62" ShowValueBox="true" isIOBox="true" Value="&lt; Preserve Topology on: the small hole stays and no ring crosses another. Top right: the original, 24 corners and a hole.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -169,7 +169,7 @@
             <Pin Id="HRP5CR77xVtM3lVwznkzxH" Name="Geometry" Kind="InputPin" />
             <Pin Id="Abw2r9PxL4pd4EvKau7UcU" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="SieKsTBxyPIF6pq0bPx8wZ" Comment="Vertices" Bounds="713,1020,50,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="SieKsTBxyPIF6pq0bPx8wZ" Comment="NumPoints" Bounds="713,1020,50,15" ShowValueBox="true" isIOBox="true" />
           <Node Bounds="720,1060,60,19" Id="F1qZx8xNzgEUDtScIodCUf">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
@@ -181,7 +181,7 @@
             <Pin Id="LrliLOAmRB4ZxKLD9tyAGY" Name="Result" Kind="OutputPin" />
           </Node>
           <Pad Id="Uaj8rpaWQQlxZIPmCmkVsk" Comment="" Bounds="722,1110,176,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="JT2iT9Joo7uexXl0otJQAu" Bounds="627,819,600,44" ShowValueBox="true" isIOBox="true" Value="&lt; Densify is the other way round: more vertices, the same shape, none farther apart than Spacing. 4 corners become more vertices here. Use it before bending a line.">
+          <Pad Id="JT2iT9Joo7uexXl0otJQAu" Bounds="627,819,600,44" ShowValueBox="true" isIOBox="true" Value="&lt; Densify is the other way round: more vertices, none farther apart than Spacing - 4 corners become 20. NumPoints counts the closing point too. Use it before Reproject.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -257,7 +257,7 @@
             <Pin Id="D1HwB4SdEsUMoBj3m4SVTL" Name="Geometry" Kind="InputPin" />
             <Pin Id="Ke8x9cTZPvAOWtzdlvsDi6" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="SZV0Xw4QMFcPEJcqLM2Wmh" Comment="Vertices" Bounds="226,980,35,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="SZV0Xw4QMFcPEJcqLM2Wmh" Comment="NumPoints" Bounds="226,980,35,15" ShowValueBox="true" isIOBox="true" />
         </Canvas>
         <Patch Id="RgmJEId1aEP3V0bGHqX7VN" Name="Create" />
         <Patch Id="AhWh4zT6CgNkELtYhdWPFB" Name="Update" />

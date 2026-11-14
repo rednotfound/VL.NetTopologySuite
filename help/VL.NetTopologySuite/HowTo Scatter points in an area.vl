@@ -100,7 +100,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="Nc3eNs5zUNZP9J06k3KsJt" Bounds="311,276,224,19" ShowValueBox="true" isIOBox="true" Value="&lt; change seed to see different result">
+          <Pad Id="Nc3eNs5zUNZP9J06k3KsJt" Bounds="311,276,224,19" ShowValueBox="true" isIOBox="true" Value="&lt; Change Seed to see a different result.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>

@@ -155,7 +155,7 @@
             <Pin Id="VCRPmrReY4tYd8PU7ehi95" Name="Factory" Kind="InputPin" />
             <Pin Id="NxyXrmu9tH4ICw8DNOuovz" Name="Result" Kind="OutputPin" />
           </Node>
-          <Pad Id="EJrb2UmMZX7JqGP5kkItNq" Bounds="604,440,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Holes takes a Spread of LinearRing; unconnected means no holes. Factory unconnected means SRID 0, &quot;unset&quot; - connect a GeometryFactory to say 4326.">
+          <Pad Id="EJrb2UmMZX7JqGP5kkItNq" Bounds="604,440,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Holes takes a Spread of LinearRing; unconnected means no holes. Factory unconnected means SRID 0, &quot;unset&quot; - SetSRID or a GeometryFactory says 4326.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -288,6 +288,15 @@
           <Pad Id="N8Jaj7T13rcPihMO5f7EZY" Comment="WKT" Bounds="340,1281,231,72" ShowValueBox="true" isIOBox="true" />
           <Pad Id="AFLJgTuYCBsjz92mZyh2vH" Comment="Polygon" Bounds="63,561,180,120" ShowValueBox="true" isIOBox="true" />
           <Pad Id="HGVKe9Q3xppX5DqH90MBxL" Comment="Polygon" Bounds="69,1221,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="Qs4buHk2u3seXecfQOTmKG" Bounds="600,1040,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Random corners in random order: the ring almost always crosses itself, so the polygon is invalid and its Area means little. MakeValid or ConvexHull fix it.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
         </Canvas>
         <Patch Id="IfRapLwSSvK9lLmHYMak4g" Name="Create" />
         <Patch Id="FbQbGGTMGnTVgecKkp1tZS" Name="Update" />
