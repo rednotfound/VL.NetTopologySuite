@@ -139,6 +139,128 @@
             <Pin Id="MtjAnBuVA7oPw55WBSdpnF" Name="Result" Kind="OutputPin" />
           </Node>
           <Pad Id="IDvLiLk9BqkNCgEBwjUPfN" Comment="" Bounds="467,631,190,132" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="PY4se7mvlfYLGPzn83M5m8" Comment="" Bounds="60,900,401,15" ShowValueBox="true" isIOBox="true" Value="MULTIPOINT ((4.41 4.41), (5.12 5.12), (3.77 4.85), (4.15 5.77), (3 5), (3 6), (2.23 4.85), (1.85 5.77), (1.59 4.41), (0.88 5.12), (1.15 3.77), (0.23 4.15), (1 3), (0 3), (1.15 2.23), (0.23 1.85), (1.59 1.59), (0.88 0.88), (2.23 1.15), (1.85 0.23), (3 1), (3 0), (3.77 1.15), (4.15 0.23), (4.41 1.59), (5.12 0.88))">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="60,940,90,19" Id="VE5MeUIsSnKzADt1vmeEKP">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="FromWKT" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="I7eE0dB9mBPOczL9MSl3J1" Name="WKT" Kind="InputPin" />
+            <Pin Id="RmR9QQt1Nwok05LS3dfIbp" Name="Factory" Kind="InputPin" />
+            <Pin Id="LpcVJ3Ra6ZPAvaTD8XrkRl" Name="Result" Kind="OutputPin" />
+            <Pin Id="GJ2mLvI7zaFriJtsw88aLb" Name="Success" Kind="OutputPin" />
+          </Node>
+          <Pad Id="VmqaCBEjOIR5bVsSyy8DcE" Comment="Ratio" Bounds="160,980,50,15" ShowValueBox="true" isIOBox="true" Value="0.5">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Float64" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="100,1020,120,19" Id="CtXk1AXT9iSH5hxdePmh90">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="ConcaveHull" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="SdWrOO3MALMWOIOEO7WIuA" Name="Geometry" Kind="InputPin" />
+            <Pin Id="EtkbG5MBgzhyKjyitvFurX" Name="Ratio" Kind="InputPin" />
+            <Pin Id="S7JmbSrq0uBMHz7mr88kpb" Name="Allow Holes" Kind="InputPin" />
+            <Pin Id="PxiX8lXmG6dCWI51bd2GKu" Name="Output" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="60,1060,45,19" Id="DasaQAzbdHIzVikYB0Ow4L">
+            <p:NodeReference LastCategoryFullName="Collections.Spread" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Cons" />
+              <CategoryReference Kind="RecordType" Name="Spread" NeedsToBeDirectParent="true" />
+            </p:NodeReference>
+            <Pin Id="BrZU6gShDScotjuK9YO8rw" Name="Input" Kind="InputPin" />
+            <Pin Id="CVX7shN1CMdayE8lU3PorI" Name="Input 2" Kind="InputPin" />
+            <Pin Id="H2VikpgUhj7wjjJAiCg0G6" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="60,1095,140,19" Id="QQ8jk8NtQHMM8XRULekcrf">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="GeometryCollection" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="CQWRrh8v8kxkCj0gJ7UrrP" Name="Geometries" Kind="InputPin" />
+            <Pin Id="DYxJ8De5otqok7Tj9vi96N" Name="Factory" Kind="InputPin" />
+            <Pin Id="BsCL8W62Pkl25EmpI8pyOd" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="IOtvIKvw5HDyjyKAW8N6bX" Comment="" Bounds="62,1160,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="CihZCQVK1Msg4ppPpNvv7A" Bounds="62,1312,400,62" ShowValueBox="true" isIOBox="true" Value="&lt; ConcaveHull follows the points into the gap ConvexHull closes. Ratio 1 is the convex hull, towards 0 it hugs tighter.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="Nh3jcxcndCmJswKcNA3IZ2" Comment="" Bounds="620,900,300,15" ShowValueBox="true" isIOBox="true" Value="MULTIPOINT ((0 0), (4 0), (2 3), (1 1), (3 1))">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="620,940,90,19" Id="P0yYsxL9tGbCp6ccneFuf6">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="FromWKT" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="EWSETldq4VzytIaXAwmiMo" Name="WKT" Kind="InputPin" />
+            <Pin Id="HxXPBhFFwlmtmNBdJGQpYg" Name="Factory" Kind="InputPin" />
+            <Pin Id="I3C533cNip9bttP8Rv38g6" Name="Result" Kind="OutputPin" />
+            <Pin Id="SoxoYHC6iAz2ZgfLZfiz8n" Name="Success" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="805,1010,140,19" Id="Vmnpadzr3Db3F3K67bXhfh">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="MinimumBoundingCircle" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="MDVQBEK55u85UNZLn4MV5z" Name="Geometry" Kind="InputPin" />
+            <Pin Id="COgdSLKhuKlZP73DNfo7ib" Name="Result" Kind="OutputPin" />
+            <Pin Id="ONI4zQQ8EMzwXiIjGYPN1l" Name="Center" Kind="OutputPin" />
+            <Pin Id="UQmbKy2LletVT5dXr60VpP" Name="Radius" Kind="OutputPin" />
+          </Node>
+          <Pad Id="SF5kooA9eUqksgZn5pzVUU" Comment="Radius" Bounds="942,1060,60,15" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="765,1060,45,19" Id="R45uuxz4WrBdP2xZVL76Hw">
+            <p:NodeReference LastCategoryFullName="Collections.Spread" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Cons" />
+              <CategoryReference Kind="RecordType" Name="Spread" NeedsToBeDirectParent="true" />
+            </p:NodeReference>
+            <Pin Id="VkTdL5sM4jBXFaBqFUgnZ3" Name="Input" Kind="InputPin" />
+            <Pin Id="Qm7LV7UYtFW7cw4Ws756bJ" Name="Input 2" Kind="InputPin" />
+            <Pin Id="Q6lnkrecgA7xeM8kol49cA" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="765,1095,140,19" Id="PAXvxFRsovRd4bxqV6QIJD">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="GeometryCollection" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="UsbqMhFkxjFFqoFoj2YE2G" Name="Geometries" Kind="InputPin" />
+            <Pin Id="E4dQnsne4EZQ6Wyo34fl1d" Name="Factory" Kind="InputPin" />
+            <Pin Id="MfauCirV9oTg7oPSnCHOGX" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="BnMMToTBYeBexl55KNMgLc" Comment="" Bounds="767,1175,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="EahihvHIsGCidZzr4qNCd8" Bounds="767,1309,400,44" ShowValueBox="true" isIOBox="true" Value="&lt; The smallest circle around everything, with its Center and Radius. Three of these points touch it.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="BxUi85FHdgbLEevEhoq43f" Comment="" Bounds="-156,1165,171,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="MXj6BlBYLl6NLNE1eBg9f1" Comment="" Bounds="555,1180,165,113" ShowValueBox="true" isIOBox="true" />
         </Canvas>
         <Patch Id="B0KNQ8AUWTrsdEdS9EtQdi" Name="Create" />
         <Patch Id="REibPYhH0P52RnJI4auaw8" Name="Update" />
@@ -160,6 +282,22 @@
         <Link Id="TIaKSdUElPUMfoi7V3Jvpz" Ids="BX5wZDtdy6C0kTFpYp5jLa,Sn6ibQswV1fNMvHghBHSs8" />
         <Link Id="NXJkA9jbHF8QNDBO1zWM3t" Ids="Rf5Z4nvqEhBNnOkiOOuYtS,CXOK1JUMcs3LDEAH4tBjAA" />
         <Link Id="SkbGFS8csboQUyLqeWLy2x" Ids="MtjAnBuVA7oPw55WBSdpnF,IDvLiLk9BqkNCgEBwjUPfN" />
+        <Link Id="N97ZVpnuWbmXRWTWhuocry" Ids="PY4se7mvlfYLGPzn83M5m8,I7eE0dB9mBPOczL9MSl3J1" />
+        <Link Id="UgQmrcuNOnKTyWgVejhHfk" Ids="LpcVJ3Ra6ZPAvaTD8XrkRl,SdWrOO3MALMWOIOEO7WIuA" />
+        <Link Id="FEHnfshIe4gkYVUbP1Pojs" Ids="VmqaCBEjOIR5bVsSyy8DcE,EtkbG5MBgzhyKjyitvFurX" />
+        <Link Id="JhXvKZM67iy9bichgseyEc" Ids="LpcVJ3Ra6ZPAvaTD8XrkRl,BrZU6gShDScotjuK9YO8rw" />
+        <Link Id="FqfpV2OC6FetVRPIjikOVW" Ids="PxiX8lXmG6dCWI51bd2GKu,CVX7shN1CMdayE8lU3PorI" />
+        <Link Id="VLX1ocsraL9iJ39APQHTSC" Ids="H2VikpgUhj7wjjJAiCg0G6,CQWRrh8v8kxkCj0gJ7UrrP" />
+        <Link Id="MkdpX2blKsDtEKbc8RVCvY" Ids="BsCL8W62Pkl25EmpI8pyOd,IOtvIKvw5HDyjyKAW8N6bX" />
+        <Link Id="SLJ3eXCrR7uWLkKEZf0wyy" Ids="Nh3jcxcndCmJswKcNA3IZ2,EWSETldq4VzytIaXAwmiMo" />
+        <Link Id="N7EH1glFTHrcVuIPJ1mUbx" Ids="I3C533cNip9bttP8Rv38g6,MDVQBEK55u85UNZLn4MV5z" />
+        <Link Id="GSf9wnT7K6oDTNFrEhtNzt" Ids="UQmbKy2LletVT5dXr60VpP,SF5kooA9eUqksgZn5pzVUU" />
+        <Link Id="EvBTH5Vin18fKuk2qNjyiq" Ids="I3C533cNip9bttP8Rv38g6,VkTdL5sM4jBXFaBqFUgnZ3" />
+        <Link Id="AztLas5FzFH0c4MR3MDB1w" Ids="COgdSLKhuKlZP73DNfo7ib,Qm7LV7UYtFW7cw4Ws756bJ" />
+        <Link Id="FtmqqX3yDEGc4uU2zy1A7D" Ids="Q6lnkrecgA7xeM8kol49cA,UsbqMhFkxjFFqoFoj2YE2G" />
+        <Link Id="NhQnqEaUz5GYj1VYfybdL9" Ids="MfauCirV9oTg7oPSnCHOGX,BnMMToTBYeBexl55KNMgLc" />
+        <Link Id="L5Who53LNjoL0fEOfYafFg" Ids="LpcVJ3Ra6ZPAvaTD8XrkRl,BxUi85FHdgbLEevEhoq43f" />
+        <Link Id="SRqcWwNhXTJLrQYU1Zjach" Ids="I3C533cNip9bttP8Rv38g6,MXj6BlBYLl6NLNE1eBg9f1" />
       </Patch>
     </Node>
   </Patch>

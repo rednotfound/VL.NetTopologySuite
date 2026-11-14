@@ -309,11 +309,11 @@ The 24 areas and their state:
 | overlay (`Operation.Overlay` / `OverlayNG`) | ✅ 4 of 4, since tier 1 |
 | distance, nearest points | ✅ |
 | buffer | ◐ the basic form; no end-cap / join parameters |
-| validity (`Operation.Valid`) | ◐ verdict, reason, location; no repair |
+| validity (`Operation.Valid`) | ✅ verdict, reason, location; `MakeValid` repairs (2026-11-14) |
 | WKT (`IO`) | ✅ |
 | spatial index (`Index.*`) | ◐ STRtree of four |
 | features (separate package) | ✅ |
-| convex / concave hull, minimum bounding circle (`Algorithm`, `Algorithm.Hull`, `Algorithm.Construct`) | ◐ `ConvexHull` since tier 1; concave hull and minimum bounding circle are tier 2 |
+| convex / concave hull, minimum bounding circle (`Algorithm`, `Algorithm.Hull`, `Algorithm.Construct`) | ✅ `ConvexHull` (tier 1), `ConcaveHull`, `MinimumBoundingCircle` (2026-11-14) |
 | affine transformation (`Geometries.Utilities`) | ✅ 2026-11-14 (`Translate`, `Rotate`, `Scale`) |
 | simplification (`Simplify`) | ✅ 2026-11-14 (`Simplify`, topology-preserving or Douglas-Peucker) |
 | WKB (`IO`) | ✅ 2026-11-14 (`FromWKB`, `ToWKB`, `(Hex)` versions) |
@@ -323,9 +323,9 @@ The 24 areas and their state:
 | precision (`Precision`) | ❌ |
 | polygonize / line merge / dissolve | ❌ |
 | triangulation (`Triangulate.*`) | ❌ |
-| densify (`Densify`) | ❌ |
+| densify (`Densify`) | ✅ 2026-11-14 (`Densify`) |
 | coverage (`Coverage`) | ❌ |
-| shape generators (`Shape.*`) | ❌ |
+| shape generators (`Shape.*`) | ◐ the shape nodes (0.0.6), `RandomPoints` with a seed (2026-11-14) |
 | prepared geometry (`Geometries.Prepared`) | ❌ |
 
 **What the name means in this community:** `VL.OpenCV`, `VL.Skia`, `VL.Mapsui` are each a way *into*
@@ -377,7 +377,7 @@ Fills 8 of the 14 empty areas.
 default, as Shapely has it, rather than two), `Union (Spread)`, `Translate`, `Rotate` (cycles,
 counter-clockwise), `Scale`; Rotate and Scale work around the bounding box's middle when Center is
 unconnected (Shapely's default; PostGIS's (0, 0) swings a map shape far away). Help: `HowTo Simplify
-a geometry`, `HowTo Move, turn and resize a geometry`, and a Union (Spread) cell in `HowTo Combine
+a geometry` (renamed `HowTo Simplify and densify a geometry` when Densify joined it), `HowTo Move, turn and resize a geometry`, and a Union (Spread) cell in `HowTo Combine
 two geometries`. **Next batch:** WKB, named **`FromWKB` / `ToWKB`** under the 2026-11-08 naming rule
 (not `Read WKB` / `Write WKB` as written above), then linear referencing.
 
@@ -392,8 +392,19 @@ Factory's; `Include SRID` writes it; `Include Z` as on `ToWKT`. Hex is parsed he
 name, because "Project" means a map projection in a family with VL.PROJ). A place is a fraction
 from 0 to 1, as PostGIS and every LFO give it, clamped; the maintainer chose to try fractions
 first, and a `Normalized` switch can be added later without breaking a patch. A polygon is walked
-round its outline. Help: `HowTo Walk along a line`, three cells driven by LFOs. **Next:** `Densify`,
-`MakeValid`, `MinimumBoundingCircle`, `ConcaveHull`, `RandomPoints`.
+round its outline. Help: `HowTo Walk along a line`, three cells driven by LFOs. 
+
+**Fourth batch done 2026-11-14, closing tier 2:** `Densify` (0 changes nothing; at most 100,000
+new vertices), `MakeValid` (NTS's `GeometryFixer`, but a valid input comes back unchanged: the
+fixer reverses the ring of an already-valid polygon, measured), `ConcaveHull` (Ratio 0.3 by
+default, 1 is the convex hull), `MinimumBoundingCircle` (with Center and Radius, the circle as
+the Circle node makes it), `RandomPoints` (written here with a Seed, as PostGIS's
+`ST_GeneratePoints`: NTS's builder has none, so its points would jump every frame), and
+`Vertices` (every vertex once as a MultiPoint, Shapely's `extract_unique_points`), asked for by
+the maintainer to make Densify visible. Help: `HowTo Fix an invalid geometry`, `HowTo Scatter
+points in an area`, Densify in `HowTo Simplify and densify a geometry` (renamed from `HowTo
+Simplify a geometry`), ConcaveHull and MinimumBoundingCircle in `HowTo Wrap points in a hull`;
+the maintainer arranged all four. **Next:** tier 3, each when something asks for it.
 
 ### Tier 3 — stateful or advanced
 
