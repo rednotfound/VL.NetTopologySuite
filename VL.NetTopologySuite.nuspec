@@ -29,7 +29,23 @@
     </description>
     <summary>NetTopologySuite geometry as composable nodes for vvvv gamma.</summary>
     <releaseNotes>
-      0.0.8-alpha - In development, not published.
+      0.0.8-alpha (2026-11-14) - 18 new nodes, 84 in all: the common operations a geometry library is
+      expected to have. NetTopologySuite.Operation: Simplify (Preserve Topology on by default), Union
+      (Spread), Translate, Rotate and Scale (rotation in cycles; in place without a Center), Interpolate,
+      Substring and Locate (a place on a line as a fraction from 0 to 1: feed an LFO to move along a
+      path), Densify, MakeValid, ConcaveHull, MinimumBoundingCircle, and RandomPoints with a Seed (the
+      same points every frame). NetTopologySuite.IO: FromWKB and ToWKB, and their (Hex) versions for the
+      text PostGIS prints, with the SRID inside (EWKB) on request. NetTopologySuite.Geometry: Vertices,
+      every vertex as a point. Fixed: the overlays and Relate no longer fail on a self-crossing polygon
+      or a mixed GeometryCollection; LineString, LinearRing and the collection nodes no longer fail on
+      too few or missing items; ShortestPath keeps the network's SRID; shapes and Buffer stop at 100000
+      vertices. Changed: a node whose input is missing gives an empty geometry instead of nothing, and
+      Distance gives NaN rather than 0 when a side is empty. The drawn Geometry IOBox fills each polygon
+      on its own, so overlapping polygons no longer cut each other out. Help: 23 patches in new topics
+      (Creating, Inspecting, Formats, Combining and testing, Reshaping); HowTo Create a point, a
+      linestring and a polygon are now one patch, HowTo Create points, lines and polygons; new: Simplify
+      and densify, Move turn and resize, Read and write WKB, Walk along a line, Fix an invalid geometry,
+      Scatter points in an area.
 
       0.0.7-alpha (2026-11-14) - 2 new nodes, 66 in all. GeometryEditor (NetTopologySuite.Geometry):
       a geometry drawn by hand. Select the node and press Ctrl+Shift+W: a window opens with tools for
