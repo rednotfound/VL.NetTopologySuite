@@ -421,7 +421,7 @@ to the repository's help folder, so a patch saved in vvvv is the one git sees.
 
 To use the working tree instead of the published package, point vvvv at the staged folder:
 `vvvv.exe MyPatch.vl --package-repositories <repo>\dist;<repo>\deps`. The working version is
-always one ahead of the published one (`0.0.8-alpha` while `0.0.7-alpha` is on nuget.org), so the
+always one ahead of the published one (`0.0.9-alpha` while `0.0.8-alpha` is on nuget.org), so the
 two can never be mistaken for each other in a NuGet cache.
 
 ---

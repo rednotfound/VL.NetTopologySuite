@@ -4,7 +4,7 @@
     <id>VL.NetTopologySuite</id>
     <!-- The WORKING version: always one ahead of what is on nuget.org, so a local repack can never be
          mistaken for the published package in a NuGet cache. Managed in step with VL.Mapsui. -->
-    <version>0.0.8-alpha</version>
+    <version>0.0.9-alpha</version>
     <title>VL.NetTopologySuite — NetTopologySuite geometry nodes for vvvv gamma</title>
     <authors>VL.NetTopologySuite Contributors</authors>
     <owners>VL.NetTopologySuite Contributors</owners>
@@ -29,6 +29,8 @@
     </description>
     <summary>NetTopologySuite geometry as composable nodes for vvvv gamma.</summary>
     <releaseNotes>
+      0.0.9-alpha - In development, not published.
+
       0.0.8-alpha (2026-11-14) - 18 new nodes, 84 in all: the common operations a geometry library is
       expected to have. NetTopologySuite.Operation: Simplify (Preserve Topology on by default), Union
       (Spread), Translate, Rotate and Scale (rotation in cycles; in place without a Center), Interpolate,
