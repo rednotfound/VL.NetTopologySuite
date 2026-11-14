@@ -183,6 +183,11 @@ $OurNodes = @{
     'Covers'             = 'OperationNodes\.Covers\('
     'CoveredBy'          = 'OperationNodes\.CoveredBy\('
     'Relate'             = 'OperationNodes\.Relate\('
+    'Simplify'           = 'OperationNodes\.Simplify\('
+    'Union (Spread)'     = 'OperationNodes\.UnionSpread\('
+    'Translate'          = 'OperationNodes\.Translate\('
+    'Rotate'             = 'OperationNodes\.Rotate\('
+    'Scale'              = 'OperationNodes\.Scale\('
     # NetTopologySuite.Index
     'SpatialIndex'       = 'new\s+[\w\.]*SpatialIndexNode\('
     'Query'              = 'IndexNodes\.Query\('

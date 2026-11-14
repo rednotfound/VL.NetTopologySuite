@@ -169,6 +169,42 @@ patch; `HowTo Find the shortest path` is the worked example, seen rendering on 2
 A Pad's `Comment` label renders to the right of the box at ~6.5 px per character;
 `tools\Test-VLPatch.ps1` counts it in the overlap arithmetic.
 
+## Layout — measured from the maintainer's hand edits (2026-11-14)
+
+The maintainer said the generated patches computed the right thing but their layout was unreadable,
+and every one had to be re-arranged by hand. So the re-arrangements were measured: 20 patches,
+before (as generated) and after (as the maintainer left them), in commits `65d8118`, `6ce539c`,
+`f3c0b36` and `7188671`. The script is `layout_diff.py`, kept only in the session scratchpad; the
+numbers are here.
+
+| | as generated | after the maintainer |
+|---|---|---|
+| links running **upward** | 1–7 per patch | **0** (the most left anywhere is 19 px, a box beside its node) |
+| canvas width | 1120–1469 | **~900** for a chain; a grid of cells is wider (`HowTo Make a shape`, 1460) |
+| drawn result from the node that makes it (median dx) | 880–1160 (the old `x = 940` column) | **200–400**, beside or under it |
+| vertical gap between linked elements (median) | 21–31 px | **40–50 px** |
+| canvas height | | grows: width is traded for height |
+| link crossings | 9–28 | fewer (7–16); a fan-out to many predicates keeps some |
+
+The rules a generated patch follows, then:
+
+1. **Data flows down.** No link runs upward; a box beside its node on the same row is the only
+   exception.
+2. **One cell per featured node**, with its own inputs above it, its drawn result directly under
+   or beside it, and its note to the right (the cells-not-hubs rule of 2026-11-08). A row of cells
+   480 px apart, as `HowTo Make a shape`, or one column of cells.
+3. **40–50 px between linked rows**; parameter IOBoxes on their own row above the node, each
+   above the pin it feeds, 90 px apart so a label does not reach the next box.
+4. **Show input and result together** when the node changes a shape: `Cons` → `GeometryCollection`
+   into one drawn IOBox, or the original in its own box beside the result.
+5. **Pick values that read at two decimals.** An IOBox shows `0.125` as `0.12`.
+
+`Test-VLPatch.ps1` warns on the first and on a drawn result more than 300 px from its node, and
+neither fires on any patch the maintainer arranged. Then the patch is **opened in vvvv and captured
+before it is handed over** (`PrintWindow` on the launcher's own pid): the first tier-2 patch was
+fixed twice that way (a label touching the next box, a rotation whose result lined up with the
+original into a different shape), before the maintainer saw it.
+
 ## What this repository does with it
 
 - Every HowTo: heading (instruction or topic) → optional one-paragraph intro → wired nodes → `<` notes

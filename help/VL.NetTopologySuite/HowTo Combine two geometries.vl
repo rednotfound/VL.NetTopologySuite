@@ -218,6 +218,51 @@
             <Pin Id="CW0m79MU02oYTeCMjmnwUC" Name="Result" Kind="OutputPin" />
           </Node>
           <Pad Id="TfOcnOmyZgMJGSWxK0iTnu" Comment="A and B" Bounds="1256,721,180,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="DayncUkLFn4BO7kdqPuy8q" Comment="" Bounds="60,1360,420,15" ShowValueBox="true" isIOBox="true" Value="MULTIPOLYGON (((0 0, 2 0, 2 2, 0 2, 0 0)), ((1 1, 3 1, 3 3, 1 3, 1 1)), ((2.5 0, 4 0, 4 1.5, 2.5 1.5, 2.5 0)), ((0 2.5, 1 2.5, 1 4, 0 4, 0 2.5)))">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="60,1400,90,19" Id="P5Ut9r9WzlfAEqsN9b9Xig">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="FromWKT" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="UUmeuWrmvYJg8f1vzSRAJE" Name="WKT" Kind="InputPin" />
+            <Pin Id="KYkai4qHus06DveJGH3Deb" Name="Factory" Kind="InputPin" />
+            <Pin Id="FXtgVSsVWCg15bGCM76INE" Name="Result" Kind="OutputPin" />
+            <Pin Id="Gy0hPGrd6PlztjjyAKSUbC" Name="Success" Kind="OutputPin" />
+          </Node>
+          <Pad Id="V0F2ZzpSgEqPoTdaGB6bgA" Comment="" Bounds="262,1420,150,120" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="60,1450,80,19" Id="PwRR45JHIbcVC9k8V57c0G">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Geometry" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Geometries" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
+            <Pin Id="OMNqFAFil1afD3vyV1b6zr" Name="Geometry" Kind="InputPin" />
+            <Pin Id="Qtb7GETawh1VHRM5JYCJOa" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="60,1490,100,19" Id="DjK5j5uHMJnThbyA2vumCn">
+            <p:NodeReference LastCategoryFullName="NetTopologySuite.Operation" LastDependency="VL.NetTopologySuite.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="Union (Spread)" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="RSmT2T0xgNIqXae4rgVOpg" Name="Input" Kind="InputPin" />
+            <Pin Id="LLbspgPYdSXt2tCYcWPLjK" Name="Result" Kind="OutputPin" />
+          </Node>
+          <Pad Id="TZRvRKzDpAXPOGZNNcnbjl" Comment="" Bounds="62,1530,150,120" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="MxofXwO9oVbtUp1csvfu8C" Bounds="491,1490,320,80" ShowValueBox="true" isIOBox="true" Value="&lt; Union (Spread) merges a whole spread at once: faster than chaining Union, the same result. Here the four squares of one MultiPolygon, split by Geometries.">
+            <p:TypeAnnotation>
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
         </Canvas>
         <Patch Id="ChqhvedAlqfvIf6tSK1WVx" Name="Create" />
         <Patch Id="D4dtW8GpBJ3R9iCX3NX1Vv" Name="Update" />
@@ -255,6 +300,11 @@
         <Link Id="GB3NRKwEKQLiXJfIfHUNRN" Ids="SGmaov0TEoBbSqq2u2HCIq,OYTI6a8zO9E1VkPib18ct2" />
         <Link Id="HMuqqorS7DjY7hE6QILmKm" Ids="IrGRNbls8AJ1kDZ0IeQNtU,D9YCGRmXds1cAPhIxwvxt9" />
         <Link Id="QTbVLqyvTJ09v8uXtLzZ89" Ids="CW0m79MU02oYTeCMjmnwUC,TfOcnOmyZgMJGSWxK0iTnu" />
+        <Link Id="PiTfIx3XBdB6Oxs7C4pjo4" Ids="DayncUkLFn4BO7kdqPuy8q,UUmeuWrmvYJg8f1vzSRAJE" />
+        <Link Id="RaqR5o3a0IkxDk98PkvKnk" Ids="FXtgVSsVWCg15bGCM76INE,V0F2ZzpSgEqPoTdaGB6bgA" />
+        <Link Id="I1Ps6ZeDk3xugNrXNcMc95" Ids="FXtgVSsVWCg15bGCM76INE,OMNqFAFil1afD3vyV1b6zr" />
+        <Link Id="C7rLC16r8mEhV8PcUo0ZuW" Ids="Qtb7GETawh1VHRM5JYCJOa,RSmT2T0xgNIqXae4rgVOpg" />
+        <Link Id="MoXAF9yBv8ZquD1CzcjZLo" Ids="LLbspgPYdSXt2tCYcWPLjK,TZRvRKzDpAXPOGZNNcnbjl" />
       </Patch>
     </Node>
   </Patch>

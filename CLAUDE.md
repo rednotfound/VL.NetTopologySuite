@@ -23,8 +23,8 @@ irreversible step, and nuget.org's 2026 policy (API keys 30 days at most, Truste
 browser upload for manual) is written there. Never push to nuget.org without the user's explicit
 go; a publish cannot be undone.** 64 public nodes in six categories (all published as of `0.0.6-alpha`, the VL-shaped rethink: seven shape nodes, `Coordinate (FromVector2)` (its `ToVector2` was dropped the same day: the one node that lost precision silently), and `Read WKT` / `Write WKT` renamed `FromWKT` / `ToWKT` with no alias, all on 2026-11-08) — `NetTopologySuite.Network` (`Network` +
 `ShortestPath`, an algorithm of ours, promoted from `NetTopologySuite.Experimental.Network` by
-`docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 329
-tests, 20 help patches (2026-11-14).** **66 since 2026-11-11: `GeometryEditor`, a geometry drawn by hand in an
+`docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 355
+tests, 22 help patches (2026-11-14).** **71 since tier 2 began on 2026-11-14** (`Simplify`, `Union (Spread)`, `Translate`, `Rotate`, `Scale`; unpublished, in `0.0.8-alpha`). **66 since 2026-11-11: `GeometryEditor`, a geometry drawn by hand in an
 editor-extension window** ([below](#the-geometry-editor-a-window-of-our-own-in-the-editor)), **and
 `SetSRID`**, the label verb, paired with VL.PROJ's `Reproject` (`D:\2026_Projects\vl-proj`, the
 family's sixth package): it says what CRS the numbers are in and moves nothing. Both are
@@ -47,7 +47,7 @@ a package that takes the library's name owes its users what a geometry library i
 gap in three tiers by user expectation (tier 1: the rest of `Geometry`'s own surface, 15 one-line
 nodes; tier 2: union of many, simplify, WKB, affine transforms, linear referencing, MakeValid …);
 tier 1 is done (commits `4df2255`, `a990d44`, every node with tests and a High flag, six patches seen in
-the GUI); tier 2 is the next work, one tier per commit.
+the GUI); tier 2 is under way: its first five nodes (`Simplify`, `Union (Spread)`, `Translate`, `Rotate`, `Scale`) on 2026-11-14.
 
 **`NetTopologySuite.Index` is this package's first `[ProcessNode]`.** `SpatialIndex` holds an `STRtree` and
 rebuilds it only when the set of geometry *references* changes; `Query` returns **Candidates**, not
@@ -208,13 +208,17 @@ every link then runs to the least important thing on the canvas. `HowTo Make a s
 (seven shapes off one `Coordinate`, drawings in a far column at `x = 940`) and is now the
 reference: one cell per shape on a 3-wide grid. The maintainer says many of the other patches
 have the same problem; the `x = 940` column is the old way, not the rule.
+**The layout rules measured from the maintainer's own re-arrangements (2026-11-14)** are in
+`docs/HELP-PATCH-STYLE.md`, "Layout": data flows down, a cell per node, the result beside it, 40-50 px
+between rows. `Test-VLPatch` warns on the measurable ones, and a new patch is opened in vvvv and
+captured (`PrintWindow`) before it is handed over.
 
 ## Verification — be precise about which one you have
 
 | | proves | state |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ 329 tests, ~400 ms, no network (2026-11-14) |
-| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 22 documents (20 help patches, the package, the HDE companion), 66 of 66 nodes flagged for F1 |
+| `dotnet test` | the arithmetic is right | ✅ 355 tests, ~400 ms, no network (2026-11-14) |
+| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 24 documents (22 help patches, the package, the HDE companion), 71 of 71 nodes flagged for F1; layout warnings (upward links, a drawn result far from its node) measured from the maintainer's hand edits |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 17 help patches, 2026-11-08; `HowTo Draw a geometry` 2026-11-11 |
 | `tools\Test-Install.ps1` | the **packed** package installs from `dist\feed` with its dependencies, and every help patch inside the install compiles with that install as the only repository | ✅ 2026-09-25, first pass |
@@ -338,8 +342,8 @@ vl-nettopologysuite/
 │   ├── SketchSession.cs               # the tools as a state machine, no Skia (internal, tested)
 │   ├── GeometrySketch.cs              # a drawing as parts (point / line / polygon with holes) <-> WKT (internal, tested)
 │   └── SketchView.cs                  # the window's view: geometry <-> pixels, zoom, pan, grid step (internal, tested)
-├── test/VL.NetTopologySuite.Tests/    # 329 xunit tests, no network, no vvvv
-├── help/VL.NetTopologySuite/          # 20 help patches + Help.xml (ordering and tags)
+├── test/VL.NetTopologySuite.Tests/    # 355 xunit tests, no network, no vvvv
+├── help/VL.NetTopologySuite/          # 22 help patches + Help.xml (ordering and tags)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
 ├── docs/ARCHITECTURE.md               # why each node exists, what stays raw, the boundary
 ├── docs/HELP-PATCH-STYLE.md           # the community's help style, measured; help flags; the Skia recipe

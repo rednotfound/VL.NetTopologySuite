@@ -31,9 +31,11 @@
 	</Topic>
 	<Topic title="Spatial operations">
 		<VLDocument link="HowTo Buffer a geometry.vl" tags="buffer,grow,shrink,offset,intersection,operation,units,segments" />
-		<VLDocument link="HowTo Combine two geometries.vl" tags="union,intersection,difference,symmetricdifference,overlay,combine,merge,cut,operation,area" />
+		<VLDocument link="HowTo Combine two geometries.vl" tags="union,unionspread,merge,dissolve,intersection,difference,symmetricdifference,overlay,combine,merge,cut,operation,area" />
 		<VLDocument link="HowTo Test how geometries relate.vl" tags="intersects,contains,within,touches,crosses,overlaps,covers,coveredby,relate,de9im,predicate,inside,overlap,boolean,operation" />
 		<VLDocument link="HowTo Measure distance.vl" tags="distance,nearest,nearestpoints,closest,gap,iswithindistance,measure,operation,units" />
+		<VLDocument link="HowTo Simplify a geometry.vl" tags="simplify,simplification,douglaspeucker,topologypreserving,generalize,generalise,tolerance,vertices,thin,coastline,track,operation" />
+		<VLDocument link="HowTo Move, turn and resize a geometry.vl" tags="translate,rotate,scale,move,turn,resize,mirror,affine,transform,offset,center,cycles,operation" />
 		<VLDocument link="HowTo Wrap points in a hull.vl" tags="convexhull,hull,convex,outline,wrap,multipoint,rubberband,operation,area" />
 	</Topic>
 	<Topic title="Features">

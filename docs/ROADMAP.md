@@ -373,6 +373,14 @@ the fraction of the nearest point, a piece of a line — animation along paths),
 `MakeValid` (`GeometryFixer`), `MinimumBoundingCircle`, `ConcaveHull`, `RandomPoints` (in a polygon).
 Fills 8 of the 14 empty areas.
 
+**First batch done 2026-11-14:** `Simplify` (one node with a Preserve Topology switch, on by
+default, as Shapely has it, rather than two), `Union (Spread)`, `Translate`, `Rotate` (cycles,
+counter-clockwise), `Scale`; Rotate and Scale work around the bounding box's middle when Center is
+unconnected (Shapely's default; PostGIS's (0, 0) swings a map shape far away). Help: `HowTo Simplify
+a geometry`, `HowTo Move, turn and resize a geometry`, and a Union (Spread) cell in `HowTo Combine
+two geometries`. **Next batch:** WKB, named **`FromWKB` / `ToWKB`** under the 2026-11-08 naming rule
+(not `Read WKB` / `Write WKB` as written above), then linear referencing.
+
 ### Tier 3 — stateful or advanced
 
 `PreparedGeometry` (a process node, on `SpatialIndex`'s template), `Quadtree` / `KdTree`,
