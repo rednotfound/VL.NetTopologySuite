@@ -37,6 +37,7 @@
 		<VLDocument link="HowTo Measure distance.vl" tags="distance,nearest,nearestpoints,closest,gap,iswithindistance,measure,operation,units" />
 		<VLDocument link="HowTo Simplify a geometry.vl" tags="simplify,simplification,douglaspeucker,topologypreserving,generalize,generalise,tolerance,vertices,thin,coastline,track,operation" />
 		<VLDocument link="HowTo Move, turn and resize a geometry.vl" tags="translate,rotate,scale,move,turn,resize,mirror,affine,transform,offset,center,cycles,operation" />
+		<VLDocument link="HowTo Walk along a line.vl" tags="interpolate,substring,locate,project,linearreferencing,along,fraction,position,animate,path,route,snap,gps,progress,lfo,operation" />
 		<VLDocument link="HowTo Wrap points in a hull.vl" tags="convexhull,hull,convex,outline,wrap,multipoint,rubberband,operation,area" />
 	</Topic>
 	<Topic title="Features">

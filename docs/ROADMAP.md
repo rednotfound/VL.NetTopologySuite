@@ -314,12 +314,12 @@ The 24 areas and their state:
 | spatial index (`Index.*`) | ◐ STRtree of four |
 | features (separate package) | ✅ |
 | convex / concave hull, minimum bounding circle (`Algorithm`, `Algorithm.Hull`, `Algorithm.Construct`) | ◐ `ConvexHull` since tier 1; concave hull and minimum bounding circle are tier 2 |
-| affine transformation (`Geometries.Utilities`) | ❌ |
-| simplification (`Simplify`) | ❌ |
+| affine transformation (`Geometries.Utilities`) | ✅ 2026-11-14 (`Translate`, `Rotate`, `Scale`) |
+| simplification (`Simplify`) | ✅ 2026-11-14 (`Simplify`, topology-preserving or Douglas-Peucker) |
 | WKB (`IO`) | ✅ 2026-11-14 (`FromWKB`, `ToWKB`, `(Hex)` versions) |
 | GML / KML (`IO.GML2`, `IO.KML`) | ❌ |
-| linear referencing (`LinearReferencing`) | ❌ |
-| union of many (`Operation.Union`) | ❌ |
+| linear referencing (`LinearReferencing`) | ✅ 2026-11-14 (`Interpolate`, `Substring`, `Locate`) |
+| union of many (`Operation.Union`) | ✅ 2026-11-14 (`Union (Spread)`) |
 | precision (`Precision`) | ❌ |
 | polygonize / line merge / dissolve | ❌ |
 | triangulation (`Triangulate.*`) | ❌ |
@@ -385,8 +385,15 @@ two geometries`. **Next batch:** WKB, named **`FromWKB` / `ToWKB`** under the 20
 does) and `ToWKB` (outputs a byte array, as `ToBytes`), plus `FromWKB (Hex)` / `ToWKB (Hex)` for the
 text PostGIS prints, as CoreLib has `ToBytes (Base64)`. EWKB's SRID is read and wins over the
 Factory's; `Include SRID` writes it; `Include Z` as on `ToWKT`. Hex is parsed here, because NTS's
-`HexToBytes` drops an odd last digit silently. Help: `HowTo Read and write WKB`. **Next:** linear
-referencing (`Interpolate`, `Project`, `Substring`).
+`HexToBytes` drops an odd last digit silently. Help: `HowTo Read and write WKB`.
+
+**Third batch done 2026-11-14:** linear referencing - `Interpolate` (the point at a place),
+`Substring` (the piece between two places) and `Locate` (the place of the nearest point; PostGIS's
+name, because "Project" means a map projection in a family with VL.PROJ). A place is a fraction
+from 0 to 1, as PostGIS and every LFO give it, clamped; the maintainer chose to try fractions
+first, and a `Normalized` switch can be added later without breaking a patch. A polygon is walked
+round its outline. Help: `HowTo Walk along a line`, three cells driven by LFOs. **Next:** `Densify`,
+`MakeValid`, `MinimumBoundingCircle`, `ConcaveHull`, `RandomPoints`.
 
 ### Tier 3 — stateful or advanced
 

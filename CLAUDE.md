@@ -23,8 +23,8 @@ irreversible step, and nuget.org's 2026 policy (API keys 30 days at most, Truste
 browser upload for manual) is written there. Never push to nuget.org without the user's explicit
 go; a publish cannot be undone.** 64 public nodes in six categories (all published as of `0.0.6-alpha`, the VL-shaped rethink: seven shape nodes, `Coordinate (FromVector2)` (its `ToVector2` was dropped the same day: the one node that lost precision silently), and `Read WKT` / `Write WKT` renamed `FromWKT` / `ToWKT` with no alias, all on 2026-11-08) — `NetTopologySuite.Network` (`Network` +
 `ShortestPath`, an algorithm of ours, promoted from `NetTopologySuite.Experimental.Network` by
-`docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 387
-tests, 23 help patches (2026-11-14).** **75 since tier 2 began on 2026-11-14** (`Simplify`, `Union (Spread)`, `Translate`, `Rotate`, `Scale`, then `FromWKB`, `ToWKB` and their `(Hex)` versions; unpublished, in `0.0.8-alpha`). **66 since 2026-11-11: `GeometryEditor`, a geometry drawn by hand in an
+`docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 417
+tests, 24 help patches (2026-11-14).** **78 since tier 2 began on 2026-11-14** (`Simplify`, `Union (Spread)`, `Translate`, `Rotate`, `Scale`, then `FromWKB`, `ToWKB` and their `(Hex)` versions, then `Interpolate`, `Substring`, `Locate`; unpublished, in `0.0.8-alpha`). **66 since 2026-11-11: `GeometryEditor`, a geometry drawn by hand in an
 editor-extension window** ([below](#the-geometry-editor-a-window-of-our-own-in-the-editor)), **and
 `SetSRID`**, the label verb, paired with VL.PROJ's `Reproject` (`D:\2026_Projects\vl-proj`, the
 family's sixth package): it says what CRS the numbers are in and moves nothing. Both are
@@ -47,7 +47,7 @@ a package that takes the library's name owes its users what a geometry library i
 gap in three tiers by user expectation (tier 1: the rest of `Geometry`'s own surface, 15 one-line
 nodes; tier 2: union of many, simplify, WKB, affine transforms, linear referencing, MakeValid …);
 tier 1 is done (commits `4df2255`, `a990d44`, every node with tests and a High flag, six patches seen in
-the GUI); tier 2 is under way: its first five nodes (`Simplify`, `Union (Spread)`, `Translate`, `Rotate`, `Scale`) on 2026-11-14 (PR #6), then WKB (`FromWKB`, `ToWKB`, `FromWKB (Hex)`, `ToWKB (Hex)`) the same day.
+the GUI); tier 2 is under way: its first five nodes (`Simplify`, `Union (Spread)`, `Translate`, `Rotate`, `Scale`) on 2026-11-14 (PR #6), then WKB (`FromWKB`, `ToWKB`, `FromWKB (Hex)`, `ToWKB (Hex)`, PR #7) and linear referencing (`Interpolate`, `Substring`, `Locate`: places on a line as a fraction 0..1) the same day.
 
 **`NetTopologySuite.Index` is this package's first `[ProcessNode]`.** `SpatialIndex` holds an `STRtree` and
 rebuilds it only when the set of geometry *references* changes; `Query` returns **Candidates**, not
@@ -217,8 +217,8 @@ captured (`PrintWindow`) before it is handed over.
 
 | | proves | state |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ 387 tests, ~400 ms, no network (2026-11-14) |
-| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 25 documents (23 help patches, the package, the HDE companion), 75 of 75 nodes flagged for F1; layout warnings (upward links, a drawn result far from its node) measured from the maintainer's hand edits |
+| `dotnet test` | the arithmetic is right | ✅ 417 tests, ~400 ms, no network (2026-11-14) |
+| `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 26 documents (24 help patches, the package, the HDE companion), 78 of 78 nodes flagged for F1; layout warnings (upward links, a drawn result far from its node) measured from the maintainer's hand edits |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 17 help patches, 2026-11-08; `HowTo Draw a geometry` 2026-11-11 |
 | `tools\Test-Install.ps1` | the **packed** package installs from `dist\feed` with its dependencies, and every help patch inside the install compiles with that install as the only repository | ✅ 2026-09-25, first pass |
@@ -326,6 +326,7 @@ vl-nettopologysuite/
 │   ├── GeometryNodes.Creation.cs      # NetTopologySuite.Geometry - Coordinate, Coordinate (FromVector2) .. GeometryCollection
 │   ├── GeometryNodes.Shapes.cs        # NetTopologySuite.Geometry - Rectangle, Rectangle (Join Points), Circle, Ellipse, RegularPolygon, Arc, Sector
 │   ├── GeometryNodes.Inspection.cs    # NetTopologySuite.Geometry - SRID, SetSRID, Area, IsValid, Bounds, Coordinates, Outlines, Envelope, Boundary, InteriorPoint, NumPoints, IsSimple …
+│   ├── OperationNodes.Linear.cs       # NetTopologySuite.Operation - Interpolate, Substring, Locate (a fraction 0..1 along a line)
 │   ├── OperationNodes.cs              # NetTopologySuite.Operation - Buffer, ConvexHull, Reverse, four overlays, eight predicates + Relate, Distance, Nearest Points, IsWithinDistance
 │   ├── IONodes.cs                     # NetTopologySuite.IO - FromWKT, ToWKT (Read WKT, Write WKT until 0.0.6)
 │   ├── IONodes.WKB.cs                 # NetTopologySuite.IO - FromWKB, ToWKB and their (Hex) versions (PostGIS's hex EWKB)
@@ -343,8 +344,8 @@ vl-nettopologysuite/
 │   ├── SketchSession.cs               # the tools as a state machine, no Skia (internal, tested)
 │   ├── GeometrySketch.cs              # a drawing as parts (point / line / polygon with holes) <-> WKT (internal, tested)
 │   └── SketchView.cs                  # the window's view: geometry <-> pixels, zoom, pan, grid step (internal, tested)
-├── test/VL.NetTopologySuite.Tests/    # 387 xunit tests, no network, no vvvv
-├── help/VL.NetTopologySuite/          # 23 help patches + Help.xml (ordering and tags)
+├── test/VL.NetTopologySuite.Tests/    # 417 xunit tests, no network, no vvvv
+├── help/VL.NetTopologySuite/          # 24 help patches + Help.xml (ordering and tags)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
 ├── docs/ARCHITECTURE.md               # why each node exists, what stays raw, the boundary
 ├── docs/HELP-PATCH-STYLE.md           # the community's help style, measured; help flags; the Skia recipe
