@@ -1105,7 +1105,7 @@
               <Choice Kind="OperationCallFlag" Name="Union (Spread)" />
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">Low</p:HelpFocus>
-            <Pin Id="B7ul8YTvFr6QwBaGD1UEUw" Name="Input" Kind="InputPin" />
+            <Pin Id="B7ul8YTvFr6QwBaGD1UEUw" Name="Geometries" Kind="InputPin" />
             <Pin Id="GJUIhMoVhL5D6Rh8CD6ASY" Name="Result" Kind="OutputPin" />
           </Node>
           <Pad Id="BOXYDwT7AhJeSuDZ3tm4Nd" Bounds="830,1497,440,26" ShowValueBox="true" isIOBox="true" Value="&lt; A whole spread merged into one geometry.">

@@ -204,22 +204,24 @@ public class OperationTests
     {
         var square = MutationTests.UnitSquare();
 
-        Assert.Null(OperationNodes.Buffer(null, 1));
-        Assert.Null(OperationNodes.Intersection(square, null));
-        Assert.Null(OperationNodes.Intersection(null, square));
+        // No node returns null (review 2026-11-14): a missing input gives an empty geometry.
+        Assert.True(OperationNodes.Buffer(null, 1).IsEmpty);
+        Assert.True(OperationNodes.Intersection(square, null).IsEmpty);
+        Assert.True(OperationNodes.Intersection(null, square).IsEmpty);
         // Union with nothing is the thing itself, which is more useful than null.
         Assert.Same(square, OperationNodes.Union(square, null));
         Assert.Same(square, OperationNodes.Union(null, square));
         Assert.Same(square, OperationNodes.Difference(square, null));
-        Assert.Null(OperationNodes.Difference(null, square));
-        Assert.Equal(0, OperationNodes.Distance(square, null));
+        Assert.True(OperationNodes.Difference(null, square).IsEmpty);
+        // NaN, not 0: 0 reads as touching. Shapely gives NaN too.
+        Assert.True(double.IsNaN(OperationNodes.Distance(square, null)));
         Assert.False(OperationNodes.Intersects(square, null));
         Assert.False(OperationNodes.Contains(square, null));
         Assert.False(OperationNodes.Within(square, null));
 
         // Tier 1 (2026-11-07): the same contract for the ten added nodes.
-        Assert.Null(OperationNodes.ConvexHull(null));
-        Assert.Null(OperationNodes.Reverse(null));
+        Assert.True(OperationNodes.ConvexHull(null).IsEmpty);
+        Assert.True(OperationNodes.Reverse(null).IsEmpty);
         Assert.Same(square, OperationNodes.SymmetricDifference(square, null));
         Assert.Same(square, OperationNodes.SymmetricDifference(null, square));
         Assert.False(OperationNodes.IsWithinDistance(square, null, 100));

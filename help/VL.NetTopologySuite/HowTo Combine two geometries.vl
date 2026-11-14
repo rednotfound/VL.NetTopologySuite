@@ -250,7 +250,7 @@
               <Choice Kind="OperationCallFlag" Name="Union (Spread)" />
             </p:NodeReference>
             <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
-            <Pin Id="RSmT2T0xgNIqXae4rgVOpg" Name="Input" Kind="InputPin" />
+            <Pin Id="RSmT2T0xgNIqXae4rgVOpg" Name="Geometries" Kind="InputPin" />
             <Pin Id="LLbspgPYdSXt2tCYcWPLjK" Name="Result" Kind="OutputPin" />
           </Node>
           <Pad Id="TZRvRKzDpAXPOGZNNcnbjl" Comment="" Bounds="62,1530,150,120" ShowValueBox="true" isIOBox="true" />

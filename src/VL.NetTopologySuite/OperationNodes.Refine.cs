@@ -13,7 +13,7 @@ namespace VL.NetTopologySuite;
 //   LINESTRING (0 0, 10 0) at 3 gives 2.5-long segments, never longer than asked.
 // - A densify of a long line with a tiny spacing is millions of points sixty times a second, and an
 //   IOBox somebody is typing 0.001 into passes through such values. So the spacing is raised until
-//   the result has at most MaxDensifyPoints new vertices, and the remark says so.
+//   the result has at most Defaults.MaxVertices new vertices, and the remark says so.
 // - GeometryFixer.Fix turns a bowtie POLYGON ((0 0, 2 2, 2 0, 0 2, 0 0)) into a MultiPolygon of two
 //   triangles. It also rewrites a polygon that was ALREADY valid: POLYGON ((0 0, 1 0, 1 1, 0 0))
 //   comes back as ((0 0, 1 1, 1 0, 0 0)), its ring reversed (a test caught it). Shapely and PostGIS
@@ -23,8 +23,6 @@ namespace VL.NetTopologySuite;
 
 public static partial class OperationNodes
 {
-    private const int MaxDensifyPoints = 100_000;
-
     /// <summary>
     /// Adds vertices so that no segment is longer than a spacing.
     /// </summary>
@@ -34,12 +32,12 @@ public static partial class OperationNodes
     /// </remarks>
     /// <param name="geometry">The geometry to fill in.</param>
     /// <param name="spacing">The longest a segment may be. 0 changes nothing.</param>
-    public static Geometry? Densify(Geometry? geometry, double spacing = 0)
+    public static Geometry Densify(Geometry? geometry, double spacing = 0)
     {
-        if (geometry is null) return null;
+        if (geometry is null) return Overlays.Nothing();
         if (!(spacing > 0) || geometry.IsEmpty) return geometry.Copy();
 
-        var floor = geometry.Length / MaxDensifyPoints;
+        var floor = geometry.Length / Defaults.MaxVertices;
         return Densifier.Densify(geometry, Math.Max(spacing, floor));
     }
 
@@ -51,8 +49,8 @@ public static partial class OperationNodes
     /// IsValid tells why a geometry is invalid.
     /// </remarks>
     /// <param name="geometry">The geometry to repair.</param>
-    public static Geometry? MakeValid(Geometry? geometry)
-        => geometry is null ? null
+    public static Geometry MakeValid(Geometry? geometry)
+        => geometry is null ? Overlays.Nothing()
             : geometry.IsValid ? geometry.Copy()
             : GeometryFixer.Fix(geometry);
 }

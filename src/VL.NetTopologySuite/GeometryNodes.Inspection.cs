@@ -78,8 +78,8 @@ public static partial class GeometryNodes
     /// <param name="geometry">The geometry.</param>
     /// <param name="srid">The EPSG code its coordinates are in. 0 means unset.</param>
     /// <returns>A copy with that SRID and the same coordinates.</returns>
-    public static Geometry? SetSRID(Geometry? geometry, [Pin(Name = "SRID")] int srid)
-        => geometry is null ? null : Defaults.FactoryFor(srid).CreateGeometry(geometry);
+    public static Geometry SetSRID(Geometry? geometry, [Pin(Name = "SRID")] int srid)
+        => geometry is null ? Defaults.FactoryFor(srid).CreateGeometryCollection() : Defaults.FactoryFor(srid).CreateGeometry(geometry);
 
     // ── Validity ──────────────────────────────────────────────────────────────
 
@@ -277,6 +277,7 @@ public static partial class GeometryNodes
     /// </summary>
     /// <remarks>
     /// Each place appears once: a ring's repeated first point, and any point given twice, are dropped.
+    /// Points that differ only in Z count as one place.
     /// </remarks>
     public static MultiPoint Vertices(Geometry? geometry)
     {
@@ -408,5 +409,20 @@ public static partial class GeometryNodes
     /// A polygon gives its rings as lines, holes included. A line gives its two end points. A point gives nothing.
     /// </remarks>
     public static Geometry Boundary(Geometry? geometry)
-        => geometry is null ? Defaults.Factory.CreateGeometryCollection() : geometry.Boundary;
+    {
+        if (geometry is null)
+            return Defaults.Factory.CreateGeometryCollection();
+
+        // NTS throws "does not support GeometryCollection arguments" on a mixed collection (review,
+        // 2026-11-14): OGC leaves its boundary undefined. Here it is each part's boundary, together.
+        if (geometry.OgcGeometryType != OgcGeometryType.GeometryCollection)
+            return geometry.Boundary;
+
+        var parts = new Geometry[geometry.NumGeometries];
+        for (var i = 0; i < parts.Length; i++)
+            parts[i] = Boundary(geometry.GetGeometryN(i));
+        var boundary = geometry.Factory.BuildGeometry(parts);
+        boundary.SRID = geometry.SRID;
+        return boundary;
+    }
 }

@@ -32,6 +32,11 @@ namespace VL.NetTopologySuite;
 // Tier 2 (2026-11-14) adds Simplify and Union (Spread) here, and Translate, Rotate and Scale in
 // OperationNodes.Affine.cs - the same class, split by topic.
 //
+// No node here returns null or throws (review, 2026-11-14). A missing input gives an empty geometry -
+// empty in, empty out, as FromWKT gives for text that does not parse - and the overlays go through
+// Overlays, which repairs a self-crossing input and takes a mixed GeometryCollection apart rather
+// than letting NTS throw. Until then about half the nodes returned null and the overlays threw.
+//
 // Geometry-in, geometry-out nodes hand back what NTS builds and do not copy whole geometries. Some
 // NTS results share Coordinate objects with their input (ConvexHull's ring is made of the input's
 // own coordinate instances); that is safe here because every node that hands coordinates OUT
@@ -71,9 +76,15 @@ public static partial class OperationNodes
     /// </remarks>
     /// <param name="geometry">The geometry to grow or shrink.</param>
     /// <param name="distance">How far to grow, in coordinate units. Negative shrinks.</param>
-    /// <param name="segments">Straight edges per quarter circle. Higher gives smoother curves.</param>
-    public static Geometry? Buffer(Geometry? geometry, double distance = 0, int segments = 8)
-        => geometry?.Buffer(distance, segments);
+    /// <param name="segments">Straight edges per quarter circle. Higher gives smoother curves; at most 25000.</param>
+    public static Geometry Buffer(Geometry? geometry, double distance = 0, int segments = 8)
+        => geometry is null ? Overlays.Nothing()
+            : geometry.Buffer(double.IsFinite(distance) ? distance : 0, Math.Min(segments, MaxSegmentsPerQuarter));
+
+    // Segments is per quarter turn, so a buffered point has 4 x Segments corners. A million made one
+    // Buffer take 566 ms (review, 2026-11-14) - a frozen patch while somebody types into the IOBox.
+    // A quarter of Defaults.MaxVertices per quarter turn: 100,000 corners, the bound every node keeps.
+    private const int MaxSegmentsPerQuarter = Defaults.MaxVertices / 4;
 
     // The smallest convex polygon around everything in the geometry - the rubber band. The usual
     // way to get an outline around a spread of points: MultiPoint -> ConvexHull. Degenerate input
@@ -87,8 +98,8 @@ public static partial class OperationNodes
     /// A rubber band around a spread of points: MultiPoint, then ConvexHull.
     /// Collinear points give a line and a single point gives a point.
     /// </remarks>
-    public static Geometry? ConvexHull(Geometry? geometry)
-        => geometry?.ConvexHull();
+    public static Geometry ConvexHull(Geometry? geometry)
+        => geometry is null ? Overlays.Nothing() : geometry.ConvexHull();
 
     // Same geometry, coordinates in the opposite order. A direction matters for a LineString
     // (animation along it, a one-way street) and for a ring's orientation; NTS's result is a new
@@ -101,8 +112,8 @@ public static partial class OperationNodes
     /// <remarks>
     /// A line runs the other way; a polygon's rings flip orientation. The input is not changed.
     /// </remarks>
-    public static Geometry? Reverse(Geometry? geometry)
-        => geometry?.Reverse();
+    public static Geometry Reverse(Geometry? geometry)
+        => geometry is null ? Overlays.Nothing() : geometry.Reverse();
 
     // Empty if they do not overlap - not an error. The result can be a collection even when both
     // inputs were single polygons, because an overlap can fall into several separate pieces.
@@ -117,8 +128,8 @@ public static partial class OperationNodes
     /// Empty when they do not overlap. The overlap can come in several pieces; Geometries takes them apart.
     /// Both inputs should use the same reference system: nothing checks.
     /// </remarks>
-    public static Geometry? Intersection(Geometry? a, Geometry? b)
-        => a is null || b is null ? null : a.Intersection(b);
+    public static Geometry Intersection(Geometry? a, Geometry? b)
+        => a is null || b is null ? Overlays.Nothing(a ?? b) : Overlays.Intersection(a, b);
 
     // Overlapping areas are merged rather than counted twice, which is the difference between this
     // and MultiPolygon. Geometries that do not touch still merge - into a collection with both parts
@@ -130,8 +141,8 @@ public static partial class OperationNodes
     /// <remarks>
     /// Overlapping areas become one area; geometries that do not touch become one collection.
     /// </remarks>
-    public static Geometry? Union(Geometry? a, Geometry? b)
-        => a is null ? b : b is null ? a : a.Union(b);
+    public static Geometry Union(Geometry? a, Geometry? b)
+        => a is null ? b ?? Overlays.Nothing() : b is null ? a : Overlays.Union(a, b);
 
     // Tier 2, 2026-11-14. Many geometries merged at once - the parcels of a district into its
     // outline, a spread of buffers into one area. NTS's UnaryUnionOp does it in one pass (cascaded,
@@ -149,15 +160,17 @@ public static partial class OperationNodes
     /// Faster than chaining Union, and the same result: overlapping areas become one area.
     /// An empty spread gives an empty geometry.
     /// </remarks>
-    /// <param name="input">The geometries to merge. Missing ones are skipped.</param>
+    /// <param name="geometries">The geometries to merge. Missing ones are skipped.</param>
     /// <returns>One geometry covering all of them.</returns>
     [Name("Union (Spread)")]
-    public static Geometry UnionSpread(IEnumerable<Geometry?>? input)
+    public static Geometry UnionSpread(IEnumerable<Geometry?>? geometries)
     {
-        var parts = input?.Where(g => g is not null).Cast<Geometry>().ToList();
+        // The pin was "Input" until the review of 2026-11-14; every other spread of geometries in the
+        // package is "Geometries" (GeometryCollection, SpatialIndex). Renamed before it was published.
+        var parts = geometries?.Where(g => g is not null).Cast<Geometry>().ToList();
         if (parts is null || parts.Count == 0)
-            return Defaults.Factory.CreateGeometryCollection();
-        return global::NetTopologySuite.Operation.Union.UnaryUnionOp.Union(parts);
+            return Overlays.Nothing();
+        return Overlays.UnaryUnion(parts);
     }
 
     // Tier 2, 2026-11-14. Fewer vertices, same shape within a tolerance - a coastline cut down for
@@ -184,10 +197,10 @@ public static partial class OperationNodes
     /// <param name="geometry">The geometry to simplify.</param>
     /// <param name="tolerance">How far the result may stray from the original, in coordinate units.</param>
     /// <param name="preserveTopology">Keep every ring and hole, and keep rings from crossing.</param>
-    public static Geometry? Simplify(Geometry? geometry, double tolerance = 0, bool preserveTopology = true)
+    public static Geometry Simplify(Geometry? geometry, double tolerance = 0, bool preserveTopology = true)
     {
-        if (geometry is null) return null;
-        var t = Math.Max(0, tolerance);
+        if (geometry is null) return Overlays.Nothing();
+        var t = double.IsFinite(tolerance) ? Math.Max(0, tolerance) : 0;
         return preserveTopology
             ? global::NetTopologySuite.Simplify.TopologyPreservingSimplifier.Simplify(geometry, t)
             : global::NetTopologySuite.Simplify.DouglasPeuckerSimplifier.Simplify(geometry, t);
@@ -199,8 +212,8 @@ public static partial class OperationNodes
     /// <remarks>
     /// The order of A and B matters. Empty when B covers A completely.
     /// </remarks>
-    public static Geometry? Difference(Geometry? a, Geometry? b)
-        => a is null ? null : b is null ? a : a.Difference(b);
+    public static Geometry Difference(Geometry? a, Geometry? b)
+        => a is null ? Overlays.Nothing(b) : b is null ? a : Overlays.Difference(a, b);
 
     // The fourth overlay, and the least used, which is why it came last (tier 1, 2026-11-07). The
     // parts of A and B that are not shared: Union minus Intersection. Symmetric, unlike Difference.
@@ -214,8 +227,8 @@ public static partial class OperationNodes
     /// <remarks>
     /// Union minus Intersection. The order of A and B does not matter.
     /// </remarks>
-    public static Geometry? SymmetricDifference(Geometry? a, Geometry? b)
-        => a is null ? b : b is null ? a : a.SymmetricDifference(b);
+    public static Geometry SymmetricDifference(Geometry? a, Geometry? b)
+        => a is null ? b ?? Overlays.Nothing() : b is null ? a : Overlays.SymmetricDifference(a, b);
 
     // ── Measurement between two ───────────────────────────────────────────────
 
@@ -226,11 +239,12 @@ public static partial class OperationNodes
     /// Returns the shortest distance between two geometries, in their coordinate units.
     /// </summary>
     /// <remarks>
-    /// 0 when they touch or overlap.
+    /// 0 when they touch or overlap; NaN when one is missing or empty, since there is nothing to measure to.
     /// On longitude and latitude the distance is in degrees, not metres.
     /// </remarks>
     public static double Distance(Geometry? a, Geometry? b)
-        => a is null || b is null ? 0 : a.Distance(b);
+        // NTS says 0 for an empty geometry (measured), which reads as "touching". Shapely says NaN.
+        => a is null || b is null || a.IsEmpty || b.IsEmpty ? double.NaN : a.Distance(b);
 
     // The pair that Distance measures between - drawing a line between the two outputs draws the
     // distance itself, which is what a picture of "how far" actually is. Same units caveat as
@@ -407,5 +421,8 @@ public static partial class OperationNodes
     /// Two overlapping squares give 212101212. Empty when an input is missing.
     /// </remarks>
     public static string Relate(Geometry? a, Geometry? b)
-        => a is null || b is null ? "" : a.Relate(b).ToString();
+        // RelateNG (NTS 2.6), not Geometry.Relate: the classic one throws on a GeometryCollection
+        // ("does not support GeometryCollection arguments", review 2026-11-14); RelateNG takes it and
+        // gives the same matrix elsewhere (measured: 212111212 both ways for two overlapping squares).
+        => a is null || b is null ? "" : global::NetTopologySuite.Operation.RelateNG.RelateNG.Relate(a, b).ToString();
 }

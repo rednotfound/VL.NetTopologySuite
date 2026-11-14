@@ -66,8 +66,8 @@ public class Tier2ShapeTests
     }
 
     [Fact]
-    public void MakeValid_of_nothing_is_nothing()
-        => Assert.Null(OperationNodes.MakeValid(null));
+    public void MakeValid_of_nothing_is_empty()
+        => Assert.True(OperationNodes.MakeValid(null).IsEmpty);
 
     // ── MinimumBoundingCircle ───────────────────────────────────────────────
 
@@ -137,7 +137,7 @@ public class Tier2ShapeTests
     {
         Assert.Equal("LineString", OperationNodes.ConcaveHull(W("MULTIPOINT ((0 0), (1 1))"))!.GeometryType);
         Assert.True(OperationNodes.ConcaveHull(W("MULTIPOINT EMPTY"))!.IsEmpty);
-        Assert.Null(OperationNodes.ConcaveHull(null));
+        Assert.True(OperationNodes.ConcaveHull(null).IsEmpty);
         Assert.Equal(4326, OperationNodes.ConcaveHull(GeometryNodes.SetSRID(W(Scatter), 4326))!.SRID);
     }
 
@@ -166,12 +166,23 @@ public class Tier2ShapeTests
     [Fact]
     public void A_seed_gives_the_same_points_on_every_machine()
     {
-        // System.Random(seed) keeps its seeded sequence across .NET versions; pin the first point so
-        // a change shows up here rather than as a help patch that looks different.
+        // System.Random(seed) keeps its seeded sequence across .NET versions, and the triangle sampling
+        // is deterministic; the first point is pinned as a literal so a change in either shows up
+        // here rather than as a help patch that looks different.
         var first = (global::NetTopologySuite.Geometries.Point)OperationNodes.RandomPoints(W("POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))"), 1, 0).GetGeometryN(0);
-        var r = new System.Random(0);
-        Assert.Equal(r.NextDouble(), first.X, 12);
-        Assert.Equal(r.NextDouble(), first.Y, 12);
+        Assert.Equal(0.7680226893946634, first.X, 12);
+        Assert.Equal(0.5853480489856322, first.Y, 12);
+    }
+
+    [Fact]
+    public void A_thin_polygon_gets_every_point_quickly()
+    {
+        // Rejection in the bounding box took 6.3 s here and gave 61 of 100,000 points (review 2026-11-14).
+        var thin = W("POLYGON ((0 0, 1000 1000, 1000 1000.001, 0 0))");
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+        var pts = OperationNodes.RandomPoints(thin, 100_000, 0);
+        Assert.Equal(100_000, pts.NumGeometries);
+        Assert.True(sw.ElapsedMilliseconds < 1000, $"{sw.ElapsedMilliseconds} ms");
     }
 
     [Theory]

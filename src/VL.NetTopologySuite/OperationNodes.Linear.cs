@@ -59,18 +59,21 @@ public static partial class OperationNodes
     /// </summary>
     /// <remarks>
     /// The point need not be on the line. Interpolate with the result gives the nearest point on the line.
+    /// NaN when there is no line or no point.
     /// </remarks>
     /// <param name="line">The line to measure along.</param>
     /// <param name="point">The point to look from. Anything other than a Point is taken at its centroid.</param>
     public static double Locate(Geometry? line, Geometry? point)
     {
+        // NaN when there is nothing to measure along or from, as Distance gives it (review
+        // 2026-11-14; was 0, which reads as "at the start"). Interpolate takes NaN as 0.
         var walk = Walkable(line);
         if (walk is null || point is null || point.IsEmpty)
-            return 0;
+            return double.NaN;
 
         var length = walk.Length;
         if (length <= 0)
-            return 0;
+            return double.NaN;
 
         var c = point is Point p ? p.Coordinate : point.Centroid.Coordinate;
         return Clamp01(new LengthIndexedLine(walk).Project(c) / length);
@@ -86,10 +89,10 @@ public static partial class OperationNodes
     /// <param name="line">The line to cut: a LineString, a MultiLineString or a polygon's outline.</param>
     /// <param name="start">Where the piece begins, from 0 to 1.</param>
     /// <param name="end">Where the piece ends, from 0 to 1.</param>
-    public static Geometry? Substring(Geometry? line, double start = 0, double end = 1)
+    public static Geometry Substring(Geometry? line, double start = 0, double end = 1)
     {
         if (line is null)
-            return null;
+            return Defaults.Factory.CreateLineString();
 
         var walk = Walkable(line);
         if (walk is null)

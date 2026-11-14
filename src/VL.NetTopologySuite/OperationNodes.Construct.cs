@@ -1,8 +1,10 @@
 using System;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Algorithm.Hull;
-using NetTopologySuite.Algorithm.Locate;
+using System.Collections.Generic;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Triangulate.Polygon;
 
 namespace VL.NetTopologySuite;
 
@@ -20,15 +22,14 @@ namespace VL.NetTopologySuite;
 // - RandomPointsBuilder has NO seed: it draws from a new Random every call, so in a patch (sixty
 //   calls a second) the points would jump every frame. RandomPoints is therefore written here, with
 //   a Seed pin as PostGIS's ST_GeneratePoints(area, n, seed) has: the same area, count and seed give
-//   the same points every frame. Rejection sampling inside the bounding box, tested against the area
-//   with an IndexedPointInAreaLocator. A seeded System.Random is the same sequence on every .NET
+//   the same points every frame. Points are drawn in the area's triangles (PolygonTriangulator),
+//   weighted by area, so every draw lands inside (rejection in the bounding box was the first
+//   version and froze a thin polygon for seconds). A seeded System.Random is the same sequence on every .NET
 //   version (its seeded algorithm is kept for compatibility), so a patch shows the same points on
 //   every machine.
 
 public static partial class OperationNodes
 {
-    private const int MaxRandomPoints = 100_000;
-
     /// <summary>
     /// Gives the smallest circle that contains the whole geometry.
     /// </summary>
@@ -36,13 +37,14 @@ public static partial class OperationNodes
     /// The circle is a polygon with 32 corners, as the Circle node makes it.
     /// </remarks>
     /// <param name="geometry">The geometry to enclose.</param>
-    /// <param name="center">The centre of the circle.</param>
+    /// <param name="center">The centre of the circle; nothing when the geometry is empty.</param>
     /// <param name="radius">The radius, in the geometry's own units.</param>
-    public static Polygon MinimumBoundingCircle(Geometry? geometry, out Coordinate center, out double radius)
+    public static Polygon MinimumBoundingCircle(Geometry? geometry, out Coordinate? center, out double radius)
     {
         if (geometry is null || geometry.IsEmpty)
         {
-            center = new Coordinate(double.NaN, double.NaN);
+            // No centre is null, as Nearest Points gives it (review 2026-11-14; was NaN, NaN).
+            center = null;
             radius = 0;
             return (geometry?.Factory ?? Defaults.Factory).CreatePolygon();
         }
@@ -64,9 +66,9 @@ public static partial class OperationNodes
     /// <param name="geometry">The points to wrap, or any geometry whose vertices are used.</param>
     /// <param name="ratio">From 0, tightest, to 1, the convex hull.</param>
     /// <param name="allowHoles">Lets the outline have holes where the points leave a gap inside.</param>
-    public static Geometry? ConcaveHull(Geometry? geometry, double ratio = 0.3, bool allowHoles = false)
+    public static Geometry ConcaveHull(Geometry? geometry, double ratio = 0.3, bool allowHoles = false)
     {
-        if (geometry is null) return null;
+        if (geometry is null) return Overlays.Nothing();
         var r = double.IsNaN(ratio) ? 0.3 : Math.Clamp(ratio, 0, 1);
         var hull = new ConcaveHull(geometry) { MaximumEdgeLengthRatio = r, HolesAllowed = allowHoles }.GetHull();
         hull.SRID = geometry.SRID;
@@ -86,31 +88,62 @@ public static partial class OperationNodes
     public static MultiPoint RandomPoints(Geometry? area, int count = 100, int seed = 0)
     {
         var factory = area?.Factory ?? Defaults.Factory;
-        var n = Math.Clamp(count, 0, MaxRandomPoints);
+        var n = Math.Clamp(count, 0, Defaults.MaxVertices);
         if (area is not IPolygonal || area.IsEmpty || n == 0 || !(area.Area > 0))
             return WithSrid(factory.CreateMultiPoint(), area);
 
-        var env = area.EnvelopeInternal;
-        var locator = new IndexedPointInAreaLocator(area);
-        var random = new Random(seed);
-        var points = new Point[n];
-        var found = 0;
+        // Area-weighted triangles, not rejection in the bounding box. Rejection froze a frame for
+        // 6.3 s on a thin diagonal polygon and still gave 61 of 100,000 points (review, 2026-11-14).
+        // Triangulated, every draw lands inside: pick a triangle with probability by area, then a
+        // uniform point in it. Exactly Count points, in a time that does not depend on the shape.
+        var triangles = Triangles(area);
+        if (triangles.Count == 0)
+            return WithSrid(factory.CreateMultiPoint(), area);
 
-        // A thin diagonal polygon fills a small part of its box, so allow many tries per point; an
-        // area too thin for that gives fewer points rather than a frame that never ends.
-        var tries = (long)n * 1000;
-        while (found < n && tries-- > 0)
+        var cumulative = new double[triangles.Count];
+        var total = 0.0;
+        for (var i = 0; i < triangles.Count; i++)
         {
-            var c = new Coordinate(
-                env.MinX + random.NextDouble() * env.Width,
-                env.MinY + random.NextDouble() * env.Height);
-            if (locator.Locate(c) == Location.Interior)
-                points[found++] = factory.CreatePoint(c);
+            var (a, b, c) = triangles[i];
+            total += Math.Abs((b.X - a.X) * (c.Y - a.Y) - (c.X - a.X) * (b.Y - a.Y)) / 2;
+            cumulative[i] = total;
         }
 
-        if (found < n)
-            Array.Resize(ref points, found);
+        var random = new Random(seed);
+        var points = new Point[n];
+        for (var k = 0; k < n; k++)
+        {
+            var i = Array.BinarySearch(cumulative, random.NextDouble() * total);
+            if (i < 0) i = ~i;
+            if (i >= triangles.Count) i = triangles.Count - 1;
+            var (a, b, c) = triangles[i];
+            var u = random.NextDouble();
+            var v = random.NextDouble();
+            if (u + v > 1) { u = 1 - u; v = 1 - v; }
+            points[k] = factory.CreatePoint(new Coordinate(
+                a.X + u * (b.X - a.X) + v * (c.X - a.X),
+                a.Y + u * (b.Y - a.Y) + v * (c.Y - a.Y)));
+        }
+
         return WithSrid(factory.CreateMultiPoint(points), area);
+    }
+
+    // The triangles of a polygonal area, each as its three corners. A self-crossing polygon cannot be
+    // triangulated, so it is repaired first, as the overlays do; if that fails too, no triangles.
+    private static List<(Coordinate A, Coordinate B, Coordinate C)> Triangles(Geometry area)
+    {
+        Geometry tris;
+        try { tris = PolygonTriangulator.Triangulate(area.IsValid ? area : GeometryFixer.Fix(area)); }
+        catch (Exception e) when (e is TopologyException or ArgumentException or InvalidOperationException) { return []; }
+
+        var list = new List<(Coordinate, Coordinate, Coordinate)>(tris.NumGeometries);
+        for (var i = 0; i < tris.NumGeometries; i++)
+        {
+            var ring = ((Polygon)tris.GetGeometryN(i)).ExteriorRing.Coordinates;
+            if (ring.Length >= 3)
+                list.Add((ring[0], ring[1], ring[2]));
+        }
+        return list;
     }
 
     private static T WithSrid<T>(T geometry, Geometry? from) where T : Geometry

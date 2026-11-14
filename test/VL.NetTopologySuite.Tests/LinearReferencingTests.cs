@@ -95,12 +95,14 @@ public class LinearReferencingTests
         => Assert.Equal(0.2, OperationNodes.Locate(W(L), W("POLYGON ((2 1, 4 1, 4 3, 2 3, 2 1))")), 9);
 
     [Fact]
-    public void Locate_with_nothing_gives_0()
+    public void Locate_with_nothing_gives_NaN_which_Interpolate_takes_as_the_start()
     {
-        Assert.Equal(0, OperationNodes.Locate(null, W("POINT (1 1)")));
-        Assert.Equal(0, OperationNodes.Locate(W(L), null));
-        Assert.Equal(0, OperationNodes.Locate(W("LINESTRING (1 1, 1 1)"), W("POINT (5 5)")));
-        Assert.Equal(0, OperationNodes.Locate(W("POINT (0 0)"), W("POINT (5 5)")));
+        // NaN, not 0: 0 reads as "at the start" (review 2026-11-14).
+        Assert.True(double.IsNaN(OperationNodes.Locate(null, W("POINT (1 1)"))));
+        Assert.True(double.IsNaN(OperationNodes.Locate(W(L), null)));
+        Assert.True(double.IsNaN(OperationNodes.Locate(W("LINESTRING (1 1, 1 1)"), W("POINT (5 5)"))));
+        Assert.True(double.IsNaN(OperationNodes.Locate(W("POINT (0 0)"), W("POINT (5 5)"))));
+        Assert.Equal("POINT (0 0)", IONodes.ToWKT(OperationNodes.Interpolate(W(L), double.NaN)));
     }
 
     [Theory]
@@ -130,7 +132,7 @@ public class LinearReferencingTests
     [Fact]
     public void Substring_of_nothing_to_walk_is_an_empty_line()
     {
-        Assert.Null(OperationNodes.Substring(null));
+        Assert.True(OperationNodes.Substring(null).IsEmpty);
         Assert.True(OperationNodes.Substring(W("POINT (1 1)"))!.IsEmpty);
     }
 }

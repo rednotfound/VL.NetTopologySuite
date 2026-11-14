@@ -119,7 +119,7 @@ public static partial class GeometryNodes
     /// </remarks>
     /// <param name="position">The centre.</param>
     /// <param name="radius">The radius.</param>
-    /// <param name="resolution">The number of corners, at least 3.</param>
+    /// <param name="resolution">The number of corners, from 3 to 100000.</param>
     /// <param name="factory">Optional. The factory, for SRID and precision.</param>
     /// <returns>The circle, or an empty polygon when the radius is zero.</returns>
     public static Polygon Circle(
@@ -140,7 +140,7 @@ public static partial class GeometryNodes
     /// <param name="position">The centre.</param>
     /// <param name="width">The size from west to east.</param>
     /// <param name="height">The size from south to north.</param>
-    /// <param name="resolution">The number of corners, at least 3.</param>
+    /// <param name="resolution">The number of corners, from 3 to 100000.</param>
     /// <param name="factory">Optional. The factory, for SRID and precision.</param>
     /// <returns>The ellipse, or an empty polygon when a size is zero.</returns>
     public static Polygon Ellipse(
@@ -173,7 +173,7 @@ public static partial class GeometryNodes
     /// </remarks>
     /// <param name="position">The centre.</param>
     /// <param name="radius">The distance from the centre to each corner.</param>
-    /// <param name="sides">The number of sides, at least 3.</param>
+    /// <param name="sides">The number of sides, from 3 to 100000.</param>
     /// <param name="rotation">A turn counter-clockwise, in cycles.</param>
     /// <param name="factory">Optional. The factory, for SRID and precision.</param>
     /// <returns>The polygon, or an empty polygon when the radius is zero.</returns>
@@ -189,7 +189,7 @@ public static partial class GeometryNodes
         if (position is null || radius <= 0)
             return f.CreatePolygon();
 
-        sides = Math.Max(3, sides);
+        sides = Math.Clamp(sides, 3, Defaults.MaxVertices);
         var ring = new Coordinate[sides + 1];
         for (var i = 0; i < sides; i++)
         {
@@ -215,7 +215,7 @@ public static partial class GeometryNodes
     /// <param name="radius">The radius.</param>
     /// <param name="start">Where the arc begins, in cycles from east.</param>
     /// <param name="sweep">How far it runs, in cycles; negative runs clockwise.</param>
-    /// <param name="resolution">Corners per full turn.</param>
+    /// <param name="resolution">Corners per full turn, at most 100000.</param>
     /// <param name="factory">Optional. The factory, for SRID and precision.</param>
     /// <returns>The arc, or an empty line when the radius or the sweep is zero.</returns>
     public static LineString Arc(
@@ -248,7 +248,7 @@ public static partial class GeometryNodes
     /// <param name="radius">The radius.</param>
     /// <param name="start">Where the slice begins, in cycles from east.</param>
     /// <param name="sweep">How far it runs, in cycles; negative runs clockwise.</param>
-    /// <param name="resolution">Corners per full turn.</param>
+    /// <param name="resolution">Corners per full turn, at most 100000.</param>
     /// <param name="factory">Optional. The factory, for SRID and precision.</param>
     /// <returns>The slice, or an empty polygon when the radius or the sweep is zero.</returns>
     public static Polygon Sector(
@@ -309,7 +309,8 @@ public static partial class GeometryNodes
             Centre = new Coordinate(centre.X, centre.Y),
             Width = width,
             Height = height,
-            NumPoints = Math.Max(3, points),
+            // Bounded as Densify is: a Resolution of ten million took 794 ms a frame (review 2026-11-14).
+            NumPoints = Math.Clamp(points, 3, Defaults.MaxVertices),
         };
 
     // Cycles to radians; a negative sweep becomes the same arc started at its other end, because

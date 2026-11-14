@@ -44,10 +44,13 @@ public class SetSridTests
     }
 
     [Fact]
-    public void Zero_clears_the_label_and_null_stays_null()
+    public void Zero_clears_the_label_and_nothing_gives_an_empty_geometry_with_the_label()
     {
         Assert.Equal(0, GeometryNodes.SetSRID(Square(4326), 0)!.SRID);
-        Assert.Null(GeometryNodes.SetSRID(null, 4326));
+        // Empty in, empty out (review 2026-11-14; was null).
+        var nothing = GeometryNodes.SetSRID(null, 4326);
+        Assert.True(nothing.IsEmpty);
+        Assert.Equal(4326, nothing.SRID);
     }
 
     [Fact]

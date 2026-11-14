@@ -23,7 +23,7 @@ irreversible step, and nuget.org's 2026 policy (API keys 30 days at most, Truste
 browser upload for manual) is written there. Never push to nuget.org without the user's explicit
 go; a publish cannot be undone.** 64 public nodes in six categories (all published as of `0.0.6-alpha`, the VL-shaped rethink: seven shape nodes, `Coordinate (FromVector2)` (its `ToVector2` was dropped the same day: the one node that lost precision silently), and `Read WKT` / `Write WKT` renamed `FromWKT` / `ToWKT` with no alias, all on 2026-11-08) — `NetTopologySuite.Network` (`Network` +
 `ShortestPath`, an algorithm of ours, promoted from `NetTopologySuite.Experimental.Network` by
-`docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 447
+`docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 461
 tests, 26 help patches (2026-11-14).** **84 since tier 2 began on 2026-11-14** (`Simplify`, `Union (Spread)`, `Translate`, `Rotate`, `Scale`, then `FromWKB`, `ToWKB` and their `(Hex)` versions, then `Interpolate`, `Substring`, `Locate`, then `Densify`, `MakeValid`, `ConcaveHull`, `MinimumBoundingCircle`, `RandomPoints` and `Vertices`; unpublished, in `0.0.8-alpha`). **66 since 2026-11-11: `GeometryEditor`, a geometry drawn by hand in an
 editor-extension window** ([below](#the-geometry-editor-a-window-of-our-own-in-the-editor)), **and
 `SetSRID`**, the label verb, paired with VL.PROJ's `Reproject` (`D:\2026_Projects\vl-proj`, the
@@ -217,7 +217,7 @@ captured (`PrintWindow`) before it is handed over.
 
 | | proves | state |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ 447 tests, ~400 ms, no network (2026-11-14) |
+| `dotnet test` | the arithmetic is right | ✅ 461 tests, ~400 ms, no network (2026-11-14) |
 | `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 28 documents (26 help patches, the package, the HDE companion), 84 of 84 nodes flagged for F1; layout warnings (upward links, a drawn result far from its node) measured from the maintainer's hand edits |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 17 help patches, 2026-11-08; `HowTo Draw a geometry` 2026-11-11 |
@@ -346,7 +346,7 @@ vl-nettopologysuite/
 │   ├── SketchSession.cs               # the tools as a state machine, no Skia (internal, tested)
 │   ├── GeometrySketch.cs              # a drawing as parts (point / line / polygon with holes) <-> WKT (internal, tested)
 │   └── SketchView.cs                  # the window's view: geometry <-> pixels, zoom, pan, grid step (internal, tested)
-├── test/VL.NetTopologySuite.Tests/    # 447 xunit tests, no network, no vvvv
+├── test/VL.NetTopologySuite.Tests/    # 461 xunit tests, no network, no vvvv
 ├── help/VL.NetTopologySuite/          # 26 help patches + Help.xml (ordering and tags)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
 ├── docs/ARCHITECTURE.md               # why each node exists, what stays raw, the boundary
@@ -637,6 +637,12 @@ Answer these before writing it. If any answer is thin, it is a help patch rather
   free — `IsValid` has three.
 - **Does it copy its coordinates?** If it creates geometry from coordinates, or hands coordinates
   back, it must.
+- **Can it throw, return null, or run unbounded?** None of the three (the whole-package review of
+  2026-11-14 found all three: overlays threw on a self-crossing polygon or a mixed collection,
+  creation nodes on one coordinate or a missing item, half the nodes returned null, a Circle with
+  Resolution ten million froze a frame). A missing input gives an empty geometry; "no answer" is
+  NaN or a null coordinate, never a plausible number; overlays go through `Overlays.cs`; a count
+  stops at `Defaults.MaxVertices`. `ReviewRegressionTests` holds every case.
 - **Are the units documented?** Distances follow the coordinates. On lon/lat, `Buffer(g, 0.001)` is
   a thousandth of a degree, and `Area` is in square degrees. Nothing warns; the doc comment must.
 

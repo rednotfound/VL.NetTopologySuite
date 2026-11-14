@@ -67,7 +67,12 @@ public static class NetworkNodes
         length = 0;
         found = false;
         fromSnapDistance = toSnapDistance = 0;
-        var empty = Defaults.Factory.CreateLineString();
+        // The path is built on the network's own factory and SRID: a route over EPSG:4326 streets is
+        // in EPSG:4326 (review, 2026-11-14; it came out as SRID 0, which Reproject would misread).
+        var like = network is not null && network.Edges.Count > 0 ? network.Edges[0].Geometry : null;
+        var factory = like?.Factory ?? Defaults.Factory;
+        var empty = factory.CreateLineString();
+        if (like is not null) empty.SRID = like.SRID;
 
         if (network is null || network.Nodes.Count == 0 || from is null || from.IsEmpty || to is null || to.IsEmpty)
             return empty;
@@ -147,6 +152,8 @@ public static class NetworkNodes
 
         length = best[goal];
         found = true;
-        return Defaults.Factory.CreateLineString(coordinates.ToArray());
+        var path = factory.CreateLineString(coordinates.ToArray());
+        if (like is not null) path.SRID = like.SRID;
+        return path;
     }
 }
