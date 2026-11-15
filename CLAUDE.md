@@ -24,7 +24,7 @@ irreversible step, and nuget.org's 2026 policy (API keys 30 days at most, Truste
 browser upload for manual) is written there. Never push to nuget.org without the user's explicit
 go; a publish cannot be undone.** 64 public nodes in six categories (all published as of `0.0.6-alpha`, the VL-shaped rethink: seven shape nodes, `Coordinate (FromVector2)` (its `ToVector2` was dropped the same day: the one node that lost precision silently), and `Read WKT` / `Write WKT` renamed `FromWKT` / `ToWKT` with no alias, all on 2026-11-08) — `NetTopologySuite.Network` (`Network` +
 `ShortestPath`, an algorithm of ours, promoted from `NetTopologySuite.Experimental.Network` by
-`docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 461
+`docs/NETWORK-SCOPE-PROPOSAL.md` after two consumers were rung-4 verified) is the sixth — 469
 tests, 23 help patches (2026-11-14; three Create patches merged and the lon/lat one folded into Draw after the review).** **84 since tier 2 began on 2026-11-14** (`Simplify`, `Union (Spread)`, `Translate`, `Rotate`, `Scale`, then `FromWKB`, `ToWKB` and their `(Hex)` versions, then `Interpolate`, `Substring`, `Locate`, then `Densify`, `MakeValid`, `ConcaveHull`, `MinimumBoundingCircle`, `RandomPoints` and `Vertices`; unpublished, in `0.0.8-alpha`). **66 since 2026-11-11: `GeometryEditor`, a geometry drawn by hand in an
 editor-extension window** ([below](#the-geometry-editor-a-window-of-our-own-in-the-editor)), **and
 `SetSRID`**, the label verb, paired with VL.PROJ's `Reproject` (`D:\2026_Projects\vl-proj`, the
@@ -148,6 +148,7 @@ Two more, learned while verifying:
 | An `int` pin needs an `Integer32` IOBox | a `Float64` one fails the compile with `Float64 is no Integer32!`. Cost one round on `HowTo Buffer a geometry.vl`'s `Segments` pin |
 | **A Pad's `Comment` renders as a label to the RIGHT of the box** | so an IOBox occupies far more width than its `Bounds` says, and every label collision in the first help patches came from ignoring it. Give each Pad its own row, or ~200px of clear space to its right |
 | Skia `AddPoly`'s `Close` pin defaults to **True** | from SkiaSharp's `AddPoly(points, close = true)`; a polyline drawn through it needs `DefaultValue="False"` on the pin or every street closes into a zigzag. Cost one GUI round on `HowTo Find the shortest path` (2026-09-25); recipe in `docs/HELP-PATCH-STYLE.md` |
+| **A collection IOBox draws its rows only when the whole view fits the box** | measured 2026-11-15, vvvv 8.0, nine probes: one pixel too short and the editor swaps, with no log line, to its compact `ObjectViewer` - the type name and `[n]`. The same two-feature spread drew at 540 px and showed `Spread<Feature>` `[2]` at 480. Not the type, the count, the source or async loading. A `Geometry` row is about 120 px so three fit; a `Feature` row was the drawing plus 22 px per attribute. So a viewer must be SHORT inside a collection (`ViewerContext.Depth` is one greater there), which is what `FeatureRows` does |
 | **A collection readout stops at 3 rows and prints `...`** | the editor setting `TooltipNumberOfItemsOfCollection` (user `settings.xml`, default 3), read by the editor's `DictionaryViewer` and sequence viewers. The maintainer saw a four-attribute feature list three. The Feature viewer lists every row itself (2026-11-07); a bare Dictionary IOBox keeps the editor's grid and its cap |
 | **A Spread IOBox is an editable table** | XML: a Pad typed `Spread` of `String` with `<p:Value><Item>…</Item></p:Value>`; two of them side by side were the attribute table of `Attributes (Join)`, a node built and removed on 2026-11-07. Readouts of a `Spread<T>` output list items, of an `IReadOnlyList<T>` show a type name |
 | A `[Name("Attributes (Join)")]` on a method | renders as the node `Attributes (Join)`: the parenthesised version is part of the plain name string, as `Vector (Join)` is in every shipped `.vl`; `[return: Pin(Name = "Attributes")]` names the output pin. Both confirmed by `vvvvc` resolving the link (2026-11-07; the node itself was removed the same night, the measurement stands) |
@@ -218,7 +219,7 @@ captured (`PrintWindow`) before it is handed over.
 
 | | proves | state |
 |---|---|---|
-| `dotnet test` | the arithmetic is right | ✅ 461 tests, ~400 ms, no network (2026-11-14) |
+| `dotnet test` | the arithmetic is right | ✅ 469 tests, ~400 ms, no network (2026-11-15) |
 | `tools\Test-VLPatch.ps1` | the `.vl` documents are well formed, annotation boxes typed, labels not colliding | ✅ 25 documents (23 help patches, the package, the HDE companion), 84 of 84 nodes flagged for F1; layout warnings (upward links, a drawn result far from its node) measured from the maintainer's hand edits |
 | `tools\Test-VLPackage.ps1` | the package can structurally contribute nodes | ✅ passes |
 | `tools\Compile-HelpPatches.ps1` (`vvvvc`) | every node in a patch **resolved**, read from the generated C# | ✅ all 17 help patches, 2026-11-08; `HowTo Draw a geometry` 2026-11-11 |
@@ -349,6 +350,7 @@ vl-nettopologysuite/
 │   ├── Network.cs                     # NetTopologySuite.Network - the retained handle type, and the scope sentence
 │   ├── NetworkNode.cs                 # NetTopologySuite.Network - Network (process node)
 │   ├── NetworkNodes.cs                # NetTopologySuite.Network - ShortestPath
+│   ├── FeatureRowsNode.cs             # NetTopologySuite.Viewer (hidden) - FeatureRows: every attribute row, or a short summary inside a collection
 │   ├── ViewFrameNode.cs               # NetTopologySuite.Viewer (hidden) - ViewFrame, the Geometry IOBox's view (process node)
 │   ├── ViewFrame.cs                   # its arithmetic: the sticky view, grid, label, widget transform (internal)
 │   ├── GeometryEditorNode.cs          # NetTopologySuite.Geometry - GeometryEditor (process node): WKT pin in, geometry out, writes the pin back
@@ -357,7 +359,7 @@ vl-nettopologysuite/
 │   ├── SketchSession.cs               # the tools as a state machine, no Skia (internal, tested)
 │   ├── GeometrySketch.cs              # a drawing as parts (point / line / polygon with holes) <-> WKT (internal, tested)
 │   └── SketchView.cs                  # the window's view: geometry <-> pixels, zoom, pan, grid step (internal, tested)
-├── test/VL.NetTopologySuite.Tests/    # 461 xunit tests, no network, no vvvv
+├── test/VL.NetTopologySuite.Tests/    # 469 xunit tests, no network, no vvvv
 ├── help/VL.NetTopologySuite/          # 23 help patches + Help.xml (nine noun topics, as the core packs name them)
 ├── docs/AUDIT.md                      # the audit this package was designed from, and every measurement
 ├── docs/ARCHITECTURE.md               # why each node exists, what stays raw, the boundary
@@ -511,6 +513,7 @@ The rules that matter when touching it:
   `build.ps1` now evicts `package-cache\VL.NetTopologySuite_HDE_Plugin.<version>` too. To find
   what the log's bare "has errors" means, splice the new nodes into an ordinary probe patch and
   let `vvvvc` name the error.
+- **Inside a collection a Feature is drawn short** (2026-11-15, the maintainer: a Spread of Geometry draws every item, a Spread of Feature showed only `[89]`). The cause is the editor's rule in the table above, not the type. `FeatureRows` (`FeatureRowsNode.cs`, hidden) reads the context's `Depth` (the `Depth` node of `HDE.Viewers.ViewerContext`, the forward VL.Elementa's HDE also uses): alone, every attribute is a typed row under the geometry, `name` first; in a row of a collection, the geometry with three lines of text beside it (`name: Tekko Building`) and `+ 9 more`, through `TextWidget (MultiLine)`. Typed rows beside the geometry were tried first and left no room for a value in a 300 px box. Seen in vvvv 8.0 with hand-built features and with 783 OpenStreetMap features.
 - Known gaps: a `Coordinate` has no viewer (the generic one lists X, Y, Z, which is fine); markers
   in a collection whose points all coincide have zero bounds and draw nothing. A pin
   default guessed for a Skia enum made the log say `The project ... has errors` while everything
