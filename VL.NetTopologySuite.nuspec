@@ -6,8 +6,8 @@
          mistaken for the published package in a NuGet cache. Managed in step with VL.Mapsui. -->
     <version>0.0.9-alpha</version>
     <title>VL.NetTopologySuite — NetTopologySuite geometry nodes for vvvv gamma</title>
-    <authors>VL.NetTopologySuite Contributors</authors>
-    <owners>VL.NetTopologySuite Contributors</owners>
+    <authors>red</authors>
+    <owners>red</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/rednotfound/VL.NetTopologySuite</projectUrl>
