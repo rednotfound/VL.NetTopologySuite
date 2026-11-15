@@ -17,7 +17,12 @@
     <description>Geometry for VL, built on NetTopologySuite: make, measure, combine and test points, lines and polygons; read and write WKT and WKB.</description>
     <summary>Geometry for VL, built on NetTopologySuite: make, measure, combine and test points, lines and polygons; read and write WKT and WKB.</summary>
     <releaseNotes>
-      0.0.9-alpha - In development, not published.
+      0.0.9-alpha (2026-11-15) - No node changed. In the editor, an IOBox of a Spread of
+      Feature now draws its items: inside a collection a feature is the geometry with a few lines of
+      its attributes beside it and a count of the rest (a feature alone still lists every attribute,
+      the name first). Before, such an IOBox showed only the type and the count unless it was very
+      tall. The package page: a short README in the shape vvvv libraries use, one sentence of
+      description, authors and owners "red", and the LICENSE inside the package.
 
       0.0.8-alpha (2026-11-14) - 18 new nodes, 84 in all: the common operations a geometry library is
       expected to have. NetTopologySuite.Operation: Simplify (Preserve Topology on by default), Union
