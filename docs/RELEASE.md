@@ -416,6 +416,25 @@ dependencies along, 23 of 23 patches compile). GitHub release made with `gh`. Wo
 `0.0.9-alpha`. The README packed into 0.0.8 is the long one; the short vvvv-library README (PR #11)
 ships with 0.0.9.
 
+## `0.0.9-alpha` — 2026-11-15
+
+No node changed. Two things since `0.0.8-alpha`: the package page (the short vvvv-library README
+of PR #11, authors and owners `red` and the LICENSE inside the package in PR #13, a one-sentence
+description in PR #14), and the editor's FeatureViewer (PR #15): a feature inside a collection is
+drawn short, so an IOBox of a Spread of Feature draws its items instead of `Spread<Feature>` `[89]`.
+The cause was the editor's, measured with nine probes in vvvv 8.0 preview and written in CLAUDE.md:
+a collection's rows are drawn only when the whole view fits the IOBox.
+
+Gate green from a clean build on branch `release/0.0.9-alpha`: 469 tests, `Test-VLPackage`,
+`Test-VLPatch`, `pack -NoBuild`, 23 of 23 patches compiled against the nupkg, `Test-Install`; the
+nupkg opened: 23 help patches, the HDE companion, `docs/LICENSE`, and its nuspec read back
+(version, authors `red`, the new release notes). GUI: the viewer change was seen the same day in
+vvvv 8.0 preview on this source, with hand-built features and with 783 OpenStreetMap features.
+**Not done before packing:** the Help Browser and F1 round on the packed package (step 3), and
+nothing was tried in vvvv 7.4. The first draft of the release notes said the third-party notices
+are inside the package; opening the nupkg showed only the LICENSE is, and the notes were corrected
+before the commit.
+
 ## Updating a vvvv that already has the previous version
 
 `nuget install VL.NetTopologySuite -pre` again, in vvvv's command line; the nugets folder then
