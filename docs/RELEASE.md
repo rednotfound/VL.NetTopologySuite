@@ -435,6 +435,12 @@ nothing was tried in vvvv 7.4. The first draft of the release notes said the thi
 are inside the package; opening the nupkg showed only the LICENSE is, and the notes were corrected
 before the commit.
 
+Merged as PR #16, tagged `v0.0.9-alpha` on the merge and the tag pushed (this time by Claude, on the
+maintainer's word), uploaded in the browser by the maintainer. Minutes after the email,
+`Test-Install -FromNuGetOrg -Version 0.0.9-alpha` was green at the first try (signed, dependencies
+along, every shipped help patch compiles). GitHub release made with `gh`. Working version
+`0.0.10-alpha`.
+
 ## Updating a vvvv that already has the previous version
 
 `nuget install VL.NetTopologySuite -pre` again, in vvvv's command line; the nugets folder then
