@@ -14,20 +14,8 @@
     <!-- nuget.org shows this on the package page. The file is packed to docs\ below; the path here is
          the path INSIDE the package, and nuget pack refuses to pack if it is not in <files>. -->
     <readme>docs\README.md</readme>
-    <description>
-      EARLY - not ready for real work yet.
-
-      NetTopologySuite made natural inside vvvv gamma. Build geometry from coordinates, measure
-      and validate it, run spatial operations on it, and read and write WKT.
-
-      The nodes hand back native NetTopologySuite types - Point, LineString, Polygon, Geometry -
-      not wrappers, so a geometry made here goes straight into anything else that speaks NTS,
-      including VL.Mapsui, and advanced users can reach the whole library through VL's raw .NET
-      nodes.
-
-      Requires vvvv gamma 7.2 or newer (.NET 8).
-    </description>
-    <summary>NetTopologySuite geometry as composable nodes for vvvv gamma.</summary>
+    <description>Geometry for VL, built on NetTopologySuite: make, measure, combine and test points, lines and polygons; read and write WKT and WKB.</description>
+    <summary>Geometry for VL, built on NetTopologySuite: make, measure, combine and test points, lines and polygons; read and write WKT and WKB.</summary>
     <releaseNotes>
       0.0.9-alpha - In development, not published.
 
