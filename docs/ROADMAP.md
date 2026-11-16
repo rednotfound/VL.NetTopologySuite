@@ -27,7 +27,7 @@ and VL.PROJ's #2):
     the wrapping toolbar, one-shot Point) and the release of 0.0.7-alpha.
   - VL.PROJ 0.0.1-alpha, its first release, now that 0.0.7-alpha is on nuget.org.
   - Then tier 2.
-  - The basemap in the window is shelved.
+  - The basemap in the window: built 2026-11-16 (IBasemap, registered by VL.Mapsui).
 
 **2026-11-11: `GeometryEditor`, a geometry drawn by hand in a window of the editor.** The
 maintainer asked first what a package may do to the editor itself. The answer was measured, and

@@ -36,11 +36,14 @@ public sealed class GeometryEditorWindowNode
         if (target is null && _layer.Target is { IsAlive: true } shown) target = shown;
         target ??= GeometryEditorNode.Latest;
         _layer.Target = target;
-        title = target is null ? "Geometry Editor" : "Geometry Editor · " + target.Sketch.ToWKT() switch
-        {
-            var w when w.Length > 40 => w.Substring(0, 37) + "...",
-            var w => w,
-        };
+        // The document first: the window can show an editor from a patch that is not on screen.
+        title = target is null ? "Geometry Editor" : "Geometry Editor · "
+            + (target.DocumentName is { } doc ? doc + " · " : "")
+            + target.Sketch.ToWKT() switch
+            {
+                var w when w.Length > 40 => w.Substring(0, 37) + "...",
+                var w => w,
+            };
         return _layer;
     }
 

@@ -609,7 +609,14 @@ VL.PROJ's AssemblyInitializer registers PROJ's catalogue in `AppHost.Global`'s s
 the window and IOBox run in the HDE's own app host), and `CrsHints` asks it first and caches each answer.
 This package still references nothing of ours. Seen in vvvv: SRID 2263 (not in the table) read
 `EPSG:2263 NAD83 / New York Long Island (ftUS) · US survey foot` with a VL.PROJ patch open in another tab.
-Step 3, a basemap in the window, is shelved (the maintainer, 2026-11-12: "先放一放").
+Step 3, a basemap in the window, was shelved on 2026-11-12 ("先放一放") and **built on 2026-11-16** when
+the maintainer needed it: `IBasemap` (hidden, `IBasemap.cs`) is registered by VL.Mapsui the way
+VL.PROJ registers `ICrsCatalog`, so without VL.Mapsui the window keeps its dot grid. `Basemap.cs`
+picks the Web Mercator tiles (SRID 4326 or 3857 only) and places each by its corners; the window
+draws them greyed (40 % colour) under a 60 % veil, the maintainer having found the blue shape hard to
+see over a lighter one, with the OSM credit in the corner. **Basemap B** toggles it (iD's key; M was
+Move), on by default. The window title and status bar now name the editor's document: the window
+keeps the editor selected last, and the maintainer saw a Delft box over a VL.Mapsui patch it was not in.
 
 ## Node documentation is a tooltip
 
