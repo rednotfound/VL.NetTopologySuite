@@ -8,15 +8,16 @@ Guidance for Claude Code (claude.ai/code) working in this repository.
 as nodes for [vvvv gamma](https://vvvv.org). One package, one library — geometry creation,
 inspection, spatial operations and WKT. Nothing about maps, rendering or reprojection.
 
-**Current state (2026-11-14): `0.0.8-alpha` is on nuget.org** — `0.0.1-alpha` on 2026-09-26,
+**Current state (2026-11-15): `0.0.9-alpha` is on nuget.org** — `0.0.1-alpha` on 2026-09-26,
 `0.0.2-alpha` (the category rename to `NetTopologySuite.*`) on 2026-10-17, `0.0.3-alpha`
 (`GetAttribute`, the version VL.NetTopologySuite.GeoJSON depends on) and `0.0.4-alpha` (the tooltip
 rewrite, no node changed) on 2026-10-18, `0.0.5-alpha` (tier 1, `Outlines`, the drawn previews) and
 `0.0.6-alpha` (shapes, the sticky drawn IOBox, `FromWKT` / `ToWKT`) both on 2026-11-08, `0.0.7-alpha`
 (`GeometryEditor`, `SetSRID`, `ICrsCatalog`) and `0.0.8-alpha` (tier 2, 18 nodes, and the
-whole-package review) both on 2026-11-14, all by the
+whole-package review) both on 2026-11-14, `0.0.9-alpha` (no node changed: a Feature drawn short
+inside a collection, and the package page) on 2026-11-15, all by the
 maintainer's browser upload, all installed back
-from nuget.org alone with `Test-Install -FromNuGetOrg`. **The working version is now `0.0.9-alpha`**,
+from nuget.org alone with `Test-Install -FromNuGetOrg`. **The working version is now `0.0.10-alpha`**,
 always one ahead of the published one. **Every version is a prerelease** (`-alpha` suffix, installed with
 `-pre`), managed in step with VL.Mapsui and the family — the maintainer's rule, 2026-09-25. The
 process and its rules are in [docs/RELEASE.md](docs/RELEASE.md): the maintainer performs the
@@ -608,7 +609,14 @@ VL.PROJ's AssemblyInitializer registers PROJ's catalogue in `AppHost.Global`'s s
 the window and IOBox run in the HDE's own app host), and `CrsHints` asks it first and caches each answer.
 This package still references nothing of ours. Seen in vvvv: SRID 2263 (not in the table) read
 `EPSG:2263 NAD83 / New York Long Island (ftUS) · US survey foot` with a VL.PROJ patch open in another tab.
-Step 3, a basemap in the window, is shelved (the maintainer, 2026-11-12: "先放一放").
+Step 3, a basemap in the window, was shelved on 2026-11-12 ("先放一放") and **built on 2026-11-16** when
+the maintainer needed it: `IBasemap` (hidden, `IBasemap.cs`) is registered by VL.Mapsui the way
+VL.PROJ registers `ICrsCatalog`, so without VL.Mapsui the window keeps its dot grid. `Basemap.cs`
+picks the Web Mercator tiles (SRID 4326 or 3857 only) and places each by its corners; the window
+draws them greyed (40 % colour) under a 60 % veil, the maintainer having found the blue shape hard to
+see over a lighter one, with the OSM credit in the corner. **Basemap B** toggles it (iD's key; M was
+Move), on by default. The window title and status bar now name the editor's document: the window
+keeps the editor selected last, and the maintainer saw a Delft box over a VL.Mapsui patch it was not in.
 
 ## Node documentation is a tooltip
 

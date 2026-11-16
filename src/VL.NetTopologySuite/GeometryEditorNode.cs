@@ -71,10 +71,29 @@ public sealed class GeometryEditorNode : IDisposable
     {
         _context = nodeContext;
         Id = nodeContext.Path.Stack.IsEmpty ? default : nodeContext.Path.Stack.Peek();
+        DocumentName = DocumentNameOf(Id);
         lock (Gate) Live.Add(this);
     }
 
     internal UniqueId Id { get; }
+
+    // The document this node sits in, without its extension, for the window's title and status bar.
+    // The window keeps showing the editor selected last when the selection holds none, so after
+    // switching to another patch it can show a shape from a patch that is not on screen (the
+    // maintainer, 2026-11-16: "我们的 patch 里面没有谁绘制了这个 box"). Naming the document says where
+    // the shape lives. AppHost.GetDocumentPath(UniqueId) is VL.Core's own lookup; null when unknown.
+    internal string? DocumentName { get; }
+
+    private static string? DocumentNameOf(UniqueId id)
+    {
+        if (id.IsDefault) return null;
+        try
+        {
+            var path = AppHost.CurrentOrGlobal.GetDocumentPath(id);
+            return string.IsNullOrWhiteSpace(path) ? null : System.IO.Path.GetFileNameWithoutExtension(path);
+        }
+        catch (Exception) { return null; }
+    }
 
     /// <summary>
     /// Outputs the geometry drawn in the editor window.

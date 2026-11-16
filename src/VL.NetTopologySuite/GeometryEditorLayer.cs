@@ -18,7 +18,7 @@ namespace VL.NetTopologySuite;
 //
 // What is on screen:
 //   toolbar      Select V · Point P · Line L · Polygon A · Rectangle R · Circle C | Undo · Redo |
-//                Snap S · Fit F. Space held + left drag pans (2026-11-14: a touchpad has no
+//                Snap S · Fit F · Basemap B. Space held + left drag pans (2026-11-14: a touchpad has no
 //                right or middle drag, and the left drag is the selection box)
 //   canvas       unselected shapes as outlines; the selected one with its vertices and a "+" at the
 //                middle of every edge; the selected vertex larger, orange, ringed in white
@@ -78,6 +78,11 @@ internal sealed class GeometryEditorLayer : ILayer
     private bool _fitted;
     private int _fittedSrid;
     private bool _snap;
+    private bool _basemapOn = true; // shown whenever it can be (the maintainer, 2026-11-16)
+    private bool _basemapDrawn;
+    private readonly Dictionary<(int Z, int X, int Y), SKImage?> _tiles = new();
+    private readonly Queue<(int Z, int X, int Y)> _tileOrder = new();
+    private const int TilesKept = 256;
     private Vector2 _size = new(800, 600);
     private Vector2 _mouse;
     private float _scaling = 1;
@@ -102,6 +107,14 @@ internal sealed class GeometryEditorLayer : ILayer
             new Button { Label = "Redo", Key = "Ctrl+Y", IsOn = _ => false, IsEnabled = l => l._session.CanRedo, Press = l => l.Apply(l._session.Redo()) },
             new Button { Label = "Snap", Key = "S", IsOn = l => l._snap, IsEnabled = _ => true, Press = l => l._snap = !l._snap },
             new Button { Label = "Fit", Key = "F", IsOn = _ => false, IsEnabled = _ => true, Press = l => l._fitted = false },
+            new Button
+            {
+                Label = "Basemap", Key = "B",
+                IsOn = l => l._basemapOn && l.BasemapReason() is null,
+                IsEnabled = l => l.BasemapReason() is null,
+                Reason = l => l.BasemapReason(),
+                Press = l => l._basemapOn = !l._basemapOn,
+            },
         };
     }
 
@@ -157,6 +170,7 @@ internal sealed class GeometryEditorLayer : ILayer
         canvas.Translate(viewport.Left, viewport.Top);
         canvas.ClipRect(new SKRect(0, 0, _size.X, _size.Y));
         canvas.Clear(Background);
+        DrawBasemap(canvas);
         DrawGrid(canvas);
 
         if (target is null)
@@ -170,6 +184,7 @@ internal sealed class GeometryEditorLayer : ILayer
         if (target.IsEditable) DrawSketch(canvas, _session.Sketch);
         else DrawReadOnly(canvas, target.Geometry);
 
+        if (_basemapDrawn && Basemap.Provider is { } credited) DrawAttribution(canvas, credited.Attribution);
         DrawToolbar(canvas);
         if (target.IsEditable) DrawActionBar(canvas);
 
@@ -197,7 +212,101 @@ internal sealed class GeometryEditorLayer : ILayer
         var type = target.IsEditable ? s.ToGeometry().GeometryType.ToUpperInvariant() : target.Geometry.GeometryType.ToUpperInvariant();
         var points = target.IsEditable ? s.VertexCount : target.Geometry.NumPoints;
         var (xName, yName) = degrees ? ("lon", "lat") : ("x", "y");
-        return $"{xName} {at.X.ToString(f, CultureInfo.InvariantCulture)}  {yName} {at.Y.ToString(f, CultureInfo.InvariantCulture)} · {srid} · {type} · {points} points";
+        var where = named && target.DocumentName is { } doc ? doc + " · " : "";
+        return $"{where}{xName} {at.X.ToString(f, CultureInfo.InvariantCulture)}  {yName} {at.Y.ToString(f, CultureInfo.InvariantCulture)} · {srid} · {type} · {points} points";
+    }
+
+    // ---- basemap (step 3 of the SRID plan, 2026-11-16) -----------------------------------------
+    // Tiles come from a registered IBasemap (VL.Mapsui's) and are drawn under the grid and the
+    // sketch, then veiled with the window's own background so the blue drawing stays the brightest
+    // thing on screen. A tile that is not at hand yet is stood in for by a coarser one already
+    // decoded, cut to the same place, so panning shows a blurred map rather than holes.
+
+    private string? BasemapReason()
+    {
+        if (_target is not { } target) return "Select a GeometryEditor first.";
+        if (Basemap.ProjectionOf(target.Srid) == Basemap.Projection.None)
+            return $"A basemap needs SRID 4326 (longitude, latitude) or 3857; this is {(target.Srid == 0 ? "SRID 0" : "EPSG:" + target.Srid)}.";
+        if (Basemap.Provider is null) return "A basemap comes from VL.Mapsui: reference it in an open document.";
+        return null;
+    }
+
+    private void DrawBasemap(SKCanvas canvas)
+    {
+        _basemapDrawn = false;
+        if (!_basemapOn || BasemapReason() is not null || _target is not { } target || Basemap.Provider is not { } map) return;
+
+        var projection = Basemap.ProjectionOf(target.Srid);
+        var zoom = Basemap.ChooseZoom(_view, projection, 256 * _scaling, map.MaxZoom);
+        // Mostly grey (40 % of the tile's colour) and veiled below: the maintainer found the blue
+        // shape hard to see over the full-colour map at a lighter veil (2026-11-16).
+        using var muted = SKColorFilter.CreateColorMatrix(Saturation(0.4f));
+        using var paint = new SKPaint { FilterQuality = SKFilterQuality.Medium, ColorFilter = muted };
+        foreach (var spot in Basemap.Visible(_view, _size, projection, zoom))
+        {
+            var rect = new SKRect(spot.TopLeft.X, spot.TopLeft.Y, spot.BottomRight.X, spot.BottomRight.Y);
+            if (Tile(map, spot.Zoom, spot.X, spot.Y) is { } image)
+            {
+                canvas.DrawImage(image, rect, paint);
+                continue;
+            }
+            for (var up = 1; up <= 6 && spot.Zoom - up >= 0; up++)
+            {
+                if (!_tiles.TryGetValue((spot.Zoom - up, spot.X >> up, spot.Y >> up), out var parent) || parent is null) continue;
+                var part = (float)parent.Width / (1 << up);
+                var sx = (spot.X - ((spot.X >> up) << up)) * part;
+                var sy = (spot.Y - ((spot.Y >> up) << up)) * part;
+                canvas.DrawImage(parent, new SKRect(sx, sy, sx + part, sy + part), rect, paint);
+                break;
+            }
+        }
+        using var veil = new SKPaint { Color = Background.WithAlpha(155), Style = SKPaintStyle.Fill };
+        canvas.DrawRect(new SKRect(0, 0, _size.X, _size.Y), veil);
+        _basemapDrawn = true;
+    }
+
+    // A colour matrix keeping `s` of the colour and the rest as grey (Rec. 709 luma weights).
+    private static float[] Saturation(float s)
+    {
+        float r = 0.2126f * (1 - s), g = 0.7152f * (1 - s), b = 0.0722f * (1 - s);
+        return new[]
+        {
+            r + s, g,     b,     0, 0,
+            r,     g + s, b,     0, 0,
+            r,     g,     b + s, 0, 0,
+            0,     0,     0,     1, 0,
+        };
+    }
+
+    // A decoded tile, asked for (never waited on) when it is not decoded yet. The newest 256 are kept.
+    private SKImage? Tile(IBasemap map, int z, int x, int y)
+    {
+        if (_tiles.TryGetValue((z, x, y), out var known)) return known;
+        byte[]? bytes;
+        try { bytes = map.TryGetTile(z, x, y); }
+        catch (Exception) { bytes = null; }
+        if (bytes is null) return null; // asked for; it arrives on a later frame
+
+        SKImage? image;
+        try { image = SKImage.FromEncodedData(bytes); }
+        catch (Exception) { image = null; } // kept as null: a broken tile is not decoded every frame
+        _tiles[(z, x, y)] = image;
+        _tileOrder.Enqueue((z, x, y));
+        while (_tileOrder.Count > TilesKept && _tileOrder.TryDequeue(out var old))
+            if (_tiles.Remove(old, out var gone)) gone?.Dispose();
+        return image;
+    }
+
+    private void DrawAttribution(SKCanvas canvas, string text)
+    {
+        if (string.IsNullOrWhiteSpace(text)) return;
+        using var paint = new SKPaint { Color = new SKColor(230, 230, 230), TextSize = 10.5f * _scaling, IsAntialias = true };
+        using var back = new SKPaint { Color = new SKColor(0, 0, 0, 150), Style = SKPaintStyle.Fill };
+        var w = paint.MeasureText(text);
+        var bottom = _size.Y - (StatusHeight + 4) * _scaling;
+        var box = new SKRect(_size.X - w - 14 * _scaling, bottom - 16 * _scaling, _size.X - 4 * _scaling, bottom);
+        canvas.DrawRect(box, back);
+        canvas.DrawText(text, box.Left + 5 * _scaling, bottom - 4.5f * _scaling, paint);
     }
 
     private void DrawGrid(SKCanvas canvas)
@@ -722,6 +831,9 @@ internal sealed class GeometryEditorLayer : ILayer
             case Keys.F: _fitted = false; return true;
             case Keys.Space: _spaceHeld = true; return true; // held: a left drag pans
             case Keys.S: _snap = !_snap; return true;
+            case Keys.B: // iD, OSM's own editor, opens its background imagery with B
+                if (BasemapReason() is { } why) _note = why; else _basemapOn = !_basemapOn;
+                return true;
         }
         if (!Editable) return false;
         switch (code)
