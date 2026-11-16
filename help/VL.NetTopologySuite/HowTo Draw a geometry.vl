@@ -88,7 +88,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Node Bounds="60,420,45,19" Id="MI90EFJsHkVv4Qhbj0bb3D">
+          <Node Bounds="60,420,48,19" Id="MI90EFJsHkVv4Qhbj0bb3D">
             <p:NodeReference LastCategoryFullName="NetTopologySuite.IO" LastDependency="VL.NetTopologySuite.vl">
               <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
               <Choice Kind="OperationCallFlag" Name="ToWKT" />
@@ -129,7 +129,7 @@
               <PinReference Kind="InputPin" Name="WKT" />
             </p:NodeReference>
             <Pin Id="Pjbcn2ajiJOMCwPUA3L7uU" Name="Node Context" Kind="InputPin" IsHidden="true" />
-            <Pin Id="JveJG3PocfAuWpXMHnGeoG" Name="WKT" Kind="InputPin" DefaultValue="POLYGON ((4.355 52.008, 4.365 52.008, 4.365 52.01416, 4.355 52.01416, 4.355 52.008))">
+            <Pin Id="JveJG3PocfAuWpXMHnGeoG" Name="WKT" Kind="InputPin" DefaultValue="POLYGON ((140.29552013619517 35.66539596246249, 140.2830139881648 35.74355149035994, 140.245976148329 35.81870354515041, 140.1858299601016 35.88796407551408, 140.10488680776575 35.94867143811081, 140.00625729127233 35.99849268304108, 139.8937316876281 36.03551320780232, 139.77163429267605 36.05831033438928, 139.64465724083112 36.066007982012025, 139.5176801889862 36.05831033438928, 139.39558279403414 36.03551320780232, 139.2830571903899 35.99849268304108, 139.1844276738965 35.94867143811081, 139.10348452156066 35.88796407551408, 139.04333833333325 35.81870354515042, 139.00630049349743 35.74355149035994, 138.99379434546708 35.66539596246249, 139.00630049349743 35.58724043456504, 139.04333833333325 35.51208837977457, 139.10348452156066 35.442827849410904, 139.1844276738965 35.38212048681417, 139.2830571903899 35.3322992418839, 139.39558279403414 35.29527871712266, 139.5176801889862 35.2724815905357, 139.64465724083112 35.264783942912956, 139.77163429267605 35.2724815905357, 139.8937316876281 35.29527871712266, 140.00625729127233 35.3322992418839, 140.10488680776575 35.38212048681417, 140.1858299601016 35.442827849410904, 140.245976148329 35.51208837977456, 140.2830139881648 35.58724043456504, 140.29552013619517 35.66539596246249))">
               <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
                 <Choice Kind="TypeFlag" Name="String" />
               </p:TypeAnnotation>
@@ -159,7 +159,7 @@
             <Pin Id="B4ajh4tdXKlPaFaUVlYvwa" Name="Result" Kind="OutputPin" />
           </Node>
           <Pad Id="TJUwET7h5y7DyAq6K7K3CF" Comment="Area" Bounds="340,800,80,15" ShowValueBox="true" isIOBox="true" />
-          <Pad Id="LTj4YvPhO4fTBHMbVKmqww" Bounds="580,640,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; 4326 is WGS 84, what GPS and web maps give. Select me, then Ctrl+Shift+W: the status bar says lon, lat and degrees.">
+          <Pad Id="LTj4YvPhO4fTBHMbVKmqww" Bounds="580,683,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; 4326 is WGS 84, what GPS and web maps give. The window's status bar says lon, lat and degrees.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -168,7 +168,7 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="QaTieqDeXsRFrLNrgLgBXf" Bounds="580,720,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; A degree east is shorter than a degree north here, so the box and the window narrow it: this block is square.">
+          <Pad Id="QaTieqDeXsRFrLNrgLgBXf" Bounds="580,763,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; A degree east is shorter than a degree north here, so the box and the window narrow it: this circle stays round.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -177,7 +177,30 @@
               <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="FoubYfutG9Q9PABYn2eig5" Bounds="580,800,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; Square degrees, not square metres. Reproject (VL.PROJ) to 28992 first to measure.">
+          <Pad Id="FoubYfutG9Q9PABYn2eig5" Bounds="580,843,320,44" ShowValueBox="true" isIOBox="true" Value="&lt; Square degrees, not square metres. Reproject (VL.PROJ) to 6677, Japan's zone IX, first to measure.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="T4VieSfEaVGgAcMnoVD4dY" Bounds="580,900,320,62" ShowValueBox="true" isIOBox="true" Value="&lt; With VL.Mapsui referenced in any open document, an OpenStreetMap basemap shows under the drawing (4326 or 3857; B turns it off). Without it, the grid.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="BezXBU60c4GOGZoEUmFIGS" Comment="SRID" Bounds="167,150,35,15" ShowValueBox="true" isIOBox="true" Value="0">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Integer32" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="CzC6u0cUK91Opu75y4HE4n" Bounds="580,646,320,26" ShowValueBox="true" isIOBox="true" Value="&lt; Select me, then Ctrl+Shift+W.">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="String" />
             </p:TypeAnnotation>
@@ -203,6 +226,7 @@
         <Link Id="QjEsuEY7MGiY0lV7TpOyRt" Ids="IDzl1AeBXPeE02Mq6oevfo,ICrRHVzuZXdibrmCY9xEFR" />
         <Link Id="DpbRTicyd2kdtri9Zty4g7" Ids="DAMA4OnmzjNarGIkQQSZI5,SbI1nSoe3kBoiy3NFwyB9E" />
         <Link Id="SVRwCB4NSW2RVSdj9tytK1" Ids="B4ajh4tdXKlPaFaUVlYvwa,TJUwET7h5y7DyAq6K7K3CF" />
+        <Link Id="KEiv8ZzpmrCLMk1ClZ7Erg" Ids="BezXBU60c4GOGZoEUmFIGS,N8Kdjow8K0gN9VHyDoR3Qj" />
       </Patch>
     </Node>
   </Patch>
