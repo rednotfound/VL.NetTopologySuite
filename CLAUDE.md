@@ -17,7 +17,7 @@ rewrite, no node changed) on 2026-10-18, `0.0.5-alpha` (tier 1, `Outlines`, the 
 whole-package review) both on 2026-11-14, `0.0.9-alpha` (no node changed: a Feature drawn short
 inside a collection, and the package page) on 2026-11-15, all by the
 maintainer's browser upload, all installed back
-from nuget.org alone with `Test-Install -FromNuGetOrg`. **The working version is now `0.0.10-alpha`**,
+from nuget.org alone with `Test-Install -FromNuGetOrg`. **`0.0.10-alpha` (the editor's basemap) is on nuget.org since 2026-11-18; the working version is now `0.0.11-alpha`**,
 always one ahead of the published one. **Every version is a prerelease** (`-alpha` suffix, installed with
 `-pre`), managed in step with VL.Mapsui and the family — the maintainer's rule, 2026-09-25. The
 process and its rules are in [docs/RELEASE.md](docs/RELEASE.md): the maintainer performs the

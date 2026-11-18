@@ -441,6 +441,19 @@ maintainer's word), uploaded in the browser by the maintainer. Minutes after the
 along, every shipped help patch compiles). GitHub release made with `gh`. Working version
 `0.0.10-alpha`.
 
+## `0.0.10-alpha` — 2026-11-18
+
+No node changed. The GeometryEditor window draws a basemap offered by VL.Mapsui (PR #17, built
+2026-11-16). Released because the maintainer, installing from nuget.org to record a video, did not
+find the basemap: it had only ever been seen from local builds. Gate green on `main`: 479 tests,
+`Test-VLPackage`, `Test-VLPatch` (84 of 84 on F1), `pack -NoBuild`, 23 of 23 patches compiled,
+`Test-Install`. **No GUI round on the packed package**; the basemap was last seen in vvvv 7.4 on
+2026-11-16. Uploaded in the browser by the maintainer, the first of four that evening
+(VL.NetTopologySuite.GeoJSON 0.0.3-alpha, VL.PROJ 0.0.2-alpha, then VL.Mapsui 0.0.5-alpha, which
+requires this). `Test-Install -FromNuGetOrg -Version 0.0.10-alpha` failed once minutes after the
+listing and passed twice after (signed, 23 of 23); the first output was not kept. Working version
+`0.0.11-alpha`.
+
 ## Updating a vvvv that already has the previous version
 
 `nuget install VL.NetTopologySuite -pre` again, in vvvv's command line; the nugets folder then
