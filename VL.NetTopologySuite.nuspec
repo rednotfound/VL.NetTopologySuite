@@ -17,7 +17,14 @@
     <description>Geometry for VL, built on NetTopologySuite: make, measure, combine and test points, lines and polygons; read and write WKT and WKB.</description>
     <summary>Geometry for VL, built on NetTopologySuite: make, measure, combine and test points, lines and polygons; read and write WKT and WKB.</summary>
     <releaseNotes>
-      0.0.10-alpha - In development, not published.
+      0.0.10-alpha (2026-11-18) - No node changed. The GeometryEditor window draws a map under the
+      drawing when VL.Mapsui 0.0.5-alpha or later is installed and the editor's SRID is 4326 or 3857:
+      OpenStreetMap tiles, greyed so the shape stays the brightest thing, with their credit in the
+      corner. "Basemap" in the toolbar, or the B key, switches it; it is on by default and says why
+      when it cannot draw (no VL.Mapsui, or another SRID). Without VL.Mapsui the window shows its
+      grid as before, and this package still fetches nothing by itself. The window's title and
+      status bar name the document the editor belongs to. Help: HowTo Draw a geometry draws its
+      longitude and latitude example over the map.
 
       0.0.9-alpha (2026-11-15) - No node changed. In the editor, an IOBox of a Spread of
       Feature now draws its items: inside a collection a feature is the geometry with a few lines of
